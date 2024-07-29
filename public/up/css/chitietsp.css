@@ -1,0 +1,122 @@
+/*GLOBAL*/
+
+.section_thanhtoan .row img{
+    width: 100%;
+    height: 70vh;
+    background-size: cover;
+}
+.section_thanhtoan .row .thanhtoan_right{
+    float: left;
+}
+.motalon h2{
+    font-weight: bold;
+    text-align: center;
+}
+.motalon h2::after{
+    content: '';
+    width: 15%;
+    height: 1px;
+    background-color: black;
+    display: block;
+    margin: auto;
+    margin-bottom: 30px;
+}
+.container .owl-carousel .item img:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+.section_thanhtoan .row .thanhtoan_right{
+    text-align: left;
+}
+.section_thanhtoan .row .thanhtoan_right .btn-mua{
+    text-align: center;
+    padding-top:10px ;
+}
+.container .owl-carousel .item a,.section_thanhtoan .row .thanhtoan_right a,.section_thanhtoan .row .thanhtoan_right span{
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+.motangan,.motalon{
+    text-align: left;
+    letter-spacing: 1px;
+
+}
+.section_thanhtoan .row  .motangan_bottom li{
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding-top: 10px;
+    font-weight: 600;
+}
+.section_thanhtoan .row  .motangan_bottom p{
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding-top: 20px;
+}
+.section_thanhtoan .row  .motangan_bottom p:hover{
+    cursor: pointer;
+    color: #a9a9a9;
+}
+.section_thanhtoan .row  .motangan_bottom p::after{
+    content: '';
+    background-color: black;
+    height: 1px;
+    width: 30%;
+    display: block;
+}
+.container .owl-carousel .item a:hover{
+    color: red;
+}
+.btn-mua .btn_themgiohang,.btn-mua .btn_muangay{
+    padding: 5px 20px;
+    background-color: black;
+    border: none;
+    transition: all 0.5s;
+}
+.section_thanhtoan .btn-mua .btn_themgiohang a,.section_thanhtoan .btn-mua .btn_muangay a{
+    font-weight: 600;
+    color: white ;
+    font-size: 16px;
+}
+.btn-mua .btn_themgiohang:hover,.btn-mua .btn_muangay:hover{
+    background-color: #a9a9a9;
+}
+.btn-mua .btn_themgiohang:hover,.btn-mua .btn_muangay:hover{
+    font-weight: bold;
+}
+/*mau*/
+.color button{
+    background-color: white;
+    border: 1px solid gray;
+    transition: all 0.5s;
+    letter-spacing: 1px;
+}
+
+.color  .white :active{background-color: gray; color: gray;}
+.color  .red:active{background-color: red;color: white;}
+.color  .black:active{background-color: black; color: white;}
+.color .pink:active{background-color: pink;}
+.color .yellow:active{background-color: yellow;}
+.color .blue:active{background-color: blue;color: white;}
+.color .green:active{background-color: green;color: white;} 
+/*size*/
+.size button{
+    background-color: white;
+    transition: all 0.5s;
+    border: none;
+}
+.size #number:active{
+    border: 1px solid black;
+    background-color: #a9a9a9;
+    border: none;
+}
+
+  
+  
+  
+  
+  
+  

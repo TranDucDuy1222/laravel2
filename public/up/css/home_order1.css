@@ -1,0 +1,25 @@
+.gach::after{
+    content: '';
+    width: 0;
+    height: 1px;
+    background-color: gray;
+    display: block;
+    margin: auto;
+    transition: all 0.5s;
+}
+.gach:hover::after{
+    width: 80%;
+}
+.gach:hover{
+    cursor: pointer;
+}
+.gach::before{
+    content: '';
+    width: 20%;
+    height: 3px;
+    background-color: gray;
+    display: block;
+    margin: auto;
+    transition: all 0.5s;
+}
+

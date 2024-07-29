@@ -1,0 +1,11 @@
+/* Ẩn nút "Edit" ban đầu */
+.dropdown-menu {
+    display: none;
+}
+
+/* Hiển thị nút "Edit" khi người dùng nhấp vào biểu tượng */
+#product-context-menu-0:focus + .dropdown-menu,
+#product-context-menu-0:hover + .dropdown-menu {
+    display: block;
+}
+

@@ -1,0 +1,33 @@
+#btn_logout{
+    display: none;
+    position: absolute;
+    margin-top: 30px;
+    list-style-type: none;
+}
+#trangthaidh{
+    font-size: 20px;
+}
+#select_tt{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    padding: 0px 5px 0px 5px;
+    transition: background-color 0.3s ease;
+}
+
+#select_tt:hover{
+    background-color: yellow;
+}
+
+#select_tt:active,
+#select_tt:focus {
+    background-color: blue; /* Màu sẽ thay đổi khi nhấn */
+    outline: none; /* Xóa đường viền mặc định khi nhấn */
+}
+
+#select_ttt{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
