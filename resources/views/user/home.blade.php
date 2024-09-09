@@ -6,8 +6,8 @@ Trang Chủ - Nike
 @section('category')
 @foreach ($danhmuc as $category)
   <li class="nav-item">
-  <a class="nav-link fz" href="/category/{{$category->madm}}">
-    {{$category->tendm}}
+  <a class="nav-link fz" href="/category/{{$category->id}}">
+    {{$category->ten_dm}}
   </a>
   </li>
 @endforeach
@@ -75,8 +75,8 @@ Trang Chủ - Nike
       <!-- Hiển thị 4 sản phẩm -->
       @foreach ($sanphamhome as $item)
       @php
-    if ($item->giakhuyenmai > 0) {
-    $gianew = $item->giakhuyenmai;
+    if ($item->gia_km > 0) {
+    $gianew = $item->gia_km;
     //   $giaold = '<del>' . $gia . '</del>';
     } else {
     $gianew = $item->gia;
@@ -86,16 +86,16 @@ Trang Chủ - Nike
   @endphp
       <div class="col-sm-6 col-lg-3 my-sm-2">
         <div class="card">
-        <a href="/detail/{{$item->masp}}" id="hover-img-home">
-          <img src="/img/{{$item->anhsp}}" alt="" class="w-100">
+        <a href="/detail/{{$item->id}}" id="hover-img-home">
+          <img src="/img/{{$item->hinh}}" alt="" class="w-100">
         </a>
         <div class="card-body text-center">
           <a href="">
-          <h5 id="hover-sp">{{$item->tensp}}</h5>
+          <h5 id="hover-sp">{{$item->ten_sp}}</h5>
           </a>
           <div class="row">
           <div class="col-sm-6">
-            {{$item->tendm}}
+            {{$item->ten_dm}}
           </div>
           <div class="col-sm-6">
             <strong> {{$giachinh}}đ </strong>

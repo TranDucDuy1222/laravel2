@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use DB;
+use Illuminate\Support\Str;
 
 class addSanPham extends Seeder
 {
@@ -13,11 +14,21 @@ class addSanPham extends Seeder
      */
     public function run(): void
     {
-        DB::table('sanpham')->insert([
-            ['tensp' => 'Nike Air Max 1', 'gia' => '4000000', 'giakhuyenmai' => '3900000','soluong' => '390','anhsp' => 'nikeair1.png','ngay' => Now(), 'madm' => 2],
-            ['tensp' => 'Nike Air Max 1 SE', 'gia' => '2800000', 'giakhuyenmai' => '2700000','soluong' => '100','anhsp' => 'nikeair3.png','ngay' => Now(), 'madm' => 2],
-            ['tensp' => 'Air Max 1', 'gia' => '2550000', 'giakhuyenmai' => '2500000','soluong' => '90','anhsp' => 'nikeair2.png','ngay' => Now(), 'madm' => 2],
-            ['tensp' => 'Air Max 1 SE', 'gia' => '2550000', 'giakhuyenmai' => '2500000','soluong' => '120','anhsp' => 'nikeair4.png','ngay' => Now(), 'madm' => 2]
+        $data= [
+            ['ten_sp' => 'Nike Air Max 1', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 8, 'hinh' => 'nikeair1.png','color'=>'Đen','ngay' => Now()],
+            ['ten_sp' => 'Air Max 1', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 8, 'hinh' => 'nikeair2.png','color'=>'Đen','ngay' => Now()],
+            ['ten_sp' => 'Air Max 1 SE', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 8, 'hinh' => 'nikeair4.png','color'=>'Đen','ngay' => Now()],
+            ['ten_sp' => 'Nike Air 4', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 8, 'hinh' => 'nikeair1.png','color'=>'Đen','ngay' => Now()],
+        ];
+        foreach ($data as &$item) {
+            $item['slug'] = Str::slug($item['ten_sp'], '-');
+        }
+        DB::table('san_pham')->insert($data);
+
+        DB::table('langdingpage')->insert([
+            ['content_header' => 'Giao hàng miễn phí', 'imgheader' => 'banner1.png', 'content_1' => 'Áp dụng cho đơn hàng từ 5.000.000₫ trở lên.','content_2' => 'NIKE AIR MAX DN','content_3' => 'Thế hệ tiếp theo của công nghệ Air sắp ra mắt vào ngày 26/03.'],
+            ['content_header' => '20 NĂM THỰC HIỆN', 'imgheader' => 'banner3.jpg', 'content_1' => 'Bộ sưu tập EK Umoja','content_2' => 'MUA SẮM NGAY','content_3' => 'Trở thành thành viên của chúng tôi để có những mã giảm giá.'],
+
         ]);
 
     }
