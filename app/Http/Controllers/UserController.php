@@ -6,13 +6,13 @@ use App\Http\Requests\CheckLogin;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
-use App\Models\Loai;
+use App\Models\DanhMuc as danh_muc;
 
 class UserController extends Controller
 {
     public function __construct() 
     {
-        $danhmuc = Loai::select('tendm' ,'madm')->orderBy('madm' , 'asc')->get();
+        $danhmuc = danh_muc::select('ten_dm' ,'id')->orderBy('id' , 'asc')->get();
         \View::share( 'danhmuc', $danhmuc );
     }
 

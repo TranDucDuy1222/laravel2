@@ -28,7 +28,7 @@
                         </div>
                     @endif
                     <select id="trangthai" class="form-select" aria-label="Default select example" style="height: 50px;" onchange="loctrangthai(this.value)">
-                            <option selected value="1" value="1" {{$trangthai == "1"? "selected":""}}>Sản Phẩm Đang Kinh Doanh</option>
+                            <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
                             <option value="2" {{$trangthai == "2"? "selected":""}}>Sản Phẩm Sắp Hết Hàng</option>
                             <option value="3" {{$trangthai == "3"? "selected":""}}>Sản Phẩm Ngừng Kinh Doanh</option>
                     </select>
@@ -74,7 +74,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($sanpham_arr as $sp)  
+                            <tr>
+                            <div class="accordion" id="accordionExample">
+                                @foreach($sanpham_arr as $sp)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$sp->id}}" aria-expanded="false" aria-controls="collapse{{$sp->id}}">
+                                                {{$sp->ten_sp}}
+                                                {{$sp->id}}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse{{$sp->id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="d-flex p-2">
+                                                    <label for="">Size:</label>
+                                                    <button>38</button>
+                                                </div>
+                                                <div class="d-flex p-2">
+                                                    <label for="">Số lượng:</label>
+                                                    <button>10</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                     <tr>
                                     <td><input type="checkbox" class="form-check-input my-4 fs-exact-16 d-block"
                                             aria-label="..." /></td>
@@ -83,17 +108,17 @@
                                             <a href="app-product.html" class="me-4">
                                                 <div
                                                     class="sa-symbol sa-symbol--shape--rounded sa-symbol--size--lg">
-                                                    <img src="/imgnew/{{$sp->anhsp}}" width="40"
-                                                        height="40" onerror="this.src='/img/{{$sp->anhsp}}'" alt="" />
+                                                    <img src="/imgnew/{{$sp->hinh}}" width="40"
+                                                        height="40" onerror="this.src='/img/{{$sp->hinh}}'" alt="" />
                                                 </div>
                                             </a>
                                             <div>
-                                                <a href="app-product.html" class="text-reset">{{$sp->tensp}}</a>
+                                                <a href="app-product.html" class="text-reset">{{$sp->ten_sp}}</a>
                                                 <div class="sa-meta mt-0">
                                                     <ul class="sa-meta__list">
                                                         <li class="sa-meta__item">ID:
                                                             <span title="Click to copy product ID"
-                                                                class="st-copy">{{$sp->masp}}</span>
+                                                                class="st-copy">{{$sp->id}}</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -102,11 +127,11 @@
                                     </td>
                                     <td>
                                         <a class="text-reset">
-                                             {{$sp->tendm}}
+                                             {{$sp->ten_dm}}
                                         </a>
                                     </td>
                                     <td>
-                                        <div class="badge badge-sa-success">{{$sp->soluong}}</div>
+                                        <div class="badge badge-sa-success"></div>
                                     </td>
                                     <td>
                                         <div class="sa-price">
@@ -118,7 +143,7 @@
                                     <td>
                                         <div class="sa-price">
                                             
-                                                <span class="sa-price__integer">{{number_format($sp->giakhuyenmai, 0, ',' , '.' )}} đ</span>
+                                                <span class="sa-price__integer">{{number_format($sp->gia_km, 0, ',' , '.' )}} đ</span>
                                                 <span class="sa-price__symbol"></span>
                                         </div>
                                     </td>
@@ -135,8 +160,8 @@
                                     </td>
                                     <td>
                                         <div class="d-flex">
-                                            <a class="btn btn-outline-dark me-2" href="{{route('san-pham.edit', $sp->masp)}}">Edit</a>
-                                            <form class="d-inline" action="{{ route('san-pham.destroy', $sp->masp) }}" method="POST">
+                                            <a class="btn btn-outline-dark me-2" href="{{route('san-pham.edit', $sp->id)}}">Edit</a>
+                                            <form class="d-inline" action="{{ route('san-pham.destroy', $sp->id) }}" method="POST">
                                                 @method('DELETE')
                                                 <button type='submit' onclick="return confirm('Bạn có chắc muốn ẩn sản phẩm này không!')" class="btn btn-outline-danger">
                                                     Ẩn
@@ -147,6 +172,8 @@
                                     </td>
                                 </tr>
                                 @endforeach
+                            </div>
+                                </tr> 
                             </tbody>
                         </table>
                         <div class="text-center p-2 d-flex justify-content-center">{{$sanpham_arr->links()}}</div>

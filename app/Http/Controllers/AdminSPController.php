@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SanPham;
-use App\Models\Loai;
+use App\Models\SanPham as san_pham;
+use App\Models\DanhMuc as danh_muc;
 use Illuminate\Support\Str;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 Paginator::useBootstrap();
 
@@ -15,9 +15,9 @@ class AdminSPController extends Controller
     function index(Request $request){
         $id_loai = -1;
         $perpage = env('PER_PAGE');
-        $loai_arr = Loai::all();    
-        if ($request->has('madm')) {
-            $id_loai = (int) $request['madm'];
+        $loai_arr = danh_muc::all();    
+        if ($request->has('id_dm')) {
+            $id_loai = (int) $request['id_dm'];
             $trangthai= 1; //chuaxoa, daxoa
         }
         if ($request->has('trangthai')){
@@ -27,14 +27,14 @@ class AdminSPController extends Controller
         }
 
         if ($trangthai== 3){
-            $sanpham_arr = SanPham::onlyTrashed()->orderBy('masp','desc')
+            $sanpham_arr = san_pham::onlyTrashed()->orderBy('masp','desc')
             ->paginate($perpage)->withQueryString();
             return view('admin/product_admin_delete',compact(['trangthai','id_loai','sanpham_arr','loai_arr']));
         }
         elseif ($trangthai == 2) {
-            $sanpham_arr = SanPham::join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-            ->where('sanpham.trangthai', 2)
-            ->orderBy('sanpham.masp', 'desc')
+            $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+            ->where('san_pham.trang_thai', 2)
+            ->orderBy('san_pham.id_dm', 'desc')
             ->paginate($perpage)
             ->withQueryString();
             return view('admin/product_admin',compact(['trangthai','id_loai','sanpham_arr','loai_arr']));
@@ -42,19 +42,21 @@ class AdminSPController extends Controller
         }
         else {
             if ($id_loai>0){
-                $sanpham_arr = SanPham::join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-                ->orderBy('sanpham.masp', 'desc')
-                ->where('sanpham.madm', $id_loai)
+                $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+                ->select('san_pham.*', 'danh_muc.ten_dm')
+                ->orderBy('san_pham.id', 'desc')
+                ->where('san_pham.id_dm', $id_loai)
                 ->paginate($perpage)
                 ->withQueryString();
             } else {
-                $sanpham_arr = SanPham::join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-                ->orderBy('sanpham.masp', 'desc')
-                ->where('sanpham.trangthai', 1)
+                $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+                ->select('san_pham.*', 'danh_muc.ten_dm')
+                ->orderBy('san_pham.id', 'desc')
+                ->where('san_pham.trang_thai',1)
                 ->paginate($perpage)
                 ->withQueryString();
             }
-            return view('admin/product_admin',compact(['trangthai','id_loai','sanpham_arr','loai_arr']));
+            return view('admin/product_admin',compact(['trangthai', 'id_loai', 'sanpham_arr','loai_arr']));
         }
     }
     public function create()
@@ -66,20 +68,20 @@ class AdminSPController extends Controller
     public function store(Request $request)
     {
         // Kiểm tra xem tên sản phẩm đã tồn tại trong cơ sở dữ liệu hay chưa
-        $checkProduct = SanPham::where('tensp', $request['tensp'])->first();
+        $checkProduct = san_pham::where('ten_sp', $request['ten_sp'])->first();
         if ($checkProduct) {
             return redirect()->back()->with('thongbao', 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.');
         }
-        $obj = new  SanPham();
-        $obj->tensp = $request['tensp'];
-        $obj->slug = Str::slug($obj->tensp);
+        $obj = new  san_pham();
+        $obj->ten_sp = $request['ten_sp'];
+        $obj->slug = Str::slug($obj->ten_sp);
         $obj->gia = (int) $request['gia'];
-        $obj->giakhuyenmai = (int) $request['giakhuyenmai'];
+        $obj->gia_km = (int) $request['gia_km'];
         // Kiểm tra nếu giakhuyenmai lớn hơn gia, gán giakhuyenmai bằng 0
-        if ($obj->giakhuyenmai > $obj->gia) {
-            $obj->giakhuyenmai = 0;
+        if ($obj->gia_km > $obj->gia) {
+            $obj->gia_km = 0;
         }
-        $obj->madm = (int) $request['madm'];
+        $obj->id_dm = (int) $request['id_dm'];
         $obj->ngay = now();  
         // Lấy tệp tin từ trường input file
         if ($request->hasFile('anhsp')) {
@@ -89,28 +91,28 @@ class AdminSPController extends Controller
             $obj->anhsp = $fileName;
         }        
         $obj->soluong = $request['soluong'];
-        $obj->motangan = $request['motangan'];
-        $obj->motachitiet = $request['motachitiet']; 
+        $obj->mo_ta_ngan = $request['mo_ta_ngan'];
+        $obj->mo_ta_ct = $request['mo_ta_ct']; 
         $obj->save();
         return redirect(route('san-pham.index'))->with('thongbao','Thêm thành công');
     
     }
 
     function khoiphuc($id) {
-            $sp = SanPham::withTrashed()->find($id);
+            $sp = san_pham::withTrashed()->find($id);
             if ($sp == null) return redirect('/thongbao');
             $sp->restore();
             return redirect('/admin/san-pham?trangthai=3');
     }
     function xoavinhvien($id) {
-        $sp = SanPham::withTrashed()->find($id);
+        $sp = san_pham::withTrashed()->find($id);
         if ($sp == null) return redirect('/thongbao');
         $sp->forceDelete();
         return redirect('/admin/san-pham')->with('thongbao', 'Sản Phẩm Đã Được Xóa Vĩnh Viễn!');
     }
 
     public function edit( Request $request , string $id) {
-        $sp = SanPham::where('masp', $id)->first();
+        $sp = san_pham::where('masp', $id)->first();
         if ($sp==null){
             $request->session()->flash('thongbao','Không có sản phẩm này: '. $id);
             return redirect('/admin/sanpham');
@@ -120,7 +122,7 @@ class AdminSPController extends Controller
     }
 
     public function update(Request $request, string $id) {
-        $obj = SanPham::find($id);
+        $obj = san_pham::find($id);
         $obj->tensp = $request['tensp'];
         $obj->slug = Str::slug($obj->tensp);     
         $obj->gia = (int) $request['gia'];
@@ -137,12 +139,12 @@ class AdminSPController extends Controller
 
     public function destroy( Request $request, string $id) 
     {
-        $cokhong = SanPham::where('masp', $id)->exists();
+        $cokhong = san_pham::where('masp', $id)->exists();
         if ($cokhong==false) {
             $request->session()->flash('thongbao','Sản phẩm không tồn tại');
             return redirect('/admin/san-pham');
         }
-        SanPham::where('masp', $id)->delete();
+        san_pham::where('masp', $id)->delete();
         $request->session()->flash('thongbao', 'Đã xóa sản phẩm');
         return redirect('/admin/san-pham');
     }

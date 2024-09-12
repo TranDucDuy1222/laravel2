@@ -7,7 +7,7 @@
 @foreach ($danhmuc as $category)
   <li class="nav-item">
     <a class="nav-link fz" href="/category/{{$category->madm}}">
-    {{$category->tendm}}
+    {{$category->ten_dm}}
     </a>
   </li>
 @endforeach

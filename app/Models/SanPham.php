@@ -10,10 +10,10 @@ class SanPham extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    protected $table = 'sanpham';
-    public $primaryKey = 'masp';
+    protected $table = 'san_pham';
+    public $primaryKey = 'id';
     //protected $attributes = ['an_hien'=>1,'hot'=>0,'luot_xem'=>0];
     protected $dates = ['ngay'];
-    protected $fillable = ['tensp','slug', 'gia','giakhuyenmai','madm',
-    'anhsp', 'soluong','motachitiet', 'motangan','trangthai','ngay'];
+    protected $fillable = ['tensp','slug', 'gia','gia_km','id_dm',
+    'hinh', 'mo_ta_ct', 'mo_ta_ngan','trang_thai', 'luotxem', 'tinh_chat', 'color'];
 }
