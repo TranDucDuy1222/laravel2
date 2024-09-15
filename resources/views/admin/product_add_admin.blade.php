@@ -92,7 +92,7 @@ Thêm Sản Phẩm
                                     </div>
                                 </div>
                                 <div class="mt-n5">
-                                    <input type="file" class="form-controller" name="anhsp" required>
+                                    <input name="anhsp" type="file" class="form-controller" required>
                                 </div>
                             </div>
                             <div class="card w-100 mt-5">

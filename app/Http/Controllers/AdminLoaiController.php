@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Loai;
+use App\Models\DanhMuc as danh_muc;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 Paginator::useBootstrap();
@@ -11,7 +11,7 @@ class AdminLoaiController extends Controller
 {
     public function index() {
         $perPage = env('PER_PAGE');
-        $loai_arr = Loai::orderBy('madm', 'asc')->paginate($perPage)->withQueryString();      
+        $loai_arr = danh_muc::orderBy('id', 'asc')->paginate($perPage)->withQueryString();      
         return view('admin.category', compact('loai_arr'));
     }
 }

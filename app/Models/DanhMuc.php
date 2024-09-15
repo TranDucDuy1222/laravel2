@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class DanhMuc extends Model
 {
     use HasFactory;
-
+    protected $table = 'danh_muc';
+    public $primaryKey = 'id';
+    public $attributes = ['an_hien' => [0, 1]];
+    public $fillable = ['ten_dm', 'slug', 'trang_thai', 'thutu'];
 }
