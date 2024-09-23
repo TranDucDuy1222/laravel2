@@ -8,6 +8,7 @@ use App\Models\DanhMuc as danh_muc;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
+
 Paginator::useBootstrap();
 
 class AdminSPController extends Controller
@@ -16,31 +17,33 @@ class AdminSPController extends Controller
     {
         $id_loai = -1;
         $perpage = env('PER_PAGE');
-        $loai_arr = danh_muc::all();
+        $loai_arr = danh_muc::all();    
         if ($request->has('id_dm')) {
             $id_loai = (int) $request['id_dm'];
-            $trangthai = 1; //chuaxoa, daxoa
+            $trangthai= 1; //chuaxoa, daxoa
         }
-        if ($request->has('trangthai')) {
+        if ($request->has('trangthai')){
             $trangthai = $request['trangthai'];
         } else {
             $trangthai = 1;
         }
 
-        if ($trangthai == 3) {
-            $sanpham_arr = san_pham::onlyTrashed()->orderBy('masp', 'desc')
-                ->paginate($perpage)->withQueryString();
-            return view('admin/product_admin_delete', compact(['trangthai', 'id_loai', 'sanpham_arr', 'loai_arr']));
-        } elseif ($trangthai == 2) {
+        if ($trangthai== 3){
+            $sanpham_arr = san_pham::onlyTrashed()->orderBy('masp','desc')
+            ->paginate($perpage)->withQueryString();
+            return view('admin/product_admin_delete',compact(['trangthai','id_loai','sanpham_arr','loai_arr']));
+        }
+        elseif ($trangthai == 2) {
             $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-                ->where('san_pham.trang_thai', 2)
-                ->orderBy('san_pham.id_dm', 'desc')
-                ->paginate($perpage)
-                ->withQueryString();
-            return view('admin/product_admin', compact(['trangthai', 'id_loai', 'sanpham_arr', 'loai_arr']));
+            ->where('san_pham.trang_thai', 2)
+            ->orderBy('san_pham.id_dm', 'desc')
+            ->paginate($perpage)
+            ->withQueryString();
+            return view('admin/product_admin',compact(['trangthai','id_loai','sanpham_arr','loai_arr']));
 
-        } else {
-            if ($id_loai > 0) {
+        }
+        else {
+            if ($id_loai>0){
                 $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
                     ->select('san_pham.*', 'danh_muc.ten_dm')
                     ->orderBy('san_pham.id', 'desc')
@@ -60,9 +63,9 @@ class AdminSPController extends Controller
     }
     public function create()
     {
-        $loai_arr = DB::table('danhmuc')->orderBy('madm', 'asc')->get();
-        return view('admin.product_add_admin', compact('loai_arr'));
-
+        $loai_arr = DB::table('danhmuc')->orderBy('madm' , 'asc')->get();
+        return view('admin.product_add_admin',compact('loai_arr'));
+    
     }
     public function store(Request $request)
     {
@@ -93,17 +96,15 @@ class AdminSPController extends Controller
         $obj->mo_ta_ngan = $request['mo_ta_ngan'];
         $obj->mo_ta_ct = $request['mo_ta_ct'];
         $obj->save();
-        return redirect(route('san-pham.index'))->with('thongbao', 'Thêm thành công');
-
+        return redirect(route('san-pham.index'))->with('thongbao','Thêm thành công');
+    
     }
 
-    function khoiphuc($id)
-    {
-        $sp = san_pham::withTrashed()->find($id);
-        if ($sp == null)
-            return redirect('/thongbao');
-        $sp->restore();
-        return redirect('/admin/san-pham?trangthai=3');
+    function khoiphuc($id) {
+            $sp = san_pham::withTrashed()->find($id);
+            if ($sp == null) return redirect('/thongbao');
+            $sp->restore();
+            return redirect('/admin/san-pham?trangthai=3');
     }
     function xoavinhvien($id)
     {
