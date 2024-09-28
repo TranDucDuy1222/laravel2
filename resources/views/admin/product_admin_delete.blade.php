@@ -45,7 +45,7 @@
                             </select>
                             <script>
                             function locsp(id_loai) {
-                                document.location=`/admin/sanpham?id_loai=${$id_loai}`;
+                                document.location=`/admin/sanpham?id_loai=${id_loai}`;
                             }
                             </script>
                         </td>

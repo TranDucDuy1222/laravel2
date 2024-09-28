@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\AdminLoaiController;
 use App\Http\Controllers\AdminSPController;
+use App\Http\Controllers\LandingpageController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
@@ -44,6 +45,8 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::resource('san-pham', AdminSPController::class);
     Route::get('san-pham/khoi-phuc/{id}', [AdminSPController::class, 'khoiphuc']);
     Route::get('san-pham/xoa-vinh-vien/{id}', [AdminSPController::class, 'xoavinhvien']);
+    Route::resource('trang-chu', LandingpageController::class);
+
 });
 
 
