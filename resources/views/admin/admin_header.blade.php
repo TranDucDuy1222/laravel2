@@ -43,7 +43,7 @@
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
-                                    <a href="admin.php?mod=account&act=account" class="sa-nav__link">
+                                    <a href="{{url('/admin/tai-khoan')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
                                             <i class="fas fa-user"></i>
                                         </span>
@@ -51,7 +51,7 @@
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
-                                    <a href="/admin/order_admin/" class="sa-nav__link">
+                                    <a href="{{url('/admin/don-hang')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
                                             <i class="fas fa-shopping-cart"></i>
                                         </span>

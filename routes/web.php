@@ -10,6 +10,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\AdminLoaiController;
 use App\Http\Controllers\AdminSPController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AdminDonHangController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
@@ -44,6 +46,12 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::resource('san-pham', AdminSPController::class);
     Route::get('san-pham/khoi-phuc/{id}', [AdminSPController::class, 'khoiphuc']);
     Route::get('san-pham/xoa-vinh-vien/{id}', [AdminSPController::class, 'xoavinhvien']);
+    Route::resource('tai-khoan', AdminUserController::class);
+    Route::post('/tai-khoan/{id}/hide', [AdminUserController::class, 'hide'])->name('tai-khoan.hide');
+    Route::post('tai-khoan/{id}/restore', [AdminUserController::class, 'restore'])->name('tai-khoan.restore');
+    Route::resource('don-hang', AdminDonHangController::class);  
+    Route::put('don-hang/{id}/update-trang-thai', [AdminDonHangController::class, 'updateTrangThai'])->name('don-hang.update-trang-thai');
+    
 });
 
 

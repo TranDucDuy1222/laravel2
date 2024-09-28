@@ -16,7 +16,7 @@ class addSizes extends Seeder
     {
         $faker = Faker::create();
         $sizes = [37, 38, 39, 39.5, 40, 40.5, 41, 41.5, 42, 43];
-        $products = [9, 10, 11, 12]; // Giả sử bạn có 3 sản phẩm với ID là 1, 2, 3
+        $products = [1, 2, 3]; // Giả sử bạn có 3 sản phẩm với ID là 1, 2, 3
 
         foreach ($products as $product) {
             foreach ($sizes as $size) {
