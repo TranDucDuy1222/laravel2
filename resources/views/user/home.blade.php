@@ -4,10 +4,10 @@ Trang Chủ - Nike
 @endsection
 
 @section('category')
-@foreach ($danhmuc as $category)
+@foreach ($loai as $category)
   <li class="nav-item">
   <a class="nav-link fz" href="/category/{{$category->id}}">
-    {{$category->ten_dm}}
+    {{$category->ten_loai}}
   </a>
   </li>
 @endforeach

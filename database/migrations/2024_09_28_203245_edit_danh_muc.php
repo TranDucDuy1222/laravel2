@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('landingpage', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('danh_muc', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_loai'); // Đảm bảo cột này là unsigned
+            $table->foreign('id_loai')->references('id')->on('loai')->onDelete('cascade');
         });
     }
 
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('landingpage');
+        Schema::dropIfExists('danh_muc');
     }
 };
