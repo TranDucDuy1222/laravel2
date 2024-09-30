@@ -32,25 +32,27 @@ Quản Trị Sản Phẩm
                     <option value="2" {{$trangthai == "2"? "selected":""}}>Sản Phẩm Sắp Hết Hàng</option>
                     <option value="3" {{$trangthai == "3"? "selected":""}}>Sản Phẩm Ngừng Kinh Doanh</option>
                 </select>
+                <!--Lọc trạng thái bằng JS-->
                 <script>
                     function loctrangthai(tt) {
                         document.location = `/admin/san-pham?trangthai=${tt}`;
                     }
                 </script>
+
                 <br>
                 <tr>
                     <td colspan="6">
                         <select id="selLoai" aria-label="Default select example" class="form-select" onchange="locsp(this.value)">
                             <option value="-1" selected>Lọc theo danh mục</option>
                             @foreach ($loai_arr as $loai)
-                            <option value="{{$loai->madm}}" {{$loai->madm == $id_loai? "selected":""}}>
-                                {{$loai->tendm}}
+                            <option value="{{$loai->id}}" {{$loai->id == $id_dm ? "selected":""}}>
+                                {{$loai->ten_dm}}
                             </option>
                             @endforeach
                         </select>
                         <script>
-                            function locsp(id_loai) {
-                                document.location = `/admin/sanpham?id_loai=${$id_loai}`;
+                            function locsp(id_dm) {
+                                document.location = `/admin/san-pham?id_dm=${id_dm}`;
                             }
                         </script>
                     </td>
@@ -85,24 +87,24 @@ Quản Trị Sản Phẩm
                                         <td>
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$sp->id}}" aria-expanded="false" aria-controls="collapse{{$sp->id}}">
-                                                <a href="app-product.html" class="me-4">
-                                                <div
-                                                    class="">
-                                                    <img src="/imgnew/{{$sp->hinh}}" width="60"
-                                                        height="50" onerror="this.src='/img/{{$sp->hinh}}'" alt="" />
-                                                </div>
-                                            </a>
-                                            <div>
-                                                <a href="app-product.html" class="text-reset">{{$sp->ten_sp}}</a>
-                                                <div class="sa-meta mt-0">
-                                                    <ul class="sa-meta__list">
-                                                        <li class="sa-meta__item">ID:
-                                                            <span title="Click to copy product ID"
-                                                                class="st-copy">{{$sp->id}}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                                    <a href="app-product.html" class="me-4">
+                                                        <div
+                                                            class="">
+                                                            <img src="/imgnew/{{$sp->hinh}}" width="60"
+                                                                height="50" onerror="this.src='/img/{{$sp->hinh}}'" alt="" />
+                                                        </div>
+                                                    </a>
+                                                    <div>
+                                                        <a href="app-product.html" class="text-reset">{{$sp->ten_sp}}</a>
+                                                        <div class="sa-meta mt-0">
+                                                            <ul class="sa-meta__list">
+                                                                <li class="sa-meta__item">ID:
+                                                                    <span title="Click to copy product ID"
+                                                                        class="st-copy">{{$sp->id}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </button>
                                             </h2>
                                             <div id="collapse{{$sp->id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -114,7 +116,7 @@ Quản Trị Sản Phẩm
                                                         <label for="">Màu: {{$sp -> color}}</label>
                                                     </div>
                                                     <div class="gia">
-                                                        <label for="">Giá: <span class="text-secondary">{{number_format($sp->gia, 0, ',' , '.' )}} đ</span></label>
+                                                        <label for="">Giá: <span class="text-bg-dark">{{number_format($sp->gia, 0, ',' , '.' )}} đ</span></label>
                                                     </div>
                                                     <div class="gia-km">
                                                         <label for="">Giá khuyến mãi: <span class="text-danger">{{number_format($sp->gia_km, 0, ',' , '.' )}} đ</span></label>
@@ -122,13 +124,13 @@ Quản Trị Sản Phẩm
                                                     <div class="trang-thai">
                                                         <label for="">Trạng thái:
                                                             @if ($sp -> trang_thai == 1)
-                                                                Còn hàng
+                                                            Còn hàng
                                                             @endif
                                                             @if ($sp -> trang_thai == 2)
-                                                                Sắp hết hàng                                                            
+                                                            Sắp hết hàng
                                                             @endif
                                                             @if ($sp -> trang_thai == 3)
-                                                                Hết hàng                                                            
+                                                            Hết hàng
                                                             @endif
                                                         </label>
                                                     </div>
@@ -137,31 +139,25 @@ Quản Trị Sản Phẩm
                                         </td>
                                         <td>
                                             <div class="">
-                                                <button class="btn btn-outline-dark mb-1">38 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 12</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 7</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 12</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 7</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38.5 : 123</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 12</button>
-                                                <button class="btn btn-outline-dark mb-1">38 : 7</button>
-                                                
+                                                @php
+                                                    $hasSize = false;
+                                                @endphp
+
+                                                @foreach ($size_arr as $size)
+                                                @if ($size->id_product == $sp->id)
+                                                    <button class="btn btn-outline-dark mb-1">{{$size->size_product}} : {{$size->so_luong}}</button>
+                                                @php
+                                                    $hasSize = true;
+                                                @endphp
+                                                @endif
+                                                @endforeach
+
+                                                @if (!$hasSize)
+                                                    <button class="btn btn-outline-dark mb-1">0 : 0</button>
+                                                @endif
                                             </div>
-                                            
-                                            
+
+
                                         </td>
                                         <td>
                                             <div class="d-flex">
@@ -176,14 +172,7 @@ Quản Trị Sản Phẩm
                                             </div>
                                         </td>
                                     </tr>
-
-
-
-
                                 </div>
-
-
-
                                 <!-- <td>
                                         <input type="checkbox" class="form-check-input my-4 fs-exact-16 d-block"
                                             aria-label="..." />

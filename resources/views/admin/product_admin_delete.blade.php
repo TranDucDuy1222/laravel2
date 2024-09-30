@@ -38,8 +38,8 @@
                             <select id="selLoai" aria-label="Default select example" class="form-select" onchange="locsp(this.value)" >
                                 <option value="-1" selected>Lọc theo NSX</option>
                                 @foreach ($loai_arr as $loai)
-                                <option value="{{$loai->madm}}" {{$loai->madm == $id_loai? "selected":""}} >
-                                    {{$loai->tendm}}
+                                <option value="{{$loai->id}}" {{$loai->id == $id_dm? "selected":""}} >
+                                    {{$loai->ten_dm}}
                                 </option>
                                 @endforeach
                             </select>

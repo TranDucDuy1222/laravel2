@@ -78,7 +78,7 @@
                   <li ><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
                 @else
                   <li ><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
-                  <li ><a class="dropdown-item" href="">Đăng Ký</a></li>
+                  <li ><a class="dropdown-item" href="/signup">Đăng Ký</a></li>
                   <li ><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
                 @endif
               </ul>
