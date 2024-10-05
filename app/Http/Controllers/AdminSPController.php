@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SanPham as san_pham;
 use App\Models\DanhMuc as danh_muc;
+use App\Models\Size as size;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
@@ -74,30 +75,46 @@ class AdminSPController extends Controller
         if ($checkProduct) {
             return redirect()->back()->with('thongbao', 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.');
         }
-        $obj = new san_pham();
-        $obj->ten_sp = $request['ten_sp'];
-        $obj->slug = Str::slug($obj->ten_sp);
-        $obj->gia = (int) $request['gia'];
-        $obj->gia_km = (int) $request['gia_km'];
-        // Kiểm tra nếu giakhuyenmai lớn hơn gia, gán giakhuyenmai bằng 0
-        if ($obj->gia_km > $obj->gia) {
-            $obj->gia_km = 0;
+        $so_luong = [];
+        $size_product = [];
+        $hasproduct = false;
+        if($request['ten_sp'] && $request['gia'] && $request['gia_km'] && $request['id_dm'] && $request->hasFile('hinh') && $request['mo_ta_ct'] && $request['mo_ta_ngan'] &&  $request['trang_thai'] && $request['tinh_chat'] && $request['color']){
+            $obj = new  san_pham();
+            $obj->ten_sp = $request['ten_sp'];
+            $obj->slug = Str::slug($obj->ten_sp);
+            $obj->gia = (int) $request['gia'];
+            $obj->gia_km = (int) $request['gia_km'];
+            // Kiểm tra nếu giakhuyenmai lớn hơn gia, gán giakhuyenmai bằng 0
+            if ($obj->gia_km > $obj->gia) {
+                $obj->gia_km = 0;
+            }
+            $obj->id_dm = (int) $request['id_dm'];
+            
+            // Lấy tệp tin từ trường input file
+            if ($request->hasFile('hinh')) {
+                $file = $request->file('hinh');
+                $fileName = $file->getClientOriginalName();
+                $file->move(public_path('/imgnew'), $fileName);
+                $obj->hinh = $fileName;
+            }
+            $obj->mo_ta_ct = $request['mo_ta_ct'];
+            $obj->mo_ta_ngan = $request['mo_ta_ngan'];
+            $obj->trang_thai = $request['trang_thai'];
+            $obj->tinh_chat = $request['tinh_chat'];
+            $obj->color = $request['color'];
+            $obj->ngay = now();
+            $obj->save();
+            $hasproduct = true;
         }
-        $obj->id_dm = (int) $request['id_dm'];
-        $obj->ngay = now();
-        // Lấy tệp tin từ trường input file
-        if ($request->hasFile('anhsp')) {
-            $file = $request->file('anhsp');
-            $fileName = $file->getClientOriginalName();
-            $file->move(public_path('/imgnew'), $fileName);
-            $obj->anhsp = $fileName;
+        if($hasproduct = true && $request['size_product[]'] && $request['so_luong[]']){
+            $size = new size();
+            
+        }else{
+            $hasproduct = false;
+            // Sử lý khi không nhập được sản phẩm
         }
-        $obj->soluong = $request['soluong'];
-        $obj->mo_ta_ngan = $request['mo_ta_ngan'];
-        $obj->mo_ta_ct = $request['mo_ta_ct'];
-        $obj->save();
+
         return redirect(route('san-pham.index'))->with('thongbao','Thêm thành công');
-    
     }
 
     function khoiphuc($id) {
@@ -154,4 +171,5 @@ class AdminSPController extends Controller
         $request->session()->flash('thongbao', 'Đã xóa sản phẩm');
         return redirect('/admin/san-pham');
     }
+    
 }

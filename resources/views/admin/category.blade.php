@@ -1,11 +1,22 @@
 @extends('admin.layoutadmin')
 @section('title')
-Danh Mục
+Quản trị Danh Mục
 @endsection
 
 @section('content')
 <!-- sa-app__body -->
 <div id="top" class="sa-app__body">
+@if(session()->has('thongbao'))
+    <div class="toast show align-items-center text-bg-primary border-0 position-fixed top-3 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                {!! session('thongbao') !!}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+@endif
+
     <div class="mx-xxl-3 px-4 px-sm-5">
         <div class="py-5">
             <div class="row g-4 align-items-center">
@@ -13,14 +24,16 @@ Danh Mục
                     <h1 class="h3 m-0">Quản Lý Danh Mục</h1>
                 </div>
                 <div class="col-auto d-flex">
-                    <a href="" class="btn btn-primary">Thêm Danh Mục</a>
+                    <a href="{{route('danh-muc.create')}}" class="btn btn-primary">Thêm Danh Mục</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="mx-xxl-3 px-4 px-sm-5 pb-6">
         <div class="sa-layout">
-            <div class="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>
+            <!-- <div class="sa-layout__backdrop" data-sa-layout-sidebar-close="">
+                fdgkldfglk
+            </div> -->
             <div class="sa-layout__content">
                 <select name="role" class="form-select" onchange="locLoai(this.value)">
                     <option value="All" selected>Loại Danh Mục</option>
@@ -34,7 +47,6 @@ Danh Mục
                         document.location = `/admin/danh-muc?slug=${slug}`;
                     }
                 </script>
-
                 <br>
                 <div class="card table-responsive">
                     <table class="table">
@@ -106,11 +118,12 @@ Danh Mục
                                         </div>
                                     </td>
                                 </tr>
-                                <div class="text-center p-2">{{$danhmuc_arr->links()}}</div>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+                <br> 
+                <div class="text-center p-2 d-flex justify-content-center">{{$danhmuc_arr->links()}}</div>
             </div>
         </div>
     </div>
