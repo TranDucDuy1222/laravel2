@@ -23,7 +23,7 @@
                                         <span class="sa-nav__icon">
                                             <i class="fas fa-tachometer-alt"></i>
                                         </span>
-                                        <span class="sa-nav__title">Dashboard</span>
+                                        <span class="sa-nav__title">Thống Kê</span>
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
@@ -31,7 +31,7 @@
                                         <span class="sa-nav__icon">
                                             <i class="fas fa-box"></i>
                                         </span>
-                                        <span class="sa-nav__title">Product</span>
+                                        <span class="sa-nav__title">Sản Phẩm</span>
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
@@ -39,23 +39,23 @@
                                         <span class="sa-nav__icon">
                                             <i class="fas fa-boxes"></i>
                                         </span>
-                                        <span class="sa-nav__title">Category</span>
+                                        <span class="sa-nav__title">Danh Mục</span>
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
-                                    <a href="admin.php?mod=account&act=account" class="sa-nav__link">
+                                    <a href="{{url('/admin/tai-khoan')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
                                             <i class="fas fa-user"></i>
                                         </span>
-                                        <span class="sa-nav__title">Account</span>
+                                        <span class="sa-nav__title">Tài Khoản</span>
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
-                                    <a href="/admin/order_admin/" class="sa-nav__link">
+                                    <a href="{{url('/admin/don-hang')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
                                             <i class="fas fa-shopping-cart"></i>
                                         </span>
-                                        <span class="sa-nav__title">Order</span>
+                                        <span class="sa-nav__title">Đơn Hàng</span>
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
@@ -63,7 +63,23 @@
                                         <span class="sa-nav__icon">
                                         <i class="fa-solid fa-comment" style="color: #ffffff;"></i>
                                         </span>
-                                        <span class="sa-nav__title">Comment</span>
+                                        <span class="sa-nav__title">Bình Luận</span>
+                                    </a>
+                                </li>
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
+                                    <a href="{{url('admin/trang-chu')}}" class="sa-nav__link">
+                                        <span class="sa-nav__icon">
+                                        <i class="fa-solid fa-house-user"></i>
+                                        </span>
+                                        <span class="sa-nav__title">Trang Chủ</span>
+                                    </a>
+                                </li>
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
+                                    <a href="admin.php?mod=comment&act=comment" class="sa-nav__link">
+                                        <span class="sa-nav__icon">
+                                            <i class="fa-solid fa-gear fa-spin"></i>
+                                        </span>
+                                        <span class="sa-nav__title">Thiết lập cài đặt</span>
                                     </a>
                                 </li>
                             </ul>

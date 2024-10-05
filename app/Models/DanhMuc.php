@@ -12,4 +12,9 @@ class DanhMuc extends Model
     public $primaryKey = 'id';
     public $attributes = ['an_hien' => [0, 1]];
     public $fillable = ['ten_dm', 'slug', 'trang_thai', 'thutu'];
+    public function loai()
+    {
+        return $this->belongsTo(Loai::class, 'id_loai');
+    }
+
 }

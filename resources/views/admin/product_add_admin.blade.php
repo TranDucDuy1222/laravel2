@@ -7,7 +7,6 @@ Thêm Sản Phẩm
 <form action="{{route('san-pham.store')}}" method="post" enctype="multipart/form-data">
     <!-- sa-app__body -->
     @csrf
-    <input type="hidden" name="size[]" value="{{}}">
     <div id="top" class="sa-app__body">
         <div class="mx-sm-2 px-2 px-sm-3 px-xxl-4 pb-6">
             <div class="container">
@@ -40,15 +39,15 @@ Thêm Sản Phẩm
                                     </div>
                                     <div class="mb-4">
                                         <label for="form-product/name" class="form-label">Tên</label>
-                                        <input type="text" class="form-control" id="form-product/name" name="ten_sp" required />
+                                        <input value="{{old('ten_sp')}}" type="text" class="form-control" id="form-product/name" name="ten_sp" required />
                                     </div>
                                     <div class="mb-4">
                                         <label for="form-product/description" class="form-label">Mô tả</label>
-                                        <textarea id="form-product/description" class="form-control" rows="8" name="mo_ta_ct"></textarea>
+                                        <textarea id="form-product/description" class="form-control" rows="8" name="mo_ta_ct" required>{{old('mo_ta_ct')}}</textarea>
                                     </div>
                                     <div>
                                         <label for="form-product/short-description" class="form-label">Mô tả ngắn</label>
-                                        <textarea id="form-product/short-description" class="form-control" rows="2" name="mo_ta_ngan"></textarea>
+                                        <textarea id="form-product/short-description" class="form-control" rows="2" name="mo_ta_ngan" required>{{old('mo_ta_ngan')}}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -59,13 +58,18 @@ Thêm Sản Phẩm
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
-                                            <label for="form-product/price" class="form-label">Giá khuyến mãi</label><input
-                                                type="number" class="form-control" id="form-product/price"
-                                                name="gia_km" />
+                                            <label for="form-product/price" class="form-label">Giá khuyến mãi</label>
+                                            <input value="{{old('gia_km')}}" type="number" class="form-control" id="form-product/price" name="gia_km" required />
+                                            @error('gia_km')
+                                            <span class="text-danger">{{$message}}</span>
+                                            @enderror
                                         </div>
                                         <div class="col">
                                             <label for="form-product/old-price" class="form-label">Giá cũ</label>
-                                            <input type="number" class="form-control" id="form-product/old-price" name="gia" required />
+                                            <input value="{{old('gia')}}" type="number" class="form-control" id="form-product/old-price" name="gia" required />
+                                            @error('gia')
+                                            <span class="text-danger">{{$message}}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -73,116 +77,132 @@ Thêm Sản Phẩm
                             <div class="card mt-5">
                                 <div class="card-body p-5">
                                     <div class="mb-5">
-                                        <h2 class="mb-0 fs-exact-18">Hàng tồn kho</h2>
+                                        <h2 class="mb-0 fs-exact-18">Hàng nhập vào kho</h2>
                                     </div>
                                     <div class="row g-4">
+                                        @if ($errors->has('so_luong'))
+                                        <div class="alert alert-danger">
+                                            {{ $errors->first('so_luong') }}
+                                        </div>
+                                        @endif
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="37" id="form-product/size" name="size_product"/>
+                                            <input class="form-control" readonly value="37" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
-                                        </div>
-                                    </div>
-                                    <div class="row g-4">
-                                        <div class="col">
-                                            <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="38.5" id="form-product/size" name="size_product"/>
-                                        </div>
-                                        <div class="col">
-                                            <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
-                                        </div>
-                                    </div>
-                                    <div class="row g-4">
-                                        <div class="col">
-                                            <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="39" id="form-product/size" name="size_product" />
-                                        </div>
-                                        <div class="col">
-                                            <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="39.5" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="38.5" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="40" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="39" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="40.5" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="39.5" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="41" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="40" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="41.5" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="40.5" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="42" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="41" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input class="form-control" readonly value="42.5" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="41.5" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
                                             <label for="form-product/size" class="form-label">Kích thước</label>
-                                            <input readonly value="43" class="form-control" id="form-product/size" name="size_product" />
+                                            <input class="form-control" readonly value="42" name="size_product[]" />
                                         </div>
                                         <div class="col">
                                             <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                            <input value="0" type="number" class="form-control" id="form-product/quantity" name="so_luong" required/>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
+                                        </div>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col">
+                                            <label for="form-product/size" class="form-label">Kích thước</label>
+                                            <input class="form-control" readonly value="42.5" name="size_product[]" />
+                                        </div>
+                                        <div class="col">
+                                            <label for="form-product/quantity" class="form-label">Số lượng</label>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
+                                        </div>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col">
+                                            <label for="form-product/size" class="form-label">Kích thước</label>
+                                            <input readonly value="43" class="form-control" name="size_product[]" />
+                                        </div>
+                                        <div class="col">
+                                            <label for="form-product/quantity" class="form-label">Số lượng</label>
+                                            <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+
                                         </div>
                                     </div>
                                 </div>
@@ -196,46 +216,26 @@ Thêm Sản Phẩm
                                     </div>
                                 </div>
                                 <div class="mt-n5">
-                                    <input name="hinh" type="file" class="form-controller" required>
+                                    <input value="{{old('hinh')}}" name="hinh" type="file" class="form-controller" required>
                                 </div>
                             </div>
                             <div class="card w-100 mt-5">
                                 <div class="card-body p-5">
                                     <div class="mb-5">
-                                        <h2 class="mb-0 fs-exact-18">Danh mục</h2>
+                                        <h2 class="mb-0 fs-exact-18">Chọn Danh mục</h2>
                                     </div>
                                     <select class="sa-select2 form-select " name="id_dm" required>
-                                        <option value="-1">Chọn loại</option>
+                                        <option value="0">Chọn danh mục</option>
                                         @foreach($loai_arr as $dm)
-                                        <option value="{{$dm->id}}">
+                                        <option value="{{ $dm->id }}" {{ old('id_dm') == $dm->id ? 'selected' : '' }}>
                                             {{$dm->ten_dm}}
+                                            
                                         </option>
                                         @endforeach
                                     </select>
-                                </div>
-                            </div>
-                            <div class="card mt-5">
-                                <div class="card-body p-5">
-                                    <div class="mb-5">
-                                        <h2 class="mb-0 fs-exact-18">Trạng thái</h2>
-                                    </div>
-                                    <div class="row g-4">
-                                        <div class="col">
-                                            <input type="number" class="form-control" id="" name="trang_thai" required/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mt-5">
-                                <div class="card-body p-5">
-                                    <div class="mb-5">
-                                        <h2 class="mb-0 fs-exact-18">Tính chất</h2>
-                                    </div>
-                                    <div class="row g-4">
-                                        <div class="col">
-                                            <input type="number" class="form-control" id="" name="tinh_chat" required/>
-                                        </div>
-                                    </div>
+                                    @error('id_dm')
+                                            <span class="text-danger">{{$message}}</span>
+                                            @enderror
                                 </div>
                             </div>
                             <div class="card mt-5">
@@ -245,7 +245,7 @@ Thêm Sản Phẩm
                                     </div>
                                     <div class="row g-4">
                                         <div class="col">
-                                            <input type="text" class="form-control" id="" name="color" required/>
+                                            <input type="text" class="form-control" value="{{old('color')}}" id="" name="color" required />
                                         </div>
                                     </div>
                                 </div>
@@ -253,7 +253,7 @@ Thêm Sản Phẩm
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>

@@ -1,0 +1,4 @@
+.scrollable-content {
+    height: 700px; /* Chiều cao của vùng cuộn */
+    overflow-y: auto; /* Cho phép cuộn theo chiều dọc */
+}

@@ -10,6 +10,5 @@ class Size extends Model
     use HasFactory;
     protected $table = 'sizes';
     public $primaryKey = 'id';
-    public $attributes = ['an_hien' => [0, 1]];
-    public $fillable = ['size_product', 'soluong', 'id_product'];
+    public $fillable = ['size_product', 'so_luong', 'id_product'];
 }

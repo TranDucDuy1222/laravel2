@@ -23,14 +23,15 @@ Quản Trị Sản Phẩm
             <div class="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>
             <div class="sa-layout__content">
                 @if(session()->has('thongbao'))
-                <div class="alert alert-danger p-3 fs-5 text-center">
-                    {!! session('thongbao') !!}
-                </div>
+                    <div class="alert alert-danger p-3 fs-5 text-center">
+                        {!! session('thongbao') !!}
+                    </div>
                 @endif
-                <select id="trangthai" class="form-select" aria-label="Default select example" style="height: 50px;" onchange="loctrangthai(this.value)">
-                    <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
-                    <option value="2" {{$trangthai == "2"? "selected":""}}>Sản Phẩm Sắp Hết Hàng</option>
-                    <option value="3" {{$trangthai == "3"? "selected":""}}>Sản Phẩm Ngừng Kinh Doanh</option>
+                <select id="trangthai" class="form-select" aria-label="Default select example" style="height: 50px;"
+                    onchange="loctrangthai(this.value)">
+                    <option value="0" {{$trangthai == "0" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
+                    <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Sắp Hết Hàng</option>
+                    <option value="2" {{$trangthai == "2" ? "selected" : ""}}>Sản Phẩm Ngừng Kinh Doanh</option>
                 </select>
                 <!--Lọc trạng thái bằng JS-->
                 <script>
@@ -42,7 +43,8 @@ Quản Trị Sản Phẩm
                 <br>
                 <tr>
                     <td colspan="6">
-                        <select id="selLoai" aria-label="Default select example" class="form-select" onchange="locsp(this.value)">
+                        <select id="selLoai" aria-label="Default select example" class="form-select"
+                            onchange="locsp(this.value)">
                             <option value="-1" selected>Lọc theo danh mục</option>
                             @foreach ($loai_arr as $loai)
                             <option value="{{$loai->id}}" {{$loai->id == $id_dm ? "selected":""}}>
@@ -80,7 +82,7 @@ Quản Trị Sản Phẩm
                         <tbody>
 
                             @foreach($sanpham_arr as $sp)
-                            <div class="accordion" id="accordionExample">
+                                <div class="accordion" id="accordionExample">
 
                                 <div class="accordion-item">
                                     <tr>
@@ -123,13 +125,13 @@ Quản Trị Sản Phẩm
                                                     </div>
                                                     <div class="trang-thai">
                                                         <label for="">Trạng thái:
-                                                            @if ($sp -> trang_thai == 1)
+                                                            @if ($sp -> trang_thai == 0)
                                                             Còn hàng
                                                             @endif
-                                                            @if ($sp -> trang_thai == 2)
+                                                            @if ($sp -> trang_thai == 1)
                                                             Sắp hết hàng
                                                             @endif
-                                                            @if ($sp -> trang_thai == 3)
+                                                            @if ($sp -> trang_thai == 2)
                                                             Hết hàng
                                                             @endif
                                                         </label>
@@ -246,8 +248,6 @@ Quản Trị Sản Phẩm
                                     </td> -->
                             </div>
                             @endforeach
-
-
                         </tbody>
                     </table>
                     <div class="text-center p-2 d-flex justify-content-center">{{$sanpham_arr->links()}}</div>

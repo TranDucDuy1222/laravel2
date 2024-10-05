@@ -11,11 +11,11 @@ class HomeController extends Controller
 {
 
     function __construct(){
-        $query = DB::table('danh_muc')
-        ->select('id', 'ten_dm')
+        $query = DB::table('loai')
+        ->select('id', 'ten_loai')
         ->orderBy('id', 'asc');
-        $danhmuc = $query->get();
-        \View::share('danhmuc', $danhmuc);
+        $loai = $query->get();
+        \View::share('loai', $loai);
     }
 
     public function index(){

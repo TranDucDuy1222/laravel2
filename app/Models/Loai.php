@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Loai extends Model
 {
     use HasFactory;
-    protected $table = 'danh_muc';
+    protected $table = 'loai';
     protected $primaryKey = 'id';
     protected $attributes = ['an_hien'];
     protected $fillable = [

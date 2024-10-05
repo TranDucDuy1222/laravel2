@@ -23,9 +23,9 @@
                 <div class="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>
                 <div class="sa-layout__content">
                     <select id="trangthai" class="form-select" aria-label="Default select example" style="height: 50px;" onchange="loctrangthai(this.value)">
-                            <option selected value="1" value="1" {{$trangthai == "1"? "selected":""}}>Sản Phẩm Đang Kinh Doanh</option>
-                            <option value="2" {{$trangthai == "2"? "selected":""}}>Sản Phẩm Sắp Hết Hàng</option>
-                            <option value="3" {{$trangthai == "3"? "selected":""}}>Sản Phẩm Ngừng Kinh Doanh</option>
+                            <option selected value="0" {{$trangthai == "0"? "selected":""}}>Sản Phẩm Đang Kinh Doanh</option>
+                            <option value="1" {{$trangthai == "1"? "selected":""}}>Sản Phẩm Sắp Hết Hàng</option>
+                            <option value="2" {{$trangthai == "2"? "selected":""}}>Sản Phẩm Ngừng Kinh Doanh</option>
                     </select>
                     <script>
                     function loctrangthai(tt){
@@ -45,7 +45,7 @@
                             </select>
                             <script>
                             function locsp(id_loai) {
-                                document.location=`/admin/sanpham?id_loai=${$id_loai}`;
+                                document.location=`/admin/sanpham?id_loai=${id_loai}`;
                             }
                             </script>
                         </td>
