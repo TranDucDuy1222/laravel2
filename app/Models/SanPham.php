@@ -14,6 +14,6 @@ class SanPham extends Model
     public $primaryKey = 'id';
     //protected $attributes = ['an_hien'=>1,'hot'=>0,'luot_xem'=>0];
     protected $dates = ['ngay'];
-    protected $fillable = ['tensp','slug', 'gia','gia_km','id_dm',
-    'hinh', 'mo_ta_ct', 'mo_ta_ngan','trang_thai', 'luotxem', 'tinh_chat', 'color'];
+    protected $fillable = ['ten_sp','slug', 'gia','gia_km','id_dm',
+    'hinh', 'mo_ta_ct', 'mo_ta_ngan','trang_thai', 'luot_mua', 'color'];
 }

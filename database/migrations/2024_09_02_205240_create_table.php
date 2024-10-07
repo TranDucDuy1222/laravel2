@@ -88,6 +88,14 @@ return new class extends Migration {
             $table->boolean('an_hien')->default(0)->comment('0 là ẩn 1 là hiện');
             $table->timestamps();
         });
+        Schema::create('loai', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('ten_loai', 100);
+            $table->string('slug', 100)->nullable();
+            $table->integer('thu_tu')->default(0);
+            $table->boolean('an_hien')->default(0);
+            $table->timestamps();
+        });
 
     }
 
@@ -103,5 +111,6 @@ return new class extends Migration {
         Schema::dropIfExists('chi_tiet_don_hang');
         Schema::dropIfExists('danh_gia');
         Schema::dropIfExists('dia_chi');
+        Schema::dropIfExists('loai');
     }
 };

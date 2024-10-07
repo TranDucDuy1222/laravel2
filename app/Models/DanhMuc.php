@@ -11,7 +11,7 @@ class DanhMuc extends Model
     protected $table = 'danh_muc';
     public $primaryKey = 'id';
     public $attributes = ['an_hien' => [0, 1]];
-    public $fillable = ['ten_dm', 'slug', 'trang_thai', 'thutu'];
+    public $fillable = ['ten_dm', 'slug', 'trang_thai', 'thu_tu','id_loai'];
     public function loai()
     {
         return $this->belongsTo(Loai::class, 'id_loai');
