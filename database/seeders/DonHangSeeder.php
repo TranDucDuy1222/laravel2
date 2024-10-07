@@ -20,9 +20,14 @@ class DonHangSeeder extends Seeder
         $tongDonHang2 = DB::table('chi_tiet_don_hang')
             ->where('id_dh', 2)
             ->sum(DB::raw('so_luong * gia'));
-
         $tongDonHang3 = DB::table('chi_tiet_don_hang')
             ->where('id_dh', 3)
+            ->sum(DB::raw('so_luong * gia'));
+        $tongDonHang4 = DB::table('chi_tiet_don_hang')
+            ->where('id_dh', 4)
+            ->sum(DB::raw('so_luong * gia'));
+        $tongDonHang5 = DB::table('chi_tiet_don_hang')
+            ->where('id_dh', 5)
             ->sum(DB::raw('so_luong * gia'));
 
         DB::table('don_hang')->insert([
@@ -52,7 +57,27 @@ class DonHangSeeder extends Seeder
                 'id_dc' => 3,
                 'tong_dh' => $tongDonHang3,
                 'pttt' => 'Chuyển khoản',
-                'trang_thai' => 1,
+                'trang_thai' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'thoi_diem_mua_hang' => now(),
+                'id_dc' => 2,
+                'tong_dh' => $tongDonHang4,
+                'pttt' => 'Chuyển khoản',
+                'trang_thai' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'thoi_diem_mua_hang' => now(),
+                'id_dc' => 1,
+                'tong_dh' => $tongDonHang5,
+                'pttt' => 'Chuyển khoản',
+                'trang_thai' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
