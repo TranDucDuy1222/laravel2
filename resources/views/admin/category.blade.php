@@ -106,8 +106,8 @@ Danh Mục
                                         </div>
                                     </td>
                                 </tr>
-                                <div class="text-center p-2">{{$danhmuc_arr->links()}}</div>
                             @endforeach
+                            <div class="text-center p-2">{{$danhmuc_arr->links()}}</div>
                         </tbody>
                     </table>
                 </div>

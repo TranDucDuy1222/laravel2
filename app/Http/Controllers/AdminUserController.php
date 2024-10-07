@@ -130,5 +130,4 @@ class AdminUserController extends Controller
 
         return redirect()->route('tai-khoan.index')->with('success', 'Tài khoản đã được hiển thị lại thành công.');
     }
-
 }

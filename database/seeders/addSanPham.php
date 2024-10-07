@@ -19,6 +19,10 @@ class addSanPham extends Seeder
             ['ten_sp' => 'Air Max 1', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 2, 'hinh' => 'nikeair2.png','color'=>'Đen','tinh_chat'=>0,'ngay' => Now()],
             ['ten_sp' => 'Air Max 1 SE', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 2, 'hinh' => 'nikeair4.png','color'=>'Đen','tinh_chat'=>0,'ngay' => Now()],
             ['ten_sp' => 'Nike Air 4', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 2, 'hinh' => 'nikeair1.png','color'=>'Đen','tinh_chat'=>0,'ngay' => Now()],
+            ['ten_sp' => 'Nike Air Max 2', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 1, 'hinh' => 'nikeair1.png','color'=>'Đen','tinh_chat'=>0,'ngay' => Now()],
+            ['ten_sp' => 'Air Max 2', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 1, 'hinh' => 'nikeair2.png','color'=>'Đen','tinh_chat'=>0,'ngay' => Now()],
+            ['ten_sp' => 'Air Max 2 SE', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 1, 'hinh' => 'nikeair4.png','color'=>'Đen','tinh_chat'=>0,'ngay' => Now()],
+            ['ten_sp' => 'Nike Air 2', 'gia' => '4000000', 'gia_km' => '3900000', 'id_dm' => 1, 'hinh' => 'nikeair1.png','color'=>'Đen','tinh_chat'=>0,'ngay' => Now()],
         ];
         foreach ($data as &$item) {
             $item['slug'] = Str::slug($item['ten_sp'], '-');

@@ -45,6 +45,8 @@ Route::group(['prefix' => 'admin'], function() {
 Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function() {
     Route::resource('danh-muc', AdminLoaiController::class);
     Route::resource('san-pham', AdminSPController::class);
+    Route::post('/san-pham/hide/{id}', [AdminSPController::class, 'hide'])->name('san-pham.hide');
+    Route::post('/san-pham/show/{id}', [AdminSPController::class, 'show'])->name('san-pham.show');
     Route::get('san-pham/khoi-phuc/{id}', [AdminSPController::class, 'khoiphuc']);
     Route::get('san-pham/xoa-vinh-vien/{id}', [AdminSPController::class, 'xoavinhvien']);
     Route::resource('trang-chu', LandingpageController::class);
