@@ -9,7 +9,9 @@ class Loai extends Model
 {
     use HasFactory;
     protected $table = 'loai';
-    public $primaryKey = 'id';
-    public $attributes = ['an_hien' => [0, 1]];
-    public $fillable = ['ten_loai', 'slug', 'thutu'];
+    protected $primaryKey = 'id';
+    protected $attributes = ['an_hien'];
+    protected $fillable = [
+        'ten_dm', 'slug', 'trang_thai', 'thu_tu', 'an_hien'
+    ];
 }

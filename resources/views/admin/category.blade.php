@@ -6,16 +6,18 @@ Quản trị Danh Mục
 @section('content')
 <!-- sa-app__body -->
 <div id="top" class="sa-app__body">
-@if(session()->has('thongbao'))
-    <div class="toast show align-items-center text-bg-primary border-0 position-fixed top-3 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                {!! session('thongbao') !!}
+    @if(session()->has('thongbao'))
+        <div class="toast show align-items-center text-bg-primary border-0 position-fixed top-3 end-0 p-3" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {!! session('thongbao') !!}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-    </div>
-@endif
+    @endif
 
     <div class="mx-xxl-3 px-4 px-sm-5">
         <div class="py-5">
@@ -35,18 +37,45 @@ Quản trị Danh Mục
                 fdgkldfglk
             </div> -->
             <div class="sa-layout__content">
-                <select name="role" class="form-select" onchange="locLoai(this.value)">
-                    <option value="All" selected>Loại Danh Mục</option>
-                    @foreach ($loai_arr as $loai)
-                        <option value="{{ $loai->slug }}" {{ $loai->slug == $slug ? "selected" : "" }}>
-                            {{ $loai->ten_loai }} </option>
-                    @endforeach
-                </select>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <select name="role" class="form-select" onchange="locLoai(this.value)">
+                            <option value="All" selected>Loại Danh Mục</option>
+                            @foreach ($loai_arr as $loai)
+                                <option value="{{ $loai->slug }}" {{ $loai->slug == $slug ? "selected" : "" }}>
+                                    {{ $loai->ten_loai }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-xl-6">
+                        <select name="role" class="form-select" onchange="locAnHien(this.value)">
+                            <option selected>Trạng thái</option>
+                            <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Đang Hiện</option>
+                            <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Đang Ẩn</option>
+                        </select>
+                    </div>
+                </div>
                 <script>
                     function locLoai(slug) {
-                        document.location = `/admin/danh-muc?slug=${slug}`;
+                        const params = new URLSearchParams(window.location.search);
+                        params.set('slug', slug);
+                        if (!params.has('trang_thai')) {
+                            params.set('trang_thai', '0');
+                        }
+                        document.location = `/admin/danh-muc?${params.toString()}`;
+                    }
+
+                    function locAnHien(trangThai) {
+                        const params = new URLSearchParams(window.location.search);
+                        params.set('trang_thai', trangThai);
+                        if (!params.has('slug')) {
+                            params.set('slug', 'All');
+                        }
+                        document.location = `/admin/danh-muc?${params.toString()}`;
                     }
                 </script>
+
                 <br>
                 <div class="card table-responsive">
                     <table class="table">
@@ -105,16 +134,34 @@ Quản trị Danh Mục
                                     <!-- Trạng thái -->
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <span class="badge bg-warning">{{ $dm->trang_thai == 0 ? 'Hiển thị' : 'Ẩn' }}
+                                            <span class="badge bg-warning">{{ $dm->trang_thai == 0 ? 'Hiển thị' : 'Đã Ẩn' }}
                                             </span>
                                         </div>
                                     </td>
                                     <!-- Thao tác -->
                                     <td>
                                         <div class="d-flex">
-                                            <a class="btn btn-outline-dark me-2" href="">Sửa</a>
-                                            <a class="btn btn-outline-warning me-2" href="">Ẩn</a>
-                                            <a class="btn btn-outline-danger" href="">Xóa</a>
+                                            <a class="btn btn-outline-dark me-2"
+                                                href="{{ route('danh-muc.edit', $dm->id) }}">Sửa</a>
+                                            <!-- Nếu trạng thái bằng 0 thì cho ẩn -->
+                                            @if($dm->trang_thai == 0)
+                                                <form action="{{ route('danh-muc.hidden', $dm->id) }}" method="get">
+                                                    <button class="btn btn-outline-warning me-2"
+                                                        onclick="return confirm('Nếu bạn ẩn danh mục này. Các sản phẩm nằm trong danh mục này cũng sẽ bị ẩn')">Ẩn</button>
+                                                </form>
+                                            @endif
+                                            <!-- Nếu trạng thái bằng 1 thì cho hiện -->
+                                            @if($dm->trang_thai == 1)
+                                                <form action="{{ route('danh-muc.show', $dm->id) }}" method="get">
+                                                    <button class="btn btn-outline-success me-2"
+                                                        onclick="return confirm('Nếu bạn hiện danh mục này. Các sản phẩm nằm trong danh mục này sẽ hiển thị')">Hiện</button>
+                                                </form>
+                                            @endif
+                                            <form action="{{ route('danh-muc.delete', $dm->id) }}" method="get">
+                                                <button
+                                                    onclick="return confirm('Bạn có chắc chắn muốn xoá danh mục này không?')"
+                                                    class="btn btn-outline-danger">Xóa</button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -122,7 +169,7 @@ Quản trị Danh Mục
                         </tbody>
                     </table>
                 </div>
-                <br> 
+                <br>
                 <div class="text-center p-2 d-flex justify-content-center">{{$danhmuc_arr->links()}}</div>
             </div>
         </div>

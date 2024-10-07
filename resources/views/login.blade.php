@@ -48,7 +48,7 @@
             <div class="card-body">
               <form action="{{route('login_form')}}" method="post">
                 <div class="form-group">
-                  <label for="inputEmail">Email của bạn</label>
+                  <label for="inputEmail">Email</label>
                   <input type="email" name="email" value="{{old('email')}}" class="form-control" id="inputEmail"
                     placeholder="Vui lòng nhập địa chỉ email">
                   @error('email')

@@ -25,11 +25,6 @@ class addSanPham extends Seeder
         }
         DB::table('san_pham')->insert($data);
 
-        DB::table('langdingpage')->insert([
-            ['content_header' => 'Giao hàng miễn phí', 'imgheader' => 'banner1.png', 'content_1' => 'Áp dụng cho đơn hàng từ 5.000.000₫ trở lên.','content_2' => 'NIKE AIR MAX DN','content_3' => 'Thế hệ tiếp theo của công nghệ Air sắp ra mắt vào ngày 26/03.'],
-            ['content_header' => '20 NĂM THỰC HIỆN', 'imgheader' => 'banner3.jpg', 'content_1' => 'Bộ sưu tập EK Umoja','content_2' => 'MUA SẮM NGAY','content_3' => 'Trở thành thành viên của chúng tôi để có những mã giảm giá.'],
-
-        ]);
 
     }
 }

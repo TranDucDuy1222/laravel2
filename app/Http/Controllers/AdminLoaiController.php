@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DanhMuc as danh_muc;
 use App\Models\Loai;
+use App\Models\SanPham as san_pham;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -15,29 +16,37 @@ class AdminLoaiController extends Controller
     public function index(Request $request) {
         $perPage = env('PER_PAGE');
         $loai_arr = Loai::orderBy('id', 'asc')->get();
-        $slug = null;
+        $slug = $request->input('slug', 'All');
+        $trangThai = $request->input('trang_thai', '0');
         $loai = null;
     
-        if ($request->has('slug')) {
-            $slug = $request->input('slug');
+        $query = danh_muc::select('danh_muc.*', 'loai.ten_loai')
+            ->join('loai', 'danh_muc.id_loai', '=', 'loai.id');
+    
+        // Mặc định chỉ hiển thị các danh mục có trang_thai = 0
+        if ($trangThai === '0') {
+            $query->where('danh_muc.trang_thai', '0');
+        }
+        // Ngược lại sẽ hiển thị danh mục dựa trên request trả về cho $trangThai 
+        else {
+            $query->where('danh_muc.trang_thai', $trangThai);
+        }
+        
+        // Nếu request trả về cho slug không phải 'All' thì sẽ hiển thị danh mục dựa trên slug
+        if ($slug !== 'All') {
             $loai = Loai::select('id')->where('slug', $slug)->first();
+            if ($loai) {
+                $query->where('loai.id', $loai->id);
+            }
         }
-        if (is_null($slug) || is_null($loai)) {
-            $danhmuc_arr = danh_muc::select('danh_muc.*', 'loai.ten_loai')
-                ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
-                ->orderBy('danh_muc.id', 'asc')
-                ->paginate($perPage)
-                ->withQueryString();
-        } else {
-            $danhmuc_arr = danh_muc::select('danh_muc.*', 'loai.ten_loai')
-                ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
-                ->where('loai.id', $loai->id)
-                ->orderBy('danh_muc.id', 'asc')
-                ->paginate($perPage)
-                ->withQueryString();
-        }
-        return view('admin.category', compact('loai_arr', 'danhmuc_arr', 'slug'));
+    
+        $danhmuc_arr = $query->orderBy('danh_muc.id', 'asc')
+            ->paginate($perPage)
+            ->withQueryString();
+    
+        return view('admin.category', compact('loai_arr', 'danhmuc_arr', 'slug', 'trangThai'));
     }
+    
     
 
     public function create() {
@@ -72,5 +81,88 @@ class AdminLoaiController extends Controller
 
         return redirect()->route('danh-muc.index')->with('thongbao', 'Thêm danh mục thành công');
     }
+    public function delete(Request $request , string $id){
+        // Kiểm tra xem có sản phẩm nào thuộc danh mục này không
+        $sanPhamCount = san_pham::where('id_dm', $id)->count();
+        $danhMuc = danh_muc::find($id);
+        if ($sanPhamCount > 0) {
+            return redirect()->back()->with('thongbao', 'Danh mục này đã có sản phẩm, bạn không thể xóa');
+        }
+        if ($sanPhamCount == 0) {
+            $danhMuc->delete();
+        }
+        return redirect()->route('danh-muc.index')->with('thongbao', 'Xóa danh mục thành công');
+    }
+
+
+    public function edit(Request $request, string $id){
+        $danhMuc = danh_muc::find($id);
+        $loai_arr = Loai::all();
+        return view('admin.category_edit', compact('danhMuc', 'loai_arr'));
+    }
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'ten_dm' => 'required',
+            'id_loai' => 'required|min:1'
+        ]);
     
+        // Kiểm tra xem có bản ghi nào trùng với ten_dm và id_loai không
+        $exists = danh_muc::where('ten_dm', $request->ten_dm)
+                          ->where('id_loai', $request->id_loai)
+                          ->where('id', '!=', $id) // Loại trừ bản ghi hiện tại
+                          ->exists();
+    
+        if ($exists) {
+            // Nếu trùng, hiển thị thông báo lỗi
+            return redirect()->back()->withErrors(['ten_dm' => 'Tên danh mục và loại đã tồn tại.']);
+        }
+    
+        // Nếu không trùng, tiến hành cập nhật
+        $danhMuc = danh_muc::find($id);
+        $danhMuc->ten_dm = $request->ten_dm;
+        $danhMuc->slug = Str::slug($request->ten_dm);
+        $danhMuc->id_loai = $request->id_loai;
+        $danhMuc->save();
+    
+        return redirect()->route('danh-muc.index')->with('thongbao', 'Cập nhật danh mục thành công');
+    }
+
+    public function hidden(Request $request, string $id) {
+        // Tìm đối tượng danh_muc theo ID
+        $danhMuc = danh_muc::find($id);
+        // Kiểm tra và cập nhật trạng thái của danh_muc
+        if ($danhMuc->trang_thai == 0) {
+            $danhMuc->trang_thai = 1;
+            $danhMuc->save();
+        }
+        // Tìm các sản phẩm có id_dm bằng với id truyền vào và cập nhật trạng thái
+        $sanPhams = san_pham::where('id_dm', $id)->get();
+        foreach ($sanPhams as $sanPham) {
+            $sanPham->trang_thai = 2;
+            $sanPham->save();
+        }
+    
+        return redirect()->back()->with('thongbao', 'Trạng thái đã được cập nhật.');
+    }
+    
+    public function show(Request $request , string $id){
+                // Tìm đối tượng danh_muc theo ID từ route 
+                $danhMuc = danh_muc::find($id);
+                // Kiểm tra và cập nhật trạng thái của danh_muc
+                if ($danhMuc->trang_thai == 1) {
+                    $danhMuc->trang_thai = 0;
+                    $danhMuc->save();
+                }
+                // Tìm các sản phẩm có id_dm bằng với id truyền vào và cập nhật trạng thái
+                $sanPhams = san_pham::where('id_dm', $id)->get();
+                foreach ($sanPhams as $sanPham) {
+                    $sanPham->trang_thai = 0;
+                    $sanPham->save();
+                }
+            
+                return redirect()->back()->with('thongbao', 'Trạng thái đã được cập nhật.');
+    }
+    
+
 }
