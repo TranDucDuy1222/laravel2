@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\SanPham as san_pham;
 use App\Models\DanhMuc as danh_muc;
 use App\Models\Size as size;
+use App\Models\Loai;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
@@ -68,10 +69,12 @@ class AdminSPController extends Controller
             return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp']));
         }
     }
-    public function create()
+    public function create(Request $request)
     {
+        $selectedOption = $request->query('selection');
+        $request->session()->put('selected_option', $selectedOption);
         $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
-        return view('admin.product_add_admin', compact('loai_arr'));
+        return view('admin.product_add_admin', compact('loai_arr' , 'selectedOption'));
     }
     public function store(checkNhapSanPham $request)
     {
@@ -81,7 +84,7 @@ class AdminSPController extends Controller
         if ($checkProduct) {
             return redirect()->back()->with('thongbao', 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.');
         }
-        if ($request['ten_sp'] && $request['gia'] && $request['gia_km'] && $request['id_dm'] && $request->hasFile('hinh') && $request['mo_ta_ct'] && $request['mo_ta_ngan'] && $request['color']) {
+        if ($request['ten_sp'] && $request['gia'] && $request['id_dm'] && $request->hasFile('hinh') && $request['mo_ta_ct'] && $request['mo_ta_ngan'] && $request['color']) {
 
             $obj = new  san_pham();
             $obj->ten_sp = $request['ten_sp'];
@@ -90,6 +93,8 @@ class AdminSPController extends Controller
             $obj->gia_km = (int) $request['gia_km'];
             // Kiểm tra nếu giakhuyenmai lớn hơn gia, gán giakhuyenmai bằng 0
             if ($obj->gia_km > $obj->gia) {
+                $obj->gia_km = 0;
+            }else if ($obj->gia_km == null){
                 $obj->gia_km = 0;
             }
             $obj->id_dm = (int) $request['id_dm'];

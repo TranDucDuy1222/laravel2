@@ -93,7 +93,6 @@
                                                     <button onclick="deleteDG('.$madg.')" style="background-color: white; color: red; border: 2px solid red; border-radius: 10px;">Delete</button>
                                                 </td>
                                                 <!-- Form phản hồi -->
-                                                
                                                     <div id="fph'.$madg.'" style="display: none;">
                                                 
                                                     <div style="display: flex; justify-content: center; align-items: center; height: 250px;">

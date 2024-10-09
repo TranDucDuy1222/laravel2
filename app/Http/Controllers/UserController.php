@@ -10,10 +10,12 @@ use App\Models\DanhMuc as danh_muc;
 
 class UserController extends Controller
 {
-    public function __construct() 
-    {
-        $danhmuc = danh_muc::select('ten_dm' ,'id')->orderBy('id' , 'asc')->get();
-        \View::share( 'danhmuc', $danhmuc );
+    function __construct(){
+        $query = DB::table('loai')
+        ->select('id', 'ten_loai')
+        ->orderBy('id', 'asc');
+        $loai = $query->get();
+        \View::share('loai', $loai);
     }
 
     function login(){

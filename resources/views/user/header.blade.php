@@ -12,9 +12,9 @@
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;700&display=swap" rel="stylesheet">
       <!--FONT AWESOME-->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
             integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
+            crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
       <!-- MAIN-CSS -->
       <!--CSS-BOOSTRAP-->
       <link rel="stylesheet" href="/FE/bootstrap-5/css/bootstrap.min.css">
@@ -29,40 +29,79 @@
       <link rel="stylesheet" href="/FE/css/login.css">
       <link rel="stylesheet" href="/FE/css/order.css">
       <link rel="stylesheet" href="/FE/css/order-detail.css">
+      <link rel="stylesheet" href="/FE/css/cssHome.css">
 </head>
-<body></body>
-  
-  <!-- Nav menu -->
-  <nav class="navbar navbar-expand-lg bg-white">     
-      <div class="container-fluid mx-xl-5">
-        <a class="navbar-brand" href="/">
-          <img src="/imgnew/logo-nike.jpg" alt="" class="logo-home">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link fz" href="/allproduct">
-                Mới và Nổi Bật
-              </a>
-            </li>
-            @yield('category')
-            <li class="nav-item">
-              <a class="nav-link fz" href="/sale">
-                Giảm Giá
-              </a>
-            </li>
-            <li class="nav-item">
-              <div class="d-flex ms-2 search-box">
-                <i class="fa-solid fa-magnifying-glass fa-fade"></i>
-                <input class="form-control" type="search" name="keyw" placeholder="Nhập...">
-              </div>
-            </li>
-            
-          </ul>
-          <ul class="navbar-nav ms-auto me-lg-3">         
+<body>
+  <!-- Nav   -->
+  <nav class="header--style">
+            <nav class="primary-nav primary-nav-wrapper--border">
+                <div class="container">
+                    <div class="primary-nav">
+                        <a class="main-logo" href="/">
+                        <img src="{{ asset('/uploads/logo/' . '') }}" width="140"
+                        height="60" onerror="this.src='{{ asset('/uploads/logo/logolight.png') }}'" alt="" />
+                        </a>
+                        <form class="main-form">
+                          <div class="d-flex ms-2 search-box">
+                            <i class="fa-solid fa-magnifying-glass fa-fade"></i>
+                            <input class="form-control" type="search" name="keyw" placeholder="Nhập...">
+                          </div>
+                        </form>
+                        <div class="menu-init">
+                            <div class="ah-lg-mode">
+                                <ul class="ah-list ah-list--design1 ah-list--link-color-secondary"> 
+                                    <li>
+                                        <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li>
+                                        <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li>
+                                        <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
+                                    <li>
+                                        <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
+                                    <li>
+                                        <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>  
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <nav class="navbar navbar-expand-lg bg-body secondary-nav-wrapper shadow">
+                <div class="container">
+                    <div class="menu-init">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <ul class="navbar-nav ms-auto">
+                              <li class="nav-item">
+                                <a class="nav-link fz" href="/allproduct">
+                                  Mới và Nổi Bật
+                                </a>
+                              </li>
+                              @yield('category')
+                              <li class="nav-item">
+                                <a class="nav-link fz" href="/sale">
+                                  Giảm Giá
+                                </a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="menu-init">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample3" aria-controls="offcanvasExample3">
+                            <span class="fas fa-shopping-bag"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample3" aria-labelledby="offcanvasExampleLabel3">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel3"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <ul class="navbar-nav ms-auto me-lg-3">         
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-user"></i>  
@@ -105,15 +144,10 @@
                 </a>  
             </li>
           </ul>
-        </div>
-      </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
   </nav>
-  <script>
-      $(document).ready(function() {
-          $('.nav-link').click(function(e) {
-              e.preventDefault();
-              $('#userDropdown').toggle();
-          });
-      });
-  </script>
-  <!-- End nav menu -->
+  <!-- End Nav -->
+

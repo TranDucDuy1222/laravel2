@@ -13,11 +13,46 @@ Quản Trị Sản Phẩm
                     <h1 class="h3 m-0">Sản phẩm</h1>
                 </div>
                 <div class="col-auto d-flex">
-                    <a href="{{route('san-pham.create')}}" class="btn btn-primary">Thêm sản phẩm</a>
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Thêm sản phẩm
+                    </button>
+                    <!-- <a href="{{route('san-pham.create')}}" class="btn btn-primary">Thêm sản phẩm</a> -->
                 </div>
             </div>
         </div>
     </div>
+    <!-- Modal hiện hộp thoại chọn loại sản phẩm -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Chọn loại sản phẩm</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select id="selectLoai" aria-label="Default select example" class="form-select">
+                        <option value="giay">Giày</option>
+                        <option value="ao">Áo</option>
+                        <option value="quan">Quần</option>
+                        <option value="pk">Phụ kiện</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a id="continueButton" href="#">
+                        <button type="button" class="btn btn-primary">Tiếp tục <i class="fa-solid fa-arrow-right fa-beat"></i></button>
+                    </a>
+                </div>
+                <script>
+                    document.getElementById('continueButton').addEventListener('click', function() {
+                        var selectedValue = document.getElementById('selectLoai').value;
+                        this.href = "{{ route('san-pham.create') }}?selection=" + selectedValue;
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal hiện hộp thoại chọn loại sản phẩm -->
     <div class="mx-xxl-3 px-4 px-sm-5 pb-6">
         <div class="sa-layout">
             <div class="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>

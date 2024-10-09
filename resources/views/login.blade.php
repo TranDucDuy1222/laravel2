@@ -4,12 +4,12 @@
 @endsection
 
 @section('category')
-@foreach ($danhmuc as $category)
-  <li class="nav-item">
-    <a class="nav-link fz" href="/category/{{$category->madm}}">
-    {{$category->ten_dm}}
-    </a>
-  </li>
+@foreach ($loai as $category)
+    <li class="nav-item">
+        <a class="nav-link fz" href="/category/{{$category->id}}">
+            {{$category->ten_loai}}
+        </a>
+    </li>
 @endforeach
 @endsection
 

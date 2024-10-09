@@ -105,7 +105,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-n5">
-                                            <img src="/imgnew/{{$sp->hinh}}" onerror="this.src='/img/{{$sp->hinh}}'" class="w-50">
+                                            <img src="{{ asset('/uploads/product/'. $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" class="w-50">
                                             <input type="file" name="hinh">
                                             <input type="hidden" value="{{$sp->hinh}}" name="hinh" >
                                         </div>

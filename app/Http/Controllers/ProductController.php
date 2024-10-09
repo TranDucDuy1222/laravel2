@@ -49,17 +49,18 @@ class ProductController extends Controller
     }
 
     // Sản Phẩm theo danh mục
-    function category($id){
-        $query = DB::table('sanpham')
-        ->select('masp' , 'tensp' , 'gia', 'giakhuyenmai' , 'anhsp' ,  'danhmuc.tendm')
-        ->join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-        ->where('sanpham.madm' , $id)
+    function category($slug){
+        // Xử lý lại hàm này khi truyền slug thì lấy ra id của danh mục đó và sử dụng id_dm đó để tìm sản phẩm thuộc danh mục đó hiển thị ra
+        $query = DB::table('san_pham')
+        ->select('id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh' ,  'danh_muc.ten_dm')
+        ->join('danh_muc', 'sanpham.id_dm', '=', 'danh_muc.id')
+        ->where('san_pham.id' , $slug)
         ->orderBy('masp', 'desc'); 
-        $category = $query->paginate(8)->withQueryString();
+        $category = $query->paginate(9)->withQueryString();
 
-        $query = DB::table('danhmuc')
-        ->select('tendm')
-        ->where('madm' , $id);
+        $query = DB::table('danh_muc')
+        ->select('ten_dm')
+        ->where('slug' , $slug);
         $danhmuc = $query->first();
 
         return view('user.category', ['categories' => $category , 'danhmuc1' => $danhmuc]);
