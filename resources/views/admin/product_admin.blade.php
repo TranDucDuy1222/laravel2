@@ -20,7 +20,6 @@ Quản Trị Sản Phẩm
     </div>
     <div class="mx-xxl-3 px-4 px-sm-5 pb-6">
         <div class="sa-layout">
-            <div class="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>
             <div class="sa-layout__content">
                 @if(session()->has('thongbao'))
                 <div class="alert alert-danger p-3 fs-5 text-center">
@@ -93,10 +92,9 @@ Quản Trị Sản Phẩm
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$sp->id}}" aria-expanded="false" aria-controls="collapse{{$sp->id}}">
                                                     <a href="app-product.html" class="me-4">
-                                                        <div
-                                                            class="">
-                                                            <img src="/imgnew/{{$sp->hinh}}" width="60"
-                                                                height="50" onerror="this.src='/img/{{$sp->hinh}}'" alt="" />
+                                                        <div class="">
+                                                            <img src="{{ asset('/uploads/product/' . $sp->hinh) }}" width="60"
+                                                                height="50" onerror="this.src='/imgnew/{{$sp->hinh}}'" alt="" />
                                                         </div>
                                                     </a>
                                                     <div>
@@ -135,7 +133,7 @@ Quản Trị Sản Phẩm
                                                             Sắp hết hàng
                                                             @endif
                                                             @if ($sp -> trang_thai == 2)
-                                                            Hết hàng
+                                                            Ngừng kinh doanh
                                                             @endif
                                                             @if ($sp -> trang_thai == 3)
                                                             Sắp về hàng
@@ -170,10 +168,10 @@ Quản Trị Sản Phẩm
                                         <td>
                                             <div class="d-flex">
                                                 <a class="btn btn-outline-dark me-2" href="{{route('san-pham.edit', $sp->id)}}">Chỉnh</a>
-                                                @if ($sp -> an_hien)
+                                                @if ($sp -> trang_thai == 2)
                                                 <form class="d-inline" action="{{ route('san-pham.show', $sp->id) }}" method="POST">
                                                     @csrf
-                                                    <button type='submit' onclick="return confirm('Bạn có chắc muốn hiện sản phẩm này không ?')" class="btn btn-outline-success">
+                                                    <button type='submit' onclick="return confirm('Nếu hiện sản phẩm này thì danh mục cũng sẽ được hiện. Bạn có chắc muốn hiện sản phẩm này không ?')" class="btn btn-outline-success">
                                                         Hiện
                                                     </button>
                                                 </form>

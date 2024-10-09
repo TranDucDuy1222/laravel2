@@ -31,6 +31,13 @@ class AdminSPController extends Controller
             $trangthai = $request['trangthai'];
         } else {
             $trangthai = 0;
+            $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+                ->select('san_pham.*', 'danh_muc.ten_dm')
+                ->orderBy('san_pham.id', 'desc')
+                ->where('san_pham.trang_thai', 0)
+                ->paginate($perpage)
+                ->withQueryString();
+            return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr']));
         }
         if ($trangthai == 2) {
             $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
@@ -110,7 +117,7 @@ class AdminSPController extends Controller
                 // Mảng chứa các phần mở rộng bạn muốn kiểm tra
                 $allowedExtensions = ['jpg', 'png', 'gif', 'webp', 'jpeg'];
                 if (in_array($ext, $allowedExtensions)) {
-                    $file->move(public_path('/imgnew'), $fileName);
+                    $file->move(public_path('/uploads/product'), $fileName);
                     $obj->hinh = $fileName;
                 } else {
                     return redirect()->back()->with('thongbao', 'Phần mở rộng tệp tin không đúng định dạng');
@@ -144,10 +151,6 @@ class AdminSPController extends Controller
                     $sizeObj->save();
                 }
             }
-            // else {
-            //     // Xử lý khi không nhập được sản phẩm
-            //     return redirect()->back()->with('thongbao', 'Size và số lượng');
-            // }
         } else {
             // Xử lý khi không nhập được sản phẩm
             return redirect()->back()->with('thongbao', 'Vui lòng nhập thông tin số lượng đầy đủ.');
@@ -231,7 +234,7 @@ class AdminSPController extends Controller
 
             $obj->mo_ta_ct = $request['mo_ta_ct'];
             $obj->mo_ta_ngan = $request['mo_ta_ngan'];
-            $obj->trang_thai = 0;
+            $obj->trang_thai = $request['trang_thai'];
             $obj->color = $request['color'];
             $obj->ngay = now();
             $obj->save();
@@ -275,17 +278,28 @@ class AdminSPController extends Controller
     public function hide($id)
     {
         $san_pham = san_pham::findOrFail($id);
-        $san_pham->an_hien = 1; //0 là hiện 1 là ẩn
-        $san_pham->save();
+        if($san_pham->trang_thai == 0){
+            $san_pham->trang_thai = 2; 
+            $san_pham->save();
+        }
         return redirect()->route('san-pham.index')->with('thongbao', 'Sản phẩm đã được ẩn thành công.');
     }
 
-    public function show($id, $trang_thai)
+    public function show($id)
     {
-        
+        //Tìm đối tượng
         $san_pham = san_pham::findOrFail($id);
-        $san_pham->an_hien = 0; //0 là hiện 1 là ẩn
-        $san_pham->save();
+        //Kiểm tra
+        if ($san_pham->trang_thai == 2) {
+            $san_pham->trang_thai = 0;
+            $san_pham->save();
+        }
+        $danh_muc = danh_muc::where('id', $san_pham->id_dm)->first();
+        if($danh_muc->trang_thai == 1){
+            $danh_muc->trang_thai = 0;
+            $danh_muc->save();
+        }
+        
         return redirect()->route('san-pham.index')->with('thongbao', 'Sản phẩm đã được hiện lại thành công.');
     }
 }

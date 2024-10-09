@@ -59,7 +59,7 @@
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
-                                    <a href="admin.php?mod=comment&act=comment" class="sa-nav__link">
+                                    <a href="{{url('admin/danh-gia')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
                                         <i class="fa-solid fa-comment" style="color: #ffffff;"></i>
                                         </span>

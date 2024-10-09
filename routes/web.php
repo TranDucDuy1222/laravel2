@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminSPController;
 use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminDonHangController;
+use App\Http\Controllers\AdminDanhGiaController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
@@ -44,6 +45,9 @@ Route::group(['prefix' => 'admin'], function() {
 });
 Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function() {
     Route::resource('danh-muc', AdminLoaiController::class);
+    Route::get('danh-muc/xoa-danh-muc/{id}', [AdminLoaiController::class, 'delete'])->name('danh-muc.delete');
+    Route::get('danh-muc/hidden/{id}', [AdminLoaiController::class, 'hidden'])->name('danh-muc.hidden');
+    Route::get('danh-muc/show/{id}', [AdminLoaiController::class, 'show'])->name('danh-muc.show');
     Route::resource('san-pham', AdminSPController::class);
     Route::post('/san-pham/hide/{id}', [AdminSPController::class, 'hide'])->name('san-pham.hide');
     Route::post('/san-pham/show/{id}', [AdminSPController::class, 'show'])->name('san-pham.show');
@@ -55,7 +59,9 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('tai-khoan/{id}/restore', [AdminUserController::class, 'restore'])->name('tai-khoan.restore');
     Route::resource('don-hang', AdminDonHangController::class);  
     Route::put('don-hang/{id}/update-trang-thai', [AdminDonHangController::class, 'updateTrangThai'])->name('don-hang.update-trang-thai');
-
+    Route::resource('danh-gia', AdminDanhGiaController::class);
+    Route::post('/danh-gia/hide/{id}', [AdminDanhGiaController::class,'hide'])->name('danh-gia.hide');
+    Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
 });
 
 
