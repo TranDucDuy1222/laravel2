@@ -16,21 +16,21 @@
                         <a href="{{ route('tai-khoan.create') }}" class="btn btn-primary">Thêm tài khoản</a>
                     </div>
                 </div>
-                <!-- Thêm bộ lọc -->
+                <!-- Bộ lọc -->
                 <form method="GET" action="{{ route('tai-khoan.index') }}">
                     <div class="row g-3 align-items-center mt-3">
                         <div class="col-auto">
                             <select name="role" class="form-select">
-                                <option value="">Tất cả vai trò</option>
-                                <option value="1" {{ request('role') == '1' ? 'selected' : '' }}>Admin</option>
                                 <option value="0" {{ request('role') == '0' ? 'selected' : '' }}>Người Dùng</option>
+                                <option value="1" {{ request('role') == '1' ? 'selected' : '' }}>Admin</option>
+                                <option value="">Tất cả vai trò</option>
                             </select>
                         </div>
                         <div class="col-auto">
                             <select name="is_hidden" class="form-select">
-                                <option value="">Tất cả trạng thái</option>
-                                <option value="1" {{ request('is_hidden') == '1' ? 'selected' : '' }}>Đã ẩn</option>
                                 <option value="0" {{ request('is_hidden') == '0' ? 'selected' : '' }}>Hiện</option>
+                                <option value="1" {{ request('is_hidden') == '1' ? 'selected' : '' }}>Đã ẩn</option>
+                                <option value="">Tất cả trạng thái</option>
                             </select>
                         </div>
                         <div class="col-auto">

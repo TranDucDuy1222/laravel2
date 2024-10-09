@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div id="top" class="sa-app__body">
+    <div id="top" class="sa-app__body">
         <div class="mx-xxl-3 px-4 px-sm-5">
             <div class="py-5">
                 <h1 class="h3 m-0">Chi Tiết Đơn Hàng #{{ $donHang->id }}</h1>

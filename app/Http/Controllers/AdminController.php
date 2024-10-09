@@ -17,6 +17,11 @@ class AdminController extends Controller
     function login_admin(CheckLogin $request) {
         if (Auth::guard('web')->attempt(['email' => $request['email'], 'password' => $request['pass']])) {
             $user = auth()->guard('web')->user();
+            
+            if ($user->is_hidden) {
+                Auth::guard('web')->logout();
+                return back()->with('thongbao', 'Tài khoản này hiện tạm khóa và không thể đăng nhập.');
+            }
             if ($user) {
                 // Truy cập thuộc tính role
                 if ($user->role == 1) {
