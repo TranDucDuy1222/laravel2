@@ -12,6 +12,11 @@ class AdminUserController extends Controller
     {
         $query = User::query();
 
+        // Chỉ hiển thị khách hàng không bị ẩn
+        if (!$request->has('role') && !$request->has('is_hidden')) {
+            $query->where('role', 0)->where('is_hidden', 0);
+        }
+
         if ($request->filled('role')) {
             $query->where('role', $request->role);
         }
@@ -21,7 +26,9 @@ class AdminUserController extends Controller
         }
 
         $users = $query->get();
+
         return view('admin.account', compact('users'));
+
     }
 
     public function create()
@@ -130,5 +137,4 @@ class AdminUserController extends Controller
 
         return redirect()->route('tai-khoan.index')->with('success', 'Tài khoản đã được hiển thị lại thành công.');
     }
-
 }

@@ -55,18 +55,19 @@ Quản Trị Sản Phẩm
     <!-- End Modal hiện hộp thoại chọn loại sản phẩm -->
     <div class="mx-xxl-3 px-4 px-sm-5 pb-6">
         <div class="sa-layout">
-            <div class="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>
             <div class="sa-layout__content">
                 @if(session()->has('thongbao'))
-                    <div class="alert alert-danger p-3 fs-5 text-center">
-                        {!! session('thongbao') !!}
-                    </div>
+                <div class="alert alert-danger p-3 fs-5 text-center">
+                    {!! session('thongbao') !!}
+                </div>
                 @endif
+                <!-- Lọc theo trạng thái -->
                 <select id="trangthai" class="form-select" aria-label="Default select example" style="height: 50px;"
                     onchange="loctrangthai(this.value)">
                     <option value="0" {{$trangthai == "0" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
                     <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Sắp Hết Hàng</option>
                     <option value="2" {{$trangthai == "2" ? "selected" : ""}}>Sản Phẩm Ngừng Kinh Doanh</option>
+                    <option value="3" {{$trangthai == "3" ? "selected" : ""}}>Sản Phẩm Sắp Về Hàng</option>
                 </select>
                 <!--Lọc trạng thái bằng JS-->
                 <script>
@@ -76,6 +77,7 @@ Quản Trị Sản Phẩm
                 </script>
 
                 <br>
+                <!-- Lọc theo danh mục -->
                 <tr>
                     <td colspan="6">
                         <select id="selLoai" aria-label="Default select example" class="form-select"
@@ -117,7 +119,7 @@ Quản Trị Sản Phẩm
                         <tbody>
 
                             @foreach($sanpham_arr as $sp)
-                                <div class="accordion" id="accordionExample">
+                            <div class="accordion" id="accordionExample">
 
                                 <div class="accordion-item">
                                     <tr>
@@ -166,7 +168,10 @@ Quản Trị Sản Phẩm
                                                             Sắp hết hàng
                                                             @endif
                                                             @if ($sp -> trang_thai == 2)
-                                                            Hết hàng
+                                                            Ngừng kinh doanh
+                                                            @endif
+                                                            @if ($sp -> trang_thai == 3)
+                                                            Sắp về hàng
                                                             @endif
                                                         </label>
                                                     </div>
@@ -176,20 +181,20 @@ Quản Trị Sản Phẩm
                                         <td>
                                             <div class="">
                                                 @php
-                                                    $hasSize = false;
+                                                $hasSize = false;
                                                 @endphp
 
                                                 @foreach ($size_arr as $size)
                                                 @if ($size->id_product == $sp->id)
-                                                    <button class="btn btn-outline-dark mb-1">{{$size->size_product}} : {{$size->so_luong}}</button>
+                                                <button class="btn btn-outline-dark mb-1">{{$size->size_product}} : {{$size->so_luong}}</button>
                                                 @php
-                                                    $hasSize = true;
+                                                $hasSize = true;
                                                 @endphp
                                                 @endif
                                                 @endforeach
 
                                                 @if (!$hasSize)
-                                                    <button class="btn btn-outline-dark mb-1">0 : 0</button>
+                                                <button class="btn btn-outline-dark mb-1">0 : 0</button>
                                                 @endif
                                             </div>
 
@@ -198,13 +203,21 @@ Quản Trị Sản Phẩm
                                         <td>
                                             <div class="d-flex">
                                                 <a class="btn btn-outline-dark me-2" href="{{route('san-pham.edit', $sp->id)}}">Chỉnh</a>
-                                                <form class="d-inline" action="{{ route('san-pham.destroy', $sp->id) }}" method="POST">
-                                                    @method('DELETE')
-                                                    <button type='submit' onclick="return confirm('Bạn có chắc muốn ẩn sản phẩm này không!')" class="btn btn-outline-danger">
+                                                @if ($sp -> trang_thai == 2)
+                                                <form class="d-inline" action="{{ route('san-pham.show', $sp->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type='submit' onclick="return confirm('Nếu hiện sản phẩm này thì danh mục cũng sẽ được hiện. Bạn có chắc muốn hiện sản phẩm này không ?')" class="btn btn-outline-success">
+                                                        Hiện
+                                                    </button>
+                                                </form>
+                                                @else
+                                                <form class="d-inline" action="{{ route('san-pham.hide', $sp->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type='submit' onclick="return confirm('Bạn có chắc muốn ẩn sản phẩm này không ?')" class="btn btn-outline-danger">
                                                         Ẩn
                                                     </button>
-                                                    @csrf
                                                 </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -284,7 +297,8 @@ Quản Trị Sản Phẩm
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="text-center p-2 d-flex justify-content-center">{{$sanpham_arr->links()}}</div>
+                    <!--Phân trang-->
+                    <div class="text-center p-2 d-flex">{{$sanpham_arr->links()}}</div>
                 </div>
             </div>
         </div>

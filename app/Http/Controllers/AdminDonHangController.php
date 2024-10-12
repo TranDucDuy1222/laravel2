@@ -11,11 +11,18 @@ class AdminDonHangController extends Controller
     public function index(Request $request)
     {
         $query = DonHang::query();
+
+        // Chỉ hiển thị các đơn hàng có trạng thái "Chưa xử lý"
+        if (!$request->has('trang_thai')) {
+            $query->where('trang_thai', 0);
+        } 
         if ($request->filled('trang_thai')) {
             $query->where('trang_thai', $request->trang_thai);
         }
+
         $donHangs = $query->get();
         return view('admin.order', compact('donHangs'));
+ 
     }
 
     public function show($id)

@@ -144,11 +144,15 @@ img:focus {
 .btn--e-white-brand {
     border: 1px solid transparent;
     color: #333333;
+    border-radius: 10px;
     background-color: #ffffff;
     transition: background-color .3s linear, color .3s linear; }
 .btn--e-white-brand:hover {
-    background-color: #ff4500;
-    color: #ffffff; }
+    background-color: transparent; /* Không có màu nền */
+    color: #ff0000; /* Màu chữ */
+    border: 2px solid #ff0000; /* Border */
+}
+    
   
 .btn--e-transparent-brand-b-2 {
     color: #ff4500;
@@ -1355,10 +1359,31 @@ input::-ms-clear {
 .hover-dm a:hover{
     color: #fa4a4a;
 }
-
+.image-container {
+    position: relative;
+    max-height: 295px;
+}
+.overlay-image {
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    width: 150px;
+    height: 150px;
+    z-index: 1;
+    pointer-events: none; /* Để hình ảnh chồng không ảnh hưởng đến tương tác */
+}
 @media (max-width: 767px) {
     .lower-footer__content {
         -ms-flex-pack: center;
         justify-content: center; }
     .lower-footer__copyright {
-        margin-bottom: 8px; } }
+        margin-bottom: 8px; } 
+}
+@media (max-width: 400px) {
+    .dt {
+        margin-top: 10px;
+    }
+}
+#color-gia{
+    color: red;
+}

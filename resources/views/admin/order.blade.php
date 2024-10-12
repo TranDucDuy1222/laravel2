@@ -13,15 +13,15 @@
                         <h1 class="h3 m-0">Quản lý đơn hàng</h1>
                     </div>
                 </div>
-                <!-- Thêm bộ lọc nếu cần -->
                 <form method="GET" action="{{ route('don-hang.index') }}">
                     <div class="row g-3 align-items-center mt-3">
                         <div class="col-auto">
                             <select name="trang_thai" class="form-select">
                                 <option value="">Tất cả trạng thái</option>
-                                <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Chưa giao hàng</option>
-                                <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Đã giao thành công</option>
-                                <option value="2" {{ request('trang_thai') == '2' ? 'selected' : '' }}>Đã hủy</option>
+                                <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Chưa xử lý</option>
+                                <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Chưa giao hàng</option>
+                                <option value="2" {{ request('trang_thai') == '2' ? 'selected' : '' }}>Đã giao thành công</option>
+                                <option value="3" {{ request('trang_thai') == '3' ? 'selected' : '' }}>Đã hủy</option>
                             </select>
                         </div>
                         <div class="col-auto">
@@ -58,10 +58,12 @@
                                         <td>{{ $donHang->pttt }}</td>
                                         <td>
                                             @if ($donHang->trang_thai == 0)
-                                                <span class="badge bg-warning">Chưa giao hàng</span>
+                                                <span class="badge bg-info">Chưa xử lý</span>
                                             @elseif ($donHang->trang_thai == 1)
-                                                <span class="badge bg-success">Đã giao thành công</span>
+                                                <span class="badge bg-warning">Chưa giao hàng</span>
                                             @elseif ($donHang->trang_thai == 2)
+                                                <span class="badge bg-success">Đã giao thành công</span>
+                                            @elseif ($donHang->trang_thai == 3)
                                                 <span class="badge bg-danger">Đã hủy</span>
                                             @endif
                                         </td>

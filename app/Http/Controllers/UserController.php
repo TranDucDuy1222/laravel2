@@ -12,10 +12,12 @@ class UserController extends Controller
 {
     function __construct(){
         $query = DB::table('loai')
-        ->select('id', 'ten_loai')
+        ->select('id', 'ten_loai', 'slug')
         ->orderBy('id', 'asc');
         $loai = $query->get();
+        $danh_muc = DB::table('danh_muc')->get();
         \View::share('loai', $loai);
+        \View::share('danh_muc', $danh_muc);
     }
 
     function login(){
@@ -24,6 +26,10 @@ class UserController extends Controller
     function login_form(CheckLogin $request) {
         if (auth()->guard('web')->attempt(['email' => $request['email'], 'password' => $request['pass']])) {
             $user = auth()->guard('web')->user();
+            if ($user->is_hidden) {
+                Auth::guard('web')->logout();
+                return back()->with('thongbao', 'Tài khoản này hiện tạm khóa và không thể đăng nhập.');
+            }
             if ($user->role == 0) {
                 return redirect()->intended('/');
             } else {

@@ -13,11 +13,13 @@ use App\Http\Controllers\AdminSPController;
 use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminDonHangController;
+use App\Http\Controllers\AdminDanhGiaController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
 Route::get('/', [HomeController::class , 'index']);
+Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail']);
 Route::get('/category/{id}', [ProductController::class , 'category']);
 Route::get('/allproduct', [ProductController::class , 'allproduct']);
@@ -48,6 +50,8 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::get('danh-muc/hidden/{id}', [AdminLoaiController::class, 'hidden'])->name('danh-muc.hidden');
     Route::get('danh-muc/show/{id}', [AdminLoaiController::class, 'show'])->name('danh-muc.show');
     Route::resource('san-pham', AdminSPController::class);
+    Route::post('/san-pham/hide/{id}', [AdminSPController::class, 'hide'])->name('san-pham.hide');
+    Route::post('/san-pham/show/{id}', [AdminSPController::class, 'show'])->name('san-pham.show');
     Route::get('san-pham/khoi-phuc/{id}', [AdminSPController::class, 'khoiphuc']);
     Route::get('san-pham/xoa-vinh-vien/{id}', [AdminSPController::class, 'xoavinhvien']);
     Route::resource('trang-chu', LandingpageController::class);
@@ -56,7 +60,9 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('tai-khoan/{id}/restore', [AdminUserController::class, 'restore'])->name('tai-khoan.restore');
     Route::resource('don-hang', AdminDonHangController::class);  
     Route::put('don-hang/{id}/update-trang-thai', [AdminDonHangController::class, 'updateTrangThai'])->name('don-hang.update-trang-thai');
-
+    Route::resource('danh-gia', AdminDanhGiaController::class);
+    Route::post('/danh-gia/hide/{id}', [AdminDanhGiaController::class,'hide'])->name('danh-gia.hide');
+    Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
 });
 
 
