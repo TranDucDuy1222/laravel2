@@ -5,81 +5,84 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
+use App\Models\Size as size;
 Paginator::useBootstrap();
 
 class ProductController extends Controller
 {
 
     function __construct(){
-        $query = DB::table('danhmuc')
-        ->select('madm', 'tendm')
-        ->orderBy('madm', 'asc');
-        $danhmuc = $query->get();
-        \View::share('danhmuc', $danhmuc);
+        $query = DB::table('danh_muc')
+        ->select('id', 'ten_dm')
+        ->orderBy('id', 'asc');
+        $danh_muc = $query->get();
+        \View::share('danhmuc', $danh_muc);
     }
 
     function detail($id){
-        $query = DB::table('sanpham')
-        ->select('masp' , 'tensp' , 'gia', 'giakhuyenmai' , 'anhsp' , 'soluong' ,'motangan')
-        ->where('masp' , $id);
+        $query = DB::table('san_pham')
+        ->select('id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'mo_ta_ngan', 'mo_ta_ct')
+        ->where('id' , $id);
         $detail = $query->first();
 
-        $query = DB::table('sanpham')
-        ->select('madm')
-        ->where('masp' , $id);
+        $query = DB::table('san_pham')
+        ->select('id_dm')
+        ->where('id' , $id);
         $madm = $query->first();
 
-        $query = DB::table('sanpham')
-        ->select('masp', 'tensp', 'gia', 'giakhuyenmai', 'anhsp', 'danhmuc.tendm')
-        ->join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-        ->where('sanpham.madm' , $madm->madm)
+        $query = DB::table('san_pham')
+        ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
+        ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+        ->where('san_pham.id_dm' , $madm->id_dm)
         ->inRandomOrder()
         ->limit(3);
         $relatedpro = $query->get();
 
-        $query = DB::table('danhgia')
-            ->select('danhgia.*' , 'taikhoan.hoten' , 'ctdh.*' , 'sanpham.tensp')
-            ->join('taikhoan', 'danhgia.matk', '=', 'taikhoan.matk')
-            ->join('chitietdonhang AS ctdh', 'danhgia.mactdh', '=', 'ctdh.mactdh')
-            ->join('sanpham', 'sanpham.masp', '=', 'ctdh.masp')
-            ->where('ctdh.masp' , $id);
+        $query = DB::table('danh_gia')
+            ->select('danh_gia.*' , 'users.name' , 'ctdh.*' , 'san_pham.ten_sp')
+            ->join('users', 'danh_gia.id_user', '=', 'users.id')
+            ->join('chi_tiet_don_hang AS ctdh', 'danh_gia.id_ctdh', '=', 'ctdh.id')
+            ->join('san_pham', 'san_pham.id', '=', 'ctdh.id')
+            ->where('ctdh.id' , $id);
         $comment = $query->get();
 
-        return view('user.detail_product', ['relatedpro' => $relatedpro , 'detail' => $detail , 'comment' => $comment]);
+        $size_arr = size::all();
+
+        return view('user.detail_product', ['relatedpro' => $relatedpro , 'detail' => $detail , 'comment' => $comment, 'size'=> $size_arr ]);
     }
 
     // Sản Phẩm theo danh mục
     function category($id){
-        $query = DB::table('sanpham')
-        ->select('masp' , 'tensp' , 'gia', 'giakhuyenmai' , 'anhsp' ,  'danhmuc.tendm')
-        ->join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-        ->where('sanpham.madm' , $id)
-        ->orderBy('masp', 'desc'); 
+        $query = DB::table('san_pham')
+        ->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh' ,  'danh_muc.ten_dm')
+        ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+        ->where('san_pham.id_dm' , $id)
+        ->orderBy('san_pham.id', 'desc'); 
         $category = $query->paginate(8)->withQueryString();
 
-        $query = DB::table('danhmuc')
-        ->select('tendm')
-        ->where('madm' , $id);
+        $query = DB::table('danh_muc')
+        ->select('ten_dm')
+        ->where('id' , $id);
         $danhmuc = $query->first();
 
         return view('user.category', ['categories' => $category , 'danhmuc1' => $danhmuc]);
     }
 
     function allproduct(){
-        $query = DB::table('sanpham')
-        ->select('masp', 'tensp', 'gia', 'giakhuyenmai', 'anhsp', 'soluong', 'danhmuc.tendm')
-        ->join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-        ->orderBy('masp', 'desc');    
+        $query = DB::table('san_pham')
+        ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
+        ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+        ->orderBy('san_pham.id', 'desc');    
         $allproduct = $query->paginate(8)->withQueryString();
         return view('user.all_product', compact('allproduct'));
     }
 
     function sale(){
-        $query = DB::table('sanpham')
-        ->select('masp', 'tensp', 'giakhuyenmai', 'anhsp', 'danhmuc.tendm')
-        ->join('danhmuc', 'sanpham.madm', '=', 'danhmuc.madm')
-        ->where('giakhuyenmai', '>', 0)
-        ->orderBy('masp', 'desc');    
+        $query = DB::table('san_pham')
+        ->select('id', 'ten_sp', 'gia_km', 'hinh', 'danhmuc.tendm')
+        ->join('danhmuc', 'san_pham.madm', '=', 'danhmuc.madm')
+        ->where('gia_km', '>', 0)
+        ->orderBy('id', 'desc');    
         $sale = $query->paginate(8)->withQueryString();
         return view('user.saleproduct', compact('sale'));
     }

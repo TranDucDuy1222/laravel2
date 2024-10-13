@@ -1,28 +1,28 @@
 @extends('user.layout')
 @section('title')
-Chi Tiết : {{$detail->tensp}}
+Chi Tiết : {{$detail->ten_sp}}
 @endsection
 
 @section('category')
 @foreach ($danhmuc as $category)
   <li class="nav-item">
-  <a class="nav-link fz" href="/category/{{$category->madm}}">
-    {{$category->tendm}}
+  <a class="nav-link fz" href="/category/{{$category->id}}">
+    {{$category->ten_dm}}
   </a>
   </li>
 @endforeach
 @endsection
 
 @php
-  if ($detail->giakhuyenmai > 0) {
-  $gianew = $detail->giakhuyenmai;
+  if ($detail->gia_km > 0) {
+  $gia_moi = $detail->gia_km;
   //   $giaold = '<del>' . $gia . '</del>';
   } else {
-  $gianew = $detail->gia;
+  $gia_moi = $detail->gia;
   $giaold = '';
   }
-  $num = $gianew;
-  $giachinh = number_format($num, 0, '', '.');
+  $num = $gia_moi;
+  $gia_chinh = number_format($num, 0, '', '.');
   $giaold = number_format($detail->gia, 0, '', '.');
 @endphp
 
@@ -41,14 +41,14 @@ Chi Tiết : {{$detail->tensp}}
                     <img src="public/img/nikeair3.4.png" alt="" class="w-100 img-nho my-1"> -->
         </div>
         <div class="col-sm-10">
-          <img src="/img/{{$detail->anhsp}}" onerror="this.src='/imgnew/{{$detail->anhsp}}'" alt="" class="w-100">
+          <img src="/img/{{$detail->hinh}}" onerror="this.src='/imgnew/{{$detail->hinh}}'" alt="" class="w-100">
         </div>
       </div>
     </div>
     <div class="col-sm-12 col-xl-4">
       <div class="row">
         <h3 class="col-xl-9">
-          {{$detail->tensp}}
+          {{$detail->ten_sp}}
         </h3>
         <p class="col-xl-3">
           <i class="fa-solid fa-eye"></i>
@@ -57,13 +57,13 @@ Chi Tiết : {{$detail->tensp}}
       </div>
       <div class="d-flex">
         <s class="text-secondary fs-4">{{$giaold}}</s>
-        <p class="ms-4 text-danger fs-4"> {{$giachinh}} đ</p>
+        <p class="ms-4 text-danger fs-4"> {{$gia_chinh}} đ</p>
       </div>
       <!-- Button trigger modal -->
       <strong data-bs-toggle="modal" data-bs-target="#exampleModal" class="fs-5"><u>Xem chi tiết về sản
           phẩm</u></strong>
       <p>
-        {{$detail->motangan}}
+        {{$detail->mo_ta_ngan}}
       </p>
       <br>
       <div class="d-flex">
@@ -71,8 +71,11 @@ Chi Tiết : {{$detail->tensp}}
         <p class="ms-auto">Hướng Dẫn chọn kích cở </p>
       </div>
       <div class="row m-auto">
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='35'">35</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='36'">36</button>
+        @foreach ($size as $ssl)
+          <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="">{{$ssl->size_product}}</button>
+        @endforeach
+        
+        <!-- <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='36'">36</button>
         <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='37'">37</button>
         <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='38'">38</button>
         <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='38.5'">38.5</button>
@@ -83,7 +86,7 @@ Chi Tiết : {{$detail->tensp}}
         <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='41'">41</button>
         <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='41.5'">41.5</button>
         <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='42'">42</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='43'">43</button>
+        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='43'">43</button> -->
       </div>
       <hr>
       <div class="d-flex">
@@ -134,30 +137,30 @@ Chi Tiết : {{$detail->tensp}}
   <div class="row">
     @foreach ($relatedpro as $item)
       @php
-    if ($item->giakhuyenmai > 0) {
-    $gianew = $item->giakhuyenmai;
+    if ($item->gia_km > 0) {
+    $gia_moi = $item->gia_km;
     //   $giaold = '<del>' . $gia . '</del>';
     } else {
-    $gianew = $item->gia;
+    $gia_moi = $item->gia;
     }
-    $num = $gianew;
-    $giachinh = number_format($num, 0, '', '.');
+    $num = $gia_moi;
+    $gia_chinh = number_format($num, 0, '', '.');
   @endphp
       <div class="col-xl-4">
       <div class="card">
-              <a href="/detail/{{$item->masp}}" id="hover-img-home">
-                <img src="/img/{{$item->anhsp}}" alt="" class="w-100">
+              <a href="/detail/{{$item->id}}" id="hover-img-home">
+                <img src="/img/{{$item->hinh}}" alt="" class="w-100">
               </a>
               <div class="card-body text-center">
                 <a href="">
-                  <h5 id="hover-sp"> {{$item->tensp}} </h5>
+                  <h5 id="hover-sp"> {{$item->hinh}} </h5>
                 </a>
                 <div class="row">
                   <div class="col-sm-6">
-                    {{$item->tendm}}
+                    {{$item->ten_dm}}
                   </div>
                   <div class="col-sm-6">
-                    <strong> {{$giachinh}} đ</strong>
+                    <strong> {{$gia_chinh}} đ</strong>
                   </div>
                 </div>
               </div>
@@ -172,21 +175,21 @@ Chi Tiết : {{$detail->tensp}}
     <div class="row">
         <div class="col-xl-3">
           <div class="d-flex" >
-            <strong> {{$item->hoten}} </strong>
-            <p class="ms-2" >| {{$item->ngaybl}}</p>
+            <strong> {{$item->name}} </strong>
+            <p class="ms-2" >| {{$item->thoi_diem}}</p>
           </div>
 
           <p>⭐⭐⭐⭐⭐</p>
-          <p>Phân Loại : {{$item->tensp}} </p>
-          <p><strong>Nội dung :</strong> {{$item->noidung}}.</p>
-          <p><strong>Chất lượng sản phẩm:</strong> {{$item->chatluong}}.</p>
-          <p><strong>Mô tả:</strong> {{$item->mota}}.</p>
+          <p>Phân Loại : {{$item->ten_sp}} </p>
+          <p><strong>Nội dung :</strong> {{$item->noi_dung}}.</p>
+          <p><strong>Chất lượng sản phẩm:</strong> {{$item->quality_product}}</p>
+          
           @if (!empty($item->feedback))
             <p class="ms-2" ><strong>Phản Hồi từ người bán :</strong> <br> {{$item->feedback}}.</p>
           @endif
         </div>
         <div class="col-xl-9 card">
-          <img src="/img/{{$item->anhbl}}" alt="Ảnh từ người mua" class="col-xl-3">
+          <img src="/img/{{$item->hinh_dg}}" alt="Ảnh từ người mua" class="col-xl-3">
         </div>
     </div>
   </div>
@@ -202,9 +205,9 @@ Chi Tiết : {{$detail->tensp}}
       </div>
       <div class="modal-body">
         <div class="container row">
-          <img src="/img/{{$detail->anhsp}}" alt="" class="img-nho col-xl-4">
+          <img src="/img/{{$detail->hinh}}" alt="" class="img-nho col-xl-4">
           <p class="col-xl-8">
-            {{$detail->tensp}}
+            {{$detail->ten_sp}}
           </p>
         </div>
         <br>
@@ -247,8 +250,8 @@ Chi Tiết : {{$detail->tensp}}
 
     document.getElementById('themvaogio').addEventListener('click', function() {
       var soluong = inputElement.value;
-      var masp = '{{$detail->masp}}';
-      var url = '/themvaogio/' + masp + '/' + soluong;
+      var masp = '{{$detail->id}}';
+      var url = '/themvaogio/' + id + '/' + soluong;
       window.location.href = url;
     });
   });

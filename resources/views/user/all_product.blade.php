@@ -6,8 +6,8 @@ Tất Cả Sản Phẩm
 @section('category')
   @foreach ($danhmuc as $category )
     <li class="nav-item">
-      <a class="nav-link fz" href="/category/{{$category->madm}}">
-        {{$category->tendm}}
+      <a class="nav-link fz" href="/category/{{$category->id}}">
+        {{$category->ten_dm}}
       </a>
     </li>
   @endforeach
@@ -255,30 +255,30 @@ Tất Cả Sản Phẩm
         <div class="row">
           @foreach ($allproduct as $item)
           @php
-            if ($item->giakhuyenmai > 0) {
-              $gianew = $item->giakhuyenmai;
+            if ($item->gia_km > 0) {
+              $gia_moi = $item->gia_km;
             //   $giaold = '<del>' . $gia . '</del>';
             } else {
-              $gianew = $item->gia;
+              $gia_moi = $item->gia;
             }
-            $num = $gianew;
-            $giachinh = number_format($num, 0, '', '.');
+            $num = $gia_moi;
+            $gia_chinh = number_format($num, 0, '', '.');
           @endphp
           <div class="col-sm-6 col-xl-3 mb-2" >
             <div class="card">
-              <a href="/detail/{{$item->masp}}" id="hover-img-home">
-                <img src="/img/{{$item->anhsp}}" onerror="this.src='/imgnew/{{$item->anhsp}}'" alt="" class="w-100" style="height: 346px;" >
+              <a href="/detail/{{$item->id}}" id="hover-img-home">
+                <img src="/img/{{$item->hinh}}" onerror="this.src='/imgnew/{{$item->hinh}}'" alt="" class="w-100" style="height: 346px;" >
               </a>
               <div class="card-body text-center">
                 <a href="">
-                  <h5 id="hover-sp"> {{$item->tensp}} </h5>
+                  <h5 id="hover-sp"> {{$item->ten_sp}} </h5>
                 </a>
                 <div class="row">
                   <div class="col-sm-6">
-                    {{$item->tendm}}
+                    {{$item->ten_dm}}
                   </div>
                   <div class="col-sm-6">
-                    <strong> {{$giachinh}} đ</strong>
+                    <strong> {{$gia_chinh}} đ</strong>
                   </div>
                 </div>
               </div>
