@@ -22,7 +22,7 @@ class checkNhapSanPham extends FormRequest
     public function rules(): array
     {
         return [
-            'gia_km' => 'required|integer|min:0|lt:gia',
+            'gia_km' => 'integer|min:0|lt:gia',
             'gia' => 'required|integer|min:0',
             'so_luong.*' => 'required|integer|min:0',
             'id_dm' => 'required|bail|min:1',
@@ -31,7 +31,6 @@ class checkNhapSanPham extends FormRequest
     public function messages()
     {
         return [
-            'gia_km.required' => '*Bắt buộc',
             'gia_km.integer' => 'Giá Khuyến Mãi không được có kí tự đặt biệt',
             'gia_km.min' => 'Giá Khuyến Mãi không được nhỏ hơn 0',
             'gia_km.less_than' => 'Giá Khuyến Mãi phải nhỏ hơn Giá Gốc',

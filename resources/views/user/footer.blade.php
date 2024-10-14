@@ -1,55 +1,120 @@
   <br>
   <!-- Footer -->
   <footer class="text-bg-dark card-footer">
-    <div class="container">
-      <br>
-      <div class="panel-heading m-auto d-flex justify-content-center">
-        <div id="footer-dau" class="d-flex">
-          <img src="/imgnew/icon-youtube.png" alt="" id="icon-youtube">
-        </div>
-        <div id="footer-dau">
-          <img src="/imgnew/icon-facebook.png" alt="" id="icon-footer">
-        </div>
-        <div id="footer-dau">
-          <img src="/imgnew/icon-zalo.png" alt="" id="icon-footer">
-        </div>
-        <div id="footer-dau">
-          <img src="/imgnew/icon-instagram1.png" alt="" id="icon-footer">
-        </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-sm-6 col-xl-3 mt-3">
-          <h5>Tìm Cửa Hàng</h5>
-          <h6>Trở thành thành viên</h6>
-          <h6>Gửi phản hồi</h6>
-        </div>
-        <div class="col-sm-6 col-xl-3 mt-3">
-          <h5>Giúp Đỡ</h5>
-          <p>Các phương thức thanh toán</p>
-          <p>Tình trạng đơn hàng</p>
-          <p>Vận chuyển</p>
-          <p>Trả hàng</p>
-          <p>Liên hệ</p>
-        </div>
-        <div class="col-sm-6 col-xl-3 mt-3">
-          <h5>Giới Thiệu</h5>
-          <p>Giới thiệu về Nike</p>
-          <p>Tin tức</p>
-          <p>Nhà đầu tư</p>
-        </div>
-        <div class="col-sm-6 col-xl-3 mt-2">
-          <h5>Thông tin liên hệ</h5>
-          <p><i class="fa-solid fa-location-dot"></i> Tân Bình , TP.Hồ Chí Minh , Việt Nam</p>
-          <p><i class="fa-solid fa-phone fa-shake"></i> 0979893938.</p>
-          <p><i class="fa-solid fa-envelope"></i> ducduytdd30@gmail.com</p>
-
-        </div>
-      </div>
-      <div class="panel-heading text-center h-100">
-        <p class="m-auto fs-5"> Bản Quyền Thuộc Về Đức Duy &copy; 2024. </p>
-      </div>
-    </div>
+  <div class="outer-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="outer-footer__content u-s-m-b-40">
+                            <img src="{{ asset('/uploads/logo/logodark.png') }}" width="140px" height="50px" class="mb-2" alt="">
+                                <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
+                                    <span>Phân mềm Quang Trung, quận 12, TP.HCM</span></div>
+                                <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
+                                    <span>(+84) 326 123 123</span></div>
+                                <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
+                                    <span>trendyu01@gmail.com</span></div>
+                                <div class="outer-footer__social">
+                                    <ul>
+                                        <li>
+                                            <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li>
+                                            <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
+                                        <li>
+                                            <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
+                                        <li>
+                                            <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
+                                        <li>
+                                            <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="outer-footer__content u-s-m-b-40">
+                                        <span class="outer-footer__content-title">Hổ trợ</span>
+                                        <div class="outer-footer__list-wrap">
+                                            <ul>
+                                                <li>
+                                                    <a href="">Các phương thức thanh toán</a></li>
+                                                <li>
+                                                    <a href="">Tình trạng đơn hàng</a></li>
+                                                <li>
+                                                    <a href="">Vận chuyển</a></li>
+                                                <li>
+                                                <a href="">Trả hàng</a></li>
+                                                <li>
+                                                <a href="">Liên hệ</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="outer-footer__content u-s-m-b-40">
+                                        <div class="outer-footer__list-wrap">
+                                            <span class="outer-footer__content-title">Giới thiệu</span>
+                                            <ul>
+                                                <li>
+                                                    <a href="">Giới thiệu về TrendyU</a></li>
+                                                <li>
+                                                    <a href="">Tin tức</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                            <div class="outer-footer__content">
+                                <span class="outer-footer__content-title">Tham gia cùng TRENDY U</span>
+                                <form class="newsletter">
+                                    <div class="u-s-m-b-15">
+                                        <div class="radio-box newsletter__radio">
+                                            <input type="radio" id="male" name="gender">
+                                            <div class="radio-box__state radio-box__state--primary">
+                                                <label class="radio-box__label" for="male">Nam</label></div>
+                                        </div>
+                                        <div class="radio-box newsletter__radio">
+                                            <input type="radio" id="female" name="gender">
+                                            <div class="radio-box__state radio-box__state--primary">
+                                                <label class="radio-box__label" for="female">Nữ</label></div>
+                                        </div>
+                                    </div>
+                                    <div class="newsletter__group">
+                                        <label for="newsletter"></label>
+                                        <input class="input-text input-text--only-white rounded border" type="text" id="newsletter" placeholder="Nhập email của bạn">
+                                        <button class="btn newsletter__btn btn-secondary" type="submit">Đăng Ký</button>
+                                    </div>
+                                    <span class="newsletter__text">Đăng ký để nhận thông tin cập nhật về chương trình khuyến mãi, hàng mới, giảm giá và phiếu giảm giá.</span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lower-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="lower-footer__content">
+                                <div class="lower-footer__copyright">
+                                    <span>Dự án tốt nghiệp</span>
+                                    <a href="">TRENDY U</a>
+                                </div>
+                                <div class="lower-footer__payment">
+                                    <ul>
+                                        <li><i class="fab fa-cc-stripe"></i></li>
+                                        <li><i class="fab fa-cc-paypal"></i></li>
+                                        <li><i class="fab fa-cc-mastercard"></i></li>
+                                        <li><i class="fab fa-cc-visa"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
   </footer>
   <!-- End Footer -->
 

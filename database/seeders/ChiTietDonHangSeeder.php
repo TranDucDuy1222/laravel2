@@ -8,9 +8,6 @@ use DB;
 
 class ChiTietDonHangSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $products = DB::table('san_pham')->select('id', 'gia_km')->get()->keyBy('id');

@@ -19,6 +19,7 @@ Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
 Route::get('/', [HomeController::class , 'index']);
+Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail']);
 Route::get('/category/{id}', [ProductController::class , 'category']);
 Route::get('/allproduct', [ProductController::class , 'allproduct']);

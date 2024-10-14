@@ -103,12 +103,12 @@
 .color .blue:active{background-color: blue;color: white;}
 .color .green:active{background-color: green;color: white;} 
 /*size*/
-.size button{
+/* .size button{
     background-color: white;
     transition: all 0.5s;
     border: none;
-}
-.size #number:active{
+} */
+#size:active{
     border: 1px solid black;
     background-color: #a9a9a9;
     border: none;

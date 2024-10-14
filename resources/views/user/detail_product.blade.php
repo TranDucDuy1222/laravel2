@@ -71,41 +71,33 @@ Chi Tiết : {{$detail->ten_sp}}
         <p class="ms-auto">Hướng Dẫn chọn kích cở </p>
       </div>
       <div class="row m-auto">
-        @foreach ($size as $ssl)
-          <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="">{{$ssl->size_product}}</button>
-        @endforeach
-        
-        <!-- <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='36'">36</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='37'">37</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='38'">38</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='38.5'">38.5</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='39'">39</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='39.5'">39.5</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='40'">40</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='40.5'">40.5</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='41'">41</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='41.5'">41.5</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='42'">42</button>
-        <button class="btn btn-outline-dark col-sm-2 my-1 mx-1" ng-click="detail.size='43'">43</button> -->
+      @foreach ($size as $ssl)
+      @if ($ssl->so_luong > 0)
+      <button id="size" name="size" class="btn col-sm-2 my-1 mx-1 border border-black" data-size="{{$ssl->size_product}}">{{$ssl->size_product}}</button>
+      <input name="hangTrongKho" type="hidden" value="{{$ssl->so_luong}}" data-size="{{$ssl->size_product}}">
+      @endif
+      @endforeach
+        <div id="error-message" style="color: red; display: none;">Vui lòng chọn size trước khi thêm vào giỏ hàng.</div>
       </div>
       <hr>
       <div class="d-flex">
         <div class="row">
           <div class="col-sm-5">
             <div class="input-group">
-              <strong>Số Lượng :</strong>
+              <strong>Số Lượng:</strong>
             </div>
           </div>
           <div class="col-sm-5">
-            <input type="number" name="soluong" id="soluong" class="form-control input-group-lg" required min="1" oninput="updateValue(this.value)">
+            <input type="number" name="soluong" id="soluong" class="form-control input-group-lg" required value="1" min="1">
           </div>
+          <div id="error-message-sl" style="color: red; display: none;">Số lượng nhập vào vượt quá số lượng hàng trong kho.</div>
         </div>
       </div>
       <hr>
       <div class="d-flex">
         <div class="m-auto">
           <a href="#" id="themvaogio">
-            <button class="btn btn-dark rounded-pill">Thêm Vào Giỏ Hàng</button>
+            <button class="btn btn-dark rounded-pill" onclick="">Thêm Vào Giỏ Hàng</button>
           </a>
           <button onclick='history.back()' class='btn btn-outline-dark rounded-pill'>Xem Sản Phẩm Khác</button>
         </div>
@@ -205,34 +197,31 @@ Chi Tiết : {{$detail->ten_sp}}
       </div>
       <div class="modal-body">
         <div class="container row">
-          <img src="/img/{{$detail->hinh}}" alt="" class="img-nho col-xl-4">
+          <img src="{{ asset('imgnew/' . $detail->hinh) }}" alt="" class="img-nho col-xl-4">
           <p class="col-xl-8">
             {{$detail->ten_sp}}
           </p>
         </div>
         <br>
         <p>
-          Sẵn sàng, thiết lập, chơi! Luôn nhẹ nhàng trên đôi chân của bạn với những đôi giày thể thao phiên bản đặc biệt
-          này. Phần dưới chân bằng bọt mềm kết hợp với bộ phận Max Air đàn hồi ở gót chân mang đến cho bạn lớp đệm nhẹ
-          lý tưởng để hoàn thiện xu hướng khiêu vũ lan truyền mới nhất. Ngoài ra, màu sắc vui tươi, chi tiết thiết kế
-          phản chiếu và biểu tượng Swoosh lắc lư mang đến cho những đôi giày này vẻ ngoài sẵn sàng thu hút sự chú ý.
+          {{$detail->mo_ta_ct}}
         </p>
-        <ul>
+        <!-- <ul>
           <label>Những lợi ích</label>
-          <li>Cặp da tổng hợp với lưới thoáng khí mang lại kết cấu bền bỉ, thoáng khí và thoải mái.</li>
-          <li>Đế giữa bằng bọt và bộ phận Max Air ở gót chân giúp mang lại lớp đệm nhẹ.</li>
-          <li>Cổ áo có đệm, cắt thấp tạo cảm giác mềm mại và thoải mái.</li>
-          <li>Đế ngoài bằng cao su Waffle tăng thêm lực kéo bền bỉ và kiểu dáng di sản.</li>
+          <p>Cặp da tổng hợp với lưới thoáng khí mang lại kết cấu bền bỉ, thoáng khí và thoải mái.</p>
+          <p>Đế giữa bằng bọt và bộ phận Max Air ở gót chân giúp mang lại lớp đệm nhẹ.</p>
+          <p>Cổ áo có đệm, cắt thấp tạo cảm giác mềm mại và thoải mái.</p>
+          <p>Đế ngoài bằng cao su Waffle tăng thêm lực kéo bền bỉ và kiểu dáng di sản.</p>
         </ul>
         <ul>
           <label>Thông tin chi tiết sản phẩm</label>
-          <li>Dây buộc cổ điển</li>
-          <li>Chi tiết thiết kế phản quang</li>
-          <li>Không nhằm mục đích sử dụng làm thiết bị bảo hộ cá nhân (PPE)</li>
-          <li>Màu sắc hiển thị: Đen/Hồng vui tươi/Xanh sân vận động/Trắng</li>
-          <li>Phong cách: FJ3286-001</li>
-          <li>Quốc gia/Khu vực xuất xứ: Indonesia</li>
-        </ul>
+          <p>Dây buộc cổ điển</p>
+          <p>Chi tiết thiết kế phản quang</p>
+          <p>Không nhằm mục đích sử dụng làm thiết bị bảo hộ cá nhân (PPE)</p>
+          <p>Màu sắc hiển thị: Đen/Hồng vui tươi/Xanh sân vận động/Trắng</p>
+          <p>Phong cách: FJ3286-001</p>
+          <p>Quốc gia/Khu vực xuất xứ: Indonesia</p>
+        </ul> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -242,8 +231,8 @@ Chi Tiết : {{$detail->ten_sp}}
 </div>
 <!-- End Detail -->
 
-<script src="/up/js/size&color.js"></script>
-<script>
+<!-- <script src="{{ asset('/up/js/size&color.js') }}"></script> -->
+<!-- <script>
   document.addEventListener('DOMContentLoaded', function() {
     const inputElement = document.getElementById('soluong');
     inputElement.value = 1;
@@ -251,10 +240,62 @@ Chi Tiết : {{$detail->ten_sp}}
     document.getElementById('themvaogio').addEventListener('click', function() {
       var soluong = inputElement.value;
       var masp = '{{$detail->id}}';
-      var url = '/themvaogio/' + id + '/' + soluong;
+      var url = '/themvaogio/' + masp + '/' + soluong;
       window.location.href = url;
     });
   });
+</script> -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let selectedSize = null;
+    let hangTrongKho = 0; // Biến để lưu trữ số lượng hàng trong kho của size đã chọn
+
+    const sizeButtons = document.querySelectorAll('button[name="size"]');
+    sizeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            sizeButtons.forEach(otherButton => {
+                otherButton.classList.remove('btn-dark');
+                otherButton.classList.add('btn-outline-dark');
+            });
+            this.classList.remove('btn-outline-dark');
+            this.classList.add('btn-dark');
+            selectedSize = this.getAttribute('data-size'); // Lưu size đã chọn
+            hangTrongKho = document.querySelector(`input[name="hangTrongKho"][data-size="${selectedSize}"]`).value; // Lấy số lượng hàng trong kho cho size đã chọn
+            console.log('Size đã chọn:', selectedSize, 'Hàng trong kho:', hangTrongKho);
+            document.getElementById('error-message').style.display = 'none'; // Ẩn thông báo lỗi nếu có
+        });
+    });
+
+    const addToCartButton = document.querySelector('#themvaogio button');
+    addToCartButton.addEventListener('click', function(event) {
+        if (!selectedSize) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định
+            document.getElementById('error-message').style.display = 'block'; // Hiển thị thông báo lỗi
+        } else {
+            console.log('Thêm vào giỏ hàng với size:', selectedSize);
+        }
+    });
+
+    document.getElementById('soluong').addEventListener('input', function() {
+        var soluong = parseInt(this.value);
+        var errorMsg = document.getElementById('error-message-sl');
+        var errorMsg_0sz = document.getElementById('error-message-0sz');
+        if (!selectedSize || isNaN(soluong) || soluong <= 0 || this.value.trim() === "") {
+            this.value = 1;
+            this.setAttribute('value', 1);
+            errorMsg.style.display = 'none';
+        } else if (soluong > hangTrongKho) {
+            this.value = hangTrongKho;
+            this.setAttribute('value', hangTrongKho); // Cập nhật thuộc tính value
+            errorMsg.style.display = 'block';
+        } else {
+            this.setAttribute('value', soluong); // Cập nhật thuộc tính value
+            errorMsg.style.display = 'none';
+        }
+    });
+});
+
+
 </script>
 
 @endsection

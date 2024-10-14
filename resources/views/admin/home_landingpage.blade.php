@@ -27,6 +27,30 @@ Quản Trị Trang Chủ
                     style="height: 45px; background-color: white;" onclick="scrollToSection('xuhuong-section')">
                     Xu hướng
                 </button>
+                <button class="btclick w-100 border border-light-subtle rounded"
+                    style="height: 45px; background-color: white;" onclick="scrollToSection('danhmuc-section')">
+                    Danh mục
+                </button>
+                <button class="btclick w-100 border border-light-subtle rounded"
+                    style="height: 45px; background-color: white;" onclick="scrollToSection('khuyenmai-section')">
+                    Khuyến mãi
+                </button>
+                <button class="btclick w-100 border border-light-subtle rounded"
+                    style="height: 45px; background-color: white;" onclick="scrollToSection('productnew-section')">
+                    Sản phẩm mới
+                </button>
+                <button class="btclick w-100 border border-light-subtle rounded"
+                    style="height: 45px; background-color: white;" onclick="scrollToSection('bieunguphu-section')">
+                    Biểu ngữ phụ
+                </button>
+                <button class="btclick w-100 border border-light-subtle rounded"
+                    style="height: 45px; background-color: white;" onclick="scrollToSection('commingsoon-section')">
+                    Sản phẩm sắp về hàng
+                </button>
+                <button class="btclick w-100 border border-light-subtle rounded"
+                    style="height: 45px; background-color: white;" onclick="scrollToSection('member-section')">
+                    Lợi ích thành viên
+                </button>
                 <button class="btclick w-100 border border-warning rounded mt-4"
                     style="height: 45px; background-color: white;">
                     <i class="fa-solid fa-hand-point-down"></i>
@@ -47,7 +71,12 @@ Quản Trị Trang Chủ
                             <input type="file">
                             <hr>
                             <label for="" >Biểu ngữ chính </label><br>
-                            <input type="text" class="w-100" ><br>
+                            <input type="text" class="w-100" >
+                            <div class="d-flex justify-content-start align-items-center p-2">
+                                <label for="favcolor" class="me-2"> <strong>Chọn màu cho tiêu đề chính :</strong> </label>
+                                <input type="color" id="favcolor" name="favcolor" value="#ff0000">
+                            </div>
+                            <br>
                             <label for="" >Biểu ngữ phụ </label><br>
                             <input type="text" class="w-100">
                         </div>
@@ -57,7 +86,12 @@ Quản Trị Trang Chủ
                             <input type="file">
                             <hr>
                             <label for="" >Biểu ngữ chính </label><br>
-                            <input type="text" class="w-100" ><br>
+                            <input type="text" class="w-100" >
+                            <div class="d-flex justify-content-start align-items-center p-2">
+                                <label for="favcolor" class="me-2"> <strong>Chọn màu cho tiêu đề chính :</strong> </label>
+                                <input type="color" id="favcolor" name="favcolor" value="#ff0000">
+                            </div>
+                            <br>
                             <label for="" >Biểu ngữ phụ </label><br>
                             <input type="text" class="w-100">
                         </div>
@@ -99,8 +133,20 @@ Quản Trị Trang Chủ
                     </div>
                     <hr>
                     <div class="p-4">               
-                        <label for="" class="h5">Giới thiệu dòng sản phẩm</label><br>
+                        <label for="" class="h5">Tiêu đề chính</label><br>
                         <input type="text" class="w-100" placeholder="Ví dụ : Bộ sưu tập mới ra mắt">
+                    </div>
+                    <div class="row p-4">               
+                        <div class="col-xl-6">
+                            <label for="" class="h5" >Ảnh chính</label><br>
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                        </div>
+                        <div class="col-xl-6">
+                            <label for=""  class="h5" >Hình phụ (Hình chữ nhật)</label><br>
+                            <img src="/uploads/banner/banner2.jpg" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                        </div>
                     </div>
                     <hr class="m-0">
                     <div class="d-flex justify-content-end p-4" >
@@ -117,10 +163,16 @@ Quản Trị Trang Chủ
                         Xu hướng
                     </div>
                     <hr>
-                    <div class="p-4"> 
-                        <label for="" class="h5" >Hình xu hướng</label><br>
-                        <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">  
-                        <input type="file">            
+                    <div class="row p-4"> 
+                        <div class="col-xl-6 col-md-12">
+                        <h5>Tiêu Đề Chính</h5>
+                        <input type="text" class="w-100" placeholder="SẢN PHẨM XU HƯỚNG">
+                        </div>
+                        <div class="col-xl-6 col-md-12">
+                        <h5>Tiêu Đề Phụ</h5>
+                        <input type="text" class="w-100" placeholder="CÁC SẢN PHẨM BÁN CHẠY NHẤT NĂM">
+                        </div>
+                        
                     </div>
                     <hr class="m-0">
                     <div class="d-flex justify-content-end p-4" >
@@ -131,6 +183,201 @@ Quản Trị Trang Chủ
                 </div>
                 <br>
                 <!-- End xu hướng -->
+                <!-- Danh mục sản phẩm -->
+                <div id="danhmuc-section" class=" border rounded p-0" >
+                    <div class="mt-3 p-2 h4" style="border-left: 3px solid #ffd434;" >
+                        Danh mục sản phẩm
+                    </div>
+                    <hr>
+                    <div class="row p-4"> 
+                        <div class="col-xl-4 col-md-12">
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                            <hr>
+                            <h5>Tiêu Đề</h5>
+                            <input type="text" class="w-100" placeholder="SẢN PHẨM XU HƯỚNG">
+                        </div>
+                        <div class="col-xl-4 col-md-12">
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                            <hr>
+                            <h5>Tiêu Đề</h5>
+                            <input type="text" class="w-100" placeholder="CÁC SẢN PHẨM BÁN CHẠY NHẤT NĂM">
+                        </div>
+                        <div class="col-xl-4 col-md-12">
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                            <hr>
+                            <h5>Tiêu Đề</h5>
+                            <input type="text" class="w-100" placeholder="CÁC SẢN PHẨM BÁN CHẠY NHẤT NĂM">
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="d-flex justify-content-end p-4" >
+                        <button class="btn btn-outline-warning rounded "> 
+                            Lưu thiết lập
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <!-- End danh mục sản phẩm -->
+                <!-- Khuyến mãi sản phẩm -->
+                <div id="khuyenmai-section" class=" border rounded p-0" >
+                    <div class="mt-3 p-2 h4" style="border-left: 3px solid #ffd434;" >
+                        Chương trình khuyến mãi
+                    </div>
+                    <hr>
+                    <div class="row p-4"> 
+                        <div class="col-xl-6 col-md-12">
+                        <h5>Tiêu Đề Chính</h5>
+                        <input type="text" class="w-100" placeholder="SẢN PHẨM CÓ KHUYẾN MÃI">
+                        </div>
+                        <div class="col-xl-6 col-md-12">
+                        <h5>Tiêu Đề Phụ</h5>
+                        <input type="text" class="w-100" placeholder="CÁC SẢN PHẨM KHUYẾN MÃI 10/10">
+                        </div>
+                        
+                    </div>
+                    <hr class="m-0">
+                    <div class="d-flex justify-content-end p-4" >
+                        <button class="btn btn-outline-warning rounded "> 
+                            Lưu thiết lập
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <!-- End khuyến mãi sản phẩm -->
+                <!-- Sản phẩm mới -->
+                <div id="productnew-section" class=" border rounded p-0">
+                    <div class="mt-3 p-2 h4" style="border-left: 3px solid #ffd434;">
+                        Sản phẩm mới
+                    </div>
+                    <hr>
+                    <div class="row p-4">
+                        <div class="col-xl-6 col-md-12">
+                            <h5>Tiêu Đề Chính</h5>
+                            <input type="text" class="w-100" name="tieu_de_san_pham_moi_chinh" placeholder="SẢN PHẨM MỚI" value="{{ $landingPage->tieu_de_san_pham_moi_chinh ?? '' }}">
+                        </div>
+                        <div class="col-xl-6 col-md-12">
+                            <h5>Tiêu Đề Phụ</h5>
+                            <input type="text" class="w-100" name="tieu_de_san_pham_moi_phu" placeholder="CÁC SẢN PHẨM MỚI VỀ HÀNG" value="{{ $landingPage->tieu_de_san_pham_moi_phu ?? '' }}">
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="d-flex justify-content-end p-4">
+                        <button class="btn btn-outline-warning rounded">Lưu thiết lập</button>
+                    </div>
+                </div>
+                <br>
+                <!-- End sản phẩm mới -->
+                <!-- Banner phụ -->
+                <div id="bieunguphu-section" class=" border rounded p-0" >
+                    <div class="mt-3 p-2 h4" style="border-left: 3px solid #ffd434;" >
+                        Biểu ngữ phụ
+                    </div>
+                    <hr>
+                    <div class="row p-4">
+                        <div class="col-xl-12">
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                        </div>
+                        
+                        <div class="col-xl-12 col-md-12">
+                            <hr>
+                            <h5>Tiêu Đề Chính</h5>
+                            <input type="text" class="w-100" placeholder="SẢN PHẨM CÓ KHUYẾN MÃI">
+                            <div class="d-flex justify-content-start align-items-center p-2">
+                                <label for="favcolor" class="me-2"> <strong>Chọn màu cho tiêu đề chính :</strong> </label>
+                                <input type="color" id="favcolor" name="favcolor" value="#ff0000">
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-md-12 mt-3">
+                            <h5>Tiêu Đề Phụ</h5>
+                            <input type="text" class="w-100" placeholder="CÁC SẢN PHẨM KHUYẾN MÃI 10/10">
+                        </div>
+                        <div class="col-xl-12 col-md-12 mt-3">
+                            <h5>Mô tả</h5>
+                            <input type="text" class="w-100" placeholder="CÁC SẢN PHẨM KHUYẾN MÃI 10/10">
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="d-flex justify-content-end p-4" >
+                        <button class="btn btn-outline-warning rounded "> 
+                            Lưu thiết lập
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <!-- End banner phụ -->
+                <!-- Sản phẩm sắp về hàng -->
+                <div id="commingsoon-section" class=" border rounded p-0" >
+                    <div class="mt-3 p-2 h4" style="border-left: 3px solid #ffd434;" >
+                        Sản phẩm sắp về hàng
+                    </div>
+                    <hr>
+                    <div class="row p-4">
+                    <div class="col-xl-6 col-md-12">
+                            <h5>Tiêu Đề Chính</h5>
+                            <input type="text" class="w-100" placeholder="SẢN PHẨM SẮP VỀ HÀNG">
+                        </div>
+                        <div class="col-xl-6 col-md-12">
+                            <h5>Tiêu Đề Phụ</h5>
+                            <input type="text" class="w-100" placeholder="BỘ SƯU TẬP NIKE THU ĐÔNG">
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="d-flex justify-content-end p-4" >
+                        <button class="btn btn-outline-warning rounded "> 
+                            Lưu thiết lập
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <!-- End sản phẩm sắp về hàng -->
+                <!-- Lợi ích thành viên -->
+                <div id="member-section" class=" border rounded p-0" >
+                    <div class="mt-3 p-2 h4" style="border-left: 3px solid #ffd434;" >
+                        Lợi ích thành viên
+                    </div>
+                    <hr>
+                    <div class="row p-4"> 
+                        <div class="col-xl-4 col-md-12">
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                            <hr>
+                            <h5>Tiêu Đề</h5>
+                            <input type="text" class="w-100" placeholder="Ngày kỉ niệm">
+                            <h5>Nội dung nút</h5>
+                            <input type="text" class="w-100" placeholder="Tìm hiểu thêm">
+                        </div>
+                        <div class="col-xl-4 col-md-12">
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                            <hr>
+                            <h5>Tiêu Đề</h5>
+                            <input type="text" class="w-100" placeholder="Dịch vụ cho bạn">
+                            <h5>Nội dung nút</h5>
+                            <input type="text" class="w-100" placeholder="Xem thêm">
+                        </div>
+                        <div class="col-xl-4 col-md-12">
+                            <img src="/uploads/banner/banner1.png" alt="" class="mb-2 w-100" style="height: 250px;">
+                            <input type="file">
+                            <hr>
+                            <h5>Tiêu Đề</h5>
+                            <input type="text" class="w-100" placeholder="Cộng đồng sneaker cho bạn">
+                            <h5>Nội dung nút</h5>
+                            <input type="text" class="w-100" placeholder="Khám phá">
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="d-flex justify-content-end p-4" >
+                        <button class="btn btn-outline-warning rounded "> 
+                            Lưu thiết lập
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <!-- End lợi ích thành viên -->
             </div>
         </div>
     </div>

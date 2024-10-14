@@ -96,21 +96,21 @@ Chỉnh Sửa Sản Phẩm
                                     @endforeach
                                 </div>
                             </div>
-                        </div>
-                        <div class="sa-entity-layout__sidebar">
-                            <div class="card">
-                                <div class="card-body p-5">
-                                    <div class="mb-5">
-                                        <h2 class="mb-0 fs-exact-18">Ảnh</h2>
+                                </div>
+                                <div class="sa-entity-layout__sidebar">
+                                    <div class="card">
+                                        <div class="card-body p-5">
+                                            <div class="mb-5">
+                                                <h2 class="mb-0 fs-exact-18">Ảnh</h2>
+                                            </div>
+                                        </div>
+                                        <div class="mt-n5">
+                                            <img src="{{ asset('/uploads/product/'. $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" class="w-50">
+                                            <input type="file" name="hinh">
+                                            <input type="hidden" value="{{$sp->hinh}}" name="hinh" >
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="mt-n5">
-                                    <img src="/imgnew/{{$sp->hinh}}" onerror="this.src='/img/{{$sp->hinh}}'" class="w-50">
-                                    <input type="file" name="hinh">
-                                    <input type="hidden" value="{{$sp->hinh}}" name="hinh">
-                                </div>
-                            </div>
-                            <div class="card w-100 mt-5">
+                                    <div class="card w-100 mt-5">
                                 <div class="card-body p-5">
                                     <div class="mb-5">
                                         <h2 class="mb-0 fs-exact-18">Chọn Danh mục</h2>

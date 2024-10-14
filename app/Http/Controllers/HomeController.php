@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\Models\Loai;
 use Illuminate\Pagination\Paginator;
 Paginator::useBootstrap();
 
@@ -12,25 +13,55 @@ class HomeController extends Controller
 
     function __construct(){
         $query = DB::table('loai')
-        ->select('id', 'ten_loai')
+        ->select('id', 'ten_loai', 'slug')
         ->orderBy('id', 'asc');
         $loai = $query->get();
+        $danh_muc = DB::table('danh_muc')->get();
         \View::share('loai', $loai);
+        \View::share('danh_muc', $danh_muc);
     }
 
     public function index(){
-        $query = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'danh_muc.ten_dm')
+        $loai_arr = Loai::all();
+        //$first_loai = $loai_arr->first(); // Lấy loại đầu tiên
+        $query = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-        ->orderBy('san_pham.id', 'desc')
-        ->limit(4);
-        $sanphamhome = $query->get();
+        ->orderBy('san_pham.id', 'desc');
+        
+        $sanphamhome = (clone $query)->limit(2)->get();
+        // Sản phảm mới
+        $sanphamnew = (clone $query)
+        ->where('san_pham.trang_thai', '!=', 3)
+        ->limit(4)
+        ->get();
 
-        // $query = DB::table('langdingpage')
-        // ->select('content_header', 'imgheader','content_1','content_2','content_3')
-        // ->orderBy('ib', 'desc')
-        // ->limit(2);
-        // $banner = $query->get();
+        // Sản phẩm khuyến mãi
+        $sanphamsale = (clone $query)
+        ->where('san_pham.gia_km','>',0)
+        ->where('san_pham.trang_thai', '!=', 3)
+        ->inRandomOrder()
+        ->limit(4)
+        ->get();    
 
-        return view('user.home', ['sanphamhome' => $sanphamhome]);   
+        // Sản phẩm sắp về hàng
+        $sanphamcs = (clone $query)->where('san_pham.trang_thai','=',3)->limit(4)->get();
+
+        // Sản phẩm theo loại
+        $query_theoloai = DB::table('san_pham')
+        ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh','san_pham.trang_thai', 'danh_muc.ten_dm')
+        ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+        ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
+        ->inRandomOrder() // Random sản phẩm
+        ->limit(4); // Lấy ra 4 sản phẩm
+
+        $sanpham = [];
+        foreach ($loai_arr as $loai) {
+            $sanpham[$loai->slug] = (clone $query_theoloai)->where('loai.slug', $loai->slug)->get();
+        }
+
+        // Dữ liệu trang chủ
+        $home_page = DB::table('landing_page')->first();
+
+        return view('user.home', compact('home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
     }
 }

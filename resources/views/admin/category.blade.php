@@ -166,7 +166,7 @@ Quản trị Danh Mục
                                     </td>
                                 </tr>
                             @endforeach
-                            <div class="text-center p-2">{{$danhmuc_arr->links()}}</div>
+                          
                         </tbody>
                     </table>
                 </div>

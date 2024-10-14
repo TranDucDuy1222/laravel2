@@ -40,7 +40,7 @@ class AdminLoaiController extends Controller
             }
         }
     
-        $danhmuc_arr = $query->orderBy('danh_muc.id', 'asc')
+        $danhmuc_arr = $query->orderBy('danh_muc.id', 'desc')
             ->paginate($perPage)
             ->withQueryString();
     
