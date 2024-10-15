@@ -36,6 +36,8 @@ Route::get('/logout', [UserController::class,'logout']);
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
 
+Route::get('/dark_light', [HomeController::class,'dark_light']);
+
 
 
 // URL Admin

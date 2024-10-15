@@ -5,21 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Loai;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
 Paginator::useBootstrap();
 
 class HomeController extends Controller
 {
-
     function __construct(){
         $query = DB::table('loai')
-        ->select('id', 'ten_loai', 'slug')
-        ->orderBy('id', 'asc');
+            ->select('id', 'ten_loai', 'slug')
+            ->orderBy('id', 'asc');
         $loai = $query->get();
         $danh_muc = DB::table('danh_muc')->get();
         \View::share('loai', $loai);
         \View::share('danh_muc', $danh_muc);
     }
+    
 
     public function index(){
         $loai_arr = Loai::all();
@@ -64,4 +66,6 @@ class HomeController extends Controller
 
         return view('user.home', compact('home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
     }
+
+
 }

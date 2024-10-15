@@ -29,6 +29,7 @@
       <link rel="stylesheet" href="/FE/css/order.css">
       <link rel="stylesheet" href="/FE/css/order-detail.css">
       <link rel="stylesheet" href="/FE/css/cssHome.css">
+
 </head>
 <body>
   <!-- Nav   -->
@@ -36,10 +37,10 @@
             <nav class="primary-nav primary-nav-wrapper--border">
                 <div class="container">
                     <div class="primary-nav">
-                        <a class="main-logo" href="/">
-                        <img src="{{ asset('/uploads/logo/' . '') }}" width="140"
-                        height="60" onerror="this.src='{{ asset('/uploads/logo/logolight.png') }}'" alt="" />
-                        </a>
+                      <a class="main-logo" href="/">
+                        <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
+                      </a>
+
                         <form class="main-form">
                           <div class="d-flex ms-2 search-box">
                             <i class="fa-solid fa-magnifying-glass fa-fade"></i>
