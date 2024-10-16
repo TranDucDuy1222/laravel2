@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-angular": "^9.0.0",
-        "ckeditor5": "^43.2.0"
+        "ckeditor5": "^43.2.0",
+        "tinymce": "^7.4.1"
     }
 }

@@ -30,18 +30,9 @@
       <link rel="stylesheet" href="/FE/css/order-detail.css">
       <link rel="stylesheet" href="/FE/css/cssHome.css">
 
-      <style>
-        .dark-mode {
-            background-color: black;
-            color: white;
-        }
-        .light-mode {
-            background-color: white;
-            color: black;
-        }
-      </style>
+      
 </head>
-<body class="{{$mauNen}}">
+<body>
   <!-- Nav   -->
   <nav class="header--style">
             <nav class="primary-nav primary-nav-wrapper--border">
