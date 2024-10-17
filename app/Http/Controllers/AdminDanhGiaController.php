@@ -61,21 +61,23 @@ class AdminDanhGiaController extends Controller
         
     }
 
-    public function update(Request $request, String $id)
+    public function update(Request $request, $id)
     {
         $checkdg = danh_gia::find($id);
-        // dd($checkdg);
-        if ($checkdg != null && $checkdg != 0) {
-            
-            if($request->feedback){
-                $checkdg->feedback = $request['feedback'];
+        if ($checkdg != null) {
+            // Kiểm tra xem feedback có tồn tại và không rỗng
+            if ($request->has('feedback') && !empty($request->feedback)) {
+                $checkdg->feedback = $request->feedback;
                 $checkdg->save();
-            }else{
+                return redirect()->back()->with('thongbao', 'Phản hồi đã được gửi thành công.');
+            } else {
                 return redirect()->back()->with('thongbao', 'Chưa phản hồi đánh giá này');
             }
+        } else {
+            return redirect()->back()->with('thongbao', 'Không tìm thấy đánh giá này');
         }
-        return redirect()->back()->with('thongbao', 'Phản hồi đã được gửi thành công.');
     }
+
 
     public function destroy()
     {

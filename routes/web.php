@@ -14,6 +14,7 @@ use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminDanhGiaController;
+use App\Http\Controllers\SettingController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
@@ -59,6 +60,8 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::get('san-pham/xoa-vinh-vien/{id}', [AdminSPController::class, 'xoavinhvien']);
 
     Route::resource('trang-chu', LandingpageController::class);
+
+    Route::resource('cai-dat', SettingController::class);
 
     Route::resource('tai-khoan', AdminUserController::class);
     Route::post('/tai-khoan/{id}/hide', [AdminUserController::class, 'hide'])->name('tai-khoan.hide');

@@ -43,7 +43,7 @@ Thêm Sản Phẩm
                                     </div>
                                     <div class="mb-4">
                                         <label for="form-product/description" class="form-label">Mô tả</label>
-                                        <textarea id="form-product/description" class="form-control" rows="8" name="mo_ta_ct" required>{{old('mo_ta_ct')}}</textarea>
+                                        <textarea id="description" class="form-control" rows="8" name="mo_ta_ct" required>{{old('mo_ta_ct')}}</textarea>
                                     </div>
                                     <div>
                                         <label for="form-product/short-description" class="form-label">Mô tả ngắn</label>
@@ -327,4 +327,44 @@ Thêm Sản Phẩm
     </div>
     <!-- sa-app__body / end -->
 </form>
+<style>
+.ck-editor__editable_inline {
+    height: 400px;
+}
+</style>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"> </script>
+    <script src="{{asset('FE/ckfinder/ckfinder.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            ClassicEditor
+                .create(document.querySelector('#description'), {
+                    language: 'vi'
+                })
+                .then(editor => {
+                    console.log(editor);
+                    console.log("create");
+                })
+                .catch(error => {
+                    console.error(error);
+                    console.log("Failed to create");
+                });
+        });
+        function openPopup(idobj) {
+            CKFinder.popup( {
+                chooseFiles: true,
+                onInit: function( finder ) {
+                    finder.on( 'files:choose', function( evt ) {
+                        var file = evt.data.files.first();
+                        document.getElementById( idobj ).value = file.getUrl();
+                    } );
+                    finder.on( 'file:choose:resizedImage', function( evt ) {
+                        document.getElementById( idobj ).value = evt.data.resizedUrl;
+                    } );
+                }
+            } );
+        }
+
+    </script>
+
 @endsection
