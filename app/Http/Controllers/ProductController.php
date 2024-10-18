@@ -28,6 +28,7 @@ class ProductController extends Controller
         $query = DB::table('san_pham')
             ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct')
             ->where('id', $id);
+            
         $detail = $query->first();
 
         $query = DB::table('san_pham')
@@ -41,6 +42,7 @@ class ProductController extends Controller
             ->where('san_pham.id_dm', $madm->id_dm)
             ->inRandomOrder()
             ->limit(3);
+
         $relatedpro = $query->get();
 
         $query = DB::table('danh_gia')

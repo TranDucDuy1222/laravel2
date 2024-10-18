@@ -59,6 +59,14 @@
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
+                                    <a href="{{url('/admin/magiamgia')}}" class="sa-nav__link">
+                                        <span class="sa-nav__icon">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </span>
+                                        <span class="sa-nav__title">Mã giảm giá</span>
+                                    </a>
+                                </li>
+                                <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
                                     <a href="{{url('admin/danh-gia')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
                                         <i class="fa-solid fa-comment" style="color: #ffffff;"></i>
@@ -75,7 +83,7 @@
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
-                                    <a href="admin.php?mod=comment&act=comment" class="sa-nav__link">
+                                    <a href="{{url('admin/cai-dat')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
                                             <i class="fa-solid fa-gear fa-spin"></i>
                                         </span>
@@ -102,7 +110,7 @@
                         </button>
                     </div>
                     <div class="sa-toolbar__item">
-                        Administrative Management Systems
+                        Hệ Thống Quản Lý : Trendy U
                     </div>
                     <div class="mx-auto"></div>
 

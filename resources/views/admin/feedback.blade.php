@@ -8,6 +8,18 @@
 
 <!-- sa-app__body -->
 <div id="top" class="sa-app__body">
+@if(session()->has('thongbao'))
+            <div class="toast show align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('thongbao') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+    @endif
     <div class="mx-xxl-3 px-4 px-sm-5">
         <div class="py-5">
             <div class="row g-4 align-items-center">
@@ -17,22 +29,20 @@
             </div>
         </div>
     </div>
-    <select id="an_hien" class="form-select" aria-label="Default select example" style="height: 50px;"
-                    onchange="loctrangthai(this.value)">
-                    <option value="0" {{$an_hien == "0" ? "selected" : ""}}>Đã ẩn</option>
-                    <option value="1" {{$an_hien == "1" ? "selected" : ""}}>Đang hiện</option>
-    </select>
-
-                    <!--Lọc trạng thái bằng JS-->
-                    <script>
-                    function loctrangthai(trang_thai) {
-                        document.location = `/admin/danh-gia?an_hien=${trang_thai}`;
-                    }
-                </script>
-
     <div class="mx-xxl-3 px-4 px-sm-5 pb-6">
+        <select id="an_hien" class="form-select mb-4" aria-label="Default select example" style="height: 50px;"
+                        onchange="loctrangthai(this.value)">
+                        <option value="0" {{$an_hien == "0" ? "selected" : ""}}>Đã ẩn</option>
+                        <option value="1" {{$an_hien == "1" ? "selected" : ""}}>Đang hiện</option>
+        </select>
+        <!--Lọc trạng thái bằng JS-->
+        <script>
+            function loctrangthai(trang_thai) {
+                document.location = `/admin/danh-gia?an_hien=${trang_thai}`;
+            }
+        </script>
         <div class="sa-layout">
-            <div class="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>
+            
             <div class="sa-layout__content">
                 <div class="card table-responsive">
                     <table class="table">
@@ -91,54 +101,60 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button type="button" data-id="{{ $item->id }}" onclick="toggleForm(this)" style="background-color: white; color: black; border: 2px solid black; border-radius: 10px;">Xem</button>
+                                    <!-- <button type="button" data-id="{{ $item->id }}" onclick="toggleForm(this)" style="background-color: white; color: black; border: 2px solid black; border-radius: 10px;">Xem</button> -->
+                                    <button type="button" class="btn btn-outline-dark rounded" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">
+                                        Xem
+                                    </button>
+                                    <!-- Form phản hồi -->
+                                    <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <form action="{{ route('danh-gia.update', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Phản hồi đánh giá : ID {{$item->id}}</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="inputPH{{ $item->id }}">Phản hồi</label>
+                                                            <input type="text" name="feedback" class="form-control" id="inputPH{{$item->id}}" placeholder="Vui lòng nhập phản hồi hoặc chọn từ các phản hồi có sẵn" style="margin-bottom: 10px;">
+                                                            <select name="" id="selectOption{{$item->id}}" style="width: 100%; height: 35px;" class="form-control">
+                                                                <option value="">Chọn câu trả lời có sẵn:</option>
+                                                                <option value="">Cảm ơn vì bạn đã mua hàng.</option>
+                                                                <option value="">Xin lỗi vì bạn đã có trải nghiệm không tốt. Nếu bạn cần hỗ trợ, vui lòng liên hệ với tôi:</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group mt-3">
+                                                            <label for="id_user{{ $item->id }}">Đánh giá của người dùng</label>
+                                                            <textarea class="form-control" id="id_user{{ $item->id }}" name="id_user" rows="2" readonly >{{ $item->noi_dung }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-outline-success">Lưu</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
                                     @if ($item->an_hien == 1)
-                                        <form action="{{route('danh-gia.hide', $item->id)}}">
+                                        <form action="{{route('danh-gia.hide', $item->id)}}" method="post">
                                             @csrf
-                                            <button style="background-color: white; color: red; border: 2px solid red; border-radius: 10px;">Ẩn</button>
+                                            <button class="btn btn-outline-danger rounded">Ẩn</button>
                                         </form>
                                     @else
-                                        <form action="{{route('danh-gia.show', $item->id)}}">
+                                        <form action="{{route('danh-gia.show', $item->id)}}"  method="post">
                                             @csrf
-                                            <button style="background-color: white; color: green; border: 2px solid green; border-radius: 10px;">Hiện</button>
+                                            <button class="btn btn-outline-success rounded">Hiện</button>
                                         </form>
                                     @endif
                                 </td>
-                                <!-- Form phản hồi -->
-
-                                <div id="fph{{$item->id}}" style="display: none;" class="pt-4" >
-                                    <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-                                        <div>
-                                            <div>
-                                                <h5>Phản hồi người mua: {{$item->id}}</h5>
-                                            </div>
-                                            <form action="{{route('danh-gia.update', $item->id)}}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="form-group">
-                                                    <h8 style="display: block; text-align: center; font-size: larger;">Chuẩn bị thông tin</h8>
-                                                    <textarea readonly class="form-control my-2">{{$item->noi_dung}}</textarea>
-                                                    <input type="text" name="feedback" class="form-control" id="inputPH{{$item->id}}" placeholder="Vui lòng nhập phản hồi hoặc chọn từ các phản hồi có sẵn" style="margin-bottom: 10px;">
-                                                    <select name="" id="selectOption{{$item->id}}" style="width: 100%; height: 35px;">
-                                                        <option value="">Chọn câu trả lời có sẵn:</option>
-                                                        <option value="">Cảm ơn vì bạn đã mua hàng.</option>
-                                                        <option value="">Xin lỗi vì bạn đã có trải nghiệm không tốt. Nếu bạn cần hỗ trợ, vui lòng liên hệ với tôi:</option>
-                                                    </select>
-                                                </div>
-                                                <br>
-                                                <div style="text-align: center;">
-                                                    <input type="submit" name="feedbacks" class="btn btn-outline-secondary" value="Gửi">
-                                                    <button type="button" data-id="{{ $item->id }}" class="btn btn-outline-secondary" onclick="toggleForm(this)">
-                                                        Đóng
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                             </tr>
+                            
                             @endforeach
                         </tbody>
                     </table>
@@ -149,6 +165,7 @@
         </div>
     </div>
 </div>
+
 
 
 <script type="text/javascript">
@@ -170,23 +187,5 @@
             }
         });
     });
-
-    // function showForm(madg) {
-    //     document.getElementById('fph' + madg).style.display = 'block';
-    // }
-
-    // function hideForm(madg) {
-    //     document.getElementById('fph' + madg).style.display = 'none';
-    // }
-    function toggleForm(element) {
-        var id_dg = element.getAttribute('data-id');
-        var form = document.getElementById('fph' + id_dg);
-
-        if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'block';
-        } else {
-            form.style.display = 'none';
-        }
-    }
 </script>
 @endsection
