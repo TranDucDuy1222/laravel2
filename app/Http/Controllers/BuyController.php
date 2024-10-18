@@ -2,84 +2,161 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GioHang;
+use App\Models\SanPham;
+use App\Models\Size;
+use App\Models\MaGiamGia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class BuyController extends Controller
 {
-    function __construct(Request $request){
-        $tongsp = 0;
-        $cart = '';
-        if (!empty($request->session()->get('cart') )) {
-            $cart =  $request->session()->get('cart') ;
-            for ( $i=0; $i<count($cart) ; $i++) {
-                $sp = $cart[$i];
-                $tongsp += $sp['soluong'];
-            }
-        }else{
-            $cart = 0;
+    public function themvaogio(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
         }
-        $query = DB::table('danhmuc')
-        ->select('madm', 'tendm')
-        ->orderBy('madm', 'asc');
-        $danhmuc = $query->get();
-        \View::share('danhmuc', $danhmuc);
-        
-    }
-    function themvaogio(Request $request, $masp = 0, $soluong=1){
-        if ($request->session()->exists('cart')==false) {//chưa có cart trong session           
-            $request->session()->push('cart', ['masp'=> $masp,  'soluong'=> $soluong]);          
-        } else {// đã có cart, kiểm tra id_sp có trong cart không
-            $cart =  $request->session()->get('cart'); 
-            $index = array_search($masp, array_column($cart, 'masp'));
-            if ($index!=''){ //id_sp có trong giỏ hàng thì tăhg số lượng
-                $cart[$index]['soluong']+=$soluong;
-                $request->session()->put('cart', $cart);
-            }
-            else { //sp chưa có trong arrary cart thì thêm vào 
-                $cart[]= ['masp'=> $masp, 'soluong'=> $soluong];
-                $request->session()->put('cart', $cart);
-            }    
-        }        
-    }
-    function hiengiohang(Request $request){
-        $cart =  $request->session()->get('cart'); 
-        $tongtien = 0;   
-        $tongsoluong=0;
-        $giasp = 0;
-        for ( $i=0; $i<count($cart) ; $i++) {
-          $sp = $cart[$i]; // $sp = [ 'id_sp' =>100, 'soluong'=>3]
-          $ten_sp = DB::table('sanpham')->where('maps', $sp['masp'] )->value('tensp');
-          $gia_km = DB::table('sanpham')->where('masp', $sp['masp'] )->value('giakhuyenmai');
-          $gia = DB::table('sanpham')->where('masp', $sp['masp'] )->value('gia');
-          $hinh = DB::table('sanpham')->where('masp', $sp['masp'] )->value('anhsp');  
-          if ($gia_km>0 && $gia_km<$gia) {
-            $thanhtien = $gia_km*$sp['soluong'];
-          }else {
-            $thanhtien = $gia*$sp['soluong'];
-          }
-          $tongsoluong+=$sp['soluong'];
-          $tongtien += $thanhtien;
-          if ($gia_km>0 && $gia_km<$gia) {
-            
-          }
-          $sp['ten_sp'] = $ten_sp;
+        $soluong = $request->input('soluong', 1);
+        $sanPham = SanPham::findOrFail($id);
+        $size = $request->input('size');
+        $sizeInfo = Size::where('id_product', $id)
+                    ->where('size_product', $size)
+                    ->first();
+        if (!$sizeInfo) {
+            return redirect()->back()->with('error', 'Size không tồn tại.');
+        }
 
-          $sp['gia'] = $gia_km;
-          $sp['hinh'] = $hinh;
-          $sp['thanhtien'] = $thanhtien;
-          $cart[$i] = $sp;
+        if ($sizeInfo->so_luong <= 0) {
+            return redirect()->back()->with('error', 'Size này đã hết hàng.');
         }
-        $request->session()->put('cart', $cart);
-        return view('user.home_giohang', compact(['cart', 'tongsoluong','tongtien']));
-    }
-    function xoasptronggio(Request $request, $id =0){
-        $cart =  $request->session()->get('cart'); 
-        $index = array_search($id, array_column($cart, 'id_sp'));
-        if ($index!=''){ 
-            array_splice($cart, $index, 1);
-            $request->session()->put('cart', $cart);
+        $userId = Auth::id();
+        $gioHang = GioHang::where('user_id', $userId)
+                        ->where('id_sp', $id)
+                        ->where('id_size', $sizeInfo->id)
+                        ->first();
+        if ($gioHang) {
+            $gioHang->so_luong += $soluong;
+        } else {
+            $gioHang = new GioHang();
+            $gioHang->user_id = $userId;
+            $gioHang->id_sp = $sanPham->id;
+            $gioHang->id_size = $sizeInfo->id;
+            $gioHang->so_luong = $soluong;
         }
-        return redirect('/hiengiohang');
+        $gioHang->save();
+        return redirect()->route('cart.gio-hang')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng.');
     }
+
+    public function hiengiohang()
+    {
+        $userId = Auth::id();
+        $gioHangs = GioHang::with(['sanPham', 'size'])
+                        ->where('user_id', $userId)
+                        ->get();
+        $discountAmount = session('discountAmount') ?? 0;
+        $totalAmount = $gioHangs->sum(function($item) {
+            return $item->sanPham->gia * $item->so_luong;
+        });
+        $totalPayable = $totalAmount - $discountAmount;
+
+        $availableVouchers = MaGiamGia::where('is_active', true)->get();
+
+        return view('user.home_giohang', compact('gioHangs', 'totalAmount', 'totalPayable', 'discountAmount', 'availableVouchers'));
+    }
+
+    public function xoasptronggio($idsp)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng.');
+        }
+        $userId = Auth::id();
+        $gioHang = GioHang::where('user_id', $userId)
+                        ->where('id_sp', $idsp)
+                        ->first();
+        if ($gioHang) {
+            $gioHang->delete();
+            return redirect()->route('cart.gio-hang')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
+        } else {
+            return redirect()->route('cart.gio-hang')->with('error', 'Sản phẩm không tồn tại trong giỏ hàng.');
+        }
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $gioHang = GioHang::findOrFail($id);
+        $gioHang->so_luong = $request->input('quantity');
+        $gioHang->save();
+
+        $userId = Auth::id();
+        $gioHangs = GioHang::with(['sanPham', 'size'])->where('user_id', $userId)->get();
+
+        // Tính lại tổng tiền sản phẩm
+        $totalAmount = $gioHangs->sum(function ($item) {
+            return $item->sanPham->gia * $item->so_luong;
+        });
+
+        // Kiểm tra mã giảm giá
+        $discountAmount = 0;
+        if (session()->has('voucher')) {
+            $voucherCode = session('voucher');
+            $voucher = MaGiamGia::where('code', $voucherCode)->first();
+            if ($voucher) {
+                $discountAmount = ($totalAmount * $voucher->phan_tram) / 100;
+            }
+        }
+        // Tính lại tổng tiền sau khi áp dụng mã giảm giá
+        $totalPayable = $totalAmount - $discountAmount;
+
+        session()->put('discountAmount', $discountAmount);
+        session()->put('totalPayable', $totalPayable);
+
+        return redirect()->route('cart.gio-hang')->with('success', 'Cập nhật số lượng sản phẩm thành công!');
+    }
+
+    
+    public function applyVoucher(Request $request)
+    {
+        $userId = Auth::id();
+        $gioHangs = GioHang::with(['sanPham', 'size'])
+                        ->where('user_id', $userId)
+                        ->get();
+
+        // Tìm mã giảm giá theo code người dùng nhập vào
+        $voucher = MaGiamGia::where('code', $request->input('voucher'))->first();
+        if (!$voucher) {
+            return redirect()->route('cart.gio-hang')->withErrors(['voucher' => 'Mã giảm giá không hợp lệ.']);
+        }
+
+        // Tính tổng tiền sản phẩm trong giỏ hàng
+        $totalAmount = $gioHangs->sum(function ($item) {
+            return $item->sanPham->gia * $item->so_luong;
+        });
+
+        // Tính giá giảm giá
+        $discountAmount = ($totalAmount * $voucher->phan_tram) / 100;
+
+        // Tính tổng số tiền sau khi áp dụng mã giảm giá
+        $totalPayable = $totalAmount - $discountAmount;
+
+        // Lưu thông tin vào session
+        session()->put('voucher', [
+            'code' => $voucher->code,
+            'amount' => $voucher->phan_tram,
+        ]);
+        session()->put('discountAmount', $discountAmount);
+        session()->put('totalPayable', $totalPayable);
+
+        return redirect()->route('cart.gio-hang')->with('success', 'Áp dụng mã giảm giá thành công!');
+    }
+
+    public function removeVoucher()
+    {
+        session()->forget('voucher');
+        session()->forget('discountAmount');
+
+        return redirect()->route('cart.gio-hang')->with('success', 'Đã hủy mã giảm giá.');
+    }
+
+
+
 }

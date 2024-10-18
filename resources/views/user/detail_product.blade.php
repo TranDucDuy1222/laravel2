@@ -37,17 +37,17 @@ Chi Tiết : {{$detail->ten_sp}}
 @section('content')
 
 <!-- Detail -->
-<section class="container section mt-4 text-black">
+<!-- <section class="container section mt-4 text-black">
   <div class="row">
     <div class="col-sm-12 col-xl-8">
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-sm-2"> -->
           <!-- <img src="public/img/nikeair3.png" alt="" class="w-100 img-nho my-1">
                     <img src="public/img/nikeair3.1.png" alt="" class="w-100 img-nho my-1">
                     <img src="public/img/nikeair3.2.png" alt="" class="w-100 img-nho my-1">
                     <img src="public/img/nikeair3.3.png" alt="" class="w-100 img-nho my-1">
                     <img src="public/img/nikeair3.4.png" alt="" class="w-100 img-nho my-1"> -->
-        </div>
+        <!-- </div>
         <div class="col-sm-10">
           <img src="{{ asset('/uploads/product/'.$detail->hinh) }}"
             onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="w-100" alt="..." height="650px" >
@@ -67,9 +67,9 @@ Chi Tiết : {{$detail->ten_sp}}
       <div class="d-flex">
         <s class="text-secondary fs-4">{{$giaold}}</s>
         <p class="ms-4 text-danger fs-4"> {{$gia_chinh}} đ</p>
-      </div>
+      </div> -->
       <!-- Button trigger modal -->
-      <strong data-bs-toggle="modal" data-bs-target="#exampleModal" class="fs-5"><u>Xem chi tiết về sản
+      <!-- <strong data-bs-toggle="modal" data-bs-target="#exampleModal" class="fs-5"><u>Xem chi tiết về sản
           phẩm</u></strong>
       <p>
         {{$detail->mo_ta_ngan}}
@@ -111,6 +111,26 @@ Chi Tiết : {{$detail->ten_sp}}
           <button onclick='history.back()' class='btn btn-outline-dark rounded-pill'>Xem Sản Phẩm Khác</button>
         </div>
       </div>
+      <form action="{{ route('cart.add', ['id' => $detail->id]) }}" method="GET">
+    <div class="form-group">
+        <label for="size">Chọn size:</label>
+        <select name="size" id="size" class="form-control" required>
+            @foreach($size as $sizeItem)
+                @if($sizeItem->so_luong > 0)
+                    <option value="{{ $sizeItem->size_product }}">{{ $sizeItem->size_product }} - Còn lại: {{ $sizeItem->so_luong }}</option>
+                @else
+                    <option value="{{ $sizeItem->size_product }}" disabled>{{ $sizeItem->size_product }} - Hết hàng</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Số lượng:</label>
+        <input type="number" name="soluong" id="quantity" class="form-control" min="1" value="1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
+</form>
+
       <hr>
       <div class="accordion" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
@@ -133,8 +153,8 @@ Chi Tiết : {{$detail->ten_sp}}
       </div>
     </div>
   </div>
-  <br>
-  <h3><u>Bạn Có Thể Thích <i class="fa-solid fa-arrow-down fa-bounce"></i></u></h3>
+  <br> -->
+  <!-- <h3><u>Bạn Có Thể Thích <i class="fa-solid fa-arrow-down fa-bounce"></i></u></h3>
   <div class="row">
     @foreach ($relatedpro as $item)
       @php
@@ -159,7 +179,7 @@ Chi Tiết : {{$detail->ten_sp}}
                 </a>
                 <div class="row">
                   <div class="col-sm-6">
-                    {{$item->ten_dm}}
+                   {{$item->ten_dm}} 
                   </div>
                   <div class="col-sm-6">
                     <strong> {{$gia_chinh}} đ</strong>
@@ -196,9 +216,9 @@ Chi Tiết : {{$detail->ten_sp}}
     </div>
   </div>
   @endforeach
-</section>
+</section> -->
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content m-auto" style="width: 700px;">
       <div class="modal-header">
@@ -216,7 +236,7 @@ Chi Tiết : {{$detail->ten_sp}}
         <br>
         <p>
           {{$detail->mo_ta_ct}}
-        </p>
+        </p> -->
         <!-- <ul>
           <label>Những lợi ích</label>
           <p>Cặp da tổng hợp với lưới thoáng khí mang lại kết cấu bền bỉ, thoáng khí và thoải mái.</p>
@@ -233,13 +253,13 @@ Chi Tiết : {{$detail->ten_sp}}
           <p>Phong cách: FJ3286-001</p>
           <p>Quốc gia/Khu vực xuất xứ: Indonesia</p>
         </ul> -->
-      </div>
+      <!-- </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- End Detail -->
 
 <!-- <script src="{{ asset('/up/js/size&color.js') }}"></script> -->
@@ -256,6 +276,273 @@ Chi Tiết : {{$detail->ten_sp}}
     });
   });
 </script> -->
+    <div class="app-content">
+        <div class="pt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="pd mb-4">
+                            <div class="pd-wrap">
+                                <div id="pd-o-initiate">
+                                    <div class="pd-o-img-wrap">
+                                        <img src="{{ asset('/uploads/product/'.$detail->hinh) }}"
+                                        onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="img-fluid" alt="...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="pd-detail">
+                            <div>
+                                <span class="pd-detail__name">{{$detail->ten_sp}}</span>
+                                <!-- <span class="section__span u-c-silver"></span> -->
+                            </div>
+                            <div>
+                                <div class="pd-detail__inline">
+                                    <span class="pd-detail__price">{{$gia_chinh}} VND</span>
+                                    <del class="pd-detail__del">{{$giaold}} VND</del>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="pd-detail__rating gl-rating-style"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                    <span class="pd-detail__review u-s-m-l-4">
+                                        <a data-click-scroll="#view-review">23 Reviews</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <span class="pd-detail__preview-desc">{{$detail->mo_ta_ngan}}</span></div>
+                            <div class="mb-3">
+                                <div class="pd-detail__inline">
+                                    <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
+                                        <a href="signin.html">Thêm vào danh sách yêu thích</a>
+                                        <span class="pd-detail__click-count">(222)</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <form class="pd-detail__form" action="{{ route('cart.add', ['id' => $detail->id]) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <div class="d-flex">
+                                            <span class="pd-detail__label mb-2">Size:</span>
+                                            <p class="ms-auto">Hướng dẫn chọn kích cở </p>
+                                        </div>
+                                        <div class="pd-detail__size">
+                                        @foreach ($size as $ssl)
+                                            @if ($ssl->so_luong > 0)
+                                                <div class="size__radio">
+                                                    <input type="radio" id="size-{{ $loop->index }}" name="size" value="{{ $ssl->size_product }}" data-size="{{ $ssl->size_product }}">
+                                                    <label class="size__radio-label" for="size-{{ $loop->index }}">{{ $ssl->size_product }}</label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                        <div id="error-message" style="color: red; display: none;">Vui lòng chọn size trước khi thêm vào giỏ hàng.</div>
+                                        </div>
+                                    </div>
+                                    <div class="pd-detail-inline-2">
+                                        <div class="mb-3">
+                                            <span class="pd-detail__label mb-2" for="quantity">Số lượng:</span>
+                                        </div>
+                                        <div class="mb-3 ms-4">
+                                            <div class="input-counter">
+                                                <input class="input-counter__text input-counter--text-primary-style" type="number" name="soluong" id="quantity" class="form-control" min="1" value="1" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="my-3 col-lg-6">
+                                            <button class="btn btn--e-brand-b-2" type="submit">Thêm vào giỏ hàng</button>
+                                        </div>
+                                        <div class="my-3 col-lg-6">
+                                            <button class="btn btn--e-grey-b-2" type="submit">Thêm vào giỏ hàng</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="accordion" id="accordionPanelsStayOpenExample">
+                                        <div class="accordion-item ">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false"
+                                                    aria-controls="panelsStayOpen-collapseFour">
+                                                    <strong>Giao hàng và trả hàng miễn phí</strong>
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse p-2">
+                                                Giao hàng và trả lại miễn phí<br>
+                                                Đơn hàng từ 5.000.000₫ trở lên của bạn sẽ được giao hàng tiêu chuẩn miễn phí.<br>
+                                                <li>Giao hàng tiêu chuẩn 4-5 ngày làm việc</li>
+                                                <li>Chuyển phát nhanh 2-4 ngày làm việc</li>
+                                                Đơn hàng được xử lý và giao từ Thứ Hai đến Thứ Sáu (trừ ngày lễ)<br>
+                                                Thành viên Nike được hưởng lợi nhuận miễn phí
+                                            </div>
+                                        </div>
+                                    </div>+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="pd-tab">
+                            <div class="mb-4">
+                                <ul class="pd-tab__list nav mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">MÔ TẢ</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">ĐÁNH GIÁ</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                                    <div class="pd-tab__desc">
+                                        <div class="mb-3">
+                                            <p>Văn học (Tiếng Anh: literature) theo cách nói chung nhất, là bất kỳ tác phẩm nào bằng văn bản. Hiểu theo nghĩa hẹp hơn, thì văn học là dạng văn bản được coi là một hình thức nghệ thuật, hoặc bất kỳ một bài viết nào được coi là có giá trị nghệ thuật hoặc trí tuệ, thường là do cách thức triển khai ngôn ngữ theo những cách khác với cách sử dụng bình thường.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                                    <div class="pd-tab__rev">
+                                        <div class="mb-4">
+                                            <form class="pd-tab__rev-f1">
+                                                <div class="rev-f1__group">
+                                                    <div class="mb-2">
+                                                        <h2>23 Đánh giá</h2>
+                                                    </div>
+                                                </div>
+                                                @foreach ($comment as $item )
+                                                <div class="rev-f1__review">
+                                                    <div class="review-o mb-3">
+                                                        <div class="review-o__info mb-2">
+                                                            <span class="review-o__name">{{$item->name}} </span>
+                                                            <span class="review-o__date">{{$item->thoi_diem}}</span>
+                                                        </div>
+                                                        <div class="review-o__rating gl-rating-style mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                                            <span>(4)</span>
+                                                        </div>
+                                                        <p>Phân Loại : {{$item->ten_sp}} </p>
+                                                        <p><strong>Chất lượng sản phẩm:</strong> {{$item->quality_product}}</p>
+                                                        <p class="review-o__text">{{$item->noi_dung}}.</p>
+                                                        <div class="col-xl-9 card">
+                                                            <img src="/img/{{$item->hinh_dg}}" alt="Ảnh từ người mua" class="col-xl-3">
+                                                        </div>
+                                                        @if (!empty($item->feedback))
+                                                          <p class="ms-2" ><strong>Phản Hồi từ người bán :</strong> <br> {{$item->feedback}}.</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            </form>
+                                        </div>
+                                        <div class="mb-4">
+                                            <form class="pd-tab__rev-f2">
+                                                <h2 class="mb-3">Viết đánh giá</h2>
+                                                <div class="mb-4">
+                                                    <div class="rev-f2__table-wrap gl-scroll">
+                                                        <div class="review-o__rating gl-rating-style mb-2"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="rev-f2__group">
+                                                    <div class="mb-3">
+                                                        <label class="gl-label" for="reviewer-text">Nội dung *</label><textarea class="text-area text-area--primary-style" id="reviewer-text"></textarea></div>
+                                                    <div>
+                                                        <p class="mb-4">
+                                                            <label class="gl-label" for="reviewer-name">Tên *</label>
+                                                            <input class="input-text input-text--primary-style" type="text" id="reviewer-name">
+                                                        </p>
+                                                        <p class="mb-4">
+                                                            <label class="gl-label" for="reviewer-email">Email *</label>
+                                                            <input class="input-text input-text--primary-style" type="text" id="reviewer-email">
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn--e-brand-shadow" type="submit">Gửi</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-5">
+            <div class="section__intro mb-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section__text-wrap">
+                                <h1 class="section__heading u-c-secondary mb-2">BẠN CÓ THỂ THÍCH</h1>
+                                <span class="section__span u-c-silver"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section__content">
+                <div class="container">
+                    <div class="row">
+                    @foreach ($relatedpro as $item)
+                        @php
+                            if ($item->gia_km > 0) {
+                                $gia_moi = $item->gia_km;
+                                //   $giaold = '<del>' . $gia . '</del>';
+                            } else {
+                                $gia_moi = $item->gia;
+                            }
+                            $num = $gia_moi;
+                            $gia_chinh = number_format($num, 0, '', '.');
+                        @endphp
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
+                            <div class="product-r" style="height: 100%;">
+                                <div class="product-r__container">
+                                    <a class="aspect aspect--bg-grey aspect--square d-block" href="">
+                                        <img class="aspect__img" src="{{ asset('/uploads/product/'.$item->hinh) }}"
+                                        onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" alt="">
+                                    </a>
+                                    <div class="product-r__action-wrap">
+                                        <ul class="product-r__action-list">
+                                            <li>
+                                                <a href=""><i class="fas fa-search-plus text-secondary"></i></a></li>
+                                            <li>
+                                                <a href=""><i class="fas fa-shopping-bag text-secondary"></i></a></li>
+                                            <li>
+                                                <a href=""><i class="fas fa-heart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-r__info-wrap">
+                                    <span class="product-r__category">
+                                        <a href="">{{$item->ten_dm}}</a>
+                                    </span>
+                                    <div class="product-r__n-p-wrap">
+                                        <span class="product-r__name">
+                                            <a href="">{{$item->hinh}} </a>
+                                        </span>
+                                        <span class="product-r__price">{{$gia_chinh}} VND</span>
+                                    </div>
+                                    <span class="product-r__description"></span>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let selectedSize = null;

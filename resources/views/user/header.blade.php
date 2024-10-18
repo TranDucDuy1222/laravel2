@@ -3,6 +3,7 @@
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="csrf-token" content="{{ csrf_token() }}">
       <title>
             @yield('title')
       </title>
@@ -40,11 +41,10 @@
                       <a class="main-logo" href="/">
                         <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
                       </a>
-
                         <form class="main-form">
-                          <div class="d-flex ms-2 search-box">
+                          <div class="d-flex ms-2 search-box input-text input-text--border-radius input-text--style-1">
                             <i class="fa-solid fa-magnifying-glass fa-fade"></i>
-                            <input class="form-control" type="search" name="keyw" placeholder="Nhập...">
+                            <input class=" input-text--style-1" type="search" name="keyw" placeholder="Nhập...">
                           </div>
                         </form>
                         <div class="menu-init">
@@ -77,7 +77,7 @@
                                 <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                             </div>
-                            <ul class="navbar-nav ms-auto">
+                            <ul class="navbar-nav ms-auto ah-list--design2 ah-list--link-color-secondary">
                               <li class="nav-item">
                                 <a class="nav-link fz" href="/allproduct">
                                   Mới và Nổi Bật
@@ -94,7 +94,7 @@
                     </div>
                     <div class="menu-init">
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample3" aria-controls="offcanvasExample3">
-                            <span class="fas fa-shopping-bag"></span>
+                            <i class="fas fa-shopping-bag"></i>
                         </button>
                         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample3" aria-labelledby="offcanvasExampleLabel3">
                             <div class="offcanvas-header">
@@ -102,48 +102,48 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                             </div>
                             <ul class="navbar-nav ms-auto me-lg-3">         
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid fa-user"></i>  
-              </a>
-              <ul class="dropdown-menu" id="userDropdown">
-                @if (Auth::check())
-                  <li class="dropdown-item">{{Auth::user()->name}}!</li>
-                  <hr>
-                  <li ><a class="dropdown-item" href="">Quản Lý Tài Khoản</a></li>
-                  <hr>
-                  <li ><a class="dropdown-item" href="">Đơn Hàng Đã Mua</a></li>
-                  <hr>
-                  <li ><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
-                @else
-                  <li ><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
-                  <li ><a class="dropdown-item" href="/signup">Đăng Ký</a></li>
-                  <li ><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
-                @endif
-              </ul>
-              
-            </li>   
-            <li class="nav-item dropdown">
-              <a class="nav-link fz dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Hỗ Trợ
-              </a>
-              <ul class="dropdown-menu" id="userDropdown">
-                <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
-                <li><a class="dropdown-item" href="#">Liên Hệ Chúng Tôi</a></li>
-                <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
-                <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
-                <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>
-              </ul>
-            </li>  
-            <li class="nav-item position-relative" style="width: 35px;">
-                <a class="nav-link" href="" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    0
-                  </span>
-                </a>  
-            </li>
-          </ul>
+                            <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="far fa-user-circle"></i>  
+                              </a>
+                              <ul class="dropdown-menu" id="userDropdown">
+                                @if (Auth::check())
+                                  <li class="dropdown-item">{{Auth::user()->name}}!</li>
+                                  <hr>
+                                  <li ><a class="dropdown-item" href="">Quản Lý Tài Khoản</a></li>
+                                  <hr>
+                                  <li ><a class="dropdown-item" href="">Đơn Hàng Đã Mua</a></li>
+                                  <hr>
+                                  <li ><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
+                                @else
+                                  <li ><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+                                  <li ><a class="dropdown-item" href="/signup">Đăng Ký</a></li>
+                                  <li ><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
+                                @endif
+                              </ul>
+                              
+                            </li>   
+                            <li class="nav-item dropdown">
+                              <a class="nav-link fz dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Hỗ Trợ
+                              </a>
+                              <ul class="dropdown-menu" id="userDropdown">
+                                <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
+                                <li><a class="dropdown-item" href="#">Liên Hệ Chúng Tôi</a></li>
+                                <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
+                                <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
+                                <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>
+                              </ul>
+                            </li>  
+                            <li class="nav-item position-relative" style="width: 35px;">
+                                <a class="nav-link" href="" >
+                                  <i class="fas fa-shopping-bag"></i>
+                                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    0
+                                  </span>
+                                </a>  
+                            </li>
+                          </ul>
                         </div>
                     </div>
                 </div>

@@ -11,4 +11,9 @@ class Size extends Model
     protected $table = 'sizes';
     public $primaryKey = 'id';
     public $fillable = ['size_product', 'so_luong', 'id_product'];
+
+    public function sanPham()
+    {
+        return $this->belongsTo(SanPham::class, 'id_product');
+    }
 }
