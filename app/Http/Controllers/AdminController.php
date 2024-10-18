@@ -25,6 +25,7 @@ class AdminController extends Controller
             if ($user) {
                 // Truy cập thuộc tính role
                 if ($user->role == 1) {
+                    session(['user_role' => $user->role]);
                     return redirect('admin/');
                 } else {
                     return back()->with('thongbao', 'Bạn không đủ quyền hạn');
