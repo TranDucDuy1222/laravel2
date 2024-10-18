@@ -33,13 +33,14 @@
       
 </head>
 <body>
+<body>
   <!-- Nav   -->
   <nav class="header--style">
             <nav class="primary-nav primary-nav-wrapper--border">
                 <div class="container">
                     <div class="primary-nav">
                       <a class="main-logo" href="/">
-                        <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
+                        <img src="{{ asset('uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
                       </a>
 
                         <form class="main-form">
@@ -111,7 +112,7 @@
                 @if (Auth::check())
                   <li class="dropdown-item">{{Auth::user()->name}}!</li>
                   <hr>
-                  <li ><a class="dropdown-item" href="">Quản Lý Tài Khoản</a></li>
+                  <li><a class="dropdown-item" href="{{ route('user.profile', [Auth::user()->id]) }}">Quản Lý Tài Khoản</a></li>
                   <hr>
                   <li ><a class="dropdown-item" href="">Đơn Hàng Đã Mua</a></li>
                   <hr>

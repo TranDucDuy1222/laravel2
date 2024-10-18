@@ -4,13 +4,21 @@ Chi Tiết : {{$detail->ten_sp}}
 @endsection
 
 @section('category')
-@foreach ($danhmuc as $category)
-  <li class="nav-item">
-  <a class="nav-link fz" href="/category/{{$category->id}}">
-    {{$category->ten_dm}}
-  </a>
-  </li>
-@endforeach
+    @foreach ($loai as $category)
+        <li class="nav-item dropdown">
+            <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                href="{{ url('/category/' . $category->slug) }}">
+                {{$category->ten_loai}}
+            </a>
+            <ul class="dropdown-menu" id="userDropdown">
+                @foreach ($danh_muc as $dm)
+                    @if ($dm->id_loai == $category->id)
+                        <li class="hover-dm"><a class="dropdown-item" href="{{$dm->slug}}">{{$dm->ten_dm}}</a></li>
+                    @endif
+                @endforeach
+            </ul>
+        </li>
+    @endforeach
 @endsection
 
 @php
@@ -29,7 +37,7 @@ Chi Tiết : {{$detail->ten_sp}}
 @section('content')
 
 <!-- Detail -->
-<section class="container section">
+<section class="container section mt-4 text-black">
   <div class="row">
     <div class="col-sm-12 col-xl-8">
       <div class="row">
@@ -41,7 +49,8 @@ Chi Tiết : {{$detail->ten_sp}}
                     <img src="public/img/nikeair3.4.png" alt="" class="w-100 img-nho my-1"> -->
         </div>
         <div class="col-sm-10">
-          <img src="/img/{{$detail->hinh}}" onerror="this.src='/imgnew/{{$detail->hinh}}'" alt="" class="w-100">
+          <img src="{{ asset('/uploads/product/'.$detail->hinh) }}"
+            onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="w-100" alt="..." height="650px" >
         </div>
       </div>
     </div>
@@ -141,7 +150,8 @@ Chi Tiết : {{$detail->ten_sp}}
       <div class="col-xl-4">
       <div class="card">
               <a href="/detail/{{$item->id}}" id="hover-img-home">
-                <img src="/img/{{$item->hinh}}" alt="" class="w-100">
+                <img src="{{ asset('/uploads/product/'.$item->hinh) }}"
+                  onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="w-100" alt="..." height="300px" >
               </a>
               <div class="card-body text-center">
                 <a href="">
@@ -197,7 +207,8 @@ Chi Tiết : {{$detail->ten_sp}}
       </div>
       <div class="modal-body">
         <div class="container row">
-          <img src="{{ asset('imgnew/' . $detail->hinh) }}" alt="" class="img-nho col-xl-4">
+          <img src="{{ asset('/uploads/product/'.$detail->hinh) }}"
+          onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" alt="" class="img-nho col-xl-4">
           <p class="col-xl-8">
             {{$detail->ten_sp}}
           </p>

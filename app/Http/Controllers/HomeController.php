@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\Loai;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
 Paginator::useBootstrap();
 
@@ -19,20 +20,6 @@ class HomeController extends Controller
         $danh_muc = DB::table('danh_muc')->get();
         \View::share('loai', $loai);
         \View::share('danh_muc', $danh_muc);
-    
-        $thoiGianHt24 = Carbon::now()->hour; // Lấy giờ hiện tại theo định dạng 24 giờ
-    $thoiGianHt12 = Carbon::now()->format('g A'); // Lấy giờ hiện tại theo định dạng 12 giờ với AM/PM
-
-    // Kiểm tra giờ hiện tại theo cả hai định dạng
-    if (($thoiGianHt24 >= 18 || $thoiGianHt24 < 5) || 
-        (strpos($thoiGianHt12, 'PM') !== false && (int)Carbon::now()->format('g') >= 6) || 
-        (strpos($thoiGianHt12, 'AM') !== false && (int)Carbon::now()->format('g') < 5)) {
-        $mauNen = 'dark-mode'; // Màu tối cho khoảng thời gian từ 6 PM đến 5 AM
-    } else {
-        $mauNen = 'light-mode'; // Màu sáng cho khoảng thời gian còn lại
-    }
-
-    \View::share('mauNen', $mauNen);
     }
     
 
