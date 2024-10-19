@@ -8,6 +8,18 @@ Thêm Sản Phẩm
     <!-- sa-app__body -->
     @csrf
     <div id="top" class="sa-app__body">
+        @if(session()->has('thongbao'))
+            <div class="toast show align-items-center text-bg-primary border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('thongbao') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
         <div class="mx-sm-2 px-2 px-sm-3 px-xxl-4 pb-6">
             <div class="container">
                 <div class="py-5">
@@ -27,11 +39,6 @@ Thêm Sản Phẩm
                     data-sa-container-query="{&quot;920&quot;:&quot;sa-entity-layout--size--md&quot;,&quot;1100&quot;:&quot;sa-entity-layout--size--lg&quot;}">
                     <div class="sa-entity-layout__body">
                         <div class="sa-entity-layout__main">
-                            @if(session()->has('thongbao'))
-                            <div class="alert alert-danger p-3 fs-5 text-center">
-                                {!! session('thongbao') !!}
-                            </div>
-                            @endif
                             <div class="card">
                                 <div class="card-body p-5">
                                     <div class="mb-5">

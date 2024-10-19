@@ -8,8 +8,8 @@
                 <div class="sa-sidebar__header">
                     <a class="sa-sidebar__logo" href="index.html">
                         <!-- logo -->
-                        <div class="sa-sidebar-logo">
-                            <span class="h5 mb-0 text-uppercase text-primary bg-dark px-2">NIKE</span>
+                        <div class="sa-sidebar-logo d-flex justify-content-center mt-2">
+                        <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
                         </div>
                         <!-- logo / end -->
                     </a>

@@ -41,7 +41,7 @@ class AdminDonHangController extends Controller
         $donHang->trang_thai = $request->trang_thai;
         $donHang->save();
     
-        return redirect()->route('don-hang.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
+        return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
     }
 
     public function updateTrangThai(Request $request, $id)
@@ -54,7 +54,7 @@ class AdminDonHangController extends Controller
         $donHang->trang_thai = $request->trang_thai;
         $donHang->save();
     
-        return redirect()->route('don-hang.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
+            return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
     }
 }
 
