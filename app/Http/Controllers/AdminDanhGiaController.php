@@ -87,12 +87,12 @@ class AdminDanhGiaController extends Controller
     public function show($id){
         $danh_gia = danh_gia::findOrFail($id);
         
-        if ($danh_gia->trang_thai == 0) {
-            $danh_gia->trang_thai = 1;
+        if ($danh_gia->an_hien == 0) {
+            $danh_gia->an_hien = 1;
             $danh_gia->save();
         }
         
-        return redirect()->route('san-pham.index')->with('thongbao', 'Sản phẩm đã được hiện lại thành công.');
+        return redirect()->route('danh-gia.index')->with('thongbao', 'Đánh giá đã được hiện lại thành công.');
     }
 
     public function hide($id){

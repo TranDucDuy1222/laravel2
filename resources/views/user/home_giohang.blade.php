@@ -1,112 +1,241 @@
 @extends('user.layout')
+
 @section('title')
  Giỏ Hàng - Nike
 @endsection
 
-@section('category')
-@foreach ($danhmuc as $category)
-  <li class="nav-item">
-  <a class="nav-link fz" href="/category/{{$category->madm}}">
-    {{$category->tendm}}
-  </a>
-  </li>
-@endforeach
-@endsection
-
-
 @section('content')
-<!-- giohang -->
-<div style="padding-bottom: 170px; padding-top: 55px;">
-
-<!-- giỏ hàng -->
-<div class="container"> 
-    <h2 class="text-center font-weight-bold" style="letter-spacing: 1px;">Giỏ Hàng Của Tôi</h2>
-<form action="/thanh_toan" method="post">
-    <table id="cart" class="table table-hover table-condensed"> 
-        <thead> 
-            <tr> 
-                <th style="width:5%"></th>
-                <th style="width:40%">Tên sản phẩm</th>
-                <th style="width:10%">Kích cở</th>
-                <th style="width:10%">Màu sắc</th>
-                <th style="width:10%">Giá</th>
-                <th style="width:10%">Số lượng</th>
-                <th style="width:30%" class="text-center">Thành tiền</th>
-                <th style="width:10%"> </th>
-            </tr> 
-        </thead>
-        
-        @php 
-            $tongs = 0;
-            $tong = 0;
-            if (isset($cart)) {
-                echo '<tbody>';
-                //var_dump($_SESSION['cart']);
-                foreach ($cart as $item) {
-                        extract($item);
-                        // Tổng tiền 1 sản phẩm
-                        $tongtien = (int)$giasp * (int)$soluong;
-                        // Tổng tất cả sản phẩm
-                        $tong += $tongtien;
-                        $tongtiens = number_format($tongtien,0,'', '.');
-                        $tongs = number_format($tong,0,'', '.');
-                        $gias = number_format($giasp,0,'', '.');
-                        echo '
-                        <form action="/thanh_toan" method="post">
-                            <input type="hidden" name="l_masp" value="'.$masp.'">
-                            <input type="hidden" name="l_color" value="">
-                            <input type="hidden" name="l_size" value="">
-                        </form>
-                        <tr data-masp="'.$masp.'">
-                        <td><input id="checkbox" type="checkbox" name="select_product[]" value="'.$masp.'" checked></td>
-                        <td data-th="Product"> 
-                            <div class="row"> 
-                                <div class="col-sm-2 hidden-xs">
-                                    <img src="/img/'.$anhsp.'"  alt="Sản phẩm '.$masp.'" class="img-responsive" width="80">
-                                </div> 
-                                <div class="col-sm-10"> 
-                                    <h4 class="nomargin font-weight-bold" style="letter-spacing: 1px; font-size: 18px;">'.$ten_sp.'</h4> 
-                                </div> 
-                            </div> 
-                        </td>
-                        <td >'.$size.'</td>
-                        <td >'.$color.'</td>
-                        <td data-th="Price">'.$gias.'</td> 
-                        <td data-th="Quantity">
-                            <form action="/quality" method="post">
-                                <input type="hidden" name="l_masp" value="'.$masp.'">
-                                <input type="hidden" name="l_color" value="'.$color.'">
-                                <input type="hidden" name="l_size" value="'.$size.'">
-                                <input class="form-control text-center" name="soluong" value="'.$soluong.'" type="number" min="1" onchange="this.form.submit()">
-                            </form>
-                        </td>
-
-                        <td data-th="Subtotal" class="text-center">'.$tongtiens.'</td> 
-                        <td class="actions" data-th="">
-                            <form action="/deletecart" method="post">
-                                <input type="hidden" name="d_masp" value="'.$masp.'">
-                                <input type="hidden" name="d_size" value="'.$size.'">
-                                <input type="hidden" name="d_color" value="'.$color.'">
-                                <button class="btn btn-outline-dark" type="submit">Xóa</button>
-                            </form>
-                        </td>
-                        </tr>';
-                }
-                echo'
-                    <tr>
-                    <td colspan="5"></td>
-                    <td class="text-center" style="padding: 0px; padding-top: 25px; padding-right: 30px;"><button type="button" style="width: 250px;" class="btn btn-dark">Tổng tiền: '.$tongs.' VNĐ</button></td>
-                    <td class="text-center" style="padding: 0px; padding-top: 25px;" >
-                        <input type="hidden" name="giatong" value="'.$tong.'">
-                        <button name="submit-order" type="submit" style="width: 100px;" class="btn btn-dark" >Mua</button>
-                    </td>
-                    </tr>';
-                echo'</tbody>';
-            }
-        @endphp
-    </table>
+<div class="app-content">
+    <div class="pt-5">
+        <div class="section__content">
+            <div class="container">
+                <div class="breadcrumb">
+                    <div class="breadcrumb__wrap">
+                        <ul class="breadcrumb__list">
+                            <li class="has-separator">
+                                <a href="">Trang chủ</a>
+                            </li>
+                            <li class="is-marked">
+                                <a href="{{ route('cart.gio-hang') }}">Giỏ hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
-</form>
+    <div class="pb-5">
+        <div class="section__intro mb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section__text-wrap">
+                            <h1 class="section__heading u-c-secondary">GIỎ HÀNG</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section__content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
+                        <div class="table-responsive">
+                            <table class="table-p">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <span class="table-p__name"><a>Sản phẩm</a></span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <span class="table-p__name"><a>Giá</a></span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <span class="table-p__name"><a>Số lượng</a></span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <span class="table-p__name"><a>Tổng</a></span>
+                                        </td>
+                                    </tr>
+                                    @foreach($gioHangs as $item)
+                                        <tr>
+                                            <td>
+                                                <div class="table-p__box">
+                                                    <div class="table-p__img-wrap">
+                                                        <img class="u-img-fluid" src="{{ asset('/uploads/product/'.$item->sanPham->hinh) }}" alt="{{ $item->sanPham->ten_sp }}">
+                                                    </div>
+                                                    <div class="table-p__info">
+                                                        <span class="table-p__name">
+                                                            <a href="{{ route('product.detail', $item->sanPham->id) }}">{{ $item->sanPham->ten_sp }}</a>
+                                                        </span>
+                                                        <span class="table-p__category">
+                                                            <a href="">{{ $item->sanPham->danhMuc ? $item->sanPham->danhMuc->ten_dm : 'Không xác định' }}</a>
+                                                        </span>
+                                                        <ul class="table-p__variant-list">
+                                                            <li>
+                                                                <span>Size: {{ $item->size->size_product }}</span>
+                                                            </li>
+                                                            <li>
+                                                                <span>Màu: {{ $item->sanPham->color }}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="table-p__price">{{ number_format($item->sanPham->gia) }} VNĐ</span>
+                                            </td>
+                                            <td>
+                                                <div class="table-p__input-counter-wrap">
+                                                    <div class="input-counter">
+                                                        <form action="{{ route('cart.update', $item->id) }}" method="POST" id="form-quantity-{{ $item->id }}">
+                                                            @csrf
+                                                            <span class="input-counter__minus fas fa-minus" onclick="changeQuantity({{ $item->id }}, -1)"></span>
+                                                            <input class="input-counter__text input-counter--text-primary-style" type="number" 
+                                                                name="quantity" value="{{ $item->so_luong }}" 
+                                                                id="quantity-{{ $item->id }}" min="1" 
+                                                                onchange="document.getElementById('form-quantity-{{ $item->id }}').submit();">
+                                                            <span class="input-counter__plus fas fa-plus" onclick="changeQuantity({{ $item->id }}, 1)"></span>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td id="total-price-{{ $item->id }}" class="item-total-price">
+                                                <span class="table-p__price">{{ number_format($item->sanPham->gia * $item->so_luong) }} VNĐ</span>
+                                            </td>
+                                            <td>
+                                                <div class="table-p__del-wrap">
+                                                    <form action="{{ route('cart.remove', $item->id_sp) }}" method="GET" style="display:inline;">
+                                                        <a class="far fa-trash-alt table-p__delete-link" href="#" onclick="event.preventDefault(); this.closest('form').submit(); return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');"></a>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <form class="f-cart" action="{{ route('cart.applyVoucher') }}" method="POST">
+                            @csrf
+                            <div class="f-cart__pad-box">
+                                <div class="mb-3">
+                                    <!-- <div class="newsletter__group mb-4">
+                                        @if($availableVouchers->count() > 0)
+                                            <select class="form-select input-text input-text--primary-style" name="voucher" id="voucher-select" aria-label="Default select example">
+                                                <option value="">Chọn mã giảm giá</option>
+                                                @foreach($availableVouchers as $voucher)
+                                                <option value="{{ $voucher->code }}">{{ $voucher->code }} - {{ $voucher->phan_tram }}% ({{ $voucher->mo_ta ?? 'Không có mô tả' }})</option>
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div> -->
+                                    <div class="newsletter__group mb-4">
+                                        <input class="input-text input-text--primary-style" type="text" placeholder="Nhập mã giảm giá" name="voucher">
+                                        <button class="btn voucher__btn" type="submit">Áp dụng</button>
+                                    </div>
+                                    @if(session('voucher'))
+                                        <div class="route-box row">
+                                            <div class="route-box__g2 col-lg-6">
+                                                <a class="route-box__link" href="">
+                                                    Mã giảm giá: {{ session('voucher.code') }} đã được áp dụng với mức giảm: {{ session('voucher.amount') }}%.
+                                                </a>
+                                            </div>
+                                            <div class="route-box__g1 col-lg-6">
+                                                <a class="route-box__link" href="javascript:void(0);" onclick="removeVoucher()">
+                                                    <i class="fas fa-trash"></i>
+                                                    <span>Hủy mã giảm giá</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+
+                                <table class="f-cart__table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Tổng tiền sản phẩm</td>
+                                            <td id="grand-total">{{ number_format($gioHangs->sum(function($item) {
+                                                return $item->sanPham->gia * $item->so_luong;
+                                            })) }} VNĐ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Voucher giảm giá</td>
+                                            <td id="discount-amount">{{ number_format($discountAmount ?? 0) }} VNĐ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>TỔNG THANH TOÁN</td>
+                                            <td id="total-payable">{{ number_format($totalPayable ?? $gioHangs->sum(function($item) {
+                                                return $item->sanPham->gia * $item->so_luong;
+                                            })) }} VNĐ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <button class="btn btn--e-brand-b-2" type="submit">THANH TOÁN</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="route-box">
+                            <div class="route-box__g1">
+                                <a class="route-box__link" href="">
+                                    <i class="fas fa-long-arrow-alt-left"></i>
+                                    <span>Tiếp tục mua sắm</span>
+                                </a>
+                            </div>
+                            <div class="route-box__g2">
+                                <a class="route-box__link" href=""><i class="fas fa-trash"></i>
+                                    <span>Xóa</span>
+                                </a>
+                                <a class="route-box__link" href=""><i class="fas fa-sync"></i>
+                                    <span>Cập nhật</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+
+<script>
+function changeQuantity(itemId, change) {
+    const quantityInput = document.getElementById(`quantity-${itemId}`);
+    let currentQuantity = parseInt(quantityInput.value);
+    currentQuantity += change;
+    if (currentQuantity < 1) {
+        currentQuantity = 1;
+    }
+    quantityInput.value = currentQuantity;
+    document.getElementById(`form-quantity-${itemId}`).submit();
+}
+
+function removeVoucher() {
+    document.querySelector('.f-cart').action = "{{ route('cart.removeVoucher') }}";
+    document.querySelector('.f-cart').submit();
+}
+</script>
 @endsection

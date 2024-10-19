@@ -41,16 +41,14 @@ Thêm Sản Phẩm
                         <div class="sa-entity-layout__main">
                             <div class="card">
                                 <div class="card-body p-5">
-                                    <div class="mb-5">
-                                        <h2 class="mb-0 fs-exact-18">Basic information</h2>
-                                    </div>
                                     <div class="mb-4">
                                         <label for="form-product/name" class="form-label">Tên</label>
                                         <input value="{{old('ten_sp')}}" type="text" class="form-control" id="form-product/name" name="ten_sp" required />
                                     </div>
                                     <div class="mb-4">
                                         <label for="form-product/description" class="form-label">Mô tả</label>
-                                        <textarea id="description" class="form-control" rows="8" name="mo_ta_ct" required>{{old('mo_ta_ct')}}</textarea>
+                                        <textarea id="description" class="form-control" rows="8" name="mo_ta_ct" style="display: none;">{{ old('mo_ta_ct') }}</textarea>
+                                        <div class="errors" style="color: red; margin-top: 5px;"></div>
                                     </div>
                                     <div>
                                         <label for="form-product/short-description" class="form-label">Mô tả ngắn</label>
@@ -227,7 +225,7 @@ Thêm Sản Phẩm
                                             </div>
                                             <div class="col">
                                                 <label for="form-product/quantity" class="form-label">Số lượng</label>
-                                                <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                                <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
                                             </div>
                                         </div>
                                         <div class="row g-4">
@@ -339,39 +337,34 @@ Thêm Sản Phẩm
     height: 400px;
 }
 </style>
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"> </script>
-    <script src="{{asset('FE/ckfinder/ckfinder.js')}}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            ClassicEditor
-                .create(document.querySelector('#description'), {
-                    language: 'vi'
-                })
-                .then(editor => {
-                    console.log(editor);
-                    console.log("create");
-                })
-                .catch(error => {
-                    console.error(error);
-                    console.log("Failed to create");
-                });
-        });
-        function openPopup(idobj) {
-            CKFinder.popup( {
-                chooseFiles: true,
-                onInit: function( finder ) {
-                    finder.on( 'files:choose', function( evt ) {
-                        var file = evt.data.files.first();
-                        document.getElementById( idobj ).value = file.getUrl();
-                    } );
-                    finder.on( 'file:choose:resizedImage', function( evt ) {
-                        document.getElementById( idobj ).value = evt.data.resizedUrl;
-                    } );
-                }
-            } );
-        }
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        ClassicEditor.create(document.querySelector('#description'), { language: 'vi' })
+            .then(editor => {
+                const form = document.querySelector('form');
+                const errorDiv = document.querySelector('.errors');
+                errorDiv.style.display = 'none'; // Ẩn thông báo lỗi khi tải trang
 
-    </script>
+                form.addEventListener('submit', function (event) {
+                    // Cập nhật nội dung từ CKEditor vào textarea
+                    document.querySelector('#description').value = editor.getData();
+
+                    // Kiểm tra nếu mô tả trống
+                    if (!document.querySelector('#description').value.trim()) {
+                        event.preventDefault();
+                        errorDiv.textContent = 'Yêu cầu nhập mô tả';
+                        errorDiv.style.display = 'block';
+                    } else {
+                        errorDiv.style.display = 'none';
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("Không thể tạo editor", error);
+            });
+    });
+</script>
 
 @endsection

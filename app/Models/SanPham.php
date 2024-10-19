@@ -16,4 +16,14 @@ class SanPham extends Model
     protected $dates = ['ngay'];
     protected $fillable = ['ten_sp','slug', 'gia','gia_km','id_dm',
     'hinh', 'mo_ta_ct', 'mo_ta_ngan','trang_thai', 'luot_mua', 'color'];
+
+    public function sizes()
+    {
+        return $this->hasMany(Size::class, 'id_product');
+    }
+    
+    public function danhMuc()
+    {
+        return $this->belongsTo(DanhMuc::class, 'id_dm');
+    }
 }

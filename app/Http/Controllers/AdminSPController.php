@@ -91,7 +91,7 @@ class AdminSPController extends Controller
         $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
         return view('admin.product_add_admin', compact('loai_arr' , 'selectedOption'));
     }
-    public function store(checkNhapSanPham $request)
+    public function store(Request $request)
     {
         $hasproduct = false;
         // Kiểm tra xem tên sản phẩm đã tồn tại trong cơ sở dữ liệu hay chưa
@@ -100,7 +100,7 @@ class AdminSPController extends Controller
             return redirect()->back()->with('thongbao', 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.');
         }
         if ($request['ten_sp'] && $request['gia'] && $request['id_dm'] && $request->hasFile('hinh') && $request['mo_ta_ct'] && $request['mo_ta_ngan'] && $request['color']) {
-
+            
             $obj = new  san_pham();
             $obj->ten_sp = $request['ten_sp'];
             $obj->slug = Str::slug($obj->ten_sp);
