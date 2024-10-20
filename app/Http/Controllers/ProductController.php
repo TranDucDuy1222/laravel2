@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use App\Models\Size as size;
+use App\Models\GioHang;
 
 Paginator::useBootstrap();
 
@@ -21,6 +22,11 @@ class ProductController extends Controller
         $danh_muc = DB::table('danh_muc')->get();
         \View::share('loai', $loai);
         \View::share('danh_muc', $danh_muc);
+    }
+
+    private function getCartForCustomer($userId)
+    {
+        return GioHang::where('user_id', $userId)->get()->keyBy('size'); // Lấy giỏ hàng theo size
     }
 
     function detail($id)
@@ -58,7 +64,9 @@ class ProductController extends Controller
             ->where('sizes.id_product', $id)
             ->get();
 
-        return view('user.detail_product', ['relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr]);
+        $currentCustomerId = auth()->user()->id;
+        $cart = $this->getCartForCustomer($currentCustomerId);
+        return view('user.detail_product', ['relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
     }
 
     // Sản Phẩm theo danh mục
