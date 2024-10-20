@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use App\Models\Size as size;
+use App\Models\GioHang;
 
 Paginator::useBootstrap();
 
@@ -15,12 +16,17 @@ class ProductController extends Controller
     function __construct()
     {
         $query = DB::table('loai')
-        ->select('id', 'ten_loai', 'slug')
-        ->orderBy('id', 'asc');
+            ->select('id', 'ten_loai', 'slug')
+            ->orderBy('id', 'asc');
         $loai = $query->get();
         $danh_muc = DB::table('danh_muc')->get();
         \View::share('loai', $loai);
         \View::share('danh_muc', $danh_muc);
+    }
+
+    private function getCartForCustomer($userId)
+    {
+        return GioHang::where('user_id', $userId)->get()->keyBy('size'); // Lấy giỏ hàng theo size
     }
 
     function detail($id)
@@ -28,7 +34,6 @@ class ProductController extends Controller
         $query = DB::table('san_pham')
             ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct')
             ->where('id', $id);
-            
         $detail = $query->first();
 
         $query = DB::table('san_pham')
@@ -63,7 +68,21 @@ class ProductController extends Controller
             ->where('sizes.id_product', $id)
             ->get();
 
-        return view('user.detail_product', ['relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr]);
+        $currentCustomerId = auth()->user()->id;
+        $cart = $this->getCartForCustomer($currentCustomerId);
+
+        // Đếm số lượng đánh giá cho sản phẩm
+        $so_luong_danh_gia = DB::table('danh_gia')
+            ->where('id_sp', $id)
+            ->count();
+        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
+        // Đếm số lượng đánh giá cho sản phẩm
+        $so_luong_danh_gia = DB::table('danh_gia')
+            ->where('id_sp', $id)
+            ->count();
+
+        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr]);
+
     }
 
     // Sản Phẩm theo danh mục
@@ -71,7 +90,7 @@ class ProductController extends Controller
     {
         // Xử lý lại hàm này khi truyền slug thì lấy ra id của danh mục đó và sử dụng id_dm đó để tìm sản phẩm thuộc danh mục đó hiển thị ra
         $query = DB::table('san_pham')
-            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh',  'danh_muc.ten_dm')
+            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
             ->join('danh_muc', 'sanpham.id_dm', '=', 'danh_muc.id')
             ->where('san_pham.id', $slug)
             ->orderBy('masp', 'desc');

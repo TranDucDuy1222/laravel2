@@ -66,19 +66,4 @@ return [
     'timezone' => ':attribute phải là một múi giờ hợp lệ.',
     'unique' => 'Địa chỉ email này đã tồn tại.',
     'url' => ':attribute không hợp lệ.',
-    'custom' => [
-        'email' => [
-            'required' => 'Email là bắt buộc.',
-            'email' => 'Email không hợp lệ.',
-            'unique' => 'Email này đã tồn tại.',
-            'max' => 'Email không được vượt quá 255 ký tự.',
-            'regex' => 'Email không đúng định dạng.',
-        ],
-        'name' => [
-            'required' => 'Tên là bắt buộc.',
-            'string' => 'Tên phải là một chuỗi.',
-            'max' => 'Tên không được vượt quá 255 ký tự.',
-            'min' => 'Tên phải có ít nhất 3 ký tự.',
-        ],
-    ],
 ];

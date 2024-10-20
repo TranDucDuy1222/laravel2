@@ -6,6 +6,18 @@ Cài đặt hệ thống
 @section('content')
     <!-- sa-app__body -->
     <div id="top" class="sa-app__body px-2 px-lg-4">
+    @if(session()->has('thongbao'))
+        <div class="toast show align-items-center text-bg-primary border-0 position-fixed top-3 end-0 p-3" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {!! session('thongbao') !!}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
         <div class="container pb-6">
             <div class="py-5">
                 <div class="row g-4 align-items-center">

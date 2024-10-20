@@ -5,7 +5,18 @@ Quản Trị Trang Chủ
 
 @section('content')
 <div class="sa-app__body bg-white" style="height: 100%;">
-
+    @if(session()->has('thongbao'))
+        <div class="toast show align-items-center text-bg-primary border-0 position-fixed top-3 end-0 p-3" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {!! session('thongbao') !!}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
         <div class="p-5">
             <h3>
                 Trang chủ

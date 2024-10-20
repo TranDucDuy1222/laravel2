@@ -22,13 +22,13 @@ class CheckLogin extends FormRequest
     public function rules(): array
     {
         return [
-            'pass' => 'required',
+            'password' => 'required',
             'email' => 'required | ends_with:@fpt.edu.vn,@gmail.com'
         ];
     }
     function messages(){
         return [
-            'pass.required' => 'Bạn chưa nhập mật khẩu của mình',
+            'password.required' => 'Bạn chưa nhập mật khẩu của mình',
             'email.required' => 'Bạn chưa nhập email của mình',
             'email.ends_with' => 'Email không đúng định dạng. Đuôi email có thể là @fpt.edu.vn or @gmail.com',
             ];
