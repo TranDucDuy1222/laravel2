@@ -419,6 +419,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                                         <h2>23 Đánh giá</h2>
                                                     </div>
                                                 </div>
+                                                <!-- đánh giá -->
                                                 @foreach ($comment as $item )
                                                 <div class="rev-f1__review">
                                                     <div class="review-o mb-3">
@@ -430,6 +431,8 @@ Chi Tiết : {{$detail->ten_sp}}
                                                             <span>(4)</span>
                                                         </div>
                                                         <p>Phân Loại : {{$item->ten_sp}} </p>
+                                                        <p>Size: {{$item->size}}</p>
+                                                        <p>Màu: {{$item->color}}</p>
                                                         <p><strong>Chất lượng sản phẩm:</strong> {{$item->quality_product}}</p>
                                                         <p class="review-o__text">{{$item->noi_dung}}.</p>
                                                         <div class="col-xl-9 card">
@@ -529,7 +532,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                     </span>
                                     <div class="product-r__n-p-wrap">
                                         <span class="product-r__name">
-                                            <a href="">{{$item->hinh}} </a>
+                                            <a href="">{{$item->ten_sp}} </a>
                                         </span>
                                         <span class="product-r__price">{{$gia_chinh}} VND</span>
                                     </div>

@@ -32,25 +32,30 @@ class ProductController extends Controller
         $detail = $query->first();
 
         $query = DB::table('san_pham')
-            ->select('id_dm')
-            ->where('id', $id);
+            ->select('san_pham.id', 'danh_muc.id_loai', 'loai.id')
+            ->join('danh_muc', 'danh_muc.id', '=', 'san_pham.id_dm')
+            ->join('loai', 'loai.id', '=', 'danh_muc.id_loai');
+
         $madm = $query->first();
 
         $query = DB::table('san_pham')
-            ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
+            ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm', 'loai.id')
             ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-            ->where('san_pham.id_dm', $madm->id_dm)
+            ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
+            ->where('danh_muc.id_loai', $madm->id_loai)
             ->inRandomOrder()
-            ->limit(3);
+            ->limit(4);
 
         $relatedpro = $query->get();
+    
 
         $query = DB::table('danh_gia')
-            ->select('danh_gia.*', 'users.name', 'ctdh.*', 'san_pham.ten_sp')
+            ->select('danh_gia.*', 'users.name', 'ctdh.*', 'san_pham.ten_sp', 'san_pham.color')
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
             ->join('chi_tiet_don_hang AS ctdh', 'danh_gia.id_ctdh', '=', 'ctdh.id')
-            ->join('san_pham', 'san_pham.id', '=', 'ctdh.id')
-            ->where('ctdh.id', $id);
+            ->join('san_pham', 'san_pham.id', '=', 'ctdh.id_sp')
+            ->where('danh_gia.id_sp', $id)
+            ->where('danh_gia.an_hien', 1);
         $comment = $query->get();
 
         $size_arr = DB::table('sizes')
