@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use App\Models\Size as size;
+use App\Models\GioHang;
 
 Paginator::useBootstrap();
 
@@ -23,6 +24,11 @@ class ProductController extends Controller
     //     \View::share('danh_muc', $danh_muc);
     // }
 
+    private function getCartForCustomer($userId)
+    {
+        return GioHang::where('user_id', $userId)->get()->keyBy('size'); // Lấy giỏ hàng theo size
+    }
+
     function detail($id)
     {
         $query = DB::table('san_pham')
@@ -31,24 +37,29 @@ class ProductController extends Controller
         $detail = $query->first();
 
         $query = DB::table('san_pham')
-            ->select('id_dm')
-            ->where('id', $id);
+            ->select('san_pham.id', 'danh_muc.id_loai', 'loai.id')
+            ->join('danh_muc', 'danh_muc.id', '=', 'san_pham.id_dm')
+            ->join('loai', 'loai.id', '=', 'danh_muc.id_loai');
+
         $madm = $query->first();
 
         $query = DB::table('san_pham')
-            ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
+            ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm', 'loai.id')
             ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-            ->where('san_pham.id_dm', $madm->id_dm)
+            ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
+            ->where('danh_muc.id_loai', $madm->id_loai)
             ->inRandomOrder()
             ->limit(4);
+
         $relatedpro = $query->get();
+    
 
         $query = DB::table('danh_gia')
-            ->select('danh_gia.*', 'users.name', 'ctdh.*', 'san_pham.ten_sp')
+            ->select('danh_gia.*', 'users.name', 'ctdh.*', 'san_pham.ten_sp', 'san_pham.color')
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
             ->join('chi_tiet_don_hang AS ctdh', 'danh_gia.id_ctdh', '=', 'ctdh.id')
-            ->join('san_pham', 'san_pham.id', '=', 'ctdh.id')
-            ->where('ctdh.id_sp', $id)
+            ->join('san_pham', 'san_pham.id', '=', 'ctdh.id_sp')
+            ->where('danh_gia.id_sp', $id)
             ->where('danh_gia.an_hien', 1);
         $comment = $query->get();
 
@@ -57,12 +68,21 @@ class ProductController extends Controller
             ->where('sizes.id_product', $id)
             ->get();
 
+        $currentCustomerId = auth()->user()->id;
+        $cart = $this->getCartForCustomer($currentCustomerId);
+
+        // Đếm số lượng đánh giá cho sản phẩm
+        $so_luong_danh_gia = DB::table('danh_gia')
+            ->where('id_sp', $id)
+            ->count();
+        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
         // Đếm số lượng đánh giá cho sản phẩm
         $so_luong_danh_gia = DB::table('danh_gia')
             ->where('id_sp', $id)
             ->count();
 
         return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr]);
+
     }
 
     // Sản Phẩm theo danh mục

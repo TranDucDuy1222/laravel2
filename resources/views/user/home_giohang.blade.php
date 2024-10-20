@@ -93,15 +93,20 @@
                                                         <form action="{{ route('cart.update', $item->id) }}" method="POST" id="form-quantity-{{ $item->id }}">
                                                             @csrf
                                                             <span class="input-counter__minus fas fa-minus" onclick="changeQuantity({{ $item->id }}, -1)"></span>
+                                                            
                                                             <input class="input-counter__text input-counter--text-primary-style" type="number" 
                                                                 name="quantity" value="{{ $item->so_luong }}" 
                                                                 id="quantity-{{ $item->id }}" min="1" 
                                                                 onchange="document.getElementById('form-quantity-{{ $item->id }}').submit();">
+
+                                                            <input type="hidden" id="stock-{{ $item->id }}" value="{{ $item->size->so_luong }}">
+
                                                             <span class="input-counter__plus fas fa-plus" onclick="changeQuantity({{ $item->id }}, 1)"></span>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </td>
+
                                             <td id="total-price-{{ $item->id }}" class="item-total-price">
                                                 <span class="table-p__price">{{ number_format($item->sanPham->gia * $item->so_luong) }} VNĐ</span>
                                             </td>
@@ -156,21 +161,21 @@
                                 </div>
 
                                 @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
+                                    <div class="pd-detail__inline">
+                                        <span class="pd-detail__click-wrap">
                                             @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
+                                                <a class="text-danger">{{ $error }}</a>
                                             @endforeach
-                                        </ul>
+                                        </span>
                                     </div>
                                 @endif
-
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
+                                @if(session('success'))
+                                    <div class="pd-detail__inline">
+                                        <span class="pd-detail__click-wrap">
+                                            <a class="text-success">{{ session('success') }}</a>
+                                        </span>
                                     </div>
                                 @endif
-
                                 <table class="f-cart__table">
                                     <tbody>
                                         <tr>
@@ -183,13 +188,14 @@
                                             <td>Voucher giảm giá</td>
                                             <td id="discount-amount">{{ number_format($discountAmount ?? 0) }} VNĐ</td>
                                         </tr>
-                                        <tr>
+                                    </tbody>
+                                    
+                                    <tr>
                                             <td>TỔNG THANH TOÁN</td>
                                             <td id="total-payable">{{ number_format($totalPayable ?? $gioHangs->sum(function($item) {
                                                 return $item->sanPham->gia * $item->so_luong;
                                             })) }} VNĐ</td>
                                         </tr>
-                                    </tbody>
                                 </table>
                                 <div>
                                     <button class="btn btn--e-brand-b-2" type="submit">THANH TOÁN</button>
@@ -224,18 +230,42 @@
 <script>
 function changeQuantity(itemId, change) {
     const quantityInput = document.getElementById(`quantity-${itemId}`);
+    const stockLimit = parseInt(document.getElementById(`stock-${itemId}`).value);
+    console.log(`stock-${itemId}:`, document.getElementById(`stock-${itemId}`).value);
+
     let currentQuantity = parseInt(quantityInput.value);
+
     currentQuantity += change;
     if (currentQuantity < 1) {
         currentQuantity = 1;
     }
-    quantityInput.value = currentQuantity;
-    document.getElementById(`form-quantity-${itemId}`).submit();
+
+    if (currentQuantity > stockLimit) {
+        currentQuantity = stockLimit;
+        alert("Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.");
+    } else {
+        quantityInput.value = currentQuantity;
+        document.getElementById(`form-quantity-${itemId}`).submit();
+    }
 }
 
-function removeVoucher() {
-    document.querySelector('.f-cart').action = "{{ route('cart.removeVoucher') }}";
-    document.querySelector('.f-cart').submit();
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const cartItems = document.querySelectorAll('.cart-product');
+
+    cartItems.forEach(item => {
+        const productId = item.getAttribute('data-id');
+        const size = item.getAttribute('data-size');
+        const quantityInput = item.querySelector('.product-quantity');
+        const stockQuantity = parseInt(item.querySelector('.stock-quantity').getAttribute('data-stock'));
+        let currentQuantity = parseInt(quantityInput.value);
+
+        // Nếu số lượng trong giỏ lớn hơn số lượng trong kho
+        if (currentQuantity > stockQuantity) {
+            quantityInput.value = stockQuantity;
+            alert(`Số lượng sản phẩm đã điều chỉnh về ${stockQuantity} do vượt quá hàng trong kho.`);
+        }
+    });
+});
+
 </script>
 @endsection
