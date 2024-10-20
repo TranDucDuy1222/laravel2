@@ -39,8 +39,16 @@ Route::get('/login', [UserController::class , 'login'])->name('login');
 Route::post('/login', [UserController::class , 'login_form'])->name('login_form');
 Route::get('/logout', [UserController::class,'logout']);
 
-Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/register', [UserController::class, 'register'])->name('register');
+Route::post('/register', [UserController::class, 'register_form'])->name('register_form');
+
+Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
+
+Route::get('/forgot-password', [UserController::class, 'forgot_pass'])->name('password.request');
+Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [UserController::class, 'show_reset'])->name('password.reset');
+Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.update');
 
 Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');
 Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->name('user.edit_profile');

@@ -23,7 +23,7 @@
 
 @section('content')
 <!-- đăng nhập -->
-<div class="container pb-5">
+<!-- <div class="container pb-5">
   <div class="row justify-content-center mt-5">
     <div class="col-md-6">
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -46,7 +46,6 @@
       </div>
       <div class="card">
         <div class="tab-content" id="nav-tabContent">
-          <!-- Đăng nhập cho khách hàng -->
           <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
             tabindex="0">
             <div class="card-header text-center font-weight-bold" style="font-size: 30px;">Đăng Nhập</div>
@@ -91,14 +90,12 @@
               </form>
             </div>
           </div>
-          <!-- End đăng nhập cho khách hàng -->
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Quên mật khẩu -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+</div> -->
+<!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -121,9 +118,9 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -172,6 +169,112 @@
       </div>
     </div>
   </div>
+</div> -->
+<div class="app-content">
+    <div class="pt-5">
+        <div class="section__content">
+            <div class="container">
+                <div class="breadcrumb">
+                    <div class="breadcrumb__wrap">
+                        <ul class="breadcrumb__list">
+                            <li class="has-separator">
+                                <a href="{{ url('/') }}">Trang chủ</a>
+                            </li>
+                            <li class="is-marked">
+                                <a href="{{ url('login') }}">Đăng nhập</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pb-5">
+        <div class="section__intro mb-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section__text-wrap">
+                        @if(session('thongbao'))
+                          <div class="alert alert-warning">{{ session('thongbao') }}</div>
+                        @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section__intro mb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section__text-wrap">
+                            <h1 class="section__heading u-c-secondary">ĐĂNG NHẬP</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section__content">
+            <div class="container">
+                <div class="row row--center">
+                    <div class="col-lg-6 col-md-8 mb-3">
+                        <div class="l-f-o">
+                            <div class="l-f-o__pad-box">
+                                <form class="l-f-o__form" action="{{ route('login_form') }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label class="gl-label" for="login-email">EMAIL *</label>
+                                        <input class="input-text input-text--primary-style" type="email" name="email" id="login-email" placeholder="Nhập Email" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="gl-label" for="login-password">PASSWORD *</label>
+                                        <input class="input-text input-text--primary-style" type="password" name="password" id="login-password" placeholder="Nhập Password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="ms-auto pd-detail__inline">
+                                                <span class="pd-detail__click-wrap">
+                                                  <a class="gl-link" href="{{ route('password.request') }}">Quên mật khẩu?</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="l-f-o__create-link btn btn--e-brand-b-2">ĐĂNG NHẬP</button>
+                                    </div>  
+                                    <div class="row mb-3">
+                                        <div class="col-lg-12">
+                                            <div class="section__text-wrap">
+                                                <h6 class="gl-link">Hoặc</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gl-s-api">
+                                        <div class="mb-2">
+                                            <a href="{{ route('login.google') }}" class="gl-s-api__btn gl-s-api__btn--gplus">
+                                                <i class="fab fa-google"></i>
+                                                <span>Đăng nhập bằng Google</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                   <div class="row my-3">
+                                        <div class="col-lg-12">
+                                            <div class="section__text-wrap">
+                                            <p class="gl-link">Bạn chưa có tài khoản? <a href="{{ url('register') }}" class="text-danger">Đăng ký</a> ngay!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 @endsection

@@ -12,37 +12,35 @@ use Illuminate\Support\Facades\Session;
 
 class GoogleLoginController extends Controller
 {
-    public function redirectToGoogle(): RedirectResponse  
+    public function redirectToGoogle(): RedirectResponse
     {
         return Socialite::driver('google')->redirect();
     }
 
-    public function handleGoogleCallback() //: RedirectResponse
+    public function handleGoogleCallback()
     {
         try {
-            $user = Socialite::driver('google')->user();
-            $existingUser = User::where('google_id', $user->id)->first();
-            if ($existingUser) { // Log in the existing user.
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            $existingUser = User::where('google_id', $googleUser->id)->first();
+            
+            if ($existingUser) {
                 auth()->login($existingUser, true);
-                $ability = ['web'];
-            } else { // Create a new user.
-                $newUser = new User();
-                $newUser->name = $user->name;
-                $newUser->email = $user->email;
-                $newUser->google_id = $user->id;
-                $newUser->password = bcrypt(Str::random()); // Set some random password
-                $newUser->save();
-                // Log in the new user.
-                auth()->login($newUser, true);
-                $ability = ['web'];
-            }
-        return redirect('http://localhost:8000/'); 
-        } 
-        catch (\Throwable $th) {
-            Session::flush();
-        }
-        
+            } else {
+                $newUser = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'google_id' => $googleUser->id,
+                    'password' => bcrypt(Str::random(16)),
+                ]);
 
-    }
-    
+                auth()->login($newUser, true);
+            }
+
+            return redirect()->intended('/');
+        } catch (\Exception $e) {
+            // Hiển thị lỗi Google API trong nhật ký Laravel
+            \Log::error($e);
+            return redirect('/login')->with('thongbao', 'Đăng nhập bằng Google không thành công. Vui lòng thử lại.');
+        }
+    }  
 }
