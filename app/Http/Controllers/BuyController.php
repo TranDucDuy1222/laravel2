@@ -6,6 +6,7 @@ use App\Models\GioHang;
 use App\Models\SanPham;
 use App\Models\Size;
 use App\Models\MaGiamGia;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,7 @@ class BuyController extends Controller
     public function themvaogio(Request $request, $id)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
+            return redirect()->route('login')->with('thongbao', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
         }
         $soluong = $request->input('soluong', 1);
         $sanPham = SanPham::findOrFail($id);
@@ -23,11 +24,11 @@ class BuyController extends Controller
                     ->where('size_product', $size)
                     ->first();
         if (!$sizeInfo) {
-            return redirect()->back()->with('error', 'Size không tồn tại.');
+            return redirect()->back()->with('thongbao', 'Size không tồn tại.');
         }
 
         if ($sizeInfo->so_luong <= 0) {
-            return redirect()->back()->with('error', 'Size này đã hết hàng.');
+            return redirect()->back()->with('thongbao', 'Size này đã hết hàng.');
         }
         $userId = Auth::id();
         $gioHang = GioHang::where('user_id', $userId)
@@ -43,8 +44,8 @@ class BuyController extends Controller
             $gioHang->id_size = $sizeInfo->id;
             $gioHang->so_luong = $soluong;
         }
-        $gioHang->save();
-        return redirect()->route('cart.gio-hang')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng.');
+        $gioHang->save();    
+        return redirect()->route('cart.gio-hang')->with('thongbao', 'Sản phẩm đã được thêm vào giỏ hàng.');
     }
 
     public function hiengiohang()

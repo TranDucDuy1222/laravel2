@@ -8,15 +8,15 @@ use DB;
 
 class LandingpageController extends Controller
 {
-    function __construct(){
-        $query = DB::table('loai')
-        ->select('id', 'ten_loai', 'slug')
-        ->orderBy('id', 'asc');
-        $loai = $query->get();
-        $danh_muc = DB::table('danh_muc')->get();
-        \View::share('loai', $loai);
-        \View::share('danh_muc', $danh_muc);
-    }
+    // function __construct(){
+    //     $query = DB::table('loai')
+    //     ->select('id', 'ten_loai', 'slug')
+    //     ->orderBy('id', 'asc');
+    //     $loai = $query->get();
+    //     $danh_muc = DB::table('danh_muc')->get();
+    //     \View::share('loai', $loai);
+    //     \View::share('danh_muc', $danh_muc);
+    // }
     public function index(){
         $loai_arr = Loai::all();
         //$first_loai = $loai_arr->first(); // Lấy loại đầu tiên

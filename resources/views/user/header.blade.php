@@ -138,10 +138,10 @@
               </ul>
             </li>  
             <li class="nav-item position-relative" style="width: 35px;">
-                <a class="nav-link" href="" >
+                <a class="nav-link" href="{{url('/gio-hang')}}" >
                   <i class="fa-solid fa-cart-shopping"></i>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    0
+                    {{ session('totalProducts', 0) }}
                   </span>
                 </a>  
             </li>

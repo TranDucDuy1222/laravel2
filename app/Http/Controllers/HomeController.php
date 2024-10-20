@@ -8,19 +8,37 @@ use App\Models\Loai;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 Paginator::useBootstrap();
 
 class HomeController extends Controller
 {
-    function __construct(){
-        $query = DB::table('loai')
-            ->select('id', 'ten_loai', 'slug')
-            ->orderBy('id', 'asc');
-        $loai = $query->get();
-        $danh_muc = DB::table('danh_muc')->get();
-        \View::share('loai', $loai);
-        \View::share('danh_muc', $danh_muc);
-    }
+    // function __construct(){
+    //     $query = DB::table('loai')
+    //         ->select('id', 'ten_loai', 'slug')
+    //         ->orderBy('id', 'asc');
+    //     $loai = $query->get();
+    //     $danh_muc = DB::table('danh_muc')->get();
+    //     \View::share('loai', $loai);
+    //     \View::share('danh_muc', $danh_muc);
+
+    //     // Giả sử người dùng đã đăng nhập
+    //     $userId = Auth::id();
+    //     if ($userId) {
+    //         // Thực hiện truy vấn SQL và lấy tổng số lượng sản phẩm có id_sp và id_size duy nhất
+    //         $totalProducts = DB::table('gio_hang')
+    //             ->where('user_id', $userId)
+    //             ->distinct('id_sp', 'id_size')
+    //             ->count('id_sp'); // Đếm số lượng id_sp duy nhất
+    //         //dd($totalProducts);
+    //         // Lưu kết quả vào session
+    //         session(['totalProducts' => $totalProducts]);
+    //     } else {
+    //         // Người dùng chưa đăng nhập
+    //         session(['totalProducts' => 0]);
+    //     }
+    
+    // }
     
 
     public function index(){
