@@ -31,7 +31,9 @@
       <link rel="stylesheet" href="/FE/css/order-detail.css">
       <link rel="stylesheet" href="/FE/css/cssHome.css">
 
+      
 </head>
+<body>
 <body>
   <!-- Nav   -->
   <nav class="header--style">
@@ -39,7 +41,7 @@
                 <div class="container">
                     <div class="primary-nav">
                       <a class="main-logo" href="/">
-                        <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
+                        <img src="{{ asset('uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
                       </a>
                         <form class="main-form">
                           <div class="d-flex ms-2 search-box input-text input-text--border-radius input-text--style-1">
@@ -102,48 +104,48 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                             </div>
                             <ul class="navbar-nav ms-auto me-lg-3">         
-                            <li class="nav-item dropdown">
-                              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="far fa-user-circle"></i>  
-                              </a>
-                              <ul class="dropdown-menu" id="userDropdown">
-                                @if (Auth::check())
-                                  <li class="dropdown-item">{{Auth::user()->name}}!</li>
-                                  <hr>
-                                  <li ><a class="dropdown-item" href="">Quản Lý Tài Khoản</a></li>
-                                  <hr>
-                                  <li ><a class="dropdown-item" href="">Đơn Hàng Đã Mua</a></li>
-                                  <hr>
-                                  <li ><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
-                                @else
-                                  <li ><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
-                                  <li ><a class="dropdown-item" href="/signup">Đăng Ký</a></li>
-                                  <li ><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
-                                @endif
-                              </ul>
-                              
-                            </li>   
-                            <li class="nav-item dropdown">
-                              <a class="nav-link fz dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Hỗ Trợ
-                              </a>
-                              <ul class="dropdown-menu" id="userDropdown">
-                                <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
-                                <li><a class="dropdown-item" href="#">Liên Hệ Chúng Tôi</a></li>
-                                <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
-                                <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
-                                <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>
-                              </ul>
-                            </li>  
-                            <li class="nav-item position-relative" style="width: 35px;">
-                                <a class="nav-link" href="" >
-                                  <i class="fas fa-shopping-bag"></i>
-                                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    0
-                                  </span>
-                                </a>  
-                            </li>
-                          </ul>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-user"></i>  
+              </a>
+              <ul class="dropdown-menu" id="userDropdown">
+                @if (Auth::check())
+                  <li class="dropdown-item">{{Auth::user()->name}}!</li>
+                  <hr>
+                  <li><a class="dropdown-item" href="{{ route('user.profile', [Auth::user()->id]) }}">Quản Lý Tài Khoản</a></li>
+                  <hr>
+                  <li ><a class="dropdown-item" href="">Đơn Hàng Đã Mua</a></li>
+                  <hr>
+                  <li ><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
+                @else
+                  <li ><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+                  <li ><a class="dropdown-item" href="/signup">Đăng Ký</a></li>
+                  <li ><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
+                @endif
+              </ul>
+              
+            </li>   
+            <li class="nav-item dropdown">
+              <a class="nav-link fz dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Hỗ Trợ
+              </a>
+              <ul class="dropdown-menu" id="userDropdown">
+                <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
+                <li><a class="dropdown-item" href="#">Liên Hệ Chúng Tôi</a></li>
+                <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
+                <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
+                <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>
+              </ul>
+            </li>  
+            <li class="nav-item position-relative" style="width: 35px;">
+                <a class="nav-link" href="" >
+                  <i class="fa-solid fa-cart-shopping"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                  </span>
+                </a>  
+            </li>
+          </ul>
                         </div>
                     </div>
                 </div>

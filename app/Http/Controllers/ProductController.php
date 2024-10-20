@@ -16,8 +16,8 @@ class ProductController extends Controller
     function __construct()
     {
         $query = DB::table('loai')
-        ->select('id', 'ten_loai', 'slug')
-        ->orderBy('id', 'asc');
+            ->select('id', 'ten_loai', 'slug')
+            ->orderBy('id', 'asc');
         $loai = $query->get();
         $danh_muc = DB::table('danh_muc')->get();
         \View::share('loai', $loai);
@@ -34,7 +34,6 @@ class ProductController extends Controller
         $query = DB::table('san_pham')
             ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct')
             ->where('id', $id);
-            
         $detail = $query->first();
 
         $query = DB::table('san_pham')
@@ -47,8 +46,7 @@ class ProductController extends Controller
             ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
             ->where('san_pham.id_dm', $madm->id_dm)
             ->inRandomOrder()
-            ->limit(3);
-
+            ->limit(4);
         $relatedpro = $query->get();
 
         $query = DB::table('danh_gia')
@@ -56,7 +54,8 @@ class ProductController extends Controller
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
             ->join('chi_tiet_don_hang AS ctdh', 'danh_gia.id_ctdh', '=', 'ctdh.id')
             ->join('san_pham', 'san_pham.id', '=', 'ctdh.id')
-            ->where('ctdh.id', $id);
+            ->where('ctdh.id_sp', $id)
+            ->where('danh_gia.an_hien', 1);
         $comment = $query->get();
 
         $size_arr = DB::table('sizes')
@@ -66,7 +65,19 @@ class ProductController extends Controller
 
         $currentCustomerId = auth()->user()->id;
         $cart = $this->getCartForCustomer($currentCustomerId);
-        return view('user.detail_product', ['relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
+
+        // Đếm số lượng đánh giá cho sản phẩm
+        $so_luong_danh_gia = DB::table('danh_gia')
+            ->where('id_sp', $id)
+            ->count();
+        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
+        // Đếm số lượng đánh giá cho sản phẩm
+        $so_luong_danh_gia = DB::table('danh_gia')
+            ->where('id_sp', $id)
+            ->count();
+
+        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr]);
+
     }
 
     // Sản Phẩm theo danh mục
@@ -74,7 +85,7 @@ class ProductController extends Controller
     {
         // Xử lý lại hàm này khi truyền slug thì lấy ra id của danh mục đó và sử dụng id_dm đó để tìm sản phẩm thuộc danh mục đó hiển thị ra
         $query = DB::table('san_pham')
-            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh',  'danh_muc.ten_dm')
+            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
             ->join('danh_muc', 'sanpham.id_dm', '=', 'danh_muc.id')
             ->where('san_pham.id', $slug)
             ->orderBy('masp', 'desc');

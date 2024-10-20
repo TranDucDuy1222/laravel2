@@ -42,8 +42,9 @@ Route::get('/logout', [UserController::class,'logout']);
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
 
-Route::get('/dark_light', [HomeController::class,'dark_light']);
-
+Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');
+Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->name('user.edit_profile');
+Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
 
 
 // URL Admin

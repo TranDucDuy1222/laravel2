@@ -8,8 +8,8 @@
                 <div class="sa-sidebar__header">
                     <a class="sa-sidebar__logo" href="index.html">
                         <!-- logo -->
-                        <div class="sa-sidebar-logo">
-                            <span class="h5 mb-0 text-uppercase text-primary bg-dark px-2">NIKE</span>
+                        <div class="sa-sidebar-logo d-flex justify-content-center mt-2">
+                        <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
                         </div>
                         <!-- logo / end -->
                     </a>
@@ -61,7 +61,7 @@
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
                                     <a href="{{url('/admin/magiamgia')}}" class="sa-nav__link">
                                         <span class="sa-nav__icon">
-                                            <i class="fas fa-shopping-cart"></i>
+                                            <i class="fa-solid fa-dollar-sign"></i>
                                         </span>
                                         <span class="sa-nav__title">Mã giảm giá</span>
                                     </a>
@@ -71,7 +71,7 @@
                                         <span class="sa-nav__icon">
                                         <i class="fa-solid fa-comment" style="color: #ffffff;"></i>
                                         </span>
-                                        <span class="sa-nav__title">Bình Luận</span>
+                                        <span class="sa-nav__title">Đánh Giá</span>
                                     </a>
                                 </li>
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">

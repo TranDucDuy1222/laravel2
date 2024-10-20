@@ -170,70 +170,40 @@ Chi Tiết : {{$detail->ten_sp}}
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
                                     <div class="pd-tab__desc">
-                                        <div class="mb-3">
-                                            <p>Văn học (Tiếng Anh: literature) theo cách nói chung nhất, là bất kỳ tác phẩm nào bằng văn bản. Hiểu theo nghĩa hẹp hơn, thì văn học là dạng văn bản được coi là một hình thức nghệ thuật, hoặc bất kỳ một bài viết nào được coi là có giá trị nghệ thuật hoặc trí tuệ, thường là do cách thức triển khai ngôn ngữ theo những cách khác với cách sử dụng bình thường.</p>
+                                        <div class="mb-3 text-black">
+                                            {!! $detail->mo_ta_ct !!}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
                                     <div class="pd-tab__rev">
-                                        <div class="mb-4">
-                                            <form class="pd-tab__rev-f1">
-                                                <div class="rev-f1__group">
-                                                    <div class="mb-2">
-                                                        <h2>23 Đánh giá</h2>
-                                                    </div>
-                                                </div>
-                                                @foreach ($comment as $item )
-                                                <div class="rev-f1__review">
-                                                    <div class="review-o mb-3">
+                                        <div class="mb-4 text-black">
+                                            <div class="mb-2">
+                                                <h4>{{$sldg}} Đánh giá</h4>
+                                            </div>
+                                            @foreach ($comment as $item )
+                                                <div class="row">
+                                                    <div class="col-xl-4">
                                                         <div class="review-o__info mb-2">
                                                             <span class="review-o__name">{{$item->name}} </span>
                                                             <span class="review-o__date">{{$item->thoi_diem}}</span>
                                                         </div>
-                                                        <div class="review-o__rating gl-rating-style mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                                        <div class="review-o__rating gl-rating-style mb-2">
+                                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
                                                             <span>(4)</span>
                                                         </div>
                                                         <p>Phân Loại : {{$item->ten_sp}} </p>
                                                         <p><strong>Chất lượng sản phẩm:</strong> {{$item->quality_product}}</p>
                                                         <p class="review-o__text">{{$item->noi_dung}}.</p>
-                                                        <div class="col-xl-9 card">
-                                                            <img src="/img/{{$item->hinh_dg}}" alt="Ảnh từ người mua" class="col-xl-3">
-                                                        </div>
                                                         @if (!empty($item->feedback))
                                                           <p class="ms-2" ><strong>Phản Hồi từ người bán :</strong> <br> {{$item->feedback}}.</p>
                                                         @endif
                                                     </div>
-                                                </div>
-                                                @endforeach
-                                            </form>
-                                        </div>
-                                        <div class="mb-4">
-                                            <form class="pd-tab__rev-f2">
-                                                <h2 class="mb-3">Viết đánh giá</h2>
-                                                <div class="mb-4">
-                                                    <div class="rev-f2__table-wrap gl-scroll">
-                                                        <div class="review-o__rating gl-rating-style mb-2"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                                                    <div class="col-xl-8">
+                                                        <img src="/img/{{$item->hinh_dg}}" alt="Ảnh từ người mua" class="col-xl-3">
                                                     </div>
                                                 </div>
-                                                <div class="rev-f2__group">
-                                                    <div class="mb-3">
-                                                        <label class="gl-label" for="reviewer-text">Nội dung *</label><textarea class="text-area text-area--primary-style" id="reviewer-text"></textarea></div>
-                                                    <div>
-                                                        <p class="mb-4">
-                                                            <label class="gl-label" for="reviewer-name">Tên *</label>
-                                                            <input class="input-text input-text--primary-style" type="text" id="reviewer-name">
-                                                        </p>
-                                                        <p class="mb-4">
-                                                            <label class="gl-label" for="reviewer-email">Email *</label>
-                                                            <input class="input-text input-text--primary-style" type="text" id="reviewer-email">
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <button class="btn btn--e-brand-shadow" type="submit">Gửi</button>
-                                                </div>
-                                            </form>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -259,49 +229,43 @@ Chi Tiết : {{$detail->ten_sp}}
             <div class="section__content">
                 <div class="container">
                     <div class="row">
-                    @foreach ($relatedpro as $item)
-                        @php
-                            if ($item->gia_km > 0) {
-                                $gia_moi = $item->gia_km;
-                                //   $giaold = '<del>' . $gia . '</del>';
-                            } else {
-                                $gia_moi = $item->gia;
-                            }
-                            $num = $gia_moi;
-                            $gia_chinh = number_format($num, 0, '', '.');
-                        @endphp
-                        <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
-                            <div class="product-r" style="height: 100%;">
-                                <div class="product-r__container">
-                                    <a class="aspect aspect--bg-grey aspect--square d-block" href="">
-                                        <img class="aspect__img" src="{{ asset('/uploads/product/'.$item->hinh) }}"
-                                        onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" alt="">
-                                    </a>
-                                    <div class="product-r__action-wrap">
-                                        <ul class="product-r__action-list">
-                                            <li>
-                                                <a href=""><i class="fas fa-search-plus text-secondary"></i></a></li>
-                                            <li>
-                                                <a href=""><i class="fas fa-shopping-bag text-secondary"></i></a></li>
-                                            <li>
-                                                <a href=""><i class="fas fa-heart"></i></a></li>
-                                        </ul>
+                        @foreach ($relatedpro as $item)
+                            @php
+                                if ($item->gia_km > 0) {
+                                    $gia_moi = $item->gia_km;
+                                    //   $giaold = '<del>' . $gia . '</del>';
+                                } else {
+                                    $gia_moi = $item->gia;
+                                }
+                                $num = $gia_moi;
+                                $gia_chinh = number_format($num, 0, '', '.');
+                            @endphp
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
+                                <div class="product-short">
+                                    <div class="product-short__container">
+                                        <div class="card">
+                                            <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                    onerror="this.src='{{ asset('/uploads') }}'"
+                                                    style="max-height: 295px;" alt="" class="w-100">
+                                            </a>
+                                            <div class="card-body text-center">
+                                                <a href="">
+                                                    <h5 id="hover-sp">{{$item->ten_sp}}</h5>
+                                                </a>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {{$item->ten_dm}}
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <strong id="color-gia"> {{number_format($item->gia_km, 0, '', '.')}}đ </strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="product-r__info-wrap">
-                                    <span class="product-r__category">
-                                        <a href="">{{$item->ten_dm}}</a>
-                                    </span>
-                                    <div class="product-r__n-p-wrap">
-                                        <span class="product-r__name">
-                                            <a href="">{{$item->hinh}} </a>
-                                        </span>
-                                        <span class="product-r__price">{{$gia_chinh}} VND</span>
-                                    </div>
-                                    <span class="product-r__description"></span>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 </div>

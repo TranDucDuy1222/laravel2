@@ -1226,15 +1226,24 @@ input::-ms-clear {
 .outer-footer__list-wrap ul {
     margin: 0;
     padding: 0;
-    list-style: none; }
+    list-style: none;
+    
+ }
     .outer-footer__list-wrap ul > li {
-    margin-bottom: 8px; }
+    margin-bottom: 8px;
+    background-color: #000000;
+}
 .outer-footer__list-wrap ul > li > a {
     transition: color 0.6s;
     color: #ffffff;
     font-size: 14px; }
 .outer-footer__list-wrap ul > li > a:hover {
+<<<<<<< HEAD
+    color: #ff4500;
+}
+=======
     color: #212529; }
+>>>>>>> 45b362c98f9966f560567ea2a625ba838a6f7314
 .outer-footer__list-wrap ul > li:last-child {
     margin-bottom: 0; } 
 /*  */

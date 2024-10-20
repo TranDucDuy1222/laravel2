@@ -4,7 +4,7 @@ Tất Cả Sản Phẩm
 @endsection
 
 @section('category')
-  @foreach ($danhmuc as $category )
+  @foreach ($danh_muc as $category )
     <li class="nav-item">
       <a class="nav-link fz" href="/category/{{$category->id}}">
         {{$category->ten_dm}}

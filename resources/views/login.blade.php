@@ -80,7 +80,7 @@
                 <div class="form-group form-check">
                   <input type="checkbox" class="form-check-input" id="rememberMe">
                   <label class="form-check-label font-weight-bold" for="rememberMe" data-toggle="modal"
-                    data-target="#exampleModal">Đồng ý với các điều khoản</label>
+                    data-target="#exampleModal" required>Đồng ý với các điều khoản</label>
                 </div>
                 <div class="d-flex justify-content-center">
                   <input type="submit" class="btn btn-dark" name="submit-signin" value="Đăng Nhập">
