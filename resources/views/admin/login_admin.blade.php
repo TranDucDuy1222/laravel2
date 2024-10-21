@@ -30,9 +30,9 @@
                         </div>
                         <div class="form-group">
                             <label for="inputPassword">Mật khẩu</label>
-                            <input type="password" name="password" value="{{old('pass')}}" class="form-control"
+                            <input type="password" name="password" value="{{old('password')}}" class="form-control"
                                 id="password" placeholder="Vui lòng nhập mật khẩu">
-                            @error('pass')
+                            @error('password')
                                 <span class=" text-danger">{{ $message }}</span>
                             @enderror
                         </div>
