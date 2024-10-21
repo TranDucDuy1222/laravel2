@@ -15,7 +15,7 @@ class AdminController extends Controller
         return view('admin.login_admin');
     }
     function login_admin(CheckLogin $request) {
-        if (Auth::guard('web')->attempt(['email' => $request['email'], 'password' => $request['pass']])) {
+        if (Auth::guard('web')->attempt(['email' => $request['email'], 'password' => $request['password']])) {
             $user = auth()->guard('web')->user();
             
             if ($user->is_hidden) {

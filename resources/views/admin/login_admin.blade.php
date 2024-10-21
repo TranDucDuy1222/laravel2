@@ -6,8 +6,17 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header text-center font-weight-bold" style="font-size: 30px;">Đăng Nhập Quản Trị</div>
-                @if(Session::exists('thongbao'))
-                    <h5 class="alert alert-danger text-center"> {{ Session::get('thongbao') }} </h5>
+                @if(session()->has('thongbao'))
+                    <div class="toast show align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
+                        aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                {!! session('thongbao') !!}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                        </div>
+                    </div>
                 @endif
                 <div class="card-body">
                     <form action="{{route('login_admin')}}" method="post">
@@ -21,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <label for="inputPassword">Mật khẩu</label>
-                            <input type="password" name="pass" value="{{old('pass')}}" class="form-control"
+                            <input type="password" name="password" value="{{old('pass')}}" class="form-control"
                                 id="password" placeholder="Vui lòng nhập mật khẩu">
                             @error('pass')
                                 <span class=" text-danger">{{ $message }}</span>

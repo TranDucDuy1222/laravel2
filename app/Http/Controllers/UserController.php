@@ -7,7 +7,6 @@ use App\Http\Requests\CheckRegister;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
-use App\Models\DanhMuc as danh_muc;
 use App\Models\User as users;
 use PhpParser\Node\Expr\Cast\String_;
 use Illuminate\Support\Facades\Hash;
@@ -31,7 +30,7 @@ class UserController extends Controller
 
         auth()->login($user);
 
-        return redirect()->intended('/')->with('success', 'Đăng ký thành công!');
+        return redirect()->intended('/')->with('thongbao', 'Đăng ký thành công!');
     }
 
     function login(){
@@ -45,10 +44,10 @@ class UserController extends Controller
         if (!$user) {
             return back()->with('thongbao', 'Email này chưa được đăng ký.');
         }
-        if (!Hash::check($request->pass, $user->password)) {
+        if (!Hash::check($request->password, $user->password)) {
             return back()->with('thongbao', 'Mật khẩu không chính xác.');
         }
-        if (auth()->guard('web')->attempt(['email' => $request['email'], 'password' => $request['pass']])) {
+        if (auth()->guard('web')->attempt(['email' => $request['email'], 'password' => $request['password']])) {
             if ($user->is_hidden) {
                 Auth::guard('web')->logout();
                 return back()->with('thongbao', 'Tài khoản này hiện tạm khóa và không thể đăng nhập.');
@@ -111,7 +110,7 @@ class UserController extends Controller
         );
         return $status === Password::RESET_LINK_SENT
             ? back()->with('status', 'Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn.')
-            : back()-withInput($request->only('email'))
+            : back()->withInput($request->only('email'))
                     ->withErrors(['email' => __('Không tìm thấy email này.')]);
     }
 

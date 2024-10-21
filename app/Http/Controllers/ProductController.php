@@ -31,58 +31,63 @@ class ProductController extends Controller
 
     function detail($id)
     {
-        $query = DB::table('san_pham')
+        $detail = DB::table('san_pham')
             ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct')
-            ->where('id', $id);
-        $detail = $query->first();
+            ->where('id', $id)
+            ->first();
 
-        $query = DB::table('san_pham')
-            ->select('san_pham.id', 'danh_muc.id_loai', 'loai.id')
-            ->join('danh_muc', 'danh_muc.id', '=', 'san_pham.id_dm')
-            ->join('loai', 'loai.id', '=', 'danh_muc.id_loai');
-
-        $madm = $query->first();
-
-        $query = DB::table('san_pham')
-            ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm', 'loai.id')
+        $query_loai = DB::table('san_pham')
             ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-            ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
-            ->where('danh_muc.id_loai', $madm->id_loai)
-            ->inRandomOrder()
-            ->limit(4);
+            ->select('danh_muc.id_loai')
+            ->where('san_pham.id', $id)
+            ->first();
+        
+        // Kiểm tra xem $madm có tồn tại không để tránh lỗi null
+        if ($query_loai) {
+            // Dựa trên id_loai để lấy ra các sản phẩm liên quan
+            $relatedpro = DB::table('san_pham')
+                ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+                ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
+                ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
+                ->where('danh_muc.id_loai', $query_loai->id_loai)
+                ->where('san_pham.id', '!=', $id)  // không lấy chính sản phẩm hiện tại
+                ->inRandomOrder()
+                ->limit(4)
+                ->get();
+        } else {
+            //không tìm thấy id_loai
+            $relatedpro = collect(); // Trả về rỗng
+        }
 
-        $relatedpro = $query->get();
-    
-
-        $query = DB::table('danh_gia')
+        $comment = DB::table('danh_gia')
             ->select('danh_gia.*', 'users.name', 'ctdh.*', 'san_pham.ten_sp', 'san_pham.color')
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
             ->join('chi_tiet_don_hang AS ctdh', 'danh_gia.id_ctdh', '=', 'ctdh.id')
             ->join('san_pham', 'san_pham.id', '=', 'ctdh.id_sp')
             ->where('danh_gia.id_sp', $id)
-            ->where('danh_gia.an_hien', 1);
-        $comment = $query->get();
+            ->where('danh_gia.an_hien', 1)
+            ->get();
 
         $size_arr = DB::table('sizes')
             ->select('sizes.size_product', 'sizes.so_luong')
             ->where('sizes.id_product', $id)
             ->get();
 
-        $currentCustomerId = auth()->user()->id;
-        $cart = $this->getCartForCustomer($currentCustomerId);
+        if (auth()->check()) {
+            $currentCustomerId = auth()->user()->id;
+            $cart = $this->getCartForCustomer($currentCustomerId);
+        } else {
+            // Xử lý trường hợp người dùng chưa đăng nhập
+            $currentCustomerId = null;
+            $cart = null;
+        }
 
         // Đếm số lượng đánh giá cho sản phẩm
         $so_luong_danh_gia = DB::table('danh_gia')
             ->where('id_sp', $id)
             ->count();
+
         return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
-        // Đếm số lượng đánh giá cho sản phẩm
-        $so_luong_danh_gia = DB::table('danh_gia')
-            ->where('id_sp', $id)
-            ->count();
-
-        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr]);
-
     }
 
     // Sản Phẩm theo danh mục
