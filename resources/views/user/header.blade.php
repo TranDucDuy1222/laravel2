@@ -11,6 +11,7 @@
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+      <link rel="shortcut icon" href="{{asset('/uploads/logo/iconlogo.png')}}" type="image/x-icon">
       <!--FONT AWESOME-->
       <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
             integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -131,7 +132,7 @@
               </a>
               <ul class="dropdown-menu" id="userDropdown">
                 <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
-                <li><a class="dropdown-item" href="#">Liên Hệ Chúng Tôi</a></li>
+                <li><a class="dropdown-item" href="/lien-he">Liên Hệ Chúng Tôi</a></li>
                 <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
                 <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
                 <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>

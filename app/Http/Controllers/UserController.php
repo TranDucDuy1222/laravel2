@@ -140,4 +140,9 @@ class UserController extends Controller
             ? redirect()->route('login')->with('success', __('Mật khẩu đã được đặt lại thành công!'))
             : back()->withErrors(['email' => [__('Email không hợp lệ.')]]);
     }
+
+    public function lienHe(){
+
+        return view('user.home_contact');
+    }
 }
