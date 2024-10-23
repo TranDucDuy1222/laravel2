@@ -35,7 +35,7 @@ Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-
 Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
 Route::post('/gio-hang/update/{id}', [BuyController::class, 'update'])->name('cart.update');
 Route::post('/gio-hang/apply-voucher', [BuyController::class, 'applyVoucher'])->name('cart.applyVoucher');
-Route::post('/gio-hang/remove-voucher', [BuyController::class, 'removeVoucher'])->name('cart.removeVoucher');
+Route::get('/gio-hang/remove-voucher', [BuyController::class, 'removeVoucher'])->name('cart.removeVoucher');
 
 Route::get('/login', [UserController::class , 'login'])->name('login');
 Route::post('/login', [UserController::class , 'login_form'])->name('login_form');
