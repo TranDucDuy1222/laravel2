@@ -6,7 +6,7 @@ use App\Http\Requests\CheckLogin;
 use App\Http\Requests\CheckRegister;
 use Illuminate\Http\Request;
 use DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User as users;
 use PhpParser\Node\Expr\Cast\String_;
 use Illuminate\Support\Facades\Hash;
@@ -63,16 +63,21 @@ class UserController extends Controller
     }
 
     public function quanLyTk($id){
-        $taiKhoan = DB::table('users')
-        ->join('dia_chi', 'dia_chi.id_user','=','users.id')
-        ->select('users.*', 'dia_chi.phone', 'dia_chi.dc_chi_tiet',)
-        ->where('users.id', $id)
-        ->first();
-        if(!$taiKhoan){
-            return redirect()->back()->with('thongbao','Không tìm thấy tài khoản');
+        if(empty(Auth::check())){
+            return redirect()->back()->with('thongbao', 'Đường dẫn không hợp lệ');
+        }else {
+            $taiKhoan = DB::table('users')
+            ->join('dia_chi', 'dia_chi.id_user','=','users.id')
+            ->select('users.*', 'dia_chi.phone', 'dia_chi.dc_chi_tiet',)
+            ->where('users.id', $id)
+            ->first();
+            if(!$taiKhoan){
+                return redirect()->back()->with('thongbao','Không tìm thấy tài khoản');
+            }
+    
+            return view('user.home_myprofile',compact('taiKhoan'));
         }
 
-        return view('user.home_myprofile',compact('taiKhoan'));
     }
 
     public function chinhSuaThongTin(Request $request ,$id){

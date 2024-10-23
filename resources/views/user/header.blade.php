@@ -36,6 +36,7 @@
 </head>
 <body>
 <body>
+  
   <!-- Nav   -->
   <nav class="header--style">
             <nav class="primary-nav primary-nav-wrapper--border">
@@ -70,6 +71,18 @@
                 </div>
             </nav>
             <nav class="navbar navbar-expand-lg bg-body secondary-nav-wrapper shadow">
+            @if(session()->has('thongbao'))
+            <div class="z-1 toast show align-items-center text-bg-danger border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('thongbao') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+    @endif
                 <div class="container">
                     <div class="menu-init">
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">

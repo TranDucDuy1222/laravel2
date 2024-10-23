@@ -22,7 +22,6 @@ Trang Chủ - TrendyU
 @endsection
 
 @section('content')
-
     <!-- Header -->
         <header class="shadow-none">
             <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
