@@ -73,7 +73,7 @@
             <div class="container">
                 <div class="row row--center">
                     <div class="col-lg-6 col-md-8 mb-3">
-                        <div class="l-f-o">
+                        <div class="l-f-o border">
                             <div class="l-f-o__pad-box">
                                 <form class="l-f-o__form" action="{{ route('register_form') }}" method="POST">
                                     @csrf

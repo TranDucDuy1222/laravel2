@@ -2196,8 +2196,6 @@ input::-ms-clear {
   --------------------------------------------------------------*/
 .row--center {
     justify-content: center; }
-.l-f-o {
-    border: 2px solid #d7d7d7; }
 .l-f-o__pad-box {
     padding: 20px; }
 .l-f-o__form {
@@ -2698,3 +2696,84 @@ input::-ms-clear {
     border-radius: 5px;
     margin: 0 0 10px 10px;
     padding: 12px 30px; }
+
+.container-login100 {
+    width: 100%;
+    min-height: 100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background-color: #A76871;
+    border-bottom-left-radius: 100%;
+    background-size: cover;
+    }
+.wrap-login100 {
+    width: 960px;
+    background: rgb(255, 255, 255);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 50px 80px 50px 80px;
+    }
+    
+.login100-pic {
+    padding-top: 50px;
+    width: 316px;
+    }
+.login100-pic img {
+    max-width: 350px;
+    display: block;
+    margin: auto;
+    }
+.login100-form {
+    width: 350px;
+    }
+.login100-form-title {
+    font-family: "Open Sans", sans-serif; 
+    font-size: 22px;
+    color: #000; 
+    line-height: 1.9;
+    text-align: center;
+    font-weight: 500;
+    width: 100%;
+    display: block;
+    padding-bottom: 30px;
+    }
+    
+.login-box {
+    padding: 20px 20px 20px 45px; }
+    
+@media (max-width: 992px) {
+    .wrap-login100 {
+        padding: 177px 90px 33px 85px;
+    }
+    
+    .login100-pic {
+        width: 35%;
+    }
+    
+    .login100-form {
+        width: 50%;
+    }
+}
+@media (max-width: 768px) {
+    .wrap-login100 {
+        padding: 50px 80px 33px 80px; }
+    
+    .login100-pic {
+        display: none; }
+    
+    .login100-form {
+        width: 100%; }
+    }
+    
+@media (max-width: 576px) {
+    .wrap-login100 {
+        padding: 50px 15px 33px 15px;
+    }
+}
+    
+    
