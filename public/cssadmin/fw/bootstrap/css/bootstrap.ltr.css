@@ -12965,3 +12965,35 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.app-menu {
+  margin-bottom: 0;
+  padding-bottom: 40px;
+}
+
+.app-menu__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 15px 15px;
+  font-size: 1.08em;
+  border-left: 0px;
+  box-shadow: none;
+  transition: border-left-color 0.3s ease, background-color 0.3s ease;
+  color: white;
+}
+.app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
+  background: #ffffc5;
+  text-decoration: none;
+  color: rgb(22, 22, 72);
+  box-shadow: none;
+}
+
+.app-menu__label {
+  white-space: nowrap;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  font-size: 15px;
+  font-weight: 500;
+}

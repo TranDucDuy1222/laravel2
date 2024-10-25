@@ -133,7 +133,6 @@ class BuyController extends Controller
                         ->where('user_id', $userId)
                         ->get();
 
-        // Tìm mã giảm giá theo code người dùng nhập vào
         $voucher = MaGiamGia::where('code', $request->input('voucher'))->first();
         if (!$voucher) {
             return redirect()->route('cart.gio-hang')->withErrors(['voucher' => 'Mã giảm giá không hợp lệ.']);
@@ -150,7 +149,6 @@ class BuyController extends Controller
         // Tính tổng số tiền sau khi áp dụng mã giảm giá
         $totalPayable = $totalAmount - $discountAmount;
 
-        // Lưu thông tin vào session
         session()->put('voucher', [
             'code' => $voucher->code,
             'amount' => $voucher->phan_tram,
@@ -168,9 +166,13 @@ class BuyController extends Controller
 
         return redirect()->route('cart.gio-hang')->with('success', 'Đã hủy mã giảm giá.');
     }
+<<<<<<< HEAD
 
     public function trangThanhToan(){
         return view('user.home_thanhtoan');
     }
 
 }
+=======
+    }
+>>>>>>> cdc1d775e26e2e18d52b3ef0cf5cf00554f35c34
