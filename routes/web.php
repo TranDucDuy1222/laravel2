@@ -22,13 +22,14 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
+//Trang chủ, trang chi tiết, trang tất cả sản phẩm...
 Route::get('/', [HomeController::class , 'index']);
 Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
 Route::get('/category/{id}', [ProductController::class , 'category']);
 Route::get('/allproduct', [ProductController::class , 'allproduct']);
 Route::get('/sale', [ProductController::class , 'sale']);
-
+//Giỏ hàng
 Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])->name('cart.add');
 Route::get('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
@@ -36,7 +37,9 @@ Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->na
 Route::post('/gio-hang/update/{id}', [BuyController::class, 'update'])->name('cart.update');
 Route::post('/gio-hang/apply-voucher', [BuyController::class, 'applyVoucher'])->name('cart.applyVoucher');
 Route::post('/gio-hang/remove-voucher', [BuyController::class, 'removeVoucher'])->name('cart.removeVoucher');
-
+//Thanh toán
+Route::get('/thanh-toan', [BuyController::class, 'trangThanhToan'])->name('thanhtoan');
+//Đăng nhập/Đăng ký
 Route::get('/login', [UserController::class , 'login'])->name('login');
 Route::post('/login', [UserController::class , 'login_form'])->name('login_form');
 Route::get('/logout', [UserController::class,'logout']);
@@ -51,11 +54,11 @@ Route::get('/forgot-password', [UserController::class, 'forgot_pass'])->name('pa
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('password.email');
 Route::get('/reset-password/{token}', [UserController::class, 'show_reset'])->name('password.reset');
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.update');
-
+//Quản lý tài khoản
 Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');
 Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->name('user.edit_profile');
 Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
-
+//Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
 Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
     $arr = request()->post();

@@ -198,7 +198,7 @@
                                         </tr>
                                 </table>
                                 <div>
-                                    <button class="btn btn--e-brand-b-2" type="submit">THANH TOÁN</button>
+                                    <button class="btn btn--e-brand-b-2"><a class="nav-link" href="{{route('thanhtoan')}}">THANH TOÁN</a></button>
                                 </div>
                             </div>
                         </form>
