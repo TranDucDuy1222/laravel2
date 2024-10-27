@@ -36,21 +36,16 @@ Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-
 Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
 Route::post('/gio-hang/update/{id}', [BuyController::class, 'update'])->name('cart.update');
 Route::post('/gio-hang/apply-voucher', [BuyController::class, 'applyVoucher'])->name('cart.applyVoucher');
-<<<<<<< HEAD
 Route::post('/gio-hang/remove-voucher', [BuyController::class, 'removeVoucher'])->name('cart.removeVoucher');
 //Thanh toán
 Route::get('/thanh-toan', [BuyController::class, 'trangThanhToan'])->name('thanhtoan');
 //Đăng nhập/Đăng ký
-=======
-Route::get('/gio-hang/remove-voucher', [BuyController::class, 'removeVoucher'])->name('cart.removeVoucher');
-
->>>>>>> cdc1d775e26e2e18d52b3ef0cf5cf00554f35c34
 Route::get('/login', [UserController::class , 'login'])->name('login');
 Route::post('/login', [UserController::class , 'login_form'])->name('login_form');
 Route::get('/logout', [UserController::class,'logout']);
 
 Route::get('/register', [UserController::class, 'register'])->name('register');
-Route::post('/register', [UserController::class, 'register_form'])->name('register_form');
+Route::post('/register', [UserController::class, 'register_form'])->name('register_form'); 
 
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);

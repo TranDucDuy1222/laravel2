@@ -166,13 +166,10 @@ class BuyController extends Controller
 
         return redirect()->route('cart.gio-hang')->with('success', 'Đã hủy mã giảm giá.');
     }
-<<<<<<< HEAD
 
     public function trangThanhToan(){
         return view('user.home_thanhtoan');
     }
 
 }
-=======
-    }
->>>>>>> cdc1d775e26e2e18d52b3ef0cf5cf00554f35c34
+

@@ -150,4 +150,7 @@ class UserController extends Controller
 
         return view('user.home_contact');
     }
+    public function guiMail(Request $request){
+        
+    }
 }
