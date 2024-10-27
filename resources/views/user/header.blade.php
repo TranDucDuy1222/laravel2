@@ -30,6 +30,7 @@
       <link rel="stylesheet" href="/FE/css/order.css">
       <link rel="stylesheet" href="/FE/css/order-detail.css">
       <link rel="stylesheet" href="/FE/css/cssHome.css">
+      <link rel="stylesheet" href="/FE/css/buy.css">
 
       
 </head>
@@ -43,7 +44,7 @@
                       <a class="main-logo" href="/">
                         <img src="{{ asset('uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
                       </a>
-                        <form class="main-form">
+                        <form class=" ms-xl-5  main-form border rounded-4 border-black">
                           <div class="d-flex ms-2 search-box input-text input-text--border-radius input-text--style-1">
                             <i class="fa-solid fa-magnifying-glass fa-fade"></i>
                             <input class=" input-text--style-1" type="search" name="keyw" placeholder="Nhập...">

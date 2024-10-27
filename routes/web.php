@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BuyController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Quantri;
 use Illuminate\Support\Facades\Route;
@@ -20,21 +21,32 @@ use App\Http\Controllers\SettingController;
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
-Route::get('/', [HomeController::class , 'index']);
+Route::get('/', [HomeController::class , 'index'])->name('home');
 Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
 Route::get('/category/{id}', [ProductController::class , 'category']);
 Route::get('/allproduct', [ProductController::class , 'allproduct']);
 Route::get('/sale', [ProductController::class , 'sale']);
 
+// Giỏ hàng
 Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])->name('cart.add');
 Route::get('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
 Route::post('/gio-hang/update/{id}', [BuyController::class, 'update'])->name('cart.update');
-Route::post('/gio-hang/apply-voucher', [BuyController::class, 'applyVoucher'])->name('cart.applyVoucher');
-Route::post('/gio-hang/remove-voucher', [BuyController::class, 'removeVoucher'])->name('cart.removeVoucher');
 
+// Thanh toán
+Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
+Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
+Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
+Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
+Route::post('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
+
+// Đặt hàng
+Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
+//Route::post('/dat-hang', [OrderController::class, 'datHang_form'])->name('dat-hang');
+
+// Đăng nhập
 Route::get('/login', [UserController::class , 'login'])->name('login');
 Route::post('/login', [UserController::class , 'login_form'])->name('login_form');
 Route::get('/logout', [UserController::class,'logout']);

@@ -7,7 +7,7 @@ Thông tin tài khoản
     @foreach ($loai as $category)
         <li class="nav-item dropdown">
             <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                href="{{ url('/category/' . $category->slug) }}">
+                href="{{ url('/category'.'/' . $category->slug) }}">
                 {{$category->ten_loai}}
             </a>
             <ul class="dropdown-menu" id="userDropdown">
@@ -41,12 +41,12 @@ Thông tin tài khoản
         <body style=" background-color: #F5F5F5;">
             <div class="col-8 container" >
                 <div class="row" style="border: 1px solid #DCDCDC; height: 70vh;">
-                        <div class="col-3 bg-body-secondary">
-                        <ul class="list-unstyled">
-                            <li class="bg-body-secondary"><a class="text-decoration-none  dropdown-item mt-2 h6 {{(request()->routeIs('user.profile'))?'text-danger':'text-dark'}}" href="#">Hồ sơ của tôi</a></li>
-                            <li class="bg-body-secondary"><a class="text-decoration-none text-dark dropdown-item mt-2 h6" href="index.php?mod=thongtin&act=order">Đơn hàng đã mua</a></li>
-                            <li class="bg-body-secondary"><a class="text-decoration-none text-dark dropdown-item mt-2 h6" href="#">Yêu cầu xóa tài khoản</a></li>
-                        </ul>
+                        <div class="col-3 bg-body-secondary card">
+                            <ul class="list-unstyled">
+                                <li class="bg-body-secondary"><a class="text-decoration-none  dropdown-item mt-2 h6 {{(request()->routeIs('user.profile'))?'text-danger':'text-dark'}}" href="#">Hồ sơ của tôi</a></li>
+                                <li class="bg-body-secondary"><a class="text-decoration-none text-dark dropdown-item mt-2 h6" href="index.php?mod=thongtin&act=order">Đơn hàng đã mua</a></li>
+                                <li class="bg-body-secondary"><a class="text-decoration-none text-dark dropdown-item mt-2 h6" href="#">Yêu cầu xóa tài khoản</a></li>
+                            </ul>
                         </div>
                         <div class="col-9">
                             <div style="padding-top: 30px; padding-left: 30px;">
