@@ -21,7 +21,7 @@ class ProductController extends Controller
     function detail($id)
     {
         $detail = DB::table('san_pham')
-            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct')
+            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct' ,'luot_mua')
             ->where('id', $id)
             ->first();
 

@@ -57,6 +57,18 @@ class OrderController extends Controller
                 $chiTietDonHang->gia = $gioHang->sanPham->gia_km > 0 ? $gioHang->sanPham->gia_km : $gioHang->sanPham->gia;
                 $chiTietDonHang->save();
 
+                // Cập nhật số lượng sản phẩm trong bảng sizes
+                $size = Size::find($gioHang->id_size);
+                if ($size) {
+                    $size->so_luong -= $gioHang->so_luong;
+                    $size->save();
+                }
+                // Cập nhật luot_mua cho sản phẩm
+                $sanPham = $gioHang->sanPham;
+                if ($sanPham) {
+                    $sanPham->luot_mua += $gioHang->so_luong;
+                    $sanPham->save();
+                }
                 // Xóa sản phẩm khỏi giỏ hàng
                 $gioHang->delete();
             }
@@ -64,6 +76,7 @@ class OrderController extends Controller
             // Xóa session voucher sau khi đặt hàng thành công
             session()->forget('voucher');
             DB::commit();
+
             return redirect()->route('home')->with('success', 'Đặt hàng thành công!');
 
         } catch (\Exception $e) {

@@ -69,7 +69,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                     class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                                     class="fas fa-star-half-alt"></i>
                                 <span class="pd-detail__review u-s-m-l-4">
-                                    <a data-click-scroll="#view-review">23 Reviews</a>
+                                    <a data-click-scroll="#view-review">{{$sldg}} Đánh giá</a>
                                 </span>
                             </div>
                         </div>
@@ -77,11 +77,29 @@ Chi Tiết : {{$detail->ten_sp}}
                             <span class="pd-detail__preview-desc">{{$detail->mo_ta_ngan}}</span>
                         </div>
                         <div class="mb-3">
-                            <div class="pd-detail__inline">
-                                <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
-                                    <a href="signin.html">Thêm vào danh sách yêu thích</a>
-                                    <span class="pd-detail__click-count">(222)</span>
-                                </span>
+                            <div class="row">
+                                <!-- Cột chứa Đã Bán -->
+                                <div class="col-xl-6 col-lg-6 col-md-4 col-sm-4 col-12">
+                                    <div class="pd-detail__inline">
+                                        <span class="pd-detail__click-wrap">
+                                            <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                            <a >Đã Bán</a>
+                                            <span class="pd-detail__click-count">({{$detail->luot_mua ?? 0}})</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Cột chứa Thêm vào danh sách yêu thích -->
+                                <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-12">
+                                    <div class="d-flex justify-content-md-end justify-content-xs-start"> <!-- Căn phải với màn hình lớn, căn trái với màn hình nhỏ -->
+                                        <div class="pd-detail__inline">
+                                            <span class="pd-detail__click-wrap">
+                                                <i class="far fa-heart u-s-m-r-6"></i>
+                                                <a href="/">Thêm vào danh sách yêu thích</a>
+                                                <span class="pd-detail__click-count">(222)</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3">
