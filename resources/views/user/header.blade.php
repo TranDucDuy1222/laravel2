@@ -11,6 +11,7 @@
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+      <link rel="shortcut icon" href="{{asset('/uploads/logo/iconlogo.png')}}" type="image/x-icon">
       <!--FONT AWESOME-->
       <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
             integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -35,6 +36,7 @@
 </head>
 <body>
 <body>
+  
   <!-- Nav   -->
   <nav class="header--style">
             <nav class="primary-nav primary-nav-wrapper--border">
@@ -69,6 +71,18 @@
                 </div>
             </nav>
             <nav class="navbar navbar-expand-lg bg-body secondary-nav-wrapper shadow">
+            @if(session()->has('thongbao'))
+            <div class="z-1 toast show align-items-center text-bg-danger border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('thongbao') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+    @endif
                 <div class="container">
                     <div class="menu-init">
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -131,7 +145,7 @@
               </a>
               <ul class="dropdown-menu" id="userDropdown">
                 <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
-                <li><a class="dropdown-item" href="#">Liên Hệ Chúng Tôi</a></li>
+                <li><a class="dropdown-item" href="/lien-he">Liên Hệ Chúng Tôi</a></li>
                 <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
                 <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
                 <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>

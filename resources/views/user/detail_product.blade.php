@@ -45,7 +45,7 @@ Chi Tiết : {{$detail->ten_sp}}
                             <div id="pd-o-initiate">
                                 <div class="pd-o-img-wrap">
                                     <img src="{{ asset('/uploads/product/' . $detail->hinh) }}"
-                                        onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="img-fluid"
+                                         class="img-fluid"
                                         alt="...">
                                 </div>
                             </div>

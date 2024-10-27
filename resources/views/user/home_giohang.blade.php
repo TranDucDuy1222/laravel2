@@ -98,7 +98,6 @@
                                                                 name="quantity" value="{{ $item->so_luong }}" 
                                                                 id="quantity-{{ $item->id }}" min="1" 
                                                                 onchange="document.getElementById('form-quantity-{{ $item->id }}').submit();">
-
                                                             <input type="hidden" id="stock-{{ $item->id }}" value="{{ $item->size->so_luong }}">
 
                                                             <span class="input-counter__plus fas fa-plus" onclick="changeQuantity({{ $item->id }}, 1)"></span>
@@ -113,7 +112,7 @@
                                             <td>
                                                 <div class="table-p__del-wrap">
                                                     <form action="{{ route('cart.remove', $item->id_sp) }}" method="GET" style="display:inline;">
-                                                        <a class="far fa-trash-alt table-p__delete-link" href="#" onclick="event.preventDefault(); this.closest('form').submit(); return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');"></a>
+                                                        <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')" class="btn far fa-trash-alt table-p__delete-link"></button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -198,7 +197,7 @@
                                         </tr>
                                 </table>
                                 <div>
-                                    <button class="btn btn--e-brand-b-2" type="submit">THANH TOÁN</button>
+                                    <button class="btn btn--e-brand-b-2"><a class="nav-link" href="{{route('thanhtoan')}}">THANH TOÁN</a></button>
                                 </div>
                             </div>
                         </form>

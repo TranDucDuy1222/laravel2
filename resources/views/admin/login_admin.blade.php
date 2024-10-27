@@ -1,62 +1,58 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<!-- Đăng nhập cho quản trị -->
-<div class="container pb-5">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header text-center font-weight-bold" style="font-size: 30px;">Đăng Nhập Quản Trị</div>
-                @if(session()->has('thongbao'))
-                    <div class="toast show align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
-                        aria-live="assertive" aria-atomic="true">
+<link rel="stylesheet" href="/FE/css/cssHome.css">
+@extends('admin.admin_head')
+@section('title')
+    Đăng nhập quản trị
+@endsection
+<div class="container-login100">
+    <div class="justify-content-center">
+        @if(session()->has('thongbao'))
+            <div class="toast show align-items-center text-bg-danger border-0 position-fixed top-0 mt-5 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('thongbao') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+    </div>
+    <div class="wrap-login100 shadow">
+        <div class="login100-pic">
+            <span class="login100-form-title">
+                <b>Đăng nhập quản trị</b>
+            </span>
+            <img src="{{ asset('/uploads/logo/logolight.png') }}" class="img-fluid" alt="" />
+        </div>
+        <div class="l-f-o border-start">
+            <div class="login-box">
+                <form class="login100-form validate-form" action="{{route('login_admin')}}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="gl-label" for="login-email">EMAIL *</label>
+                        <input class="input-text input-text--primary-style" type="email" name="email" id="login-email" placeholder="Nhập Email" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="gl-label" for="login-password">PASSWORD *</label>
+                        <input class="input-text input-text--primary-style" type="password" name="password" id="login-password" placeholder="Nhập Password" required>
+                    </div>
+                    <div class="mb-3">
                         <div class="d-flex">
-                            <div class="toast-body">
-                                {!! session('thongbao') !!}
+                            <div class="ms-auto pd-detail__inline">
+                                <span class="pd-detail__click-wrap">
+                                    <a class="gl-link" href="{{ route('password.request') }}">Quên mật khẩu?</a>
+                                </span>
                             </div>
-                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                                aria-label="Close"></button>
                         </div>
                     </div>
-                @endif
-                <div class="card-body">
-                    <form action="{{route('login_admin')}}" method="post">
-                        <div class="form-group">
-                            <label for="inputEmail">Email của bạn</label>
-                            <input type="email" name="email" value="{{old('email')}}" class="form-control"
-                                id="inputEmail" placeholder="Vui lòng nhập địa chỉ email">
-                            @error('email')
-                                <span class=" text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword">Mật khẩu</label>
-                            <input type="password" name="password" value="{{old('password')}}" class="form-control"
-                                id="password" placeholder="Vui lòng nhập mật khẩu">
-                            @error('password')
-                                <span class=" text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label class="form-check-label font-weight-bold d-flex justify-content-end"
-                                data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                <u>Quên mật khẩu</u>
-                            </label>
-                        </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label font-weight-bold" for="rememberMe" data-toggle="modal"
-                                data-target="#exampleModal">Đồng ý với các điều khoản</label>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <input type="submit" class="btn btn-dark" name="submit-signin" value="Đăng Nhập">
-                        </div>
-                        <div class="form-group">
-                        </div>
-                        @csrf
-                    </form>
-                </div>
+                    <div class="mb-3">
+                        <button type="submit" class="l-f-o__create-link btn btn--e-brand-b-2">ĐĂNG NHẬP</button>
+                    </div>  
+                </form>
             </div>
         </div>
     </div>
 </div>
-<!-- End đăng nhập cho quản trị -->

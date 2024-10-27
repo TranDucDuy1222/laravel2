@@ -1,8 +1,30 @@
-<?php
-include_once("App/views/user/head.php");
-include_once("App/views/user/header.php");
-?>
-<?php
+@extends('user.layout')
+@section('title')
+Thanh toán
+@endsection
+
+@section('category')
+    @foreach ($loai as $category)
+        <li class="nav-item dropdown">
+            <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                href="{{ url('/category/' . $category->slug) }}">
+                {{$category->ten_loai}}
+            </a>
+            <ul class="dropdown-menu" id="userDropdown">
+                @foreach ($danh_muc as $dm)
+                    @if ($dm->id_loai == $category->id)
+                        <li class="hover-dm"><a class="dropdown-item" href="{{$dm->slug}}">{{$dm->ten_dm}}</a></li>
+                    @endif
+                @endforeach
+            </ul>
+        </li>
+    @endforeach
+@endsection
+
+@section('content')
+
+@endsection
+@php
 if (empty($_SESSION['buy'])) {
   $show = '';
   $arlert = 'Vui lòng thêm sản phẩm từ trang giỏ hàng';
@@ -10,7 +32,7 @@ if (empty($_SESSION['buy'])) {
   $show = '<button style="width: 150px;" type="submit" name="order" class="btn btn-dark container btn-buy">Thanh toán</button>';
   $arlert = '';
 }
-?>
+@endphp
 <div class="container">
     <h2 class="text-center font-weight-bold" style="padding-top: 30px; letter-spacing: 1px;">Thanh toán</h2>
     <div class="row">
@@ -21,7 +43,7 @@ if (empty($_SESSION['buy'])) {
 <p id="error-message" style="color: red; font-size: 22px;"><?=$arlert?></p>
 <a class="font-weight-bold" style="font-size: 20px; letter-spacing: 1px; text-decoration: none; color: black;">Địa chỉ giao hàng</a> 
 <a style="cursor: pointer;" data-toggle="modal" data-target="#exampleModal">(Thêm địa chỉ)</a>
-<?php foreach($data['get_diachi'] as $sp): ?>   
+ @foreach($data['get_diachi'] as $sp)   
     <div class="container" style="display: grid; grid-template-columns: 60% 40%;" >
             <div>
               <input type="radio" name="select_address" value="<?=$sp['madc']?>">
@@ -40,7 +62,7 @@ if (empty($_SESSION['buy'])) {
             }
            </script>
       </div>
-<?php endforeach; ?>
+@endforeach
     
         <div>
             <a class="font-weight-bold" style="font-size: 20px; letter-spacing: 1px; text-decoration: none; color: black;">Chọn một Phương thức thanh toán: </a>
@@ -68,7 +90,7 @@ if (empty($_SESSION['buy'])) {
                 </thead> 
                 <tbody>
                 
-                <?php
+                @php
                     $tongs=0;
                     $tong = 0;
                         if (isset($_SESSION['buy'])) {
@@ -115,8 +137,8 @@ if (empty($_SESSION['buy'])) {
                             }
                             
                         }
-                        ?>
-                      <!-- <a href="<?=Base_url?>/deleteall_buy"> Xóa</a> -->
+                        @endphp
+                      <!-- <a href="Base_url/deleteall_buy"> Xóa</a> -->
                 </tbody>
                 
                 </table>
@@ -294,8 +316,6 @@ if (empty($_SESSION['buy'])) {
   </div>
 <!-- code khác -->
 <!-- Hàm chọn địa chỉ -->
-<?php
-include_once("App/views/user/footer.php");
-?>
+
 <script src="<?php echo Base_url;?>/public/js/add_dc.js"></script>
 <script src="<?php echo Base_url;?>/public/js/thanhtoan.js"></script>
