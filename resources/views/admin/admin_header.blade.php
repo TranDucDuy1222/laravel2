@@ -9,7 +9,7 @@
                     <a class="sa-sidebar__logo" href="index.html">
                         <!-- logo -->
                         <div class="sa-sidebar-logo d-flex justify-content-center mt-2">
-                        <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
+                            <img src="{{ asset('/uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
                         </div>
                         <!-- logo / end -->
                     </a>
@@ -17,7 +17,53 @@
                 <div class="sa-sidebar__body" data-simplebar="">
                     <ul class="sa-nav sa-nav--sidebar" data-sa-collapse="">
                         <li class="sa-nav__section">
-                            <ul class="sa-nav__menu sa-nav__menu--root">
+                            <ul class="app-menu sa-nav__menu sa-nav__menu--root">
+                                <li><a class="app-menu__item" href="admin.php">
+                                        <i class='sa-nav__icon fas fa-tachometer-alt'></i>
+                                        <span class="app-menu__label">Thống Kê</span>
+                                    </a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('admin/san-pham')}}">
+                                        <i class='sa-nav__icon fas fa-box'></i>
+                                        <span class="app-menu__label">Quản lý sản phẩm</span>
+                                    </a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('/admin/danh-muc')}}">
+                                        <i class='sa-nav__icon fas fa-boxes'></i>
+                                        <span class="app-menu__label">Quản lý danh mục</span>
+                                    </a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('/admin/tai-khoan')}}">
+                                    <i class='sa-nav__icon fas fa-user'></i>
+                                    <span class="app-menu__label">Quản lý tài Khoản</span></a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('/admin/don-hang')}}">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        <span class="app-menu__label">Quản lý đơn hàng</span>
+                                    </a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('/admin/magiamgia')}}">
+                                        <i class='sa-nav__icon fa-solid fa-dollar-sign'></i>
+                                        <span class="app-menu__label">Mã giảm giá</span>
+                                    </a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('admin/danh-gia')}}">
+                                        <i class='sa-nav__icon fa-solid fa-comment'></i>
+                                        <span class="app-menu__label">Đánh Giá</span>
+                                    </a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('admin/trang-chu')}}">
+                                        <i class='sa-nav__icon fa-solid fa-house-user'></i>
+                                        <span class="app-menu__label">Trang Chủ</span>
+                                    </a>
+                                </li>
+                                <li><a class="app-menu__item" href="{{url('admin/cai-dat')}}">
+                                        <i class='sa-nav__icon bx fa-solid fa-gear fa-spin'></i>
+                                        <span class="app-menu__label">Thiết lập cài đặt</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- <ul class="sa-nav__menu sa-nav__menu--root">
                                 <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
                                     <a href="admin.php" class="sa-nav__link">
                                         <span class="sa-nav__icon">
@@ -90,7 +136,7 @@
                                         <span class="sa-nav__title">Thiết lập cài đặt</span>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </li>
                     </ul>
                 </div>

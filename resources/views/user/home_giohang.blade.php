@@ -146,7 +146,7 @@
                                                 <td>
                                                     <div class="table-p__del-wrap">
                                                     <form action="{{ route('cart.remove', $item->id_sp) }}" method="GET" style="display:inline;">
-                                                        <a class="far fa-trash-alt table-p__delete-link" href="#" onclick="event.preventDefault(); this.closest('form').submit(); return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');"></a>
+                                                        <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')" class="btn far fa-trash-alt table-p__delete-link"></button>
                                                     </form>
                                                     </div>
                                                 </td>

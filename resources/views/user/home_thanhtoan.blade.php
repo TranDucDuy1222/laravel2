@@ -56,7 +56,7 @@
                             <div class="d-flex align-items-center p-2">
                                 <i class="fa-solid fa-location-dot me-2 fs-4" style="color: #ee301b;"></i>
                                 <p class="fs-4 mb-0">Địa chỉ nhận hàng</p> 
-                                <button class="btn btn-outline-dark ms-auto" style="font-size: 15px;">Chỉnh sửa</button>
+                                <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn btn-outline-dark ms-auto" style="font-size: 15px;">Chỉnh sửa</a>
                             </div>
                             <hr class="m-0">
                             <select class="form-select" id="selected_address" aria-label="Default select example">

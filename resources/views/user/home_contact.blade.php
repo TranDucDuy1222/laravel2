@@ -1,6 +1,6 @@
 @extends('user.layout')
 @section('title')
-Đăng Nhập
+Liên hệ
 @endsection
 
 @section('category')
@@ -22,6 +22,18 @@
 @endsection
 
 @section('content')
+@if(session()->has('success'))
+            <div class="toast show align-items-center text-bg-success border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('success') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+    @endif
 <div class="app-content">
     <div class="pt-5">
         <div class="section__content">
@@ -33,7 +45,7 @@
                                 <a href="{{ url('/') }}">Trang chủ</a>
                             </li>
                             <li class="is-marked">
-                                <a href="{{ url('login') }}">Đăng nhập</a>
+                                <a href="{{ url('lien-he') }}">Liên hệ</a>
                             </li>
                         </ul>
                     </div>
@@ -48,9 +60,9 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section__text-wrap">
-                        @if(session('thongbao'))
+                        <!-- @if(session('thongbao'))
                           <div class="alert alert-warning">{{ session('thongbao') }}</div>
-                        @endif
+                        @endif -->
                         @if(session('error'))
                             <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
@@ -64,7 +76,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section__text-wrap">
-                            <h1 class="section__heading u-c-secondary">ĐĂNG NHẬP</h1>
+                            <h1 class="section__heading u-c-secondary">Liên hệ</h1>
                         </div>
                     </div>
                 </div>
@@ -74,31 +86,26 @@
             <div class="container">
                 <div class="row row--center">
                     <div class="col-lg-6 col-md-8 mb-3">
-                        <div class="l-f-o border">
+                        <div class="l-f-o">
                             <div class="l-f-o__pad-box">
-                                <form class="l-f-o__form" action="{{ route('login_form') }}" method="POST">
+                                <form class="l-f-o__form" action="/gui-lien-he" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label class="gl-label" for="login-email">EMAIL *</label>
-                                        <input class="input-text input-text--primary-style" type="email" name="email" id="login-email" placeholder="Nhập Email" required>
+                                        <label class="gl-label" for="login-email">Tên</label>
+                                        <input class="input-text input-text--primary-style" type="text" name="name" id="name" placeholder="Nhập Tên" required>
                                     </div>
                                     <div class="mb-4">
-                                        <label class="gl-label" for="login-password">PASSWORD *</label>
-                                        <input class="input-text input-text--primary-style" type="password" name="password" id="login-password" placeholder="Nhập Password" required>
+                                        <label class="gl-label" for="login-password">Email</label>
+                                        <input class="input-text input-text--primary-style" type="text" name="email" id="email" placeholder="Nhập Email" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="gl-label" for="login-password">Nội dung</label>
+                                        <textarea class="form-control" name="noidung" id="noidung"></textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <div class="d-flex">
-                                            <div class="ms-auto pd-detail__inline">
-                                                <span class="pd-detail__click-wrap">
-                                                  <a class="gl-link" href="{{ route('password.request') }}">Quên mật khẩu?</a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <button type="submit" class="l-f-o__create-link btn btn--e-brand-b-2">ĐĂNG NHẬP</button>
+                                        <button type="submit" class="l-f-o__create-link btn btn--e-brand-b-2">Gửi</button>
                                     </div>  
-                                    <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                         <div class="col-lg-12">
                                             <div class="section__text-wrap">
                                                 <h6 class="gl-link">Hoặc</h6>
@@ -112,7 +119,7 @@
                                                 <span>Đăng nhập bằng Google</span>
                                             </a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                    <div class="row my-3">
                                         <div class="col-lg-12">
                                             <div class="section__text-wrap">

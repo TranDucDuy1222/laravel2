@@ -13,17 +13,6 @@ Paginator::useBootstrap();
 class ProductController extends Controller
 {
 
-    // function __construct()
-    // {
-    //     $query = DB::table('loai')
-    //         ->select('id', 'ten_loai', 'slug')
-    //         ->orderBy('id', 'asc');
-    //     $loai = $query->get();
-    //     $danh_muc = DB::table('danh_muc')->get();
-    //     \View::share('loai', $loai);
-    //     \View::share('danh_muc', $danh_muc);
-    // }
-
     private function getCartForCustomer($userId)
     {
         return GioHang::where('user_id', $userId)->get()->keyBy('size'); // Lấy giỏ hàng theo size

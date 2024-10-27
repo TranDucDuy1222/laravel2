@@ -17,6 +17,8 @@ use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminDanhGiaController;
 use App\Http\Controllers\MaGiamGiaController;
 use App\Http\Controllers\SettingController;
+use App\Mail\GuiEmail;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
@@ -61,11 +63,25 @@ Route::get('/forgot-password', [UserController::class, 'forgot_pass'])->name('pa
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('password.email');
 Route::get('/reset-password/{token}', [UserController::class, 'show_reset'])->name('password.reset');
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.update');
-
+//Quản lý tài khoản
 Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');
 Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->name('user.edit_profile');
 Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
+Route::put('/profile/editdiachi/{id}', [UserController::class,'capnhatdiachi'])->name('dia_chi.update');
+Route::delete('/profile/xoa-dia-chi/{id}', [UserController::class, 'xoa_dc'])->name('xoa-dia-chi');
 
+//Liên hệ
+Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
+Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
+    $arr = request()->post();
+    $ht = trim(strip_tags($arr['name']));
+    $email = trim(strip_tags($arr['email']));
+    $nd = trim(strip_tags($arr['noidung']));
+
+    $adminEmail = 'hungnguyen270604@gmail.com';//Thư được gửi tới quản trị của email này
+    Mail::mailer('smtp')->to($adminEmail)->send(new GuiEmail($ht, $email, $nd));
+    return redirect()->route('user.contact')->with('success', 'Gửi mail thành công !');
+});
 
 // URL Admin
 Route::group(['prefix' => 'admin'], function() { 
