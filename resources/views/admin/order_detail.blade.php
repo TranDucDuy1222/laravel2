@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body">
                     <p><strong>Người Mua:</strong> {{ $donHang->user->name }}</p>
-                    <p><strong>Địa Chỉ:</strong> {{ $donHang->diaChi->dc_chi_tiet }}</p>
+                    <p><strong>Địa Chỉ:</strong> {{ $donHang->diaChi->dc_chi_tiet ?? "NULL"}}</p>
                     <p><strong>Thời Điểm Mua:</strong> {{ \Carbon\Carbon::parse($donHang->thoi_diem_mua_hang)->format('d/m/Y H:i') }}</p>
 
                     <p><strong>Tổng Tiền:</strong> {{ number_format($donHang->tong_dh, 0, ',', '.') }} VND</p>
@@ -84,7 +84,7 @@
                                         </td>
                                         <td>{{ $ct->sanPham->ten_sp }}</td>
                                         <td>{{ $ct->so_luong }}</td>
-                                        <td>{{ $ct->size ?? 'N/A' }}</td>
+                                        <td>{{ $ct->size->size_product ?? 'N/A' }}</td>
                                         <td>{{ number_format($ct->gia, 0, ',', '.') }} VND</td>
                                         <td>{{ number_format($ct->so_luong * $ct->gia, 0, ',', '.') }} VND</td>
                                     </tr>

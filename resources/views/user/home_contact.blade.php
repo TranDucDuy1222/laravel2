@@ -22,6 +22,18 @@ Liên hệ
 @endsection
 
 @section('content')
+@if(session()->has('success'))
+            <div class="toast show align-items-center text-bg-success border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('success') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+    @endif
 <div class="app-content">
     <div class="pt-5">
         <div class="section__content">

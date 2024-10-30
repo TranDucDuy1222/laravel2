@@ -26,7 +26,7 @@ class AdminDanhGiaController extends Controller
         ->join('users', 'danh_gia.id_user', '=', 'users.id')
         ->join('chi_tiet_don_hang', 'danh_gia.id_ctdh', '=', 'chi_tiet_don_hang.id')
         ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
-        ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.size', 'san_pham.color')
+        ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color')
         ->orderByRaw('ISNULL(danh_gia.feedback) ASC') // Sắp xếp theo trạng thái feedback null trước
         ->orderBy('danh_gia.id', 'asc')
         ->where('danh_gia.an_hien', 0)
@@ -37,7 +37,7 @@ class AdminDanhGiaController extends Controller
         ->join('users', 'danh_gia.id_user', '=', 'users.id')
         ->join('chi_tiet_don_hang', 'danh_gia.id_ctdh', '=', 'chi_tiet_don_hang.id')
         ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
-        ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.size', 'san_pham.color')
+        ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color')
         ->orderByRaw('ISNULL(danh_gia.feedback) ASC') // Sắp xếp theo trạng thái feedback null trước
         ->orderBy('danh_gia.id', 'asc')
         ->where('danh_gia.an_hien', 1)

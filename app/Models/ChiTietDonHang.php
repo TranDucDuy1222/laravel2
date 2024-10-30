@@ -14,6 +14,7 @@ class ChiTietDonHang extends Model
     protected $fillable = [
         'id_dh', 
         'id_sp', 
+        'id_size',
         'so_luong', 
         'gia'
     ];
@@ -21,6 +22,10 @@ class ChiTietDonHang extends Model
     public function donHang()
     {
         return $this->belongsTo(DonHang::class, 'id_dh');
+    }
+
+    public function size(){
+        return $this->belongsTo(Size::class, 'id_size');
     }
 
     public function sanPham()

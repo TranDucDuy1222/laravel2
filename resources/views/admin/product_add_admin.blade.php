@@ -241,7 +241,7 @@ Thêm Sản Phẩm
                                         <div class="row g-4">
                                             <div class="col">
                                                 <label for="form-product/size" class="form-label">Kích thước</label>
-                                                <input readonly value="X" class="form-control" name="size_product[]" />
+                                                <input readonly value="L" class="form-control" name="size_product[]" />
                                             </div>
                                             <div class="col">
                                                 <label for="form-product/quantity" class="form-label">Số lượng</label>

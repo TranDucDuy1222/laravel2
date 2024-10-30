@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User as users;
+use App\Models\DiaChi;
 use PhpParser\Node\Expr\Cast\String_;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -67,17 +68,59 @@ class UserController extends Controller
             return redirect()->back()->with('thongbao', 'Đường dẫn không hợp lệ');
         }else {
             $taiKhoan = DB::table('users')
-            ->join('dia_chi', 'dia_chi.id_user','=','users.id')
-            ->select('users.*', 'dia_chi.phone', 'dia_chi.dc_chi_tiet',)
-            ->where('users.id', $id)
+            
+            ->select('users.*')
+            ->where('id', $id)
             ->first();
+
+            $diachi = DB::table('dia_chi')
+            ->join('users', 'dia_chi.id_user','=','users.id')
+            ->select('dia_chi.*', 'users.name' )
+            ->where('users.id', $id)
+            ->get();
             if(!$taiKhoan){
                 return redirect()->back()->with('thongbao','Không tìm thấy tài khoản');
             }
-    
-            return view('user.home_myprofile',compact('taiKhoan'));
+            else{
+                if(isset($diachi)){
+                    $diachi = $diachi->toArray();
+                }else{
+                    $diachi = [];
+                }
+                return view('user.home_myprofile',compact('taiKhoan', 'diachi'));
+            }
         }
+    }
 
+    public function capnhatdiachi(Request $request, $id)
+    {
+    $obj = DiaChi::find($id);
+
+    // Kiểm tra và cập nhật từng trường riêng lẻ nếu có giá trị mới
+    if ($request->filled('ho_ten')) {
+        $obj->ho_ten = $request->input('ho_ten');
+    }
+
+    if ($request->filled('dc_chi_tiet')) {
+        $obj->dc_chi_tiet = $request->input('dc_chi_tiet');
+    }
+
+    if ($request->filled('phone')) {
+        $obj->phone = $request->input('phone');
+    }
+
+    // Lưu thay đổi
+    $obj->save();
+
+    return redirect()->back()->with('thongbao', 'Cập nhật địa chỉ thành công!');
+    }
+
+    public function xoa_dc($id)
+    {
+        $address = DiaChi::findOrFail($id);
+        $address->delete();
+    
+        return redirect()->back()->with('thongbao', 'Địa chỉ đã được xóa thành công!');
     }
 
     public function chinhSuaThongTin(Request $request ,$id){
@@ -150,7 +193,13 @@ class UserController extends Controller
 
         return view('user.home_contact');
     }
-    public function guiMail(Request $request){
-        
+    public function donHangDaMua($id){
+        $purchased = DB::table('chi_tiet_don_hang')
+        ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
+        ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
+        ->select('don_hang.*', 'chi_tiet_don_hang.*', 'san_pham.ten_sp', 'san_pham.hinh')
+        ->where('don_hang.id_user', $id)
+        ->get();
+        return view('user.home_purchased', compact('purchased'));
     }
 }

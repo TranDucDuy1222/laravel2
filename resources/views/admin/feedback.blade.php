@@ -77,7 +77,7 @@
                                 </td>
                                 <td>
                                     <div class="sa-price">
-                                        <span class="sa-price__integer">{{$item->size}} - {{$item->color}}</span>
+                                        <span class="sa-price__integer">{{$item->id_size}} - {{$item->color}}</span>
                                     </div>
                                 </td>
                                 <td>

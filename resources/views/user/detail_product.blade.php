@@ -218,7 +218,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                                             <span>(4)</span>
                                                         </div>
                                                         <p>Phân Loại : {{$item->ten_sp}} </p>
-                                                        <p>Size: {{$item->size}} - Màu: {{$item->color}}</p>
+                                                        <p>Size: {{$item->id_size}} - Màu: {{$item->color}}</p>
                                                         <p><strong>Chất lượng sản phẩm:</strong> {{$item->quality_product}}
                                                         </p>
                                                         <p class="review-o__text">{{$item->noi_dung}}.</p>

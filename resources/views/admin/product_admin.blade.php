@@ -108,17 +108,8 @@ Quản Trị Sản Phẩm
                     <table class="table">
                         <thead>
                             <tr>
-                                <!-- <th class="w-min">
-                                    <input type="checkbox"
-                                        class="form-check-input m-0 fs-exact-16 d-block" />
-                                </th> -->
                                 <th style="width: 30%;">Sản phẩm</th>
                                 <th style="width: 60%;">Kích cỡ : Số lượng</th>
-                                <!-- <th>Quanlity</th>
-                                <th>Price</th>
-                                <th>Sale Price</th>
-                                <th>Status</th>
-                                <th class="w-min"></th> -->
                                 <th style="width: 10%;"></th>
                             </tr>
 
@@ -127,7 +118,6 @@ Quản Trị Sản Phẩm
 
                             @foreach($sanpham_arr as $sp)
                             <div class="accordion" id="accordionExample">
-
                                 <div class="accordion-item">
                                     <tr>
                                         <td>
@@ -229,77 +219,6 @@ Quản Trị Sản Phẩm
                                         </td>
                                     </tr>
                                 </div>
-                                <!-- <td>
-                                        <input type="checkbox" class="form-check-input my-4 fs-exact-16 d-block"
-                                            aria-label="..." />
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <a href="app-product.html" class="me-4">
-                                                <div
-                                                    class="sa-symbol sa-symbol--shape--rounded sa-symbol--size--lg">
-                                                    <img src="/imgnew/{{$sp->hinh}}" width="40"
-                                                        height="40" onerror="this.src='/img/{{$sp->hinh}}'" alt="" />
-                                                </div>
-                                            </a>
-                                            <div>
-                                                <a href="app-product.html" class="text-reset">{{$sp->ten_sp}}</a>
-                                                <div class="sa-meta mt-0">
-                                                    <ul class="sa-meta__list">
-                                                        <li class="sa-meta__item">ID:
-                                                            <span title="Click to copy product ID"
-                                                                class="st-copy">{{$sp->id}}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a class="text-reset">
-                                             {{$sp->ten_dm}}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="badge badge-sa-success"></div>
-                                    </td>
-                                    <td>
-                                        <div class="sa-price">
-                                            
-                                                <span class="sa-price__integer">{{number_format($sp->gia, 0, ',' , '.' )}} đ</span>
-                                                <span class="sa-price__symbol"></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="sa-price">
-                                            
-                                                <span class="sa-price__integer">{{number_format($sp->gia_km, 0, ',' , '.' )}} đ</span>
-                                                <span class="sa-price__symbol"></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                            
-                                            @if($sp->trangthai==1)
-                                                <div type="button" class="badge badge-sa-success" id="form-product/quantity" name="trangthai">Stocking</div>
-                                            @elseif($sp->trangthai==2)
-                                                <div type="button" class="badge badge-sa-success" id="form-product/quantity" name="trangthai">Out of stock</div>
-                                            
-                                            @elseif($sp->trangthai==3)
-                                                <div class="badge badge-sa-danger" role="alert">Stop selling</div>
-                                            @endif
-                                    </td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a class="btn btn-outline-dark me-2" href="{{route('san-pham.edit', $sp->id)}}">Edit</a>
-                                            <form class="d-inline" action="{{ route('san-pham.destroy', $sp->id) }}" method="POST">
-                                                @method('DELETE')
-                                                <button type='submit' onclick="return confirm('Bạn có chắc muốn ẩn sản phẩm này không!')" class="btn btn-outline-danger">
-                                                    Ẩn
-                                                </button>
-                                                @csrf
-                                            </form>
-                                        </div>
-                                    </td> -->
                             </div>
                             @endforeach
                         </tbody>

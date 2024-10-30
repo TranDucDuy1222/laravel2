@@ -7,7 +7,7 @@ Trang Chủ - TrendyU
     @foreach ($loai as $category)
         <li class="nav-item dropdown">
             <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                href="{{ url('/category/' . $category->slug) }}">
+                href="{{ url('/category'. '/' . $category->slug) }}">
                 {{$category->ten_loai}}
             </a>
             <ul class="dropdown-menu" id="userDropdown">

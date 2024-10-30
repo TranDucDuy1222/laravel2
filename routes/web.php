@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BuyController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Quantri;
 use Illuminate\Support\Facades\Route;
@@ -22,24 +23,32 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
-//Trang chủ, trang chi tiết, trang tất cả sản phẩm...
-Route::get('/', [HomeController::class , 'index']);
+Route::get('/', [HomeController::class , 'index'])->name('home');
 Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
 Route::get('/category/{id}', [ProductController::class , 'category']);
 Route::get('/allproduct', [ProductController::class , 'allproduct']);
 Route::get('/sale', [ProductController::class , 'sale']);
-//Giỏ hàng
+
+// Giỏ hàng
 Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])->name('cart.add');
 Route::get('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
 Route::post('/gio-hang/update/{id}', [BuyController::class, 'update'])->name('cart.update');
-Route::post('/gio-hang/apply-voucher', [BuyController::class, 'applyVoucher'])->name('cart.applyVoucher');
-Route::post('/gio-hang/remove-voucher', [BuyController::class, 'removeVoucher'])->name('cart.removeVoucher');
-//Thanh toán
-Route::get('/thanh-toan', [BuyController::class, 'trangThanhToan'])->name('thanhtoan');
-//Đăng nhập/Đăng ký
+
+// Thanh toán
+Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
+Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
+Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
+Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
+Route::post('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
+
+// Đặt hàng
+Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
+//Route::post('/dat-hang', [OrderController::class, 'datHang_form'])->name('dat-hang');
+
+// Đăng nhập
 Route::get('/login', [UserController::class , 'login'])->name('login');
 Route::post('/login', [UserController::class , 'login_form'])->name('login_form');
 Route::get('/logout', [UserController::class,'logout']);
@@ -58,6 +67,10 @@ Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('
 Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');
 Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->name('user.edit_profile');
 Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
+Route::put('/profile/editdiachi/{id}', [UserController::class,'capnhatdiachi'])->name('dia_chi.update');
+Route::delete('/profile/xoa-dia-chi/{id}', [UserController::class, 'xoa_dc'])->name('xoa-dia-chi');
+Route::get('/purchase/{id}', [UserController::class, 'donHangDaMua'])->name('user.purchase');
+
 //Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
 Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
@@ -68,7 +81,7 @@ Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
 
     $adminEmail = 'hungnguyen270604@gmail.com';//Thư được gửi tới quản trị của email này
     Mail::mailer('smtp')->to($adminEmail)->send(new GuiEmail($ht, $email, $nd));
-    return redirect()->route('user.contact')->with('thongbao', 'Gửi mail thành công !');
+    return redirect()->route('user.contact')->with('success', 'Gửi mail thành công !');
 });
 
 // URL Admin
