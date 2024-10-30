@@ -193,13 +193,5 @@ class UserController extends Controller
 
         return view('user.home_contact');
     }
-    public function donHangDaMua($id){
-        $purchased = DB::table('chi_tiet_don_hang')
-        ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
-        ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
-        ->select('don_hang.*', 'chi_tiet_don_hang.*', 'san_pham.ten_sp', 'san_pham.hinh')
-        ->where('don_hang.id_user', $id)
-        ->get();
-        return view('user.home_purchased', compact('purchased'));
-    }
+
 }

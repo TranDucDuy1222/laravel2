@@ -22,85 +22,138 @@
 
 @section('content')
 <h2 style="letter-spacing: 2px; text-align: center; padding-top: 40px;">Đơn hàng đã mua</h2>
-<div class="row" style="padding-bottom: 50px;  padding-top: 20px; margin-left: 0; margin-right: 0;">
-
-    <body style=" background-color: #F5F5F5;">
-        <div class="col-8 container">
-            <div class="row" style="border: 1px solid #DCDCDC; height: 70vh;">
-                <div class="col-3 bg-body-secondary">
-                    <ul class="list-unstyled">
-                        <li class="bg-body-secondary"><button type="submit" style="border: none;"><a class="text-decoration-none  dropdown-dc mt-2 h6 {{(request()->routeIs('user.profile')) ? 'text-danger' : 'text-dark'}}"
-                                    href="{{ route('user.profile', [Auth::user()->id]) }}">Hồ sơ của tôi</a></button></li>
-                        <li class="bg-body-secondary"><button type="submit" style="border: none;"><a class="text-decoration-none dropdown-dc mt-2 h6 {{(request()->routeIs('user.purchase')) ? 'text-danger' : 'text-dark'}}"
-                                    href="">Đơn hàng đã mua</a></button></li>
-                    </ul>
-                </div>
-                <div class="col-9">
-                    <table class="'table">
-                        <thead>
-                            <tr>
-                                <th style="width: 40%;">Sản phẩm</th>
-                                <th style="width: 10%;">Kích cỡ</th>
-                                <th style="width: 10%;">Số lượng</th>
-                                <th style="width: 20%;">Giá</th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            @foreach ($purchased as $dhdm)
-                            <div class="accordion" id="accordionExample">
-                                <div class="accordion-item">
-                                    <tr>
-                                        <td>
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$dhdm->id}}" aria-expanded="false" aria-controls="collapse{{$dhdm->id}}">
-
-                                                    <a href="" class="me-4">
-                                                        <div class="">
-                                                            <img src="{{ asset('/uploads/product/' . $dhdm->hinh) }}" width="60"
-                                                                height="50" onerror="this.src='/imgnew/{{$dhdm->hinh}}'" alt="" />
-                                                        </div>
-                                                    </a>
-                                                    <a href="" class="text-reset">{{$dhdm->ten_sp}}</a>
-
-                                                </button>
-                                            </h2>
-                                            <div id="collapse{{$dhdm->id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body text-black">
-                                                    <div class="pttt">
-                                                        <label for="">Phương thức thanh toán: {{$dhdm->pttt}}</label>
-                                                    </div>
-                                                    <div class="tong_dh">
-                                                        <label for="">Thành tiền: {{$dhdm->tong_dh}}</label>
-                                                    </div>
-                                                    <div class="gia">
-                                                        <label for="">{{$dhdm->thoi_diem_mua_hang }}<span class="text"></span></label>
-                                                    </div>
+<div class="container">
+    <div class="row" style="border: 1px solid #DCDCDC; height: 70vh;">
+        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 bg-body-secondary">
+            <ul class="list-unstyled">
+                <li class="bg-body-secondary"><button type="submit" style="border: none;"><a class="text-decoration-none  dropdown-dc mt-2 h6 {{(request()->routeIs('user.profile')) ? 'text-danger' : 'text-dark'}}"
+                            href="{{ route('user.profile', [Auth::user()->id]) }}">Hồ sơ của tôi</a></button></li>
+                <li class="bg-body-secondary"><button type="submit" style="border: none;"><a class="text-decoration-none dropdown-dc mt-2 h6 {{(request()->routeIs('user.purchase')) ? 'text-danger' : 'text-dark'}}"
+                            href="">Đơn hàng đã mua</a></button></li>
+            </ul>
+        </div>
+        <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12 text-black p-0 bg-body-tertiary ">
+            <div class="scroll-donhang">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    @foreach ($order as $dh)
+                    <div class="accordion-item p-2">
+                        @if (isset($dh))
+                        <div class="row" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$dh->id}}" aria-expanded="false" aria-controls="flush-collapse{{$dh->id}}">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                <strong>Mã vận đơn: {{ $dh->id }}</strong>
+                            </div>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                                <!-- Văn bản căn phải cho col-xl, col-lg, col-md -->
+                                <p class="d-none d-md-block text-end">{{ $dh->thoi_diem_mua_hang }}</p>
+                                <!-- Văn bản căn trái cho col-sm -->
+                                <p class="d-md-none text-start">{{ $dh->thoi_diem_mua_hang }}</p>
+                            </div>
+                            <div class="col-12">
+                                <h4>Địa chỉ người nhận:</h4>
+                                <p>
+                                    {{ $dh->ho_ten }} | {{ $dh->phone }} |
+                                    @if (empty($dh->qh && $dh->thanh_pho))
+                                    {{$dh->dc_chi_tiet}}
+                                    @else
+                                    {{$dh->dc_chi_tiet}}, {{$dh->qh}}, {{$dh->thanh_pho}}
+                                    @endif
+                                </p>
+                            </div>
+                            
+                            <p class="text-center">Xem chi tiết <i class="fa-solid fa-chevron-down" style="color: #0c0d0d;"></i></p>
+                        </div>
+                        <div id="flush-collapse{{$dh->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$dh->id}}" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body p-3">
+                                @foreach ($purchased as $pc)
+                                @php
+                                $gia = number_format($pc->gia, 0, '','.');
+                                @endphp
+                                @if ($pc->id_dh == $dh->id)
+                                <div class="row border-top">
+                                    <div class="col-2 p-1" style="height: 100px; width: 80px;">
+                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="h-100 w-100" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="row">
+                                            <div class="col-12 mb-xl-1 mb-lg-1">
+                                                {{ $pc->ten_sp }}
+                                            </div>
+                                            <div class="row mb-xl-1 mb-lg-1">
+                                                <div class="col-6">
+                                                    {{ $pc->size_product }} - {{ $pc->color }}
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="text-end">
+                                                        <strong>x{{ $pc->so_luong }}</strong>
+                                                    </p>
+                                                </div>
+                                                <div class="col-12">
+                                                    <p class="text-end">
+                                                        {{ $gia }} đ
+                                                    </p>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <span class="st-copy">{{$dhdm->size}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @endforeach
+                            </div>
+                            <hr class="m-0">
+                        <div class="row" style="font-size: 13px;">
+                            <div class="col-8 d-flex align-items-center text-end">
+                                <p class="ms-auto mb-0">Phương thức thanh toán</p>
 
-                                        </td>
-                                        <td>
-                                            <span class="st-copy">x{{$dhdm->so_luong}}</span>
+                            </div>
+                            <div class="col-4 text-end text-truncate">
+                                @if($dh->pttt == "COD")
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <div class="badge text-bg-success">COD</div>
+                                    <p class="ms-2 mb-0 align-self-center fs-6 text-truncate">Thanh toán khi nhận hàng</p>
+                                </div>
 
-                                        </td>
-                                        <td>
-                                            <span class="st-copy">{{number_format($dhdm->gia, 0, ',' , '.' )}} đ</span>
+                                @else
+                                <p class="mb-0 text-truncate">Đã thanh toán</p>
+                                @endif
+                            </div>
+                            <div class="col-8 d-flex align-items-center text-end">
+                                <p class="ms-auto mb-0">Phí vận chuyển</p>
 
-                                        </td>
-                                    </tr>
+                            </div>
+                            <div class="col-4">
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <p class="fs-6">
+                                        30.000 đ
+                                    </p>
                                 </div>
                             </div>
-                            @endforeach
-                        </tbody>
-                    </table>
-
+                        </div>
+                        </div>
+                        
+                        <hr class="mt-0">
+                        <div class="row">
+                            <div class="col-5">
+                                @if ($dh->trang_thai == 1)
+                                <p class="text-white badge-success">Chờ xử lý</p>
+                                @elseif($dh->trang_thai == 2)
+                                <button class="btn btn-outline-dark">Trạng thái</button>
+                                @else
+                                <button class="btn btn-outline-danger" style="font-size: 12px;">Hủy Đơn</button>
+                                @endif
+                            </div>
+                            <div class="col-7">
+                                <p class="text-end">Thành tiền: {{number_format($dh->tong_dh, 0, '','.');}} đ</p>
+                            </div>
+                        </div>
+                        @else
+                        <h4>Bạn chưa có đơn hàng nào</h4>
+                        @endif
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+
 </div>
 @endsection

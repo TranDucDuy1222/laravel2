@@ -33,9 +33,9 @@
       <link rel="stylesheet" href="/FE/css/cssHome.css">
       <link rel="stylesheet" href="/FE/css/buy.css">
 
+
       
 </head>
-<body>
 <body>
   
   <!-- Nav   -->

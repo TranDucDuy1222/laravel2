@@ -84,4 +84,32 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
         }
     }
+
+    public function donHangDaMua($id){
+        if(Auth::check()){
+            $order = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
+            ->where('don_hang.id_user', $id)
+            
+            ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
+            ->orderBy('don_hang.id','desc')
+            ->get();
+
+            $purchased = DB::table('chi_tiet_don_hang')
+            ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
+            ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
+            ->join('sizes', 'sizes.id', '=', 'chi_tiet_don_hang.id_size')
+            ->join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
+            ->select('don_hang.*', 'chi_tiet_don_hang.*', 'san_pham.ten_sp', 'san_pham.hinh', 'san_pham.color' , 'sizes.size_product' , 'dia_chi.*')
+            ->where('don_hang.id_user', $id)
+            ->get();
+            return view('user.home_purchased', compact('purchased' , 'order'));
+        }else {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập!');
+        }        
+
+    }
+
+
+
+
 }

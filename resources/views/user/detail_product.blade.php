@@ -294,7 +294,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                             <div class="card">
                                                 <a href="/detail/{{$item->id}}" id="hover-img-home">
                                                     <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                        onerror="this.src='{{ asset('/uploads') }}'"
+                                                        
                                                         style="max-height: 295px;" alt="" class="w-100">
                                                 </a>
                                                 <div class="card-body text-center">
