@@ -24,10 +24,8 @@ Thông tin tài khoản
 @section('content')
 
 <h2 style="letter-spacing: 2px; text-align: center; padding-top: 40px;">Thông tin tài khoản</h2>
-<div class="row" style="padding-bottom: 50px;  padding-top: 20px; margin-left: 0; margin-right: 0;">
 
-    <body style=" background-color: #F5F5F5;">
-        <div class="col-8 container">
+        <div class="container">
             <div class="row" style="border: 1px solid #DCDCDC; height: 70vh;">
                 <div class="col-3 bg-body-secondary">
                     <ul class="list-unstyled">
@@ -69,7 +67,7 @@ Thông tin tài khoản
                                 <h3 class="ms-3">Địa Chỉ Của Tôi</h3>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-dark ms-auto"> Thêm Địa Chỉ Mới </button>
+                                <button class="btn btn-dark me-6"> Thêm Địa Chỉ Mới </button>
                             </div>
                         </div>
                         <hr class="m-0">
@@ -83,8 +81,8 @@ Thông tin tài khoản
                             </div>
                             <div class="col-md-4">
                                 <div class="d-flex justify-content-end">
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $dc->id }}"
-                                        style="font-size: 14px;">Cập nhật </a>
+                                    <button class="btn btn-link" style="background: none; border: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $dc->id }}"
+                                        >Cập nhật</button>
                                     <!-- form chỉnh sửa địa chỉ -->
                                     <div class="modal fade" id="exampleModal{{ $dc->id }}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -129,7 +127,7 @@ Thông tin tài khoản
                                             </div>
                                         </div>
                                     </div>
-                                    <span style="font-size: 14px;"> | </span>
+                                    <span style="font-size: 16px;" class="mx-xl-1"> | </span>
                                     <form action="{{ route('xoa-dia-chi', $dc->id) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
@@ -156,8 +154,6 @@ Thông tin tài khoản
 
             </div>
         </div>
-    </body>
-</div>
 
 @endsection
 <!-- 
