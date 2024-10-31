@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 Paginator::useBootstrap();
 
-class AdminLoaiController extends Controller
+class AdminLoaiController extends AdminController
 {
 
     public function index(Request $request) {

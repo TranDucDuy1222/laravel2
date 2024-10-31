@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Loai;
 use DB;
 
-class LandingpageController extends Controller
+class LandingpageController extends AdminController
 {
     // function __construct(){
     //     $query = DB::table('loai')

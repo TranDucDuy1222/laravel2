@@ -15,6 +15,7 @@ class DonHang extends Model
     protected $dates = 'thoi_diem_mua_hang';
     protected $fillable = [
         'id_user', 
+        'id_dc',
         'tong_dh', 
         'pttt', 
         'trang_thai'

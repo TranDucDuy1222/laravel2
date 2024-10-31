@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SettingController extends Controller
+class SettingController extends AdminController
 {
     public function index(){
         $setting = DB::table('settings')->first();

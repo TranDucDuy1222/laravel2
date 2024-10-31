@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -10,25 +11,25 @@ use Illuminate\Pagination\Paginator;
 
 Paginator::useBootstrapFive();
 
-class AdminDanhGiaController extends Controller
+class AdminDanhGiaController extends AdminController
 {
     public function index(Request $request)
     {
-        $perpage = env('PER_PAGE');
+        $perpage = env('PER_PAGE', 10);  // Đặt giá trị mặc định nếu không tìm thấy trong .env
         $an_hien = $request->input('an_hien', 1);
-    
+
         $query = DB::table('danh_gia')
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
             ->join('chi_tiet_don_hang', 'danh_gia.id_ctdh', '=', 'chi_tiet_don_hang.id')
             ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
             ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color')
             ->where('danh_gia.an_hien', $an_hien)
-            ->orderByRaw('ISNULL(danh_gia.feedback) ASC')
+            ->orderByRaw('IFNULL(danh_gia.feedback, 1) ASC')
             ->orderBy('danh_gia.id', 'asc');
-    
+
         $showall_review = $query->paginate($perpage)->withQueryString();
-    
-        return view('admin/feedback', compact('showall_review', 'an_hien'));
+
+        return view('admin.feedback', compact('showall_review', 'an_hien'));
     }
     
 

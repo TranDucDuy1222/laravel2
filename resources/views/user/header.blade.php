@@ -37,7 +37,6 @@
       
 </head>
 <body>
-<body>
   
   <!-- Nav   -->
   <nav class="header--style">

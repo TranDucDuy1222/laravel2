@@ -14,7 +14,7 @@ use Illuminate\Pagination\Paginator;
 
 Paginator::useBootstrapFive();
 
-class AdminSPController extends Controller
+class AdminSPController extends AdminController
 {
     function index(Request $request)
     {

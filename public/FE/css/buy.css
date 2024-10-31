@@ -6,3 +6,22 @@
   max-height: 350px;
   overflow-y: auto;
 }
+
+.scroll-donhang {
+  max-height: 485px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+@media (max-width: 576px) {
+  .ms-xs-2 {
+      margin-left: 0.5rem; /* 2 đơn vị Bootstrap tương đương với 0.5rem */
+  }
+}

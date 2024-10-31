@@ -15,6 +15,7 @@ use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminDanhGiaController;
+use App\Http\Controllers\AdminHomeController;
 use App\Http\Controllers\MaGiamGiaController;
 use App\Http\Controllers\SettingController;
 use App\Mail\GuiEmail;
@@ -54,7 +55,7 @@ Route::post('/login', [UserController::class , 'login_form'])->name('login_form'
 Route::get('/logout', [UserController::class,'logout']);
 
 Route::get('/register', [UserController::class, 'register'])->name('register');
-Route::post('/register', [UserController::class, 'register_form'])->name('register_form');
+Route::post('/register', [UserController::class, 'register_form'])->name('register_form'); 
 
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
@@ -69,6 +70,9 @@ Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->na
 Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
 Route::put('/profile/editdiachi/{id}', [UserController::class,'capnhatdiachi'])->name('dia_chi.update');
 Route::delete('/profile/xoa-dia-chi/{id}', [UserController::class, 'xoa_dc'])->name('xoa-dia-chi');
+
+// Quản lý đơn hàng
+Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
 
 //Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
@@ -85,9 +89,9 @@ Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
 
 // URL Admin
 Route::group(['prefix' => 'admin'], function() { 
-    Route::get('/', [AdminController::class,'index'])->middleware(Quantri::class);
-    Route::get('/login_admin', [AdminController::class , 'login_admin_view']);
-    Route::post('/login_admin', [AdminController::class , 'login_admin'])->name('login_admin');
+    Route::get('/', [AdminHomeController::class,'index'])->middleware(Quantri::class);
+    Route::get('/login_admin', [AdminHomeController::class , 'login_admin_view']);
+    Route::post('/login_admin', [AdminHomeController::class , 'login_admin'])->name('login_admin');
 });
 Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function() {
     Route::resource('danh-muc', AdminLoaiController::class);

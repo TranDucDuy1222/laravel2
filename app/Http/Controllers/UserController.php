@@ -193,4 +193,5 @@ class UserController extends Controller
 
         return view('user.home_contact');
     }
+
 }
