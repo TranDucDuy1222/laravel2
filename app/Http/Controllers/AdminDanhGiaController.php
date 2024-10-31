@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,7 @@ use Illuminate\Pagination\Paginator;
 
 Paginator::useBootstrapFive();
 
-class AdminDanhGiaController extends Controller
+class AdminDanhGiaController extends AdminController
 {
     public function index(Request $request)
 {

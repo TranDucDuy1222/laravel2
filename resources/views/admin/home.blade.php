@@ -25,7 +25,7 @@ Thống Kê
                     <div class="card saw-indicator flex-grow-1"
                         data-sa-container-query="{&quot;340&quot;:&quot;saw-indicator--size--lg&quot;}">
                         <div class="sa-widget-header saw-indicator__header">
-                            <h2 class="sa-widget-header__title">Total sells</h2>
+                            <h2 class="sa-widget-header__title">Tổng doanh thu</h2>
                             <div class="sa-widget-header__actions">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-sa-muted d-block"
@@ -59,7 +59,7 @@ Thống Kê
                                 </div>
                                 <div class="saw-indicator__delta-value">34.7%</div>
                             </div>
-                            <div class="saw-indicator__caption">Compared to April 2021</div>
+                            <div class="saw-indicator__caption">So với tháng 4/2024</div>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@ Thống Kê
                     <div class="card saw-indicator flex-grow-1"
                         data-sa-container-query="{&quot;340&quot;:&quot;saw-indicator--size--lg&quot;}">
                         <div class="sa-widget-header saw-indicator__header">
-                            <h2 class="sa-widget-header__title">Average order value</h2>
+                            <h2 class="sa-widget-header__title">Giá trị đơn hàng trung bình</h2>
                             <div class="sa-widget-header__actions">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-sa-muted d-block"
@@ -101,7 +101,7 @@ Thống Kê
                                 </div>
                                 <div class="saw-indicator__delta-value">12.0%</div>
                             </div>
-                            <div class="saw-indicator__caption">Compared to April 2021</div>
+                            <div class="saw-indicator__caption">So với tháng 4/2024</div>
                         </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@ Thống Kê
                     <div class="card saw-indicator flex-grow-1"
                         data-sa-container-query="{&quot;340&quot;:&quot;saw-indicator--size--lg&quot;}">
                         <div class="sa-widget-header saw-indicator__header">
-                            <h2 class="sa-widget-header__title">Total orders</h2>
+                            <h2 class="sa-widget-header__title">Tổng đơn hàng</h2>
                             <div class="sa-widget-header__actions">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-sa-muted d-block"
@@ -143,7 +143,7 @@ Thống Kê
                                 </div>
                                 <div class="saw-indicator__delta-value">27.9%</div>
                             </div>
-                            <div class="saw-indicator__caption">Compared to April 2021</div>
+                            <div class="saw-indicator__caption">So với tháng 4/2024</div>
                         </div>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ Thống Kê
                     <div class="card flex-grow-1 saw-pulse"
                         data-sa-container-query="{&quot;560&quot;:&quot;saw-pulse--size--lg&quot;}">
                         <div class="sa-widget-header saw-pulse__header">
-                            <h2 class="sa-widget-header__title">Active users</h2>
+                            <h2 class="sa-widget-header__title">Người dùng hoạt động</h2>
                             <div class="sa-widget-header__actions">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-sa-muted d-block"
@@ -182,8 +182,8 @@ Thống Kê
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Active pages</th>
-                                        <th class="text-end">Users</th>
+                                        <th>Các trang hoạt động</th>
+                                        <th class="text-end">Người dùng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -238,7 +238,7 @@ Thống Kê
                     <div class="card flex-grow-1 saw-chart"
                         data-sa-data="[{&quot;label&quot;:&quot;Jan&quot;,&quot;value&quot;:50},{&quot;label&quot;:&quot;Feb&quot;,&quot;value&quot;:130},{&quot;label&quot;:&quot;Mar&quot;,&quot;value&quot;:525},{&quot;label&quot;:&quot;Apr&quot;,&quot;value&quot;:285},{&quot;label&quot;:&quot;May&quot;,&quot;value&quot;:470},{&quot;label&quot;:&quot;Jun&quot;,&quot;value&quot;:130},{&quot;label&quot;:&quot;Jul&quot;,&quot;value&quot;:285},{&quot;label&quot;:&quot;Aug&quot;,&quot;value&quot;:240},{&quot;label&quot;:&quot;Sep&quot;,&quot;value&quot;:710},{&quot;label&quot;:&quot;Oct&quot;,&quot;value&quot;:470},{&quot;label&quot;:&quot;Nov&quot;,&quot;value&quot;:640},{&quot;label&quot;:&quot;Dec&quot;,&quot;value&quot;:1110}]">
                         <div class="sa-widget-header saw-chart__header">
-                            <h2 class="sa-widget-header__title">Income statistics</h2>
+                            <h2 class="sa-widget-header__title">Thống kê doanh thu</h2>
                             <div class="sa-widget-header__actions">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-sa-muted d-block"
@@ -274,7 +274,7 @@ Thống Kê
                 <div class="col-12 col-xxl-9 d-flex">
                     <div class="card flex-grow-1 saw-table">
                         <div class="sa-widget-header saw-table__header">
-                            <h2 class="sa-widget-header__title">Recent orders</h2>
+                            <h2 class="sa-widget-header__title">Các đơn hàng gần đây</h2>
                             <div class="sa-widget-header__actions">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-sa-muted d-block"

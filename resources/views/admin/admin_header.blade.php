@@ -26,30 +26,36 @@
                                 <li><a class="app-menu__item" href="{{url('admin/san-pham')}}">
                                         <i class='sa-nav__icon fas fa-box'></i>
                                         <span class="app-menu__label">Quản lý sản phẩm</span>
+                                        <span class="text-end">{{$product_quantity}}</span>
                                     </a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('/admin/danh-muc')}}">
                                         <i class='sa-nav__icon fas fa-boxes'></i>
                                         <span class="app-menu__label">Quản lý danh mục</span>
+                                        <span class="text-end">{{$category_quantity}}</span>
                                     </a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('/admin/tai-khoan')}}">
                                     <i class='sa-nav__icon fas fa-user'></i>
-                                    <span class="app-menu__label">Quản lý tài Khoản</span></a>
+                                    <span class="app-menu__label">Quản lý tài Khoản</span>
+                                    <span class="text-end">{{$user_quantity}}</span></a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('/admin/don-hang')}}">
                                         <i class="sa-nav__icon fa-solid fa-cart-shopping"></i>
                                         <span class="app-menu__label">Quản lý đơn hàng</span>
+                                        <span class="text-end">{{$order_quantity}}</span>
                                     </a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('/admin/magiamgia')}}">
                                         <i class='sa-nav__icon fa-solid fa-dollar-sign'></i>
                                         <span class="app-menu__label">Mã giảm giá</span>
+                                        <span class="text-end">{{$voucher_quantity}}</span>
                                     </a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('admin/danh-gia')}}">
                                         <i class='sa-nav__icon fa-solid fa-comment'></i>
                                         <span class="app-menu__label">Đánh Giá</span>
+                                        <span class="text-end">{{$review_quantity}}</span>
                                     </a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('admin/trang-chu')}}">

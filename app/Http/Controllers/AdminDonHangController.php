@@ -6,7 +6,7 @@ use App\Models\DonHang;
 use App\Models\ChiTietDonHang;
 use Illuminate\Http\Request;
 
-class AdminDonHangController extends Controller
+class AdminDonHangController extends AdminController
 {
     public function index(Request $request)
     {

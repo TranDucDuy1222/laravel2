@@ -15,6 +15,7 @@ use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminDanhGiaController;
+use App\Http\Controllers\AdminHomeController;
 use App\Http\Controllers\MaGiamGiaController;
 use App\Http\Controllers\SettingController;
 use App\Mail\GuiEmail;
@@ -88,9 +89,9 @@ Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
 
 // URL Admin
 Route::group(['prefix' => 'admin'], function() { 
-    Route::get('/', [AdminController::class,'index'])->middleware(Quantri::class);
-    Route::get('/login_admin', [AdminController::class , 'login_admin_view']);
-    Route::post('/login_admin', [AdminController::class , 'login_admin'])->name('login_admin');
+    Route::get('/', [AdminHomeController::class,'index'])->middleware(Quantri::class);
+    Route::get('/login_admin', [AdminHomeController::class , 'login_admin_view']);
+    Route::post('/login_admin', [AdminHomeController::class , 'login_admin'])->name('login_admin');
 });
 Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function() {
     Route::resource('danh-muc', AdminLoaiController::class);
