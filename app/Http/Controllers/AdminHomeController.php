@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminHomeController extends AdminController
 {
-    public function index(){
+    public function index(Request $request){
         return view('admin.home');
     }
     function login_admin_view(){

@@ -33,7 +33,7 @@
       <link rel="stylesheet" href="/FE/css/cssHome.css">
       <link rel="stylesheet" href="/FE/css/buy.css">
 
-
+      @vite('resources/js/app.js')
       
 </head>
 <body>

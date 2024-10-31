@@ -14,40 +14,25 @@ Paginator::useBootstrapFive();
 class AdminDanhGiaController extends AdminController
 {
     public function index(Request $request)
-{
-    $perpage = env('PER_PAGE');
+    {
+        $perpage = env('PER_PAGE', 10);  // Đặt giá trị mặc định nếu không tìm thấy trong .env
+        $an_hien = $request->input('an_hien', 1);
 
-    if($request->has('an_hien')){
-        $an_hien = $request['an_hien'];
-    }else{
-        $an_hien = 1;
-    }
-    if($an_hien == 0){
-        $showall_review = DB::table('danh_gia')
-        ->join('users', 'danh_gia.id_user', '=', 'users.id')
-        ->join('chi_tiet_don_hang', 'danh_gia.id_ctdh', '=', 'chi_tiet_don_hang.id')
-        ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
-        ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color')
-        ->orderByRaw('ISNULL(danh_gia.feedback) ASC') // Sắp xếp theo trạng thái feedback null trước
-        ->orderBy('danh_gia.id', 'asc')
-        ->where('danh_gia.an_hien', 0)
-        ->paginate($perpage)
-        ->withQueryString();
-    }else{
-        $showall_review = DB::table('danh_gia')
-        ->join('users', 'danh_gia.id_user', '=', 'users.id')
-        ->join('chi_tiet_don_hang', 'danh_gia.id_ctdh', '=', 'chi_tiet_don_hang.id')
-        ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
-        ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color')
-        ->orderByRaw('ISNULL(danh_gia.feedback) ASC') // Sắp xếp theo trạng thái feedback null trước
-        ->orderBy('danh_gia.id', 'asc')
-        ->where('danh_gia.an_hien', 1)
-        ->paginate($perpage)
-        ->withQueryString();
+        $query = DB::table('danh_gia')
+            ->join('users', 'danh_gia.id_user', '=', 'users.id')
+            ->join('chi_tiet_don_hang', 'danh_gia.id_ctdh', '=', 'chi_tiet_don_hang.id')
+            ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
+            ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color')
+            ->where('danh_gia.an_hien', $an_hien)
+            ->orderByRaw('IFNULL(danh_gia.feedback, 1) ASC')
+            ->orderBy('danh_gia.id', 'asc');
+
+        $showall_review = $query->paginate($perpage)->withQueryString();
+
+        return view('admin.feedback', compact('showall_review', 'an_hien'));
     }
     
-    return view('admin/feedback', compact('showall_review', 'an_hien'));
-}
+
     public function create()
     {
 
