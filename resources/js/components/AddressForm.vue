@@ -1,15 +1,15 @@
 <template>
     <div>
         <div class="form-group">
-            <label for="inputCity">Tỉnh / Thành Phố :</label>
+            <label for="inputCity">Tỉnh / Thành Phố </label>
             <select class="form-control" v-model="tinhtp">
-                <option v-for="tinh in dsTinh" :key="tinh.ID" :value="tinh">
+                <option v-for="tinh in dsTinh" :key="tinh.ID" :value="tinh" name="thanh_pho">
                     {{ tinh.Name }}
                 </option>
             </select>
         </div>
         <div class="form-group">
-            <label for="inputCity">Quận / Huyện :</label>
+            <label for="inputCity">Quận / Huyện </label>
             <select class="form-control" v-model="quanhuyen" v-if="tinhtp && tinhtp.Districts">
                 <option v-for="quan in tinhtp.Districts" :key="quan.ID" :value="quan">
                     {{ quan.Name }}
@@ -17,7 +17,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Phường / Xã :</label>
+            <label>Phường / Xã </label>
             <select class="form-control" v-model="phuongxa" v-if="quanhuyen && quanhuyen.Wards">
                 <option v-for="px in quanhuyen.Wards" :key="px.ID" :value="px">
                     {{ px.Name }}
@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <label for="inputAddress">Địa Chỉ Cụ Thể</label>
-            <input type="text" v-model="address" class="form-control" id="inputAddress" name="diachichitiet">
+            <input type="text" v-if="px" v-model="address" class="form-control" id="inputAddress" name="diachichitiet">
         </div>
     </div>
 </template>

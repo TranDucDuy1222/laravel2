@@ -22,10 +22,10 @@
 
 @section('content')
 <h2 style="letter-spacing: 2px; text-align: center; padding-top: 40px;">Đơn hàng đã mua</h2>
-<div class="container">
-    <div class="row" style="border: 1px solid #DCDCDC; height: 70vh;">
-        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 bg-body-secondary">
-            <ul class="list-unstyled">
+<div class="container card">
+    <div class="row">
+        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 bg-body-secondary card">
+            <ul class="list-unstyled text-center m-0">
                 <li class="bg-body-secondary"><button type="submit" style="border: none;"><a class="text-decoration-none  dropdown-dc mt-2 h6 {{(request()->routeIs('user.profile')) ? 'text-danger' : 'text-dark'}}"
                             href="{{ route('user.profile', [Auth::user()->id]) }}">Hồ sơ của tôi</a></button></li>
                 <li class="bg-body-secondary"><button type="submit" style="border: none;"><a class="text-decoration-none dropdown-dc mt-2 h6 {{(request()->routeIs('user.purchase')) ? 'text-danger' : 'text-dark'}}"
