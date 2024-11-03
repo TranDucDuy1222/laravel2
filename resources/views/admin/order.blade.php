@@ -64,7 +64,7 @@
                                 @foreach($donHangs as $donHang)
                                     <tr>
                                         <td>{{ $donHang->id }}</td>
-                                        <td>{{ $donHang->user->name }}</td>
+                                        <td>{{ $donHang->   name}}</td>
                                         <td>{{ $donHang->thoi_diem_mua_hang }}</td>
                                         <td>{{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</td>
                                         <td>{{ $donHang->pttt }}</td>
