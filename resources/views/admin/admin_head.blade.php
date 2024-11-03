@@ -33,4 +33,6 @@
     <link rel="stylesheet" href="/cssadmin/css/thongke.css">
     <link rel="stylesheet" href="/FE/fontawesome-free-6.5.1-web/css/all.min.css">
     <link rel="stylesheet" href="/FE/cssadmin/css/landingpage.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>

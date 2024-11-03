@@ -123,7 +123,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
 
     Route::resource('magiamgia', MaGiamGiaController::class);
 
-    Route::get('/statistics', [AdminHomeController::class, 'statistics'])->name('admin.statistics');
+    Route::get('/test', [AdminHomeController::class, 'statistics'])->name('admin.statistics');
 
 });
 
