@@ -27,7 +27,7 @@ class DonHangSeeder extends Seeder
 
             $tongDonHang = rand(1000000, 10000000);
             $orders[] = [
-                'id_user' => rand(1, 5),
+                'id_user' => rand(1, 3),
                 'thoi_diem_mua_hang' => $date,
                 'id_dc' => rand(1, 5),
                 'tong_dh' => $tongDonHang,
