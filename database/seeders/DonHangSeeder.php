@@ -23,19 +23,16 @@ class DonHangSeeder extends Seeder
             $month = rand(1, 12); // Tháng từ 1 đến 12
             $day = rand(1, 28); // Ngày từ 1 đến 28 (để tránh lỗi ngày)
 
-            // Tạo ngày hợp lệ
             $date = \Carbon\Carbon::createFromDate($year, $month, $day);
 
-            // Tạo tổng đơn hàng ngẫu nhiên
-            $tongDonHang = rand(100000, 1000000); // Tổng tiền đơn hàng ngẫu nhiên
-
+            $tongDonHang = rand(1000000, 10000000);
             $orders[] = [
-                'id_user' => rand(1, 10), // Giả định có 10 người dùng
+                'id_user' => rand(1, 5),
                 'thoi_diem_mua_hang' => $date,
-                'id_dc' => rand(1, 5), // Giả định có 5 địa chỉ
+                'id_dc' => rand(1, 5),
                 'tong_dh' => $tongDonHang,
-                'pttt' => ['Tiền mặt', 'Chuyển khoản'][rand(0, 1)], // Chọn ngẫu nhiên phương thức thanh toán
-                'trang_thai' => rand(0, 3), // Trạng thái ngẫu nhiên từ 0 đến 3
+                'pttt' => ['Tiền mặt', 'Chuyển khoản'][rand(0, 1)],
+                'trang_thai' => rand(0, 3),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
