@@ -43,22 +43,6 @@
     </div>
     
     <div class="pb-5">
-        <div class="section__intro mb-1">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section__text-wrap">
-                        @if(session('thongbao'))
-                          <div class="alert alert-warning">{{ session('thongbao') }}</div>
-                        @endif
-                        @if(session('error'))
-                            <div class="alert alert-danger">{{ session('error') }}</div>
-                        @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="section__intro mb-5">
             <div class="container">
                 <div class="row">
