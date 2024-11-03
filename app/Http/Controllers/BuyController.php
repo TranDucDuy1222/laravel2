@@ -58,7 +58,7 @@ class BuyController extends Controller
             $gioHang->so_luong = $soluong;
         }
         $gioHang->save();    
-        return redirect()->route('cart.gio-hang')->with('thongbao', 'Sản phẩm đã được thêm vào giỏ hàng.');
+        return redirect()->route('cart.gio-hang')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng.');
     }
 
     public function hiengiohang()
@@ -75,7 +75,7 @@ class BuyController extends Controller
     public function xoasptronggio($idsp)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng.');
+            return redirect()->route('login')->with('success', 'Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng.');
         }
         $userId = Auth::id();
         $gioHang = GioHang::where('user_id', $userId)
@@ -85,7 +85,7 @@ class BuyController extends Controller
             $gioHang->delete();
             return redirect()->route('cart.gio-hang')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
         } else {
-            return redirect()->route('cart.gio-hang')->with('error', 'Sản phẩm không tồn tại trong giỏ hàng.');
+            return redirect()->route('cart.gio-hang')->with('thongbao', 'Sản phẩm không tồn tại trong giỏ hàng.');
         }
     }
 
@@ -95,7 +95,7 @@ class BuyController extends Controller
         $newQuantity = $request->input('quantity');
         $sizeInfo = Size::where('id', $gioHang->id_size)->first();
         if ($newQuantity > $sizeInfo->so_luong) {
-            return redirect()->route('cart.gio-hang')->with('error', 'Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
+            return redirect()->route('cart.gio-hang')->with('thongbao', 'Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
         }
         $gioHang->so_luong = $newQuantity;
         $gioHang->save();
@@ -109,7 +109,7 @@ class BuyController extends Controller
         session(['selected_products' => $selectedProductIds]);  // Lưu danh sách sản phẩm đã chọn vào session
     
         if (empty($selectedProductIds)) {
-            return redirect()->back()->with('error', 'Không có sản phẩm nào được chọn.');
+            return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
         }
     
         $gioHangs = GioHang::with(['sanPham', 'size'])
@@ -118,7 +118,7 @@ class BuyController extends Controller
                     ->get();
     
         if ($gioHangs->isEmpty()) {
-            return redirect()->back()->with('error', 'Không có sản phẩm nào được tìm thấy.');
+            return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
         }
     
         // Truy vấn địa chỉ 
@@ -150,36 +150,62 @@ class BuyController extends Controller
     
     public function applyVoucher(Request $request) {
         $selectedProductIds = session('selected_products', $request->input('selected_products', []));
-        session(['selected_products' => $selectedProductIds]);  // Lưu danh sách sản phẩm đã chọn vào session
+        session(['selected_products' => $selectedProductIds]);
     
         $voucherCode = $request->input('voucher');
         $voucher = MaGiamGia::where('code', $voucherCode)->first();
+    
         if (!$voucher) {
             $error = 'Mã giảm giá không hợp lệ.';
-            $userId = Auth::id();
-            $gioHangs = GioHang::with(['sanPham', 'size'])
-                        ->whereIn('id', $selectedProductIds)
-                        ->where('user_id', $userId)
-                        ->get();
-            $diachis = DiaChi::where('id_user', $userId)->get();
-            $totalAmount = $gioHangs->sum(function ($item) {
-                return $item->sanPham->gia_km > 0 ? $item->sanPham->gia_km * $item->so_luong : $item->sanPham->gia * $item->so_luong;
-            });
-            $discountAmount = 0;
-            $totalPayable = $totalAmount - $discountAmount;
-            $availableVouchers = MaGiamGia::where('is_active', true)->get();
-            $pays = $gioHangs;
-            return view('user.home_thanhtoan', compact('pays', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'error'));
+            session()->flash('thongbao', $error);
+            return $this->handleInvalidVoucher($selectedProductIds);
         }
     
-        // Lưu thông tin mã giảm giá và mức giảm vào session
+        // Kiểm tra xem mã giảm giá đã được sử dụng cho khách hàng này chưa
+        $userId = Auth::id();
+        if ($voucher->mot_nhieu == false && $voucher->id_kh == $userId) {
+            $error = 'Mã giảm giá chỉ được sử dụng một lần cho mỗi khách hàng.';
+            session()->flash('thongbao', $error);
+            return $this->handleInvalidVoucher($selectedProductIds);
+        }
+    
+        // Áp dụng mã giảm giá
         session(['voucher' => [
             'code' => $voucherCode,
             'amount' => $voucher->phan_tram
         ]]);
     
+        // Cập nhật trạng thái mã giảm giá nếu nó chỉ có thể sử dụng một lần
+        if ($voucher->mot_nhieu == false) {
+            $voucher->id_kh = $userId;
+        } else {
+            if ($voucher->ma_gioi_han > 0) {
+                $voucher->ma_gioi_han--; // Giảm số lần sử dụng
+            }
+        }
+        $voucher->save();
+    
         return $this->pay($request)->with('success', 'Áp dụng mã giảm giá thành công!');
     }
+    
+    private function handleInvalidVoucher($selectedProductIds) {
+        $userId = Auth::id();
+        $gioHangs = GioHang::with(['sanPham', 'size'])
+                    ->whereIn('id', $selectedProductIds)
+                    ->where('user_id', $userId)
+                    ->get();
+        $diachis = DiaChi::where('id_user', $userId)->get();
+        $totalAmount = $gioHangs->sum(function ($item) {
+            return $item->sanPham->gia_km > 0 ? $item->sanPham->gia_km * $item->so_luong : $item->sanPham->gia * $item->so_luong;
+        });
+        $discountAmount = 0;
+        $totalPayable = $totalAmount - $discountAmount;
+        $availableVouchers = MaGiamGia::where('is_active', true)->get();
+        $pays = $gioHangs;
+    
+        return view('user.home_thanhtoan', compact('pays', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers'));
+    }
+    
     
     public function updatePay(Request $request, $id) {
         $selectedProductIds = session('selected_products', $request->input('selected_products', []));

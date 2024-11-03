@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\MaGiamGia;
 use Illuminate\Http\Request;
 
-class MaGiamGiaController extends Controller
+class MaGiamGiaController extends AdminController
 {
     public function index(Request $request)
     {

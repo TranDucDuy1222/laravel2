@@ -83,7 +83,19 @@
                         aria-label="Close"></button>
                 </div>
             </div>
-    @endif
+            @endif
+            @if(session()->has('success'))
+            <div class="z-1 toast show align-items-center text-bg-success border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {!! session('success') !!}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+            @endif
                 <div class="container">
                     <div class="menu-init">
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">

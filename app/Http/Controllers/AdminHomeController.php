@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CheckLogin;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DonHang;
+use App\Models\DanhGia;
+use App\Models\SanPham;
+use App\Models\DanhMuc;
 
 class AdminHomeController extends AdminController
 {
@@ -35,5 +39,20 @@ class AdminHomeController extends AdminController
             }
         }
         return back()->with('thongbao', 'Email hoặc mật khẩu không đúng');
+    }
+
+    
+    public function statistics() {
+        // Lấy số lượng đơn hàng mới
+        $newOrdersCount = DonHang::where('id','new')->count();
+    
+        // Lấy số lượng đánh giá mới (trang_thai == 0)
+        $newReviewsCount = DanhGia::where('an_hien', 0)->count();
+    
+        // Lấy tổng số sản phẩm và danh mục
+        $totalProducts = SanPham::count();
+        $totalCategories = DanhMuc::count();
+    
+        return view('admin.statistics', compact('newOrdersCount', 'newReviewsCount', 'totalProducts', 'totalCategories'));
     }
 }
