@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 Use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class DonHangSeeder extends Seeder
 {
