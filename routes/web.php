@@ -83,7 +83,7 @@ Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
     $email = trim(strip_tags($arr['email']));
     $nd = trim(strip_tags($arr['noidung']));
 
-    $adminEmail = 'hungnguyen270604@gmail.com';//Thư được gửi tới quản trị của email này
+    $adminEmail = 'trendyu02@gmail.com';//Thư được gửi tới quản trị của email này
     Mail::mailer('smtp')->to($adminEmail)->send(new GuiEmail($ht, $email, $nd));
     return redirect()->route('user.contact')->with('success', 'Gửi mail thành công !');
 });
