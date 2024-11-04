@@ -1364,6 +1364,9 @@ input::-ms-clear {
 .hover-dm a:hover{
     color: #fa4a4a;
 }
+.hover-dm a{
+    color: #212529;
+}
 .image-container {
     position: relative;
     max-height: 295px;

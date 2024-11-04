@@ -27,3 +27,4 @@ class SanPham extends Model
         return $this->belongsTo(DanhMuc::class, 'id_dm');
     }
 }
+

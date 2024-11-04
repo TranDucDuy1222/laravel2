@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class SettingController extends AdminController
 {
-    public function index(){
+    public function index(Request $request){
         $setting = DB::table('settings')->first();
         return view('admin.setting' , compact('setting'));
     }

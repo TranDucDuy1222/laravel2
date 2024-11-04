@@ -11,6 +11,7 @@ use App\Models\Size;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use DB;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -20,6 +21,7 @@ class OrderController extends Controller
         $selectedAddressId = $request->input('selected_address');
         $paymentMethod = $request->input('payment_method');
         $totalPayable = $request->input('total_payables');
+        $discountAmount = $request->input('discount_amount');
 
         if (empty($selectedProductIds)) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại sản phẩm được chọn.');
@@ -43,6 +45,7 @@ class OrderController extends Controller
             $donHang->id_dc = $selectedAddressId;
             $donHang->tong_dh = $totalPayable;
             $donHang->pttt = $paymentMethod;
+            $donHang->uu_dai = $discountAmount;
             $donHang->trang_thai = 0;
             $donHang->save();
 
@@ -77,7 +80,7 @@ class OrderController extends Controller
             session()->forget('voucher');
             DB::commit();
 
-            return redirect()->route('home')->with('success', 'Đặt hàng thành công!');
+            return redirect()->route('user.purchase', ['id' => $userId])->with('success', 'Đặt hàng thành công!');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -85,28 +88,41 @@ class OrderController extends Controller
         }
     }
 
-    public function donHangDaMua($id){
+    public function donHangDaMua($id)
+    {
         if(Auth::check()){
-            $order = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
-            ->where('don_hang.id_user', $id)
-            
-            ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
-            ->orderBy('don_hang.id','desc')
-            ->get();
+            $orders = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
+                ->where('don_hang.id_user', $id)
+                ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
+                ->orderBy('don_hang.id','desc')
+                ->get();
+
+            // Tính toán ngày dự kiến giao hàng cho từng đơn hàng
+            foreach ($orders as $order) {
+                $thoiDiemMuaHang = Carbon::parse($order->thoi_diem_mua_hang);
+                if ($order->thanh_pho == 'Thành Phố Hồ Chí Minh' || $order->thanh_pho == 'Hồ Chí Minh') {
+                    $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(2);
+                } else {
+                    $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(4);
+                }
+            }
+
+            // Truy vấn phí vận chuyện
+            $phivc = DB::table('settings')->select('ship_cost_inner_city' , 'ship_cost_nationwide')->first();
 
             $purchased = DB::table('chi_tiet_don_hang')
-            ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
-            ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
-            ->join('sizes', 'sizes.id', '=', 'chi_tiet_don_hang.id_size')
-            ->join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
-            ->select('don_hang.*', 'chi_tiet_don_hang.*', 'san_pham.ten_sp', 'san_pham.hinh', 'san_pham.color' , 'sizes.size_product' , 'dia_chi.*')
-            ->where('don_hang.id_user', $id)
-            ->get();
-            return view('user.home_purchased', compact('purchased' , 'order'));
-        }else {
-            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập!');
-        }        
+                ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
+                ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
+                ->join('sizes', 'sizes.id', '=', 'chi_tiet_don_hang.id_size')
+                ->join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
+                ->select('don_hang.*', 'chi_tiet_don_hang.*', 'san_pham.ten_sp', 'san_pham.hinh', 'san_pham.color', 'sizes.size_product', 'dia_chi.*')
+                ->where('don_hang.id_user', $id)
+                ->get();
 
+            return view('user.home_purchased', compact('purchased', 'orders' , 'phivc'));
+        } else {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập!');
+        }
     }
 
 

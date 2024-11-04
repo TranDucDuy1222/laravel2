@@ -20,6 +20,7 @@ use App\Http\Controllers\MaGiamGiaController;
 use App\Http\Controllers\SettingController;
 use App\Mail\GuiEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\ApiproductController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
@@ -27,9 +28,13 @@ Route::get('/erros', function () {
 Route::get('/', [HomeController::class , 'index'])->name('home');
 Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
-Route::get('/category/{id}', [ProductController::class , 'category']);
-Route::get('/allproduct', [ProductController::class , 'allproduct']);
-Route::get('/sale', [ProductController::class , 'sale']);
+// Route::get('/category/{id}', [ProductController::class , 'category']);
+// Route::get('/allproduct', [ProductController::class , 'allproduct']);
+// Route::get('/sale', [ProductController::class , 'sale']);
+
+Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
+Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
+
 
 // Giỏ hàng
 Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])->name('cart.add');
@@ -70,8 +75,10 @@ Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->na
 Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
 Route::put('/profile/editdiachi/{id}', [UserController::class,'capnhatdiachi'])->name('dia_chi.update');
 Route::delete('/profile/xoa-dia-chi/{id}', [UserController::class, 'xoa_dc'])->name('xoa-dia-chi');
+Route::post('/profile/dia-chi/{id}', [UserController::class, 'themDiaChi'])->name('diachi.add');
 
 // Quản lý đơn hàng
+//Route::post('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
 Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
 
 //Liên hệ

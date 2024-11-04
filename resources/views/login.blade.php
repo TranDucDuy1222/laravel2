@@ -7,13 +7,13 @@
     @foreach ($loai as $category)
         <li class="nav-item dropdown">
             <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-              href="{{ url('/category'.'/' . $category->slug) }}">
+                href="{{ route('loai-san-pham',$category->slug) }}">
                 {{$category->ten_loai}}
             </a>
             <ul class="dropdown-menu" id="userDropdown">
                 @foreach ($danh_muc as $dm)
                     @if ($dm->id_loai == $category->id)
-                        <li class="hover-dm"><a class="dropdown-item" href="{{$dm->slug}}">{{$dm->ten_dm}}</a></li>
+                        <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham' , $dm->slug)}}">{{$dm->ten_dm}}</a></li>
                     @endif
                 @endforeach
             </ul>
@@ -43,22 +43,6 @@
     </div>
     
     <div class="pb-5">
-        <div class="section__intro mb-1">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section__text-wrap">
-                        @if(session('thongbao'))
-                          <div class="alert alert-warning">{{ session('thongbao') }}</div>
-                        @endif
-                        @if(session('error'))
-                            <div class="alert alert-danger">{{ session('error') }}</div>
-                        @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="section__intro mb-5">
             <div class="container">
                 <div class="row">
@@ -74,6 +58,11 @@
             <div class="container">
                 <div class="row row--center">
                     <div class="col-lg-6 col-md-8 mb-3">
+                    <div class="section__text-wrap">
+                            @if(session('error'))
+                                <div class="alert alert-danger">{{ session('error') }}</div>
+                            @endif
+                        </div>
                         <div class="l-f-o border">
                             <div class="l-f-o__pad-box">
                                 <form class="l-f-o__form" action="{{ route('login_form') }}" method="POST">
