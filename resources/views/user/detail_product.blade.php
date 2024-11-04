@@ -126,8 +126,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                                 </div>
                                             @endif
                                         @endforeach
-                                        <div id="error-message" style="color: red; display: none;">Vui lòng chọn size
-                                            trước khi thêm vào giỏ hàng.</div>
+                                        <div id="error-message" style="color: red; display: none;">Vui lòng chọn size trước khi thêm vào giỏ hàng.</div>
                                     </div>
                                 </div>
                                 <div class="pd-detail-inline-2">
@@ -290,28 +289,28 @@ Chi Tiết : {{$detail->ten_sp}}
                         @endphp
                         <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
                             <div class="product-short">
-                                        <div class="product-short__container">
-                                            <div class="card">
-                                                <a href="/detail/{{$item->id}}" id="hover-img-home">
-                                                    <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                        
-                                                        style="max-height: 295px;" alt="" class="w-100">
-                                                </a>
-                                                <div class="card-body text-center">
-                                                    <a href="">
-                                                        <h5 id="hover-sp">{{$item->ten_sp}}</h5>
-                                                    </a>
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            {{$item->ten_dm}}
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <strong id="color-gia"> {{number_format($item->gia_km, 0, '', '.')}}đ </strong>
-                                                        </div>
-                                                    </div>
+                                <div class="product-short__container">
+                                    <div class="card">
+                                        <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                            <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                
+                                                style="max-height: 295px;" alt="" class="w-100">
+                                        </a>
+                                        <div class="card-body text-center">
+                                            <a href="">
+                                                <h5 id="hover-sp">{{$item->ten_sp}}</h5>
+                                            </a>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    {{$item->ten_dm}}
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <strong id="color-gia"> {{number_format($item->gia_km, 0, '', '.')}}đ </strong>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @endforeach
