@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             addLoai::class,
             addLoai1::class,
             addSanPham::class,
+            addSetting::class,
             addSizes::class,
             adduser::class,
             ChiTietDonHangSeeder::class,

@@ -43,7 +43,7 @@ Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
 Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
-Route::post('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
+Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
 
 // Đặt hàng
 Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
@@ -70,6 +70,7 @@ Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->na
 Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
 Route::put('/profile/editdiachi/{id}', [UserController::class,'capnhatdiachi'])->name('dia_chi.update');
 Route::delete('/profile/xoa-dia-chi/{id}', [UserController::class, 'xoa_dc'])->name('xoa-dia-chi');
+Route::post('/profile/dia-chi/{id}', [UserController::class, 'themDiaChi'])->name('diachi.add');
 
 // Quản lý đơn hàng
 Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
@@ -121,6 +122,8 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
 
     Route::resource('magiamgia', MaGiamGiaController::class);
+
+    Route::get('/test', [AdminHomeController::class, 'statistics'])->name('admin.statistics');
 
 });
 

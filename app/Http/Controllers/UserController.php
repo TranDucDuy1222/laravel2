@@ -122,7 +122,11 @@ class UserController extends Controller
     
         return redirect()->back()->with('thongbao', 'Địa chỉ đã được xóa thành công!');
     }
-
+    public function themDiaChi(Request $request, $id) {
+        // Kiểm tra dữ liệu nhận được
+        dd($request->all());
+    }
+    
     public function chinhSuaThongTin(Request $request ,$id){
         $taiKhoan = users::find($id);
 

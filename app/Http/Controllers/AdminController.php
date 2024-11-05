@@ -44,10 +44,7 @@ abstract class AdminController extends Controller
 
     // Định nghĩa phương thức index trống
     public function index(Request $request)
-    {
-        // Bạn có thể để trống hoặc thêm logic mặc định ở đây nếu cần thiết
-
-        
-        
+    { 
     }
+    
 }

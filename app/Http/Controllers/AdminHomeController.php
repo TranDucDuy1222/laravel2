@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CheckLogin;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DonHang;
+use App\Models\DanhGia;
+use App\Models\SanPham;
+use App\Models\DanhMuc;
+use Carbon\Carbon;
 
 class AdminHomeController extends AdminController
 {
@@ -36,4 +41,35 @@ class AdminHomeController extends AdminController
         }
         return back()->with('thongbao', 'Email hoặc mật khẩu không đúng');
     }
+
+    
+    public function statistics(Request $request) {
+        $filter = $request->query('filter', 'month'); // Mặc định là 'month' nếu không có filter
+        $year = $request->query('year', now()->year); // Năm mặc định là năm hiện tại
+        $month = $request->query('month', now()->month); // Tháng mặc định là tháng hiện tại
+
+    $query = DonHang::query();
+
+    switch ($filter) {
+        case 'week':
+            // Doanh thu từng tuần trong 1 tháng
+            $query->selectRaw('WEEK(thoi_diem_mua_hang) as week, SUM(tong_dh) as revenue')
+                  ->whereMonth('thoi_diem_mua_hang', $month)
+                  ->whereYear('thoi_diem_mua_hang', $year)
+                  ->groupBy('week');
+            break;
+        case 'month':
+        default:
+            // Doanh thu từng tháng trong 1 năm
+            $query->selectRaw('MONTHNAME(thoi_diem_mua_hang) as month, SUM(tong_dh) as revenue')
+                  ->whereYear('thoi_diem_mua_hang', $year)
+                  ->groupBy('month');
+            break;
+    }
+
+    $data = $query->orderBy('thoi_diem_mua_hang', 'asc')->get();
+
+    return view('admin.test', compact('data', 'filter', 'year', 'month'));
+}
+
 }

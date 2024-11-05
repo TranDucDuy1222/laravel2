@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+Use Carbon\Carbon;
 use DB;
 
 class DonHangSeeder extends Seeder
@@ -13,74 +14,30 @@ class DonHangSeeder extends Seeder
      */
     public function run(): void
     {
-        $tongDonHang1 = DB::table('chi_tiet_don_hang')
-            ->where('id_dh', 1)
-            ->sum(DB::raw('so_luong * gia'));
+        $orders = [];
+        $numOrders = 100; // Số lượng đơn hàng cần tạo
 
-        $tongDonHang2 = DB::table('chi_tiet_don_hang')
-            ->where('id_dh', 2)
-            ->sum(DB::raw('so_luong * gia'));
-        $tongDonHang3 = DB::table('chi_tiet_don_hang')
-            ->where('id_dh', 3)
-            ->sum(DB::raw('so_luong * gia'));
-        $tongDonHang4 = DB::table('chi_tiet_don_hang')
-            ->where('id_dh', 4)
-            ->sum(DB::raw('so_luong * gia'));
-        $tongDonHang5 = DB::table('chi_tiet_don_hang')
-            ->where('id_dh', 5)
-            ->sum(DB::raw('so_luong * gia'));
+        for ($i = 1; $i <= $numOrders; $i++) {
+            // Tạo ngày tháng năm ngẫu nhiên
+            $year = rand(2021, 2024); // Năm ngẫu nhiên từ 2021 đến 2024
+            $month = rand(1, 12); // Tháng từ 1 đến 12
+            $day = rand(1, 28); // Ngày từ 1 đến 28 (để tránh lỗi ngày)
 
-        DB::table('don_hang')->insert([
-            [
-                'id_user' => 1,
-                'thoi_diem_mua_hang' => now(),
-                'id_dc' => 1,
-                'tong_dh' => $tongDonHang1, // Tổng tiền đơn hàng dựa trên chi tiết
-                'pttt' => 'Tiền mặt',
-                'trang_thai' => 0,
+            $date = \Carbon\Carbon::createFromDate($year, $month, $day);
+
+            $tongDonHang = rand(1000000, 10000000);
+            $orders[] = [
+                'id_user' => rand(1, 3),
+                'thoi_diem_mua_hang' => $date,
+                'id_dc' => rand(1, 5),
+                'tong_dh' => $tongDonHang,
+                'pttt' => ['Tiền mặt', 'Chuyển khoản'][rand(0, 1)],
+                'trang_thai' => rand(0, 3),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'id_user' => 2,
-                'thoi_diem_mua_hang' => now(),
-                'id_dc' => 2,
-                'tong_dh' => $tongDonHang2,
-                'pttt' => 'Chuyển khoản',
-                'trang_thai' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_user' => 3,
-                'thoi_diem_mua_hang' => now(),
-                'id_dc' => 3,
-                'tong_dh' => $tongDonHang3,
-                'pttt' => 'Chuyển khoản',
-                'trang_thai' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_user' => 2,
-                'thoi_diem_mua_hang' => now(),
-                'id_dc' => 2,
-                'tong_dh' => $tongDonHang4,
-                'pttt' => 'Chuyển khoản',
-                'trang_thai' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_user' => 1,
-                'thoi_diem_mua_hang' => now(),
-                'id_dc' => 1,
-                'tong_dh' => $tongDonHang5,
-                'pttt' => 'Chuyển khoản',
-                'trang_thai' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+            ];
+        }
+
+        DB::table('don_hang')->insert($orders);
     }
 }

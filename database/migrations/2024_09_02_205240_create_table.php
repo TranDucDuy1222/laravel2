@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('ten_dm', 100);
             $table->string('slug', 100)->nullable();
             $table->integer('thu_tu')->default(0);
+            $table->integer('id_loai')->nullable();
             $table->boolean('an_hien')->default(0);
             $table->timestamps();
         });
