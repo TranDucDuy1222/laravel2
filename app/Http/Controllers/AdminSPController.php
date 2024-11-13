@@ -11,6 +11,7 @@ use App\Models\Loai;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Storage;
 
 Paginator::useBootstrapFive();
 
@@ -18,72 +19,51 @@ class AdminSPController extends AdminController
 {
     function index(Request $request)
     {
+        // Khởi tạo các biến cần thiết
         $id_dm = -1;
         $perpage = env('PER_PAGE');
         $loai_arr = danh_muc::all();
         $size_arr = size::all();
         $idsp = DB::table('san_pham')->pluck('id');
-
-
+    
+        // Kiểm tra và gán giá trị cho $id_dm nếu có trong request
         if ($request->has('id_dm')) {
             $id_dm = (int) $request['id_dm'];
         }
-        if ($request->has('trangthai')) {
-            $trangthai = $request['trangthai'];
-        } else {
-            $trangthai = 0;
-            $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-                ->select('san_pham.*', 'danh_muc.ten_dm')
-                ->orderBy('san_pham.id', 'desc')
-                ->where('san_pham.trang_thai', 0)
-                ->paginate($perpage)
-                ->withQueryString();
-            return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr']));
+    
+        // Kiểm tra và gán giá trị cho $trangthai nếu có trong request, mặc định là 0
+        $trangthai = $request->has('trangthai') ? $request['trangthai'] : 0;
+    
+        // Lọc sản phẩm theo trạng thái
+        $query = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+            ->select('san_pham.*', 'danh_muc.ten_dm')
+            ->orderBy('san_pham.id', 'desc');
+    
+        if ($trangthai != 0) {
+            $query->where('san_pham.trang_thai', $trangthai);
         }
-        if ($trangthai == 2) {
-            $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-                ->select('san_pham.*', 'danh_muc.ten_dm')
-                ->orderBy('san_pham.id', 'desc')
-                ->where('san_pham.trang_thai', 2)
-                ->paginate($perpage)
-                ->withQueryString();
-            return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr']));
-        } elseif ($trangthai == 1) {
-            $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-                ->select('san_pham.*', 'danh_muc.ten_dm')
-                ->orderBy('san_pham.id', 'desc')
-                ->where('san_pham.trang_thai', 1)
-                ->paginate($perpage)
-                ->withQueryString();
-            return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr']));
-        } else if ($trangthai == 3) {
-            $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-                ->select('san_pham.*', 'danh_muc.ten_dm')
-                ->orderBy('san_pham.id', 'desc')
-                ->where('san_pham.trang_thai', 3)
-                ->paginate($perpage)
-                ->withQueryString();
-            return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr']));
-        } else {
-            if ($id_dm > 0) {
-                $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-                    ->select('san_pham.*', 'danh_muc.ten_dm')
-                    ->orderBy('san_pham.id', 'desc')
-                    ->where('san_pham.id_dm', $id_dm)
-                    ->paginate($perpage)
-                    ->withQueryString();
-                return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr']));
-            } else {
-                $sanpham_arr = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-                    ->select('san_pham.*', 'danh_muc.ten_dm')
-                    ->orderBy('san_pham.id', 'desc')
-                    ->where('san_pham.trang_thai', 0)
-                    ->paginate($perpage)
-                    ->withQueryString();
-            }
-            return view('admin/product_admin', compact(['trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp']));
+    
+        // Lọc sản phẩm theo danh mục nếu $id_dm > 0
+        if ($id_dm > 0) {
+            $query->where('san_pham.id_dm', $id_dm);
         }
+
+        // Kiểm tra và gán giá trị cho $keyword nếu có trong request
+        if ($request->has('keyword') && $request->keyword != '') {
+            $keyword = $request->keyword;
+            // Thêm điều kiện lọc theo slug
+            $query->where('san_pham.slug', 'like', '%' . $keyword . '%');
+        }
+    
+        // Lấy danh sách sản phẩm với phân trang
+        $sanpham_arr = $query->paginate($perpage)->withQueryString();
+
+        
+    
+        // Trả về view với các biến cần thiết
+        return view('admin/product_admin', compact('trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp'));
     }
+    
     public function create(Request $request)
     {
         $selectedOption = $request->query('selection');
@@ -122,8 +102,14 @@ class AdminSPController extends AdminController
                 // Mảng chứa các phần mở rộng bạn muốn kiểm tra
                 $allowedExtensions = ['jpg', 'png', 'gif', 'webp', 'jpeg'];
                 if (in_array($ext, $allowedExtensions)) {
-                    $file->move(public_path('/uploads/product'), $fileName);
-                    $obj->hinh = $fileName;
+                    $filePath = public_path('/uploads/product/' . $fileName);
+                    if (file_exists($filePath)) {
+                        // Hiện thông báo nếu tệp tin đã tồn tại
+                        return redirect()->back()->with('thongbao', 'Sản phẩm này đã tồn tại');
+                    }else{
+                        $file->move(public_path('/uploads/product'), $fileName);
+                        $obj->hinh = $fileName;
+                    }
                 } else {
                     return redirect()->back()->with('thongbao', 'Phần mở rộng tệp tin không đúng định dạng');
                 }
@@ -214,7 +200,11 @@ class AdminSPController extends AdminController
                 // Mảng chứa các phần mở rộng bạn muốn kiểm tra
                 $allowedExtensions = ['jpg', 'png', 'gif', 'webp', 'jpeg'];
                 if (in_array($ext, $allowedExtensions)) {
-                    $file->move(public_path('/uploads/images'), $fileName);
+                    $filePath = 'uploads/product/' . $fileName;
+                    if (Storage::exists($filePath)) {
+                        Storage::delete($filePath); // Xóa tệp tin nếu đã tồn tại
+                    }
+                    $file->move(public_path('uploads/product'), $fileName);
                     $obj->hinh = $fileName;
                 } else {
                     return redirect()->back()->with('thongbao', 'Phần mở rộng tệp tin không đúng định dạng');
@@ -291,4 +281,5 @@ class AdminSPController extends AdminController
         
         return redirect()->route('san-pham.index')->with('thongbao', 'Sản phẩm đã được hiện lại thành công.');
     }
+
 }

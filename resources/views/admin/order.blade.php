@@ -64,7 +64,7 @@
                                 @foreach($donHangs as $donHang)
                                     <tr>
                                         <td>{{ $donHang->id }}</td>
-                                        <td>{{ $donHang->   name}}</td>
+                                        <td>{{ $donHang->user->name }}</td>
                                         <td>{{ $donHang->thoi_diem_mua_hang }}</td>
                                         <td>{{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</td>
                                         <td>{{ $donHang->pttt }}</td>
@@ -87,6 +87,8 @@
                             </tbody>
                         </table>
                     </div>
+                    <!--Phân trang-->
+                <div class="text-center p-2 d-flex justify-content-center">{{$donHangs->links('pagination::bootstrap-5')}}</div>
                 </div>
             </div>
         </div>

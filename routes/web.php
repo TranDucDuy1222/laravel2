@@ -114,7 +114,16 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('/tai-khoan/{id}/hide', [AdminUserController::class, 'hide'])->name('tai-khoan.hide');
     Route::post('tai-khoan/{id}/restore', [AdminUserController::class, 'restore'])->name('tai-khoan.restore');
 
-    Route::resource('don-hang', AdminDonHangController::class);  
+    Route::resource('don-hang', AdminDonHangController::class)->names([
+        'index' => 'don-hang.index',
+        'create' => 'donhang.create',
+        'store' => 'donhang.store',
+        'show' => 'don-hang.show',
+        'edit' => 'donhang.edit',
+        'update' => 'donhang.update',
+        'destroy' => 'donhang.destroy',
+    ]); 
+    Route::post('/remove-notification', [AdminController::class, 'xoaThongBao'])->name('xoa');
     Route::put('don-hang/{id}/update-trang-thai', [AdminDonHangController::class, 'updateTrangThai'])->name('don-hang.update-trang-thai');
     
     Route::resource('danh-gia', AdminDanhGiaController::class);

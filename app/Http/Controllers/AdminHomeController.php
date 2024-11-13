@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CheckLogin;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\DonHang;
 use App\Models\DanhGia;
 use App\Models\SanPham;
@@ -13,6 +14,9 @@ use Carbon\Carbon;
 
 class AdminHomeController extends AdminController
 {
+    public function __construct() {
+        parent::__construct();
+    }
     public function index(Request $request){
         return view('admin.home');
     }
@@ -47,6 +51,16 @@ class AdminHomeController extends AdminController
         $filter = $request->query('filter', 'month'); // Mặc định là 'month' nếu không có filter
         $year = $request->query('year', now()->year); // Năm mặc định là năm hiện tại
         $month = $request->query('month', now()->month); // Tháng mặc định là tháng hiện tại
+        $dsDH = DB::table('don_hang')
+        ->join('users', 'users.id', '=', 'don_hang.id_user')
+        ->select('users.name', 'don_hang.*')
+        ->orderBy('thoi_diem_mua_hang', 'DESC')
+        ->limit(5)
+        ->get();
+        $dsKH = DB::table('users')
+        ->orderBy('id', 'DESC')
+        ->where('role', 0)
+        ->get();
 
     $query = DonHang::query();
 
@@ -69,7 +83,7 @@ class AdminHomeController extends AdminController
 
     $data = $query->orderBy('thoi_diem_mua_hang', 'asc')->get();
 
-    return view('admin.test', compact('data', 'filter', 'year', 'month'));
+    return view('admin.test', compact('data', 'filter', 'year', 'month', 'dsDH', 'dsKH'));
 }
 
 }

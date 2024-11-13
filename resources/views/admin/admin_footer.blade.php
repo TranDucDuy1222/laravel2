@@ -36,6 +36,7 @@
     <script src="asset_admin/js/calendar.js"></script>
     <script src="asset_admin/js/demo.js"></script>
     <script src="asset_admin/js/demo-chart-js.js"></script>
+    <!-- <script src="{{ mix('js/app.js') }}"></script> -->
 </body>
 <!-- Mirrored from
     stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/index.html by HTTrack
