@@ -62,10 +62,7 @@
                             <select class="form-select" id="selected_address" aria-label="Default select example">
                                 @foreach ($diachis as $dc)
                                     <option value="{{$dc->id}}"> 
-                                        {{$dc->ho_ten}} {{ $dc->phone }} | {{ $dc->dc_chi_tiet }} 
-                                        @if (!empty($dc->qh) && !empty($dc->thanh_pho))
-                                            {{ $dc->qh }}, {{ $dc->thanh_pho }}
-                                        @endif
+                                        {{$dc->ho_ten}} {{ $dc->phone }} | {{ $dc->dc_chi_tiet }} , {{ $dc->qh }}, {{ $dc->thanh_pho }}
                                     </option>
                                 @endforeach
                             </select>
@@ -118,9 +115,9 @@
                                                 <td>
                                                     <span class="table-p__price">
                                                         @if ($item->sanPham->gia_km > 0)
-                                                            {{ number_format($item->sanPham->gia_km) }} VNĐ
+                                                            {{ number_format($item->sanPham->gia_km , 0, '','.') }} đ
                                                         @else
-                                                            {{ number_format($item->sanPham->gia) }} VNĐ
+                                                            {{ number_format($item->sanPham->gia , 0, '','.') }} đ
                                                         @endif
                                                     </span>
                                                 </td>
@@ -142,9 +139,9 @@
                                                 <td id="total-price-{{ $item->id }}" class="item-total-price">
                                                     <span class="table-p__price">
                                                         @if ($item->sanPham->gia_km > 0)
-                                                            {{ number_format($item->sanPham->gia_km * $item->so_luong) }} VNĐ
+                                                            {{ number_format($item->sanPham->gia_km * $item->so_luong , 0, '','.') }} đ
                                                         @else
-                                                            {{ number_format($item->sanPham->gia * $item->so_luong) }} VNĐ
+                                                            {{ number_format($item->sanPham->gia * $item->so_luong , 0, '','.') }} đ
                                                         @endif
                                                     </span>
                                                 </td>
@@ -210,21 +207,22 @@
                                                     }else{
                                                     return $item->sanPham->gia * $item->so_luong;
                                                     }
-                                                })) }} VNĐ
+                                                }), 0, '','.') }} đ
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Voucher giảm giá</td>
-                                            <td id="discount-amount">{{ number_format($discountAmount ?? 0) }} VNĐ</td>
+                                            <td>Phí vận chuyển</td>
+                                            <td id="shipping-cost"> </td>
                                         </tr>
+                                        <tr>
+                                            <td>Voucher giảm giá</td>
+                                            <td id="discount-amount">- {{ number_format($discountAmount , 0, '','.' ?? 0) }} đ</td>
+                                        </tr>
+
                                     </tbody>
                                     <tr>
                                         <td>TỔNG THANH TOÁN</td>
-                                        <td id="total-payable">
-                                            {{ number_format($totalPayable ?? $gioHangs->sum(function($item) {
-                                                return $item->sanPham->gia * $item->so_luong;
-                                            })) }} VNĐ
-                                        </td>
+                                        <td id="total-payable">{{ number_format($totalPayable, 0, '', '.') }} đ</td>
                                     </tr>
                                 </table>
                             </div>
@@ -232,7 +230,8 @@
                         <form id="order_form" action="{{ route('dat-hang') }}" method="post">
                             @csrf
                             <!-- Thông tin muốn lấy -->
-                            <input type="hidden" name="total_payables" value="{{ $totalPayable }}">
+                            <input type="hidden" name="total_payables" id="total_payables_hidden" value="{{ $totalPayable }}">
+                            <input type="hidden" name="discount_amount" id="discount-amount_hidden" value="{{ $discountAmount }}">
                             <input type="hidden" name="selected_address" id="hidden_selected_address">
                             <div class="border p-3">
                                     <div class="text-black mb-xl-2 ">
@@ -303,40 +302,75 @@
         this.submit();
     });
 
-    // Tuỳ chỉnh số lượng sản phẩm
-    function changeQuantityPay(itemId, change) {
-        const quantityInput = document.getElementById(`quantity-${itemId}`);
-        const stockLimit = parseInt(document.getElementById(`stock-${itemId}`).value);
-        let currentQuantity = parseInt(quantityInput.value);
-        currentQuantity += change;
-        if (currentQuantity < 1) {
-            currentQuantity = 1;
-        }
-        if (currentQuantity > stockLimit) {
-            currentQuantity = stockLimit;
-            alert("Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.");
-        } else {
-            quantityInput.value = currentQuantity;
-            document.getElementById(`form-quantity-${itemId}`).submit();
-        }
+    // Lấy địa chỉ để tính tổng tiền 
+    document.addEventListener('DOMContentLoaded', function() {
+        const addressSelect = document.getElementById('selected_address');
+        const shippingCostField = document.getElementById('shipping-cost');
+        const totalPayableField = document.getElementById('total-payable');
+        const totalPayablesHidden = document.getElementById('total_payables_hidden');  // Hidden field for total payable
+
+        const shipCostInnerCity = {{ $giavc->ship_cost_inner_city }};
+        const shipCostNationwide = {{ $giavc->ship_cost_nationwide }};
+        const totalAmount = {{ $totalAmount }};
+        const discountAmount = {{ $discountAmount }};
+
+        addressSelect.addEventListener('change', function() {
+            const selectedOption = addressSelect.options[addressSelect.selectedIndex];
+            const thanhPho = selectedOption.text.split(',').pop().trim();
+            let shippingCost = 0;
+
+            if (thanhPho === 'Hồ Chí Minh' || thanhPho === 'Thành phố Hồ Chí Minh') {
+                shippingCost = shipCostInnerCity;
+            } else {
+                shippingCost = shipCostNationwide;
+            }
+
+            const totalPayable = totalAmount - discountAmount + shippingCost;
+            shippingCostField.innerText = shippingCost.toLocaleString() + ' đ';
+            totalPayableField.innerText = totalPayable.toLocaleString() + ' đ';
+            totalPayablesHidden.value = totalPayable;  // Update the hidden field
+        });
+
+        // Trigger change event on page load to set initial values
+        addressSelect.dispatchEvent(new Event('change'));
+    });
+
+
+// Tuỳ chỉnh số lượng sản phẩm
+function changeQuantityPay(itemId, change) {
+    const quantityInput = document.getElementById(`quantity-${itemId}`);
+    const stockLimit = parseInt(document.getElementById(`stock-${itemId}`).value);
+    let currentQuantity = parseInt(quantityInput.value);
+    currentQuantity += change;
+
+    if (currentQuantity < 1) {
+        currentQuantity = 1;
+    } 
+    if (currentQuantity > stockLimit) {
+        currentQuantity = stockLimit;
+        alert("Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.");
     }
 
-    // Xử lý giảm giá khi người dùng nhập
-    document.addEventListener('DOMContentLoaded', function() {
-        const cartItems = document.querySelectorAll('.cart-product');
-        cartItems.forEach(item => {
-            const productId = item.getAttribute('data-id');
-            const size = item.getAttribute('data-size');
-            const quantityInput = item.querySelector('.product-quantity');
-            const stockQuantity = parseInt(item.querySelector('.stock-quantity').getAttribute('data-stock'));
-            let currentQuantity = parseInt(quantityInput.value);
-            // Nếu số lượng trong giỏ lớn hơn số lượng trong kho
-            if (currentQuantity > stockQuantity) {
-                quantityInput.value = stockQuantity;
-                alert(`Số lượng sản phẩm đã điều chỉnh về ${stockQuantity} do vượt quá hàng trong kho.`);
-            }
-        });
+    quantityInput.value = currentQuantity;
+    document.getElementById(`form-quantity-${itemId}`).submit();
+}
+
+// Xử lý giảm giá khi người dùng nhập
+document.addEventListener('DOMContentLoaded', function() {
+    const cartItems = document.querySelectorAll('.cart-product');
+    cartItems.forEach(item => {
+        const quantityInput = item.querySelector('.product-quantity');
+        const stockQuantity = parseInt(item.querySelector('.stock-quantity').getAttribute('data-stock'));
+        let currentQuantity = parseInt(quantityInput.value);
+
+        // Nếu số lượng trong giỏ lớn hơn số lượng trong kho
+        if (currentQuantity > stockQuantity) {
+            quantityInput.value = stockQuantity;
+            alert(`Số lượng sản phẩm đã điều chỉnh về ${stockQuantity} do vượt quá hàng trong kho.`);
+        }
     });
+});
+
 </script>
 
 @endsection

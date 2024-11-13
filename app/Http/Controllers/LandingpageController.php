@@ -8,16 +8,7 @@ use DB;
 
 class LandingpageController extends AdminController
 {
-    // function __construct(){
-    //     $query = DB::table('loai')
-    //     ->select('id', 'ten_loai', 'slug')
-    //     ->orderBy('id', 'asc');
-    //     $loai = $query->get();
-    //     $danh_muc = DB::table('danh_muc')->get();
-    //     \View::share('loai', $loai);
-    //     \View::share('danh_muc', $danh_muc);
-    // }
-    public function index(){
+    public function index(Request $request){
         $loai_arr = Loai::all();
         //$first_loai = $loai_arr->first(); // Lấy loại đầu tiên
         $query = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm')

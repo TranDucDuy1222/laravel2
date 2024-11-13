@@ -18,6 +18,7 @@ class DonHang extends Model
         'id_dc',
         'tong_dh', 
         'pttt', 
+        'uu_dai',
         'trang_thai'
     ];
 

@@ -43,15 +43,15 @@ class UserController extends Controller
         $user = users::where('email', $request->email)->first();
 
         if (!$user) {
-            return back()->with('thongbao', 'Email này chưa được đăng ký.');
+            return back()->with('error', 'Email này chưa được đăng ký.');
         }
         if (!Hash::check($request->password, $user->password)) {
-            return back()->with('thongbao', 'Mật khẩu không chính xác.');
+            return back()->with('error', 'Mật khẩu không chính xác.');
         }
         if (auth()->guard('web')->attempt(['email' => $request['email'], 'password' => $request['password']])) {
             if ($user->is_hidden) {
                 Auth::guard('web')->logout();
-                return back()->with('thongbao', 'Tài khoản này hiện tạm khóa và không thể đăng nhập.');
+                return back()->with('error', 'Tài khoản này hiện tạm khóa và không thể đăng nhập.');
             }
             return redirect()->intended('/');
         }
@@ -77,6 +77,7 @@ class UserController extends Controller
             ->join('users', 'dia_chi.id_user','=','users.id')
             ->select('dia_chi.*', 'users.name' )
             ->where('users.id', $id)
+            ->orderBy('dia_chi.id', 'desc')
             ->get();
             if(!$taiKhoan){
                 return redirect()->back()->with('thongbao','Không tìm thấy tài khoản');
@@ -94,25 +95,29 @@ class UserController extends Controller
 
     public function capnhatdiachi(Request $request, $id)
     {
-    $obj = DiaChi::find($id);
+        $obj = DiaChi::find($id);
 
-    // Kiểm tra và cập nhật từng trường riêng lẻ nếu có giá trị mới
-    if ($request->filled('ho_ten')) {
-        $obj->ho_ten = $request->input('ho_ten');
-    }
+        // Kiểm tra và cập nhật từng trường riêng lẻ nếu có giá trị mới
+        if ($request->filled('ho_ten')) {
+            $obj->ho_ten = $request->input('ho_ten');
+        }
+        if ($request->filled('phone')) {
+            $obj->phone = $request->input('phone');
+        }
+        if ($request->filled('dc_chi_tiet')) {
+            $obj->dc_chi_tiet = $request->input('dc_chi_tiet');
+        }
+        if ($request->filled('qh')) {
+            $obj->qh = $request->input('qh');
+        }
+        if ($request->filled('thanh_pho')) {
+            $obj->thanh_pho = $request->input('thanh_pho');
+        }
 
-    if ($request->filled('dc_chi_tiet')) {
-        $obj->dc_chi_tiet = $request->input('dc_chi_tiet');
-    }
+        // Lưu thay đổi
+        $obj->save();
 
-    if ($request->filled('phone')) {
-        $obj->phone = $request->input('phone');
-    }
-
-    // Lưu thay đổi
-    $obj->save();
-
-    return redirect()->back()->with('thongbao', 'Cập nhật địa chỉ thành công!');
+        return redirect()->back()->with('success', 'Cập nhật địa chỉ thành công!');
     }
 
     public function xoa_dc($id)
@@ -120,11 +125,37 @@ class UserController extends Controller
         $address = DiaChi::findOrFail($id);
         $address->delete();
     
-        return redirect()->back()->with('thongbao', 'Địa chỉ đã được xóa thành công!');
+        return redirect()->back()->with('success', 'Địa chỉ đã được xóa thành công!');
     }
-    public function themDiaChi(Request $request, $id) {
-        // Kiểm tra dữ liệu nhận được
-        dd($request->all());
+    public function themDiaChi(Request $request, $id)
+    {
+        // Kiểm tra xem $id có tồn tại trong bảng users không
+        $user = users::find($id);
+        if (!$user) {
+            return redirect()->back()->with('error', 'Người dùng không tồn tại.');
+        }
+
+        // Kiểm tra thông tin người dùng nhập vào
+        $validatedData = $request->validate([
+            'ho_ten' => 'required|string|max:50',
+            'phone' => 'required|string|max:15',
+            'thanh_pho' => 'required|string|max:255',
+            'quan_huyen' => 'required|string|max:255',
+            'phuong_xa' => 'required|string|max:255',
+            'diachichitiet' => 'required|string|max:255',
+        ]);
+
+        // Nếu tất cả thông tin hợp lệ, lưu địa chỉ mới sử dụng model DiaChi
+        $diaChi = new DiaChi();
+        $diaChi->id_user = $id;
+        $diaChi->ho_ten = $validatedData['ho_ten'];
+        $diaChi->phone = $validatedData['phone'];
+        $diaChi->thanh_pho = $validatedData['thanh_pho'];
+        $diaChi->qh = $validatedData['quan_huyen'];
+        $diaChi->dc_chi_tiet = $validatedData['diachichitiet'] . ', ' . $validatedData['phuong_xa'];
+        $diaChi->save();
+
+        return redirect()->back()->with('success', 'Địa chỉ mới đã được thêm thành công.');
     }
     
     public function chinhSuaThongTin(Request $request ,$id){
