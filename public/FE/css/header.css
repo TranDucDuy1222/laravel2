@@ -4,3 +4,10 @@
 a{
     text-decoration: none;
 }
+.custom-input {
+    width: 98%;  /* Chiều dài của input chiếm 98% */
+    height: 35px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}

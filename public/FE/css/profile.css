@@ -1,0 +1,6 @@
+.scroll-donhang {
+    max-height: 485px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+

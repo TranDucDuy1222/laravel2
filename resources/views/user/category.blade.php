@@ -4,13 +4,21 @@
 @endsection
 
 @section('category')
-  @foreach ($danhmuc as $category )
-    <li class="nav-item">
-      <a class="nav-link fz" href="/category/{{$category->madm}}">
-        {{$category->tendm}}
-      </a>
-    </li>
-  @endforeach
+    @foreach ($loai as $category)
+        <li class="nav-item dropdown">
+            <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                href="{{ route('loai-san-pham',$category->slug) }}">
+                {{$category->ten_loai}}
+            </a>
+            <ul class="dropdown-menu" id="userDropdown">
+                @foreach ($danh_muc as $dm)
+                    @if ($dm->id_loai == $category->id)
+                        <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham' , $dm->slug)}}">{{$dm->ten_dm}}</a></li>
+                    @endif
+                @endforeach
+            </ul>
+        </li>
+    @endforeach
 @endsection
 
 @section('content')
@@ -252,40 +260,9 @@
       </div>
       <br>
       <!-- show sản phẩm -->
-        <div class="row">
-          @foreach ($categories as $item)
-          @php
-            if ($item->giakhuyenmai > 0) {
-              $gianew = $item->giakhuyenmai;
-            //   $giaold = '<del>' . $gia . '</del>';
-            } else {
-              $gianew = $item->gia;
-            }
-            $num = $gianew;
-            $giachinh = number_format($num, 0, '', '.');
-          @endphp
-          <div class="col-sm-6 col-xl-3 mb-2" >
-            <div class="card">
-              <a href="/detail/{{$item->masp}}" id="hover-img-home">
-                <img src="/img/{{$item->anhsp}}" onerror="this.src='/imgnew/{{$item->anhsp}}'" alt="" class="w-100" style="height: 346px;" >
-              </a>
-              <div class="card-body text-center">
-                <a href="">
-                  <h5 id="hover-sp"> {{$item->tensp}} </h5>
-                </a>
-                <div class="row">
-                  <div class="col-sm-6">
-                    {{$item->tendm}}
-                  </div>
-                  <div class="col-sm-6">
-                    <strong> {{$giachinh}} đ</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          @endforeach
-        </div>
+      <div id="show_product"> <router-view>
+        
+      </router-view> </div>
       <!-- Phân trang -->
       <div class="p-2 d-flex justify-content-center"> {{$categories->links()}} </div>
 
