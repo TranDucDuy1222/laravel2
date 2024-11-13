@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>
-    @yield('title')
-  </title>
-  <!--FONT-GG-->
+  <title>@yield('title')</title>
+  
+  <!-- Preconnect để tối ưu tải font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">  
+
+  <!-- Logo -->
   <link rel="shortcut icon" href="{{asset('/uploads/logo/iconlogo.png')}}" type="image/x-icon">
-  <!--FONT AWESOME-->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-  <!-- MAIN-CSS -->
-  <!--CSS-BOOSTRAP-->
-  <link rel="stylesheet" href="/FE/bootstrap-5/css/bootstrap.min.css">
+  
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="/FE/fontawesome-free-6.5.1-web/css/all.min.css">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/FE/bootstrap-5/css/bootstrap.min.css">
   <link rel="stylesheet" href="/FE/css/nav.css">
   <link rel="stylesheet" href="/FE/css/header.css">
   <link rel="stylesheet" href="/FE/css/footer.css">
@@ -34,10 +32,14 @@
   <link rel="stylesheet" href="/FE/css/cssHome.css">
   <link rel="stylesheet" href="/FE/css/buy.css">
   <link rel="stylesheet" href="/FE/css/profile.css">
-
+  
+  
+  @vite('resources/css/app.css') 
   @vite('resources/js/app.js')
-
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
+
 
 <body>
 
@@ -110,12 +112,13 @@
                   Mới và Nổi Bật
                 </a>
               </li>
-              @yield('category')
               <li class="nav-item">
                 <a class="nav-link fz" href="{{ url('loai-san-pham/giam-gia') }}">
                   Giảm Giá
                 </a>
               </li>
+              @yield('category')
+              
             </ul>
           </div>
         </div>

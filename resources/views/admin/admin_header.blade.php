@@ -64,7 +64,7 @@
                                     </a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('admin/cai-dat')}}">
-                                        <i class='sa-nav__icon bx fa-solid fa-gear fa-spin'></i>
+                                        <i class="sa-nav__icon fa-solid fa-gear"></i>
                                         <span class="app-menu__label">Thiết lập cài đặt</span>
                                     </a>
                                 </li>
