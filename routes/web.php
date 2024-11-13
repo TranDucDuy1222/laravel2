@@ -89,7 +89,7 @@ Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
     $email = trim(strip_tags($arr['email']));
     $nd = trim(strip_tags($arr['noidung']));
 
-    $adminEmail = 'hungnguyen270604@gmail.com';//Thư được gửi tới quản trị của email này
+    $adminEmail = 'trendyu02@gmail.com';//Thư được gửi tới quản trị của email này
     Mail::mailer('smtp')->to($adminEmail)->send(new GuiEmail($ht, $email, $nd));
     return redirect()->route('user.contact')->with('success', 'Gửi mail thành công !');
 });
@@ -120,7 +120,16 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('/tai-khoan/{id}/hide', [AdminUserController::class, 'hide'])->name('tai-khoan.hide');
     Route::post('tai-khoan/{id}/restore', [AdminUserController::class, 'restore'])->name('tai-khoan.restore');
 
-    Route::resource('don-hang', AdminDonHangController::class);  
+    Route::resource('don-hang', AdminDonHangController::class)->names([
+        'index' => 'don-hang.index',
+        'create' => 'donhang.create',
+        'store' => 'donhang.store',
+        'show' => 'don-hang.show',
+        'edit' => 'donhang.edit',
+        'update' => 'donhang.update',
+        'destroy' => 'donhang.destroy',
+    ]); 
+    Route::post('/remove-notification', [AdminController::class, 'xoaThongBao'])->name('xoa');
     Route::put('don-hang/{id}/update-trang-thai', [AdminDonHangController::class, 'updateTrangThai'])->name('don-hang.update-trang-thai');
     
     Route::resource('danh-gia', AdminDanhGiaController::class);

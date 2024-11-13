@@ -87,6 +87,8 @@
                             </tbody>
                         </table>
                     </div>
+                    <!--Phân trang-->
+                <div class="text-center p-2 d-flex justify-content-center">{{$donHangs->links('pagination::bootstrap-5')}}</div>
                 </div>
             </div>
         </div>

@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\DonHang;
 use App\Models\ChiTietDonHang;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class AdminDonHangController extends AdminController
 {
     public function index(Request $request)
     {
+        $perpage = 15;
         $query = DonHang::query();
 
         // Chỉ hiển thị các đơn hàng có trạng thái "Chưa xử lý"
@@ -20,7 +22,7 @@ class AdminDonHangController extends AdminController
             $query->where('trang_thai', $request->trang_thai);
         }
 
-        $donHangs = $query->get();
+        $donHangs = $query->orderBy('id', 'DESC')->paginate($perpage)->withQueryString();
         return view('admin.order', compact('donHangs'));
  
     }
