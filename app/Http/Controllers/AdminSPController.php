@@ -61,7 +61,7 @@ class AdminSPController extends AdminController
         
     
         // Trả về view với các biến cần thiết
-        return view('admin/product_admin', compact('trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp'));
+        return view('admin/product', compact('trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp'));
     }
     
     public function create(Request $request)
@@ -69,7 +69,7 @@ class AdminSPController extends AdminController
         $selectedOption = $request->query('selection');
         $request->session()->put('selected_option', $selectedOption);
         $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
-        return view('admin.product_add_admin', compact('loai_arr' , 'selectedOption'));
+        return view('admin.product_add', compact('loai_arr' , 'selectedOption'));
     }
     public function store(Request $request)
     {
@@ -159,7 +159,7 @@ class AdminSPController extends AdminController
             return redirect('/admin/san-pham');
         }
         $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
-        return view('admin/product_edit_admin', compact(['sp', 'loai_arr', 'sizeProduct']));
+        return view('admin/product_edit', compact(['sp', 'loai_arr', 'sizeProduct']));
     }
 
     public function update(Request $request, string $id)
