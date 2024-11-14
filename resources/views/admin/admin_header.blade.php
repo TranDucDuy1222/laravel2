@@ -1,4 +1,33 @@
+<style>
+    .notification-list {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 300px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 500px;
+    overflow-y: auto;
+}
 
+.notification-list ul {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.notification-list li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-list li:last-child {
+    border-bottom: none;
+}
+</style>
 <body>
     <!-- sa-app -->
     <div class="sa-app sa-app--desktop-sidebar-shown sa-app--mobile-sidebar-hidden sa-app--toolbar-fixed">
@@ -64,7 +93,7 @@
                                     </a>
                                 </li>
                                 <li><a class="app-menu__item" href="{{url('admin/cai-dat')}}">
-                                        <i class='sa-nav__icon bx fa-solid fa-gear fa-spin'></i>
+                                        <i class="sa-nav__icon fa-solid fa-gear"></i>
                                         <span class="app-menu__label">Thiết lập cài đặt</span>
                                     </a>
                                 </li>
@@ -166,7 +195,27 @@
                     </div>
                     <div class="mx-auto"></div>
 
+                    
                     <div class="dropdown sa-toolbar__item">
+                    <!-- <button id="notificationButton" class="btn position-relative">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">5</span>
+                    </button>
+                    <div id="notificationList" class="notification-list" style="display:none;">
+                        <ul>
+                            @foreach(Session::all() as $key => $message)
+                                @if(strpos($key, 'order_notification_') === 0 || strpos($key, 'review_notification_') === 0)
+                                    <li class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                                    <a href="{{ route('don-hang.show', ['don_hang' => str_replace('order_notification_', '', $key)]) }}" class="nav-link" data-key="{{ $key }}" style="color: black">
+                                        {{ $message }}
+                                    </a>
+                                        <button type="button" class="btn-close" aria-label="Close" onclick="removeNotification('{{ $key }}')"></button>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div> -->
+                        
                         <button class="sa-toolbar-user" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-offset="0,1" aria-expanded="false">
                             <span class="sa-toolbar-user__avatar sa-symbol sa-symbol--shape--rounded">
                                 <img type="file" src="" width="64" height="64">
@@ -202,6 +251,8 @@
             <!-- sa-app__toolbar / end -->
 <!-- Ẩn hiện nút đăng xuất -->
 <script>
+    
+    
     document.getElementById('dropdownMenuButton').addEventListener('click', function() {
         var ulElement = document.getElementById('btn_logout');
         if (ulElement.style.display === 'none') {
@@ -210,4 +261,38 @@
             ulElement.style.display = 'none';
         }
     });
+    // document.getElementById('notificationButton').addEventListener('click', function() {
+    //     const notificationList = document.getElementById('notificationList');
+    //     if (notificationList.style.display === 'none' || notificationList.style.display === '') {
+    //         notificationList.style.display = 'block';
+    //     } else {
+    //         notificationList.style.display = 'none';
+    //     }
+    // });
+
+    // // Đóng thông báo khi nhấp ra ngoài
+    // document.addEventListener('click', function(event) {
+    //     const notificationButton = document.getElementById('notificationButton');
+    //     const notificationList = document.getElementById('notificationList');
+    //     if (!notificationButton.contains(event.target) && !notificationList.contains(event.target)) {
+    //         notificationList.style.display = 'none';
+    //     }
+    // });
+
+    // //Hàm gửi request để xóa thông báo
+    // // import axios from 'axios';
+    // function removeNotification(notificationKey) {
+
+    //     axios.post('/admin/remove-notification', {
+    //         key: notificationKey}).then(response => {
+    //             console.log('Notification removed');
+    //             }).catch(error => {console.log(error);});
+    // }
+    // // Hàm để xóa thông báo khi người dùng click vào liên kết
+    // document.querySelectorAll('.alert-link').forEach(link => {
+    //     link.addEventListener('click', function () {
+    //         const key = this.getAttribute('data-key');
+    //         removeNotification(key);
+    //         });
+    //     });
 </script>

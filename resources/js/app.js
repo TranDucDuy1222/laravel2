@@ -1,20 +1,27 @@
-import './bootstrap';
 import { createApp } from 'vue';
 import AddressForm from './components/AddressForm.vue';
-import Productvue from './components/Products.vue';
-import router from './router'; // Đảm bảo đường dẫn chính xác đến file router.js
+import ProductList from './components/productList.vue';
 
-const app = createApp({
+// Tạo ứng dụng cho AddressForm
+const appAddDC = createApp({
     components: {
         'address-form': AddressForm,
-        'show-product': Productvue
     }
 });
+appAddDC.mount('#appAddDC');
 
-app.use(router);
-app.mount('#appAddDC');
+// Tạo ứng dụng cho ProductList với slug từ URL
+const urlParams = new URLSearchParams(window.location.search);
+const slug = urlParams.get('slug') || 'tat-ca-san-pham';
 
-const show_product = createApp({});
-show_product.use(router);
-show_product.component('show-product', Productvue);
-show_product.mount('#show_product');
+const productListApp = createApp({
+    data() {
+        return {
+            slug: slug
+        };
+    },
+    components: {
+        'product-list': ProductList
+    }
+});
+productListApp.mount('#product_list');

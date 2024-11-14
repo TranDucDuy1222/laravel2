@@ -1,21 +1,22 @@
-#box-menu-dung{
-    height: 770px;
+#box-menu-ngang{
+    min-width: 700px;
 }
-.menu-dung {
+.menu-ngang {
     list-style-type: none;
+    font-size: 16px;
 }
-.menu-dung li {
+.menu-ngang li {
     transition: background-color 0.3s; /* Hiệu ứng màu nền khi di chuột vào */
 }
-.menu-dung li input{
-    width: 30px;
-    height: 40px;
+.menu-ngang li input{
+    width: 25px;
+    height: 25px;
 }
-.menu-dung li a{
+.menu-ngang li a{
     text-decoration: none;
     color: black;
 }
-.menu-dung li:hover {
+.menu-ngang li:hover {
 background-color: #f0f0f0; /* Màu nền khi di chuột vào */
 }
 .bgpink{
@@ -35,4 +36,9 @@ background-color: #f0f0f0; /* Màu nền khi di chuột vào */
 #hover-sp:hover {
     color: #ff0000;
     text-decoration: underline;
+}
+.size-all-product{
+    width: 30px;
+    
+    object-fit: cover;
 }

@@ -9,4 +9,5 @@ use App\Http\Controllers\ProductController;
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
-Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
+// Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
+Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class, 'api_sanpham_danhmuc']);

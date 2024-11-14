@@ -77,6 +77,7 @@ Liên hệ
                     <div class="col-lg-12">
                         <div class="section__text-wrap">
                             <h1 class="section__heading u-c-secondary">Liên hệ</h1>
+                            <div class="text-black">Liên hệ trực tiếp qua số điện thoại : {{ $sdtlien_he }}</div>
                         </div>
                     </div>
                 </div>

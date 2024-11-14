@@ -44,7 +44,7 @@ class HomeController extends Controller
     public function index(){
         $loai_arr = Loai::all();
         //$first_loai = $loai_arr->first(); // Lấy loại đầu tiên
-        $query = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm')
+        $query = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm','mo_ta_ngan' , 'luot_mua')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
         ->orderBy('san_pham.id', 'desc');
         
@@ -68,7 +68,7 @@ class HomeController extends Controller
 
         // Sản phẩm theo loại
         $query_theoloai = DB::table('san_pham')
-        ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh','san_pham.trang_thai', 'danh_muc.ten_dm')
+        ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh','san_pham.trang_thai', 'danh_muc.ten_dm', 'mo_ta_ngan' ,'luot_mua')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
         ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
         ->inRandomOrder() // Random sản phẩm

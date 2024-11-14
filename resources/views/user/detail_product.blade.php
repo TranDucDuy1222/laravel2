@@ -60,8 +60,17 @@ Chi Tiết : {{$detail->ten_sp}}
                         </div>
                         <div>
                             <div class="pd-detail__inline">
-                                <span class="pd-detail__price">{{$gia_chinh}} VND</span>
-                                <del class="pd-detail__del">{{$giaold}} VND</del>
+                                @if ($detail->trang_thai === 3)
+                                    <span style="font-size: 2rem;" class="text-black">Giá dự kiến </span>
+                                    <span class="text-danger" style="font-size: 2rem;">
+                                        {{$gia_chinh}} đ
+                                    </span>
+                                @else 
+                                    <span class="pd-detail__price">
+                                        {{$gia_chinh}} đ
+                                    </span>
+                                @endif
+                                <del class="pd-detail__del">{{$giaold}} đ</del>
                             </div>
                         </div>
                         <div class="mb-3">

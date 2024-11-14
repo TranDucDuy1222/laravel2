@@ -68,41 +68,69 @@ Quản Trị Sản Phẩm
     <div class="mx-xxl-3 px-4 px-sm-5 pb-6">
         <div class="sa-layout">
             <div class="sa-layout__content">
-                <!-- Lọc theo trạng thái -->
-                <select id="trangthai" class="form-select" aria-label="Default select example" style="height: 50px;"
-                    onchange="loctrangthai(this.value)">
-                    <option value="0" {{$trangthai == "0" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
-                    <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Sắp Hết Hàng</option>
-                    <option value="2" {{$trangthai == "2" ? "selected" : ""}}>Sản Phẩm Ngừng Kinh Doanh</option>
-                    <option value="3" {{$trangthai == "3" ? "selected" : ""}}>Sản Phẩm Sắp Về Hàng</option>
-                </select>
-                <!--Lọc trạng thái bằng JS-->
-                <script>
-                    function loctrangthai(tt) {
-                        document.location = `/admin/san-pham?trangthai=${tt}`;
-                    }
-                </script>
+            <form id="searchForm" action="/admin/san-pham" method="GET">
+                    <div class="row">
+                        <div class="col-4">
+                            <!-- Lọc theo trạng thái -->    
+                            <select id="trangthai" name="trangthai" class="form-select" aria-label="Default select example" style="height: 50px;">
+                                <option value="0" {{$trangthai == "0" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
+                                <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Sắp Hết Hàng</option>
+                                <option value="2" {{$trangthai == "2" ? "selected" : ""}}>Sản Phẩm Ngừng Kinh Doanh</option>
+                                <option value="3" {{$trangthai == "3" ? "selected" : ""}}>Sản Phẩm Sắp Về Hàng</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <!-- Lọc theo danh mục -->
+                            <select id="selLoai" name="id_dm" class="form-select" aria-label="Default select example" style="height: 50px;">
+                                <option value="all" selected>Lọc theo danh mục</option>
+                                @foreach ($loai_arr as $loai)
+                                    <option value="{{$loai->id}}" {{$loai->id == $id_dm ? "selected" : ""}}>{{$loai->ten_dm}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <!-- Tìm kiếm theo từ khóa -->
+                            <input type="text" id="keyword" name="keyword" class="form-control h-100" value="{{ request()->query('keyword') }}" placeholder="Nhập từ khóa...">
+                        </div>
+                    </div>
+                    <div class="mt-2 d-flex justify-content-end align-content-end ">
+                        <button type="submit" class="btn btn-outline-success">Lọc tất cả</button>
+                    </div>
+            </form>
+<script>
+    function applyFilters() {
+        const trangthai = document.getElementById('trangthai').value;
+        const id_dm = document.getElementById('selLoai').value;
+        const keyword = document.getElementById('keyword').value.trim();
 
-                <br>
-                <!-- Lọc theo danh mục -->
-                <tr>
-                    <td colspan="6">
-                        <select id="selLoai" aria-label="Default select example" class="form-select"
-                            onchange="locsp(this.value)">
-                            <option value="-1" selected>Lọc theo danh mục</option>
-                            @foreach ($loai_arr as $loai)
-                            <option value="{{$loai->id}}" {{$loai->id == $id_dm ? "selected":""}}>
-                                {{$loai->ten_dm}}
-                            </option>
-                            @endforeach
-                        </select>
-                        <script>
-                            function locsp(id_dm) {
-                                document.location = `/admin/san-pham?id_dm=${id_dm}`;
-                            }
-                        </script>
-                    </td>
-                </tr>
+        const params = new URLSearchParams();
+
+        // Thiết lập giá trị cho trangthai nếu có
+        if (trangthai && trangthai !== '0') {
+            params.set('trangthai', trangthai);
+        }
+
+        // Thiết lập giá trị cho id_dm nếu có
+        if (id_dm && id_dm !== 'all') {
+            params.set('id_dm', id_dm);
+        }
+
+        // Thiết lập giá trị cho keyword nếu có
+        if (keyword && keyword !== 'all') {
+            params.set('keyword', keyword);
+        }
+
+        // Chuyển hướng đến URL mới với các tham số đã thiết lập
+        document.location = `/admin/san-pham?${params.toString()}`;
+    }
+
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+        applyFilters(); // Gọi hàm applyFilters để gửi yêu cầu
+    });
+</script>
+
+
                 <br>
                 <div class="card table-responsive">
                     <table class="table">

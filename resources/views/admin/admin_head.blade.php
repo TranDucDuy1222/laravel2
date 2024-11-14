@@ -35,4 +35,6 @@
     <link rel="stylesheet" href="/FE/cssadmin/css/landingpage.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- @vite(['resources/js/app.js', 'resources/css/app.css']) -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>

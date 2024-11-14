@@ -7,13 +7,13 @@ Trang Chủ - TrendyU
     @foreach ($loai as $category)
         <li class="nav-item dropdown">
             <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                href="{{ route('loai-san-pham',$category->slug) }}">
+                href="{{ route('loai-san-pham', $category->slug) }}">
                 {{$category->ten_loai}}
             </a>
             <ul class="dropdown-menu" id="userDropdown">
                 @foreach ($danh_muc as $dm)
                     @if ($dm->id_loai == $category->id)
-                        <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham' , $dm->slug)}}">{{$dm->ten_dm}}</a></li>
+                        <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a></li>
                     @endif
                 @endforeach
             </ul>
@@ -33,7 +33,7 @@ Trang Chủ - TrendyU
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="{{ asset('/uploads/banner/'.$home_page->anh_bieu_ngu_1) }}"
+                        <img src="{{ asset('/uploads/banner/' . $home_page->anh_bieu_ngu_1) }}"
                             onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="d-block w-100 img-header" alt="...">
                         <div class="carousel-caption d-none d-md-block">
                             <h2 style="color: {{$home_page->mau_tieu_de_chinh_1}};" >{{$home_page->tieu_de_chinh_1}}</h2>
@@ -41,7 +41,7 @@ Trang Chủ - TrendyU
                         </div>
                     </div>
                     <div class="carousel-item active">
-                        <img src="{{ asset('/uploads/banner/'.$home_page->anh_bieu_ngu_2) }}"
+                        <img src="{{ asset('/uploads/banner/' . $home_page->anh_bieu_ngu_2) }}"
                             onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="d-block w-100 img-header" alt="...">
                         <div class="carousel-caption d-none d-md-block">
                             <h2 style="color: {{$home_page->mau_tieu_de_chinh_2}};" >{{$home_page->tieu_de_chinh_2}}</h2>
@@ -72,7 +72,7 @@ Trang Chủ - TrendyU
     <!-- Home -->
         <section class="container-fluid section text-black">
             <!-- <div class="mx-xl-5"> -->
-            <a href="/allproduct" class="d-flex justify-content-center">
+            <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
                 <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
             </a>
             <br>
@@ -96,7 +96,7 @@ Trang Chủ - TrendyU
                                 <div class="col-lg-6 col-md-12">
                                 <a class="i3-banner">
                                     <div class="aspect aspect--bg-grey-fb aspect--square">
-                                        <img class="aspect__img i3-banner__img" src="{{ asset('/uploads/banner/'.$home_page->anh_chinh_gioi_thieu_san_pham) }}"
+                                        <img class="aspect__img i3-banner__img" src="{{ asset('/uploads/banner/' . $home_page->anh_chinh_gioi_thieu_san_pham) }}"
                                             onerror="this.src='{{ asset('/uploads/banner/bannerspnew.png') }}'" alt="" class="w-100" height="100%">
                                     </div>
                                 </a>
@@ -105,14 +105,8 @@ Trang Chủ - TrendyU
                                     <div class="row">
                                         @foreach ($sanphamhome as $item)
                                             @php
-                                                if ($item->gia_km > 0) {
-                                                    $gianew = $item->gia_km;
-                                                    //   $giaold = '<del>' . $gia . '</del>';
-                                                } else {
-                                                    $gianew = $item->gia;
-                                                }
-                                                $num = $gianew;
-                                                $giachinh = number_format($num, 0, '', '.');
+                                                $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                                $gia = number_format($gianew, 0, '', '.'); 
                                             @endphp
                                             <div class="col-lg-6 col-md-6 col-sm-6 dt">
                                                 <div class="product-short">
@@ -137,16 +131,42 @@ Trang Chủ - TrendyU
                                                                     <h5 id="hover-sp">{{$item->ten_sp}}</h5>
                                                                 </a>
                                                                 <div class="row">
-                                                                    <div class="col-sm-6">
+                                                                    <div class="col-12">
+                                                                        <div class="row">
+                                                                        <div class="col-7 text-start">
+                                                                            <div class="d-flex align-items-center">
+                                                                                @if ($item->trang_thai != 3)
+                                                                                    <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                                    @if ($item->gia_km >= 1) 
+                                                                                        @php 
+                                                                                            $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                        @endphp 
+                                                                                        @if ($discountPercentage > 1) 
+                                                                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                            -{{ number_format($discountPercentage, 0) }}% 
+                                                                                            </div> 
+                                                                                        @endif                                
+                                                                                    @endif
+                                                                                @else
+                                                                                    <a href="{{ route('user.contact') }}" id="hover-sp">
+                                                                                        <strong id="color-gia">Liên hệ</strong>
+                                                                                    </a>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-5 text-end">
+                                                                            <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                            <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 text-start">
                                                                         {{$item->ten_dm}}
                                                                     </div>
-                                                                    <div class="col-sm-6">
-                                                                        @if ($item->trang_thai != 3)
-                                                                            <strong id="color-gia"> {{$giachinh}}đ </strong>
-                                                                        @elseif ($item->trang_thai == 3)
-                                                                            Giá dự kiến<br>
-                                                                            <strong id="color-gia" class="fa-solid fa-fade">{{$giachinh}} <i class="fa-dong-sign "></i></strong>
-                                                                        @endif
+                                                                    <div class="col-12 text-truncate">
+                                                                        <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                            {{ $item->mo_ta_ngan }}
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -159,7 +179,7 @@ Trang Chủ - TrendyU
                                             <a class="i3-banner" href="">
                                                 <div class="aspect aspect--1048-334">
                                                     <img class="aspect__img i3-banner__img"
-                                                        src="{{ asset('/uploads/banner/'. $home_page->anh_phu_gioi_thieu_san_pham) }}"
+                                                        src="{{ asset('/uploads/banner/' . $home_page->anh_phu_gioi_thieu_san_pham) }}"
                                                         onerror="this.src='{{ asset('/uploads/banner/bannerphu.png') }}'"
                                                         alt="">
                                                 </div>
@@ -196,10 +216,7 @@ Trang Chủ - TrendyU
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         @foreach ($loai_arr as $loai)
                                             <div class="filter__category-wrapper">
-                                                <button class="nav-link btn filter__btn filter__btn--style-2 {{ $loop->first ? 'active' : '' }}" id="tab-{{$loai->id}}"
-                                                    data-bs-toggle="tab" data-bs-target="#pane-{{$loai->id}}" type="button"
-                                                    role="tab" aria-controls="pane-{{$loai->id}}"
-                                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">{{$loai->ten_loai}}</button>
+                                                <button class="nav-link btn filter__btn filter__btn--style-2 {{ $loop->first ? 'active' : '' }}" id="tab-{{$loai->id}}" data-bs-toggle="tab" data-bs-target="#pane-{{$loai->id}}" type="button" role="tab" aria-controls="pane-{{$loai->id}}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">{{$loai->ten_loai}}</button>
                                             </div>
                                         @endforeach
                                     </ul>
@@ -213,15 +230,9 @@ Trang Chủ - TrendyU
                                                 <div class="row">
                                                     @foreach ($sanpham[$loai->slug] as $item)
                                                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 filter__item outwear">
-                                                            @php
-                                                                if ($item->gia_km > 0) {
-                                                                    $gianew = $item->gia_km;
-                                                                    //   $giaold = '<del>' . $gia . '</del>';
-                                                                } else {
-                                                                    $gianew = $item->gia;
-                                                                }
-                                                                $num = $gianew;
-                                                                $giachinh = number_format($num, 0, '', '.');
+                                                            @php 
+                                                                $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                                                $gia = number_format($gianew, 0, '', '.'); 
                                                             @endphp
                                                             <div class="product-short">
                                                                 <div class="product-short__container">
@@ -245,16 +256,36 @@ Trang Chủ - TrendyU
                                                                                 <h5 id="hover-sp">{{$item->ten_sp}}</h5>
                                                                             </a>
                                                                             <div class="row">
-                                                                                <div class="col-sm-6">
+                                                                                <div class="col-12">
+                                                                                    <div class="row">
+                                                                                    <div class="col-7 text-start">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                                            @if ($item->gia_km >= 1) 
+                                                                                            @php 
+                                                                                                $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                            @endphp 
+                                                                                            @if ($discountPercentage > 1) 
+                                                                                                <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                                -{{ number_format($discountPercentage, 0) }}% 
+                                                                                                </div> 
+                                                                                            @endif                                
+                                                                                            @endif
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-5 text-end">
+                                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                                    </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-12 text-start">
                                                                                     {{$item->ten_dm}}
                                                                                 </div>
-                                                                                <div class="col-sm-6">
-                                                                                    @if ($item->trang_thai != 3)
-                                                                                        <strong id="color-gia"> {{$giachinh}}đ </strong>
-                                                                                    @elseif ($item->trang_thai == 3)
-                                                                                        Giá dự kiến<br>
-                                                                                        <strong id="color-gia" class="fa-solid fa-fade">{{$giachinh}} <i class="fa-dong-sign "></i></strong>
-                                                                                    @endif
+                                                                                <div class="col-12 text-truncate">
+                                                                                    <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                                        {{ $item->mo_ta_ngan }}
+                                                                                    </span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -271,7 +302,7 @@ Trang Chủ - TrendyU
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <a href="/allproduct" class="d-flex justify-content-center">
+                                <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
                                     <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
                                 </a>
                             </div>
@@ -289,7 +320,7 @@ Trang Chủ - TrendyU
                             <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                                 <div class="promotion-o">
                                     <div class="aspect aspect--bg-grey">
-                                        <img src="{{ asset('/uploads/banner/'. $home_page->anh_danh_muc_1) }}"
+                                        <img src="{{ asset('/uploads/banner/' . $home_page->anh_danh_muc_1) }}"
                                             onerror="this.src='{{ asset('/uploads/banner/dmnike1.jpg') }}'"
                                             alt="" class="w-100">
                                     </div>
@@ -301,7 +332,7 @@ Trang Chủ - TrendyU
                             <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                                 <div class="promotion-o">
                                     <div class="aspect aspect--bg-grey ">
-                                    <img src="{{ asset('/uploads/banner/'. $home_page->anh_danh_muc_2) }}"
+                                    <img src="{{ asset('/uploads/banner/' . $home_page->anh_danh_muc_2) }}"
                                             onerror="this.src='{{ asset('/uploads/banner/dmnike2.png') }}'"
                                             alt="" class="w-100">
                                     </div>
@@ -313,7 +344,7 @@ Trang Chủ - TrendyU
                             <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                                 <div class="promotion-o">
                                     <div class="aspect aspect--bg-grey">
-                                    <img src="{{ asset('/uploads/banner/'. $home_page->anh_danh_muc_3) }}"
+                                    <img src="{{ asset('/uploads/banner/' . $home_page->anh_danh_muc_3) }}"
                                             onerror="this.src='{{ asset('/uploads/banner/dmnike3.jpeg') }}'"
                                             alt="" class="w-100">
                                     </div>
@@ -347,6 +378,10 @@ Trang Chủ - TrendyU
                     <div class="container">
                         <div class="row">
                             @foreach ($sanphamsale as $item)
+                                @php 
+                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                    $gia = number_format($gianew, 0, '', '.'); 
+                                @endphp
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 ">
                                     <div class="product-short">
                                         <div class="product-short__container">
@@ -361,11 +396,36 @@ Trang Chủ - TrendyU
                                                         <h5 id="hover-sp">{{$item->ten_sp}}</h5>
                                                     </a>
                                                     <div class="row">
-                                                        <div class="col-sm-6">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                            <div class="col-7 text-start">
+                                                                <div class="d-flex align-items-center">
+                                                                    <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                    @if ($item->gia_km >= 1) 
+                                                                        @php 
+                                                                            $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                        @endphp 
+                                                                        @if ($discountPercentage > 1) 
+                                                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                            -{{ number_format($discountPercentage, 0) }}% 
+                                                                            </div> 
+                                                                        @endif                                
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-5 text-end">
+                                                                <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 text-start">
                                                             {{$item->ten_dm}}
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                            <strong id="color-gia"> {{number_format($item->gia_km, 0, '', '.')}}đ </strong>
+                                                        <div class="col-12 text-truncate">
+                                                            <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                {{ $item->mo_ta_ngan }}
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -377,7 +437,7 @@ Trang Chủ - TrendyU
                         </div>
                     </div>
                 </div>
-                <a href="/allproduct" class="d-flex justify-content-center">
+                <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
                     <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
                 </a>
             </div>
@@ -401,17 +461,11 @@ Trang Chủ - TrendyU
                     <div class="container">
                         <div class="row">
                             @foreach ($sanphamnew as $item)
+                                @php 
+                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                    $gia = number_format($gianew, 0, '', '.'); 
+                                @endphp
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 ">
-                                    @php
-                                        if ($item->gia_km > 0) {
-                                            $gianew = $item->gia_km;
-                                            //   $giaold = '<del>' . $gia . '</del>';
-                                        } else {
-                                            $gianew = $item->gia;
-                                        }
-                                        $num = $gianew;
-                                        $giachinh = number_format($num, 0, '', '.');
-                                    @endphp
                                     <div class="product-short">
                                         <div class="product-short__container">
                                             <div class="card">
@@ -425,11 +479,36 @@ Trang Chủ - TrendyU
                                                         <h5 id="hover-sp">{{$item->ten_sp}}</h5>
                                                     </a>
                                                     <div class="row">
-                                                        <div class="col-sm-6">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                            <div class="col-7 text-start">
+                                                                <div class="d-flex align-items-center">
+                                                                    <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                    @if ($item->gia_km >= 1) 
+                                                                        @php 
+                                                                            $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                        @endphp 
+                                                                        @if ($discountPercentage > 1) 
+                                                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                            -{{ number_format($discountPercentage, 0) }}% 
+                                                                            </div> 
+                                                                        @endif                                
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-5 text-end">
+                                                                <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 text-start">
                                                             {{$item->ten_dm}}
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                            <strong id="color-gia"> {{$giachinh}}đ </strong>
+                                                        <div class="col-12 text-truncate">
+                                                            <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                {{ $item->mo_ta_ngan }}
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -441,7 +520,7 @@ Trang Chủ - TrendyU
                         </div>
                     </div>
                 </div>
-                <a href="/allproduct" class="d-flex justify-content-center">
+                <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
                     <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
                 </a>
             </div>
@@ -450,7 +529,7 @@ Trang Chủ - TrendyU
         </section>
 
         <!-- Banner phụ -->
-        <div class="banner-bg w-100" style="background-image: url({{ asset('/uploads/banner/'.$home_page->anh_bieu_ngu_phu) }});">
+        <div class="banner-bg w-100" style="background-image: url({{ asset('/uploads/banner/' . $home_page->anh_bieu_ngu_phu) }});">
             <div class="section__content">
                 <div class="container">
                     <div class="row">
@@ -463,7 +542,7 @@ Trang Chủ - TrendyU
                                     <span class="u-c-white">{{$home_page->tieu_de_phu_bieu_ngu_phu}}</span>
                                 </div>
                                 <span class="banner-bg__text-block banner-bg__text-3 ">{{$home_page->mo_ta_bieu_ngu_phu}}</span>
-                                <a href="/allproduct" class="d-flex justify-content-center">
+                                <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
                                     <button class="btn btn-outline-light mt-2">Cửa Hàng</button>
                                 </a>
                             </div>
@@ -494,17 +573,11 @@ Trang Chủ - TrendyU
                         <div class="container">
                             <div class="row">
                                 @foreach ($sanphamcs as $item)
+                                @php 
+                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                    $gia = number_format($gianew, 0, '', '.'); 
+                                @endphp
                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 ">
-                                        @php
-                                            if ($item->gia_km > 0) {
-                                                $gianew = $item->gia_km;
-                                                //   $giaold = '<del>' . $gia . '</del>';
-                                            } else {
-                                                $gianew = $item->gia;
-                                            }
-                                            $num = $gianew;
-                                            $giachinh = number_format($num, 0, '', '.');
-                                        @endphp
                                         <div class="product-short">
                                             <div class="product-short__container">
                                                 <div class="card">
@@ -519,12 +592,28 @@ Trang Chủ - TrendyU
                                                             <h5 id="hover-sp">{{$item->ten_sp}}</h5>
                                                         </a>
                                                         <div class="row">
-                                                            <div class="col-sm-6">
+                                                            <div class="col-12">
+                                                                <div class="row">
+                                                                <div class="col-7 text-start">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <a href="{{ route('user.contact') }}" id="hover-sp">
+                                                                            <strong id="color-gia">Liên hệ</strong>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5 text-end">
+                                                                    <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                    <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 text-start">
                                                                 {{$item->ten_dm}}
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                Giá dự kiến<br>
-                                                                <strong id="color-gia" class="fa-solid fa-fade">{{$giachinh}} <i class="fa-dong-sign "></i></strong>
+                                                            <div class="col-12 text-truncate">
+                                                                <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                    {{ $item->mo_ta_ngan }}
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -549,7 +638,7 @@ Trang Chủ - TrendyU
                 </div>
                 <div class="row">
                     <div class="col-sm-4 ht-titile">
-                        <img src="{{ asset('/uploads/banner/'. $home_page->anh_loi_ich_thanh_vien_1) }}"
+                        <img src="{{ asset('/uploads/banner/' . $home_page->anh_loi_ich_thanh_vien_1) }}"
                                 onerror="this.src='{{ asset('/imgnew/litv1.png') }}'"
                                 alt="" class="w-100">
                         <div class="titile">
@@ -560,7 +649,7 @@ Trang Chủ - TrendyU
                         </div>
                     </div>
                     <div class="col-sm-4 ht-titile">
-                        <img src="{{ asset('/uploads/banner/'. $home_page->anh_loi_ich_thanh_vien_2) }}"
+                        <img src="{{ asset('/uploads/banner/' . $home_page->anh_loi_ich_thanh_vien_2) }}"
                                 onerror="this.src='{{ asset('/imgnew/litv2.png') }}'"
                                 alt="" class="w-100">
                         <div class="titile">
@@ -571,7 +660,7 @@ Trang Chủ - TrendyU
                         </div>
                     </div>
                     <div class="col-sm-4 ht-titile">
-                        <img src="{{ asset('/uploads/banner/'. $home_page->anh_loi_ich_thanh_vien_3) }}"
+                        <img src="{{ asset('/uploads/banner/' . $home_page->anh_loi_ich_thanh_vien_3) }}"
                                 onerror="this.src='{{ asset('/imgnew/litv3.jpg') }}'"
                                 alt="" class="w-100">
                         <div class="titile">

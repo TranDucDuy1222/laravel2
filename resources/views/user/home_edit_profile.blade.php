@@ -44,7 +44,6 @@ Thông tin tài khoản
                     <ul class="list-unstyled">
                         <li class="bg-body-secondary"><a class="text-decoration-none  dropdown-item mt-2 h6 {{(request()->routeIs('user.edit_profile'))?'text-danger':'text-dark'}}" href="#">Hồ sơ của tôi</a></li>
                         <li class="bg-body-secondary"><a class="text-decoration-none text-dark dropdown-item mt-2 h6" href="index.php?mod=thongtin&act=order">Đơn hàng đã mua</a></li>
-                        <li class="bg-body-secondary"><a class="text-decoration-none text-dark dropdown-item mt-2 h6" href="#">Yêu cầu xóa tài khoản</a></li>
                     </ul>
                 </div>
                 <div class="col-9">
