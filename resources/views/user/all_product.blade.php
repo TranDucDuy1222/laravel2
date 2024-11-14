@@ -29,14 +29,6 @@
   <div class="mx-xl-5 mt-2 row">
   <h3 class="text-black">Bộ Lọc Sản Phẩm</h3>
     <div class="col-12 overflow-x-auto d-flex" id="box-menu-ngang">
-      <!-- Tìm kiếm -->
-      <!-- <div class="ms-2">
-        <div class="search-box bg-white">
-          <i class="fa-solid fa-magnifying-glass fa-fade"></i>
-          <input class="form-control" type="text" ng-model="keyw" name="keyw" placeholder="Nhập...">
-        </div>
-      </div> -->
-      
       <!-- Danh mục -->
       <div class="menu-ngang">
         <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
@@ -120,7 +112,6 @@
             <li class="dropdown-item" id="moi_nhat" name="moi_nhat" onclick="sortProducts('moi_nhat')">Mới Nhất</li>
         </ul>
       </div>
-
     </div>
     <div class="col-12">
       <!-- Sắp xếp -->

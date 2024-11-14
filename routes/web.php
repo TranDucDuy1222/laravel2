@@ -41,7 +41,7 @@ Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])-
 Route::get('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
-Route::post('/gio-hang/update/{id}', [BuyController::class, 'update'])->name('cart.update');
+Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('cart.update');
 
 // Thanh toán
 Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
@@ -80,6 +80,7 @@ Route::post('/profile/dia-chi/{id}', [UserController::class, 'themDiaChi'])->nam
 // Quản lý đơn hàng
 //Route::post('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
 Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
+Route::get('/purchase-cancel/{id}', [OrderController::class, 'huyDon'])->name('user.purchase-cancel');
 
 //Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');

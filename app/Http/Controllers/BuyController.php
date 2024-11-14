@@ -112,9 +112,56 @@ class BuyController extends Controller
     }
 
 
+    // public function pay(Request $request) {
+    //     $userId = Auth::id();
+    //     $selectedProductIds = $request->input('selected_products', session('selected_products', []));
+    //     session(['selected_products' => $selectedProductIds]);
+    
+    //     if (empty($selectedProductIds)) {
+    //         return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
+    //     }
+    
+    //     $gioHangs = GioHang::with(['sanPham', 'size'])
+    //                 ->whereIn('id', $selectedProductIds)
+    //                 ->where('user_id', $userId)
+    //                 ->get();
+    
+    //     if ($gioHangs->isEmpty()) {
+    //         return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
+    //     }
+    
+    //     // Truy vấn địa chỉ 
+    //     $diachis = DiaChi::where('id_user', $userId)->get();
+    
+    //     // Truy vấn giá vận chuyển
+    //     $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
+    
+    //     $totalAmount = $gioHangs->sum(function ($item) {
+    //         if ($item->sanPham->gia_km > 0) {
+    //             return $item->sanPham->gia_km * $item->so_luong;
+    //         } else {
+    //             return $item->sanPham->gia * $item->so_luong;
+    //         }
+    //     });
+    
+    //     $discountAmount = 0;
+    //     if (session()->has('voucher')) {
+    //         $voucherData = session('voucher');
+    //         $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
+    //     }
+    
+    //     $totalPayable = $totalAmount - $discountAmount;
+    //     $availableVouchers = MaGiamGia::where('is_active', true)->get();
+    //     $pays = $gioHangs;
+    
+    //     return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
+    // }
+    
+    
     public function pay(Request $request) {
         $userId = Auth::id();
-        $selectedProductIds = $request->input('selected_products', session('selected_products', []));
+        $selectedProductIdsString = $request->input('selected_products', '');
+        $selectedProductIds = explode(',', $selectedProductIdsString);
         session(['selected_products' => $selectedProductIds]);
     
         if (empty($selectedProductIds)) {
@@ -197,33 +244,6 @@ class BuyController extends Controller
         return $this->pay($request)->with('success', 'Áp dụng mã giảm giá thành công!');
     }
     
-    // private function handleInvalidVoucher($selectedProductIds) {
-    //     $userId = Auth::id();
-    //     $gioHangs = GioHang::with(['sanPham', 'size'])
-    //                 ->whereIn('id', $selectedProductIds)
-    //                 ->where('user_id', $userId)
-    //                 ->get();
-    //     $diachis = DiaChi::where('id_user', $userId)->get();
-    //     $totalAmount = $gioHangs->sum(function ($item) {
-    //         return $item->sanPham->gia_km > 0 ? $item->sanPham->gia_km * $item->so_luong : $item->sanPham->gia * $item->so_luong;
-    //     });
-    //     $discountAmount = 0;
-    //     $totalPayable = $totalAmount - $discountAmount;
-    //     $availableVouchers = MaGiamGia::where('is_active', true)->get();
-    //     $pays = $gioHangs;
-    
-    //     return view('user.home_thanhtoan', compact('pays', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers'));
-    // }
-    
-    //     // Lưu thông tin mã giảm giá và mức giảm vào session
-    //     session(['voucher' => [
-    //         'code' => $voucherCode,
-    //         'amount' => $voucher->phan_tram
-    //     ]]);
-    
-    //     return redirect()->route('pay')->with('success', 'Áp dụng mã giảm giá thành công!');
-    // }
-    
     public function updatePay(Request $request, $id) {
         try {
             // Lấy danh sách sản phẩm đã chọn từ session
@@ -252,8 +272,6 @@ class BuyController extends Controller
             return redirect()->route('pay')->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
         }
     }
-    
-    
 
     public function removeVoucher()
     {
@@ -262,7 +280,6 @@ class BuyController extends Controller
 
         return redirect()->route('pay')->with('success', 'Đã hủy mã giảm giá.');
     }
-
 
 }
 

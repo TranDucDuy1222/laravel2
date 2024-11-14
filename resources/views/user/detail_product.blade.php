@@ -131,7 +131,8 @@ Chi Tiết : {{$detail->ten_sp}}
                                                     <input type="radio" id="size-{{ $loop->index }}" name="size"
                                                         value="{{ $ssl->size_product }}" data-size="{{ $ssl->so_luong }}">
                                                     <label class="size__radio-label"
-                                                        for="size-{{ $loop->index }}">{{ $ssl->size_product }}</label>
+                                                        for="size-{{ $loop->index }}">{{ $ssl->size_product }}
+                                                    </label>
                                                 </div>
                                             @endif
                                         @endforeach
@@ -148,6 +149,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                                 type="number" name="soluong" id="quantity" class="form-control" min="1"
                                                 value="1" required>
                                         </div>
+                                        <div id="error-message-sl"></div>
                                     </div>
                                 </div>
                                 @if(session('error'))
@@ -160,7 +162,13 @@ Chi Tiết : {{$detail->ten_sp}}
                                 <hr>
                                 <div class="row">
                                     <div class="my-3 col-lg-6">
-                                        <button class="btn btn--e-brand-b-2" type="submit">Thêm vào giỏ hàng</button>
+                                        @if ($detail->trang_thai === 3)
+                                            <a href="{{ route('user.contact') }}" class="btn-link text-black">
+                                                Liên hệ với chúng tôi để đặt hàng
+                                            </a>
+                                        @else
+                                            <button class="btn btn--e-brand-b-2" type="submit">Thêm vào giỏ hàng</button>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr>
@@ -342,12 +350,18 @@ Chi Tiết : {{$detail->ten_sp}}
         sizeRadios.forEach(radio => {
             radio.addEventListener('change', function () {
                 selectedSize = this.value;
-                hangTrongKho = parseInt(this.getAttribute('data-size'));
+                if(this.getAttribute('data-size') > 10){
+                    hangTrongKho = Math.floor(parseFloat(this.getAttribute('data-size')) / 2);
+                }else{
+                    hangTrongKho = this.getAttribute('data-size');
+                }
+                
 
                 var soluong = parseInt(quantityInput.value);
                 if (soluong > hangTrongKho) {
                     quantityInput.value = hangTrongKho;
                     errorMsg.style.display = 'block';
+                    errorMsg.innerText = 'Số lượng tối đa bạn có thể đặt cho sản phẩm này :' + hangTrongKho;
                 } else {
                     errorMsg.style.display = 'none';
                 }
@@ -364,7 +378,7 @@ Chi Tiết : {{$detail->ten_sp}}
                 return;
             }
 
-        / Kiểm tra số lượng trong giỏ hàng
+        // Kiểm tra số lượng trong giỏ hàng
             let quantityToAdd = parseInt(quantityInput.value);
             let currentQuantityInCart = cart[selectedSize] ? cart[selectedSize].quantity : 0;
 
