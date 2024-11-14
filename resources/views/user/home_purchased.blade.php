@@ -41,7 +41,22 @@
                         @if (isset($dh))
                         <div class="row" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$dh->id}}" aria-expanded="false" aria-controls="flush-collapse{{$dh->id}}">
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                                <strong>Mã vận đơn: {{ $dh->id }}</strong>
+                                <div class="d-flex align-content-center">
+                                    <strong class="me-2">Mã vận đơn: {{ $dh->id }}</strong>
+                                    @if($dh->trang_thai == 0)
+                                    <p class="align-content-center badge text-bg-warning m-0">Chờ xử lý</p>
+                                    @elseif($dh->trang_thai == 1)
+                                    <p class="align-content-center badge text-bg-info m-0">Đã xác nhận đơn hàng</p>
+                                    @elseif($dh->trang_thai == 2)
+                                    <p class="align-content-center badge text-bg-primary m-0">Đã giao hàng cho đơn vị vận chuyển</p>
+                                    @elseif($dh->trang_thai == 3)
+                                    <p class="align-content-center badge text-bg-secondary m-0">Đã nhận được hàng</p>
+                                    @elseif($dh->trang_thai == 4)
+                                    <p class="align-content-center badge text-bg-success m-0">Đã đánh giá sản phẩm</p>
+                                    @elseif($dh->trang_thai == 5)
+                                    <p class="align-content-center badge text-bg-danger m-0">Đã hủy</p>
+                                    @endif
+                                </div>
                             </div>
                             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
                                 <!-- Văn bản căn phải cho col-xl, col-lg, col-md -->
@@ -148,16 +163,49 @@
                             </div>
                         </div>
                         </div>
-                        
                         <hr class="mt-0">
                         <div class="row">
                             <div class="col-5">
-                                @if ($dh->trang_thai == 1)
-                                <p class="text-white badge-success">Chờ xử lý</p>
+                                @if ($dh->trang_thai == 0)
+                                    <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
+                                        <i>Xác Nhận Hủy Đơn</i>
+                                    </a>
+                                @elseif($dh->trang_thai == 1)
+                                    <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
+                                        <i>Xác Nhận Hủy Đơn</i>
+                                    </a>
                                 @elseif($dh->trang_thai == 2)
-                                <button class="btn btn-outline-dark">Trạng thái</button>
-                                @else
-                                <button class="btn btn-outline-danger" style="font-size: 12px;">Hủy Đơn</button>
+                                <p class="text-black"><i>Đơn hàng đang được giao đến bạn</i></p>
+                                @elseif($dh->trang_thai == 3)
+                                    <button data-bs-toggle="modal" data-bs-target="#exampleModal-{{$dh->id}}" class="border-0 btn-link link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
+                                        <i>Đánh giá</i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal-{{$dh->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            @foreach ($purchased as $pc)
+                                                @if ($pc->id_dh == $dh->id)
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Đánh giá sản phẩm : {{ $pc->ten_sp }}</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                                                    <button type="button" class="btn btn-outline-success">Lưu</button>
+                                                </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    </div>
+                                @elseif($dh->trang_thai == 4)
+                                <p class="text-success"><i>Đã đánh giá</i></p>
+                                @elseif($dh->trang_thai == 5)
+                                    <button class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;"><i>Mua lại</i></button>
                                 @endif
                             </div>
                             <div class="col-7">

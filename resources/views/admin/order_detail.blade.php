@@ -3,6 +3,7 @@
 Đơn hàng
 @endsection
 @section('content')
+<<<<<<< HEAD
 <div id="content-page" class="content-page">
    <div class="container-fluid">
       <div class="row">
@@ -88,15 +89,16 @@
                                  @if($donHang->chiTietDonHangs->isNotEmpty())
                                  @foreach($donHang->chiTietDonHangs as $ct)
                                     <tr>
-                                       <td>{{ $ct->id_sp }}</td>
-                                       <td>
-                                             <img src="{{ asset('images/' . $ct->sanPham->hinh) }}" alt="{{ $ct->sanPham->ten_sp }}" style="width: 50px; height: auto;">
-                                       </td>
-                                       <td>{{ $ct->sanPham->ten_sp }}</td>
-                                       <td>{{ $ct->so_luong }}</td>
-                                       <td>{{ $ct->size->size_product ?? 'N/A' }}</td>
-                                       <td>{{ number_format($ct->gia, 0, ',', '.') }} VND</td>
-                                       <td>{{ number_format($ct->so_luong * $ct->gia, 0, ',', '.') }} VND</td>
+                                        <td>{{ $ct->id_sp }}</td>
+                                        
+                                        <td>
+                                            <img src="{{ asset('/uploads/product/' . $ct->sanPham->hinh) }}" alt="{{ $ct->sanPham->ten_sp }}" style="width: 50px; height: auto;">
+                                        </td>
+                                        <td>{{ $ct->sanPham->ten_sp }}</td>
+                                        <td>{{ $ct->so_luong }}</td>
+                                        <td>{{ $ct->size->size_product ?? 'N/A' }}</td>
+                                        <td>{{ number_format($ct->gia, 0, ',', '.') }} đ</td>
+                                        <td>{{ number_format($ct->so_luong * $ct->gia, 0, ',', '.') }} VND</td>
                                     </tr>
                                  @endforeach
                            @else
