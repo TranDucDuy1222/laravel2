@@ -81,6 +81,7 @@ Route::post('/profile/dia-chi/{id}', [UserController::class, 'themDiaChi'])->nam
 //Route::post('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
 Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
 Route::get('/purchase-cancel/{id}', [OrderController::class, 'huyDon'])->name('user.purchase-cancel');
+Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user.purchase-reivew');
 
 //Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');

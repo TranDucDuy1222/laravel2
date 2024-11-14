@@ -77,12 +77,34 @@
                                 </td>
                                 <td>
                                     <div class="sa-price">
-                                        <span class="sa-price__integer">{{$item->id_size}} - {{$item->color}}</span>
+                                        <span class="sa-price__integer">{{$item->size_product}} - {{$item->color}}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="sa-price">
-                                        <span class="sa-price__integer">{{$item->quality_product}}</span>
+                                        <span class="sa-price__integer">
+                                            @if ($item->quality_product == 5)
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                            @elseif($item->quality_product == 4)
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                            @elseif($item->quality_product == 3)
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                            @elseif($item->quality_product == 2)
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                            @else
+                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                            @endif
+                                        </span>
                                     </div>
                                 </td>
                                 <td>

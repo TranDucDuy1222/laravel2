@@ -49,10 +49,11 @@ class ProductController extends Controller
         }
 
         $comment = DB::table('danh_gia')
-            ->select('danh_gia.*', 'users.name', 'ctdh.*', 'san_pham.ten_sp', 'san_pham.color')
+            ->select('danh_gia.*', 'users.name', 'ctdh.*', 'san_pham.ten_sp', 'san_pham.color' , 'sizes.size_product')
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
             ->join('chi_tiet_don_hang AS ctdh', 'danh_gia.id_ctdh', '=', 'ctdh.id')
             ->join('san_pham', 'san_pham.id', '=', 'ctdh.id_sp')
+            ->join('sizes', 'ctdh.id_size', '=', 'sizes.id')
             ->where('danh_gia.id_sp', $id)
             ->where('danh_gia.an_hien', 1)
             ->get();
