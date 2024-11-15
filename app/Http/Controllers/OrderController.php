@@ -12,10 +12,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use DB;
 use Carbon\Carbon;
+use App\Models\DanhGia;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    public function datHang(Request $request) {
+    public function datHang(Request $request)
+    {
         $userId = Auth::id();
         $selectedProductIds = session('selected_products', []);
         $selectedAddressId = $request->input('selected_address');
@@ -25,13 +28,13 @@ class OrderController extends Controller
 
         if (empty($selectedProductIds)) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại sản phẩm được chọn.');
-        }elseif (!$selectedAddressId ) {
+        } elseif (!$selectedAddressId) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại thông tin giao hàng.');
 
-        }elseif (!$paymentMethod  ) {
+        } elseif (!$paymentMethod) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại phương thức thanh toán.');
 
-        }elseif (!$totalPayable) {
+        } elseif (!$totalPayable) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại tổng tiền.');
         }
 
@@ -90,11 +93,11 @@ class OrderController extends Controller
 
     public function donHangDaMua($id)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             $orders = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
                 ->where('don_hang.id_user', $id)
                 ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
-                ->orderBy('don_hang.id','desc')
+                ->orderBy('don_hang.id', 'desc')
                 ->get();
 
             // Tính toán ngày dự kiến giao hàng cho từng đơn hàng
@@ -108,24 +111,71 @@ class OrderController extends Controller
             }
 
             // Truy vấn phí vận chuyện
-            $phivc = DB::table('settings')->select('ship_cost_inner_city' , 'ship_cost_nationwide')->first();
+            $phivc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
 
             $purchased = DB::table('chi_tiet_don_hang')
                 ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
                 ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
                 ->join('sizes', 'sizes.id', '=', 'chi_tiet_don_hang.id_size')
                 ->join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
-                ->select('don_hang.*', 'chi_tiet_don_hang.*', 'san_pham.ten_sp', 'san_pham.hinh', 'san_pham.color', 'sizes.size_product', 'dia_chi.*')
+                ->select('don_hang.*', 'chi_tiet_don_hang.*', 'chi_tiet_don_hang.id as id_ctdh', 'san_pham.id as id_sp', 'san_pham.ten_sp', 'san_pham.hinh', 'san_pham.color', 'sizes.size_product', 'dia_chi.*')
                 ->where('don_hang.id_user', $id)
                 ->get();
 
-            return view('user.home_purchased', compact('purchased', 'orders' , 'phivc'));
+            return view('user.home_purchased', compact('purchased', 'orders', 'phivc'));
         } else {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập!');
         }
     }
 
+    public function danhGia(Request $request)
+    {
+        $id_user = $request->input('id_user');
+        $id_dh = $request->input('id_dh');
+        $id_ctdh = $request->input('id_ctdh'); // Chắc chắn rằng id_ctdh là một mảng
+        $ratings = $request->input('rating');
+        $reviews = $request->input('noi_dung');
+        $images = $request->file('hinh_dg');
 
+        foreach ($ratings as $id_sp => $rating) {
 
+            if (isset($id_ctdh[$id_sp]) && isset($reviews[$id_sp])) { // Kiểm tra xem các giá trị này có tồn tại hay không
+                $review = new DanhGia();
+                $review->id_user = $id_user;
+                $review->id_sp = $id_sp;
+                $review->id_ctdh = $id_ctdh[$id_sp]; // Gán đúng giá trị cho từng sản phẩm
+                $review->noi_dung = $reviews[$id_sp];
+                $review->quality_product = $rating;
+                $review->thoi_diem = now();
+                $review->an_hien = 1;
+                if (isset($images[$id_sp])) {
+                    $fileName = time() . '_' . $images[$id_sp]->getClientOriginalName();
+                    $images[$id_sp]->move(public_path('uploads/review/'), $fileName);
+                    $review->hinh_dg = $fileName;
+                }
+
+                $review->save();
+            } else {
+                return redirect()->back()->with('thongbao', 'Có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu.');
+            }
+        }
+
+        $donHang = DonHang::find($id_dh);
+        $donHang->trang_thai = 4;
+        $donHang->save();
+
+        return redirect()->back()->with('thongbao', 'Đánh giá của bạn đã được lưu thành công.');
+    }
+    public function huyDon($id_dh)
+    {
+        $donHang = DonHang::find($id_dh);
+        if ($donHang) {
+            $donHang->trang_thai = 5;
+            $donHang->save();
+            return redirect()->back()->with('thongbao', 'Đơn hàng đã được hủy thành công.');
+        } else {
+            return redirect()->back()->with('thongbao', 'Không tìm thấy đơn hàng.');
+        }
+    }
 
 }

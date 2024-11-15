@@ -19,12 +19,12 @@ class MaGiamGiaController extends AdminController
         }
 
     $discounts = $query->get();
-        return view('admin.magiamgia', compact('discounts'));
+        return view('admin.coupon', compact('discounts'));
     }
 
     public function create()
     {
-        return view('admin.magiamgia_add');//
+        return view('admin.coupon_add');//
     }
 
     public function store(Request $request)
@@ -50,7 +50,7 @@ class MaGiamGiaController extends AdminController
     public function edit(string $id)
     {
         $discount = MaGiamGia::findOrFail($id);
-        return view('admin.magiamgia_edit', compact('discount'));
+        return view('admin.coupon_edit', compact('discount'));
     }
 
     /**

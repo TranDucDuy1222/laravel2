@@ -95,11 +95,11 @@ class AdminLoaiController extends AdminController
     }
 
 
-    public function edit(Request $request, string $id){
-        $danhMuc = danh_muc::find($id);
-        $loai_arr = Loai::all();
-        return view('admin.category_edit', compact('danhMuc', 'loai_arr'));
-    }
+    // public function edit(Request $request, string $id){
+    //     $danhMuc = danh_muc::find($id);
+    //     $loai_arr = Loai::all();
+    //     return view('admin.category_edit', compact('danhMuc', 'loai_arr'));
+    // }
     public function update(Request $request, string $id)
     {
         $request->validate([

@@ -240,20 +240,37 @@ Chi Tiết : {{$detail->ten_sp}}
                                             <!-- đánh giá -->
                                             @foreach ($comment as $item)
                                                 <div class="row">
-                                                    <div class="col-xl-5">
+                                                    <div class="col-xl-3 col-12">
                                                         <div class="review-o__info mb-2">
                                                             <span class="review-o__name">{{$item->name}} </span>
                                                             <span class="review-o__date">{{$item->thoi_diem}}</span>
                                                         </div>
                                                         <div class="review-o__rating gl-rating-style mb-2">
-                                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                                class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                                class="far fa-star"></i>
-                                                            <span>(4)</span>
+                                                        @if ($item->quality_product == 5)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                        @elseif($item->quality_product == 4)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                        @elseif($item->quality_product == 3)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                        @elseif($item->quality_product == 2)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                        @else
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                        @endif
                                                         </div>
                                                         <p>Phân Loại : {{$item->ten_sp}} </p>
-                                                        <p>Size: {{$item->id_size}} - Màu: {{$item->color}}</p>
-                                                        <p><strong>Chất lượng sản phẩm:</strong> {{$item->quality_product}}
+                                                        <p>Size: {{$item->size_product ?? 'Null'}} - Màu: {{$item->color}}</p>
+                                                        <p><strong>Chất lượng sản phẩm:</strong> 
                                                         </p>
                                                         <p class="review-o__text">{{$item->noi_dung}}.</p>
                                                         @if (!empty($item->feedback))
@@ -261,9 +278,8 @@ Chi Tiết : {{$detail->ten_sp}}
                                                                 {{$item->feedback}}.</p>
                                                         @endif
                                                     </div>
-                                                    <div class="col-xl-7">
-                                                        <img src="/img/{{$item->hinh_dg}}" alt="Ảnh từ người mua"
-                                                            class="col-xl-3">
+                                                    <div class="col-xl-8 col-12">
+                                                        <img src="{{ asset('/uploads/review/' . $item->hinh_dg) }}" class="img-circle" height="220px" alt="Ảnh từ người mua">
                                                     </div>
                                                 </div>
                                                 <hr>
