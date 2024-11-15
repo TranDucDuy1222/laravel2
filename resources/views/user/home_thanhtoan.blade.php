@@ -124,14 +124,7 @@
                                                 <td>
                                                     <div class="table-p__input-counter-wrap">
                                                         <div class="input-counter">
-                                                        <form action="{{ route('pay.update', $item->id) }}" method="POST" id="form-quantity-{{ $item->id }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <span class="input-counter__minus fas fa-minus" onclick="changeQuantityPay({{ $item->id }}, -1)"></span>
-                                                            <input class="input-counter__text input-counter--text-primary-style" type="number" name="quantity" value="{{ $item->so_luong }}" id="quantity-{{ $item->id }}" min="1">
-                                                            <input type="hidden" id="stock-{{ $item->id }}" value="{{ $item->size->so_luong }}">
-                                                            <span class="input-counter__plus fas fa-plus" onclick="changeQuantityPay({{ $item->id }}, 1)"></span>
-                                                        </form>
+                                                        <input class="input-counter__text input-counter--text-primary-style" type="number" name="quantity" value="{{ $item->so_luong }}" id="quantity-{{ $item->id }}" readonly>
                                                         </div>
                                                     </div>
                                                 </td>

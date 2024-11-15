@@ -30,10 +30,10 @@ class ApiproductController extends Controller
             }
             switch ($sortProduct) {
                 case 'tang_dan':
-                    $query->orderBy('gia', 'asc');
+                    $query->orderBy('gia_km', 'asc');
                     break;
                 case 'giam_dan':
-                    $query->orderBy('gia', 'desc');
+                    $query->orderBy('gia_km', 'desc');
                     break;
                 default:
                     $query->orderBy('created_at', 'desc');
