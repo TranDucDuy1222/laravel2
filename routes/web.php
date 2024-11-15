@@ -108,7 +108,16 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::get('danh-muc/hidden/{id}', [AdminLoaiController::class, 'hidden'])->name('danh-muc.hidden');
     Route::get('danh-muc/show/{id}', [AdminLoaiController::class, 'show'])->name('danh-muc.show');
 
-    Route::resource('san-pham', AdminSPController::class);
+    Route::resource('san-pham', AdminSPController::class)->names([
+        'index' => 'san-pham.index',
+        'create' => 'san-pham.create',
+        'store' => 'san-pham.store',
+        'show' => 'san-pham.show',
+        'edit' => 'san-pham.edit',
+        'update' => 'san-pham.update',
+        'destroy' => 'san-pham.destroy',
+    ]);
+    
     Route::post('/san-pham/hide/{id}', [AdminSPController::class, 'hide'])->name('san-pham.hide');
     Route::post('/san-pham/show/{id}', [AdminSPController::class, 'show'])->name('san-pham.show');
     Route::get('san-pham/khoi-phuc/{id}', [AdminSPController::class, 'khoiphuc']);
@@ -139,8 +148,6 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
 
     Route::resource('magiamgia', MaGiamGiaController::class);
-
-    Route::get('/test', [AdminHomeController::class, 'statistics'])->name('admin.statistics');
 
 });
 

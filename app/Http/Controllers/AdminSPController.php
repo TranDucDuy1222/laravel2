@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 Paginator::useBootstrapFive();
 
@@ -25,24 +26,24 @@ class AdminSPController extends AdminController
         $loai_arr = danh_muc::all();
         $size_arr = size::all();
         $idsp = DB::table('san_pham')->pluck('id');
-    
+
         // Kiểm tra và gán giá trị cho $id_dm nếu có trong request
         if ($request->has('id_dm')) {
             $id_dm = (int) $request['id_dm'];
         }
-    
+
         // Kiểm tra và gán giá trị cho $trangthai nếu có trong request, mặc định là 0
         $trangthai = $request->has('trangthai') ? $request['trangthai'] : 0;
-    
+
         // Lọc sản phẩm theo trạng thái
         $query = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
             ->select('san_pham.*', 'danh_muc.ten_dm')
             ->orderBy('san_pham.id', 'desc');
-    
+
         if ($trangthai != 0) {
             $query->where('san_pham.trang_thai', $trangthai);
         }
-    
+
         // Lọc sản phẩm theo danh mục nếu $id_dm > 0
         if ($id_dm > 0) {
             $query->where('san_pham.id_dm', $id_dm);
@@ -54,23 +55,26 @@ class AdminSPController extends AdminController
             // Thêm điều kiện lọc theo slug
             $query->where('san_pham.slug', 'like', '%' . $keyword . '%');
         }
-    
+
         // Lấy danh sách sản phẩm với phân trang
         $sanpham_arr = $query->paginate($perpage)->withQueryString();
 
-        
-    
+
+
         // Trả về view với các biến cần thiết
-        return view('admin/product_admin', compact('trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp'));
+        return view('admin.product', compact('trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp'));
     }
-    
+
     public function create(Request $request)
     {
         $selectedOption = $request->query('selection');
+        Log::info('Selected Option:', ['selection' => $selectedOption]);
         $request->session()->put('selected_option', $selectedOption);
         $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
-        return view('admin.product_add_admin', compact('loai_arr' , 'selectedOption'));
+        return view('admin.product_add', compact('loai_arr', 'selectedOption'));
     }
+
+
     public function store(Request $request)
     {
         $hasproduct = false;
@@ -80,8 +84,7 @@ class AdminSPController extends AdminController
             return redirect()->back()->with('thongbao', 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.');
         }
         if ($request['ten_sp'] && $request['gia'] && $request['id_dm'] && $request->hasFile('hinh') && $request['mo_ta_ct'] && $request['mo_ta_ngan'] && $request['color']) {
-            
-            $obj = new  san_pham();
+            $obj = new san_pham();
             $obj->ten_sp = $request['ten_sp'];
             $obj->slug = Str::slug($obj->ten_sp);
             $obj->gia = (int) $request['gia'];
@@ -89,7 +92,7 @@ class AdminSPController extends AdminController
             // Kiểm tra nếu giakhuyenmai lớn hơn gia, gán giakhuyenmai bằng 0
             if ($obj->gia_km > $obj->gia) {
                 $obj->gia_km = 0;
-            }else if ($obj->gia_km == null){
+            } else if ($obj->gia_km == null) {
                 $obj->gia_km = 0;
             }
             $obj->id_dm = (int) $request['id_dm'];
@@ -106,8 +109,8 @@ class AdminSPController extends AdminController
                     if (file_exists($filePath)) {
                         // Hiện thông báo nếu tệp tin đã tồn tại
                         return redirect()->back()->with('thongbao', 'Sản phẩm này đã tồn tại');
-                    }else{
-                        $file->move(public_path('/uploads/product'), $fileName);
+                    } else {
+                        $file->move(public_path('/uploads/product/'), $fileName);
                         $obj->hinh = $fileName;
                     }
                 } else {
@@ -136,7 +139,7 @@ class AdminSPController extends AdminController
             if (is_array($size_products) && is_array($so_luongs)) {
                 foreach ($size_products as $index => $sizes) {
                     $sizeObj = new Size();
-                    $sizeObj->size_product = (string)$sizes;
+                    $sizeObj->size_product = (string) $sizes;
                     $sizeObj->so_luong = intval($so_luongs[$index]);
                     $sizeObj->id_product = $product_id; // Gán id sản phẩm mới tạo vào cột id_product 
                     $sizeObj->save();
@@ -147,8 +150,9 @@ class AdminSPController extends AdminController
             return redirect()->back()->with('thongbao', 'Vui lòng nhập thông tin số lượng đầy đủ.');
         }
 
-        return redirect(route('san-pham.index'))->with('thongbao', 'Thêm thành công');
+        return redirect()->route('san-pham.index')->with('thongbao', 'Thêm thành công');
     }
+
 
     public function edit(Request $request, string $id)
     {
@@ -159,7 +163,7 @@ class AdminSPController extends AdminController
             return redirect('/admin/san-pham');
         }
         $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
-        return view('admin/product_edit_admin', compact(['sp', 'loai_arr', 'sizeProduct']));
+        return view('admin/product_edit', compact(['sp', 'loai_arr', 'sizeProduct']));
     }
 
     public function update(Request $request, string $id)
@@ -257,8 +261,8 @@ class AdminSPController extends AdminController
     public function hide($id)
     {
         $san_pham = san_pham::findOrFail($id);
-        if($san_pham->trang_thai == 0){
-            $san_pham->trang_thai = 2; 
+        if ($san_pham->trang_thai == 0) {
+            $san_pham->trang_thai = 2;
             $san_pham->save();
         }
         return redirect()->route('san-pham.index')->with('thongbao', 'Sản phẩm đã được ẩn thành công.');
@@ -274,11 +278,11 @@ class AdminSPController extends AdminController
             $san_pham->save();
         }
         $danh_muc = danh_muc::where('id', $san_pham->id_dm)->first();
-        if($danh_muc->trang_thai == 1){
+        if ($danh_muc->trang_thai == 1) {
             $danh_muc->trang_thai = 0;
             $danh_muc->save();
         }
-        
+
         return redirect()->route('san-pham.index')->with('thongbao', 'Sản phẩm đã được hiện lại thành công.');
     }
 

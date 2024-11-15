@@ -33,7 +33,7 @@ class AdminUserController extends AdminController
 
     public function create()
     {
-        return view('admin.add_account');
+        return view('admin.account_add');
     }
 
     public function store(Request $request)
