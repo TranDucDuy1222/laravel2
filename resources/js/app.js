@@ -5,7 +5,7 @@ import ProductList from './components/productList.vue';
 // Tạo ứng dụng cho AddressForm
 const appAddDC = createApp({
     components: {
-        'address-form': AddressForm
+        'address-form': AddressForm,
     }
 });
 appAddDC.mount('#appAddDC');

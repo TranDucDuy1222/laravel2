@@ -219,9 +219,7 @@ Quản lý sản phẩm - TrendyU
    </div>
    </div>
 @endforeach
-<!-- Phân trang -->
-   <div class="text-center p-2 d-flex justify-content-center">{{$sanpham_arr->links('pagination::bootstrap-5')}}</div>
-<!-- End phân trang -->
+
 <!-- Modal hiện hộp thoại chọn loại sản phẩm -->
 <div class="modal fade" id="new_product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

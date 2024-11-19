@@ -1,6 +1,6 @@
 @extends('admin.layoutadmin')
 @section('title')
-Sản phẩm
+Cài Đặt Hệ Thống
 @endsection
 @section('content')
 <div id="content-page" class="content-page">
@@ -49,6 +49,45 @@ Sản phẩm
                                              onerror="this.src='{{ asset('/uploads/logo/iconlogo.png') }}'" alt="">
                                        </div>
                                        <input type="file" name="logo_icon">
+                                    </div>
+                                 </div>
+                                 <br>
+                                 
+                                 <div class="row px-4">
+                                    <div class="col-lg-8">
+                                       <div class="row">
+                                          <div class="col-lg-6">
+                                             <label for=""  class="h5" >Biểu ngữ mục khuyến mãi</label><br>
+                                             <div class="border mb-2 p-5 text-center" style="">
+                                             <img src="{{ asset('/uploads/logo/'. $setting->banner_dung_sale) }}"
+                                                   onerror="this.src='{{ asset('/uploads/logo/iconlogo.png') }}'" alt="">
+                                             </div>
+                                             <input type="file" name="banner_dung_sale">
+                                          </div>
+                                          <div class="col-lg-6">
+                                             <label for=""  class="h5" >Biểu ngữ mục sắp về hàng</label><br>
+                                             <div class="border mb-2 p-5 text-center" style="">
+                                             <img src="{{ asset('/uploads/logo/'. $setting->banner_dung_cms) }}"
+                                                   onerror="this.src='{{ asset('/uploads/logo/iconlogo.png') }}'" alt="">
+                                             </div>
+                                             <input type="file" name="banner_dung_cms">
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <label for=""  class="h5" >Logo giảm giá</label><br>
+                                       <div class="border mb-2 p-5 text-center" style="height: 200px;">
+                                       <img src="{{ asset('/uploads/logo/'. $setting->logo_sale) }}"
+                                             onerror="this.src='{{ asset('/uploads/logo/iconlogo.png') }}'" class="h-100" alt="">
+                                       </div>
+                                       <input type="file" name="logo_sale">
+                                       <hr>
+                                       <label for=""  class="h5" >Logo sắp về hàng</label><br>
+                                       <div class="border mb-2 p-5 text-center" style="height: 200px;">
+                                       <img src="{{ asset('/uploads/logo/'. $setting->logo_cms) }}"
+                                             onerror="this.src='{{ asset('/uploads/logo/iconlogo.png') }}'" class="h-100" alt="">
+                                       </div>
+                                       <input type="file" name="logo_cms">
                                     </div>
                                  </div>
                                  <hr class="m-0">

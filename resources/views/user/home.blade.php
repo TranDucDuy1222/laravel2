@@ -22,16 +22,17 @@ Trang Chủ - TrendyU
 @endsection
 
 @section('content')
+
     <!-- Header -->
         <header class="shadow-none">
-            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000" >
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
                         aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
                         aria-label="Slide 2"></button>
                 </div>
-                <div class="carousel-inner">
+                <div class="carousel-inner img-header">
                     <div class="carousel-item active">
                         <img src="{{ asset('/uploads/banner/' . $home_page->anh_bieu_ngu_1) }}"
                             onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="d-block w-100 img-header" alt="...">
@@ -40,7 +41,7 @@ Trang Chủ - TrendyU
                             <h3>{{$home_page->tieu_de_phu_1}}</h3>
                         </div>
                     </div>
-                    <div class="carousel-item active">
+                    <div class="carousel-item">
                         <img src="{{ asset('/uploads/banner/' . $home_page->anh_bieu_ngu_2) }}"
                             onerror="this.src='{{ asset('/imgnew/banner1.png') }}'" class="d-block w-100 img-header" alt="...">
                         <div class="carousel-caption d-none d-md-block">
@@ -61,29 +62,86 @@ Trang Chủ - TrendyU
                 </button>
             </div>
             <!-- slogan -->
-            <div class="text-center text-black">
-                <h2>{{$home_page->slogan_chinh}}</h2>
-                <h3 class="">{{$home_page->slogan_phu}}</h3>
+            <div class="z-1 toast align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
+                aria-live="assertive" aria-atomic="true" id="toast-vocher">
+                <div class="d-flex">
+                    <div class="toast-body" id="toast-body"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
             </div>
+            @if (!$ma_giam_gia->isEmpty()) 
+                <!-- Modal -->
+                <div class="modal fade" id="discountModal" tabindex="-1" role="dialog" aria-labelledby="discountModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="discountModalLabel">Mã giảm giá</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center text-black row">
+                                    @foreach ($ma_giam_gia as $index => $item)
+                                        <div class="col-12">
+                                            <div class="sharp-corners me-2 p-1 mt-1">
+                                                <div class="d-flex justify-content-center align-content-center">
+                                                    <p id="copy{{$index}}">{{ $item->code }}</p>
+                                                    <p class="ms-lg-2">{{ $item->mo_ta }}</p>
+                                                </div>
+                                                <button class="btn btn-outline-light" onclick="copyText({{$index}})">Lấy mã giảm giá</button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    if (!localStorage.getItem('discountModalDisplayed')) {
+                        $('#discountModal').modal('show');
+                        localStorage.setItem('discountModalDisplayed', 'true');
+                    }
+
+                    function copyText(index) {
+                        var copyText = document.getElementById("copy" + index);
+                        navigator.clipboard.writeText(copyText.textContent).then(function() {
+                            var toastContainer = document.getElementById("toast-vocher");
+                            var toastBody = document.getElementById("toast-body");
+                            toastBody.textContent = "Đã lấy mã giảm giá thành công: " + copyText.textContent;
+                            toastContainer.classList.remove("d-none");
+                            toastContainer.classList.add("show");
+                            setTimeout(function() {
+                                toastContainer.classList.remove("show");
+                                toastContainer.classList.add("d-none");
+                            }, 4000);
+                        }, function(err) {
+                            console.error('Lỗi sao chép: ', err);
+                        });
+                    }
+                });
+            </script>          
             <!-- End slogan -->
         </header>
     <!-- End header -->
 
     <!-- Home -->
         <section class="container-fluid section text-black">
-            <!-- <div class="mx-xl-5"> -->
-            <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
-                <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
-            </a>
-            <br>
             <!-- Sản phẩm mới -->
-            <div class="pt-5 ">
-                <div class="section__intro mb-5">
+            <div class="pt-lg-4">
+                <div class="section__intro mb-3">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="section__text-wrap">
-                                    <h2 class="section__heading u-c-secondary mb-2">{{$home_page->tieu_de_gioi_thieu_san_pham}}</h2>
+                                <div class="section__text-wrap ">
+                                    <h2 class="section__heading u-c-secondary mb-2 underline-animations">{{$home_page->tieu_de_gioi_thieu_san_pham}}</h2>
                                 </div>
                             </div>
                         </div>
@@ -91,13 +149,13 @@ Trang Chủ - TrendyU
                 </div>
                 <div class="section__content">
                     <div class="container">
-                        <div class="container">
-                            <div class="row">
+                        <div class="">
+                            <div class="row" >
                                 <div class="col-lg-6 col-md-12">
                                 <a class="i3-banner">
-                                    <div class="aspect aspect--bg-grey-fb aspect--square">
+                                    <div class="aspect aspect--bg-grey-fb aspect--square" >
                                         <img class="aspect__img i3-banner__img" src="{{ asset('/uploads/banner/' . $home_page->anh_chinh_gioi_thieu_san_pham) }}"
-                                            onerror="this.src='{{ asset('/uploads/banner/bannerspnew.png') }}'" alt="" class="w-100" height="100%">
+                                            onerror="this.src='{{ asset('/uploads/banner/bannerspnew.png') }}'" alt="">
                                     </div>
                                 </a>
                                 </div>
@@ -117,6 +175,9 @@ Trang Chủ - TrendyU
                                                                     <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                         onerror="this.src='{{ asset('/uploads') }}'"
                                                                         style="max-height: 295px;" alt="" class="w-100">
+                                                                    @if ($item->gia_km > 0)
+                                                                        <img src="{{ asset('/uploads/logo/'. $setting->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                    @endif
                                                                 </a>
                                                             @elseif ($item->trang_thai == 3)
                                                                 <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
@@ -193,15 +254,15 @@ Trang Chủ - TrendyU
                 </div>
             </div>
             <!-- End sản phẩm mới -->
-            <br>
+           
             <!-- Sản phẩm xu hướng -->
-            <div class="pt-5">
+            <div class="pt-lg-4">
                 <div class="section__intro mb-2">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="section__text-wrap">
-                                    <h1 class="section__heading u-c-secondary mb-2">{{$home_page->tieu_de_chinh_xu_huong}}</h1>
+                                    <h1 class="section__heading u-c-secondary mb-2 underline-animations">{{$home_page->tieu_de_chinh_xu_huong}}</h1>
                                     <span class="section__span u-c-silver mb-2">{{$home_page->tieu_de_phu_xu_huong}}</span>
                                 </div>
                             </div>
@@ -211,25 +272,27 @@ Trang Chủ - TrendyU
                 <div class="section__content">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="filter-category-container">
-                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <div class="col-lg-2 custom-rounded-col p-0">
+                                <div class="filter-category-container dm_xh">
+                                    <ul class="nav flex-column w-100" id="pills-tab" role="tablist">
                                         @foreach ($loai_arr as $loai)
-                                            <div class="filter__category-wrapper">
-                                                <button class="nav-link btn filter__btn filter__btn--style-2 {{ $loop->first ? 'active' : '' }}" id="tab-{{$loai->id}}" data-bs-toggle="tab" data-bs-target="#pane-{{$loai->id}}" type="button" role="tab" aria-controls="pane-{{$loai->id}}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">{{$loai->ten_loai}}</button>
+                                            <div class="filter__category-wrapper custom-xh">
+                                                <button class="nav-link custom-btn w-100 {{ $loop->first ? 'active' : '' }}" id="tab-{{$loai->id}}" data-bs-toggle="tab" data-bs-target="#pane-{{$loai->id}}" type="button" role="tab" aria-controls="pane-{{$loai->id}}" aria-selected="{{ $loop->first ? 'true' : 'false' }}" data-loai="{{$loai->slug}}">{{$loai->ten_loai}}</button>
                                             </div>
                                         @endforeach
                                     </ul>
                                 </div>
-                                <div class="filter__grid-wrapper mt-3">
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="filter__grid-wrapper">
                                     <div class="row tab-content" id="myTabContent">
                                         <!-- Sản phẩm theo loại -->
                                         @foreach ($loai_arr as $loai)
                                         <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="pane-{{$loai->id}}" role="tabpanel"
                                         aria-labelledby="tab-{{$loai->id}}">
                                                 <div class="row">
-                                                    @foreach ($sanpham[$loai->slug] as $item)
-                                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 filter__item outwear">
+                                                    @foreach ($sanpham[$loai->slug] as $index => $item)
+                                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 filter__item outwear">
                                                             @php 
                                                                 $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
                                                                 $gia = number_format($gianew, 0, '', '.'); 
@@ -242,6 +305,9 @@ Trang Chủ - TrendyU
                                                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                                     onerror="this.src='{{ asset('/uploads') }}'"
                                                                                     style="max-height: 295px;" alt="" class="w-100">
+                                                                                @if ($item->gia_km > 0)
+                                                                                    <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                                @endif
                                                                             </a>
                                                                         @elseif ($item->trang_thai == 3)
                                                                             <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
@@ -258,7 +324,7 @@ Trang Chủ - TrendyU
                                                                             <div class="row">
                                                                                 <div class="col-12">
                                                                                     <div class="row">
-                                                                                    <div class="col-7 text-start">
+                                                                                    <div class="col-6 text-start">
                                                                                         <div class="d-flex align-items-center">
                                                                                             <strong id="color-gia">{{ $gia }}đ</strong>
                                                                                             @if ($item->gia_km >= 1) 
@@ -273,7 +339,7 @@ Trang Chủ - TrendyU
                                                                                             @endif
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-5 text-end">
+                                                                                    <div class="col-6 text-end">
                                                                                         <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
                                                                                         <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
                                                                                     </div>
@@ -300,12 +366,14 @@ Trang Chủ - TrendyU
                                         <!-- End sản phẩm theo loại -->
                                     </div>
                                 </div>
+                                <div class="d-flex justify-content-end">
+                                    <a href="{{ route('loai-san-pham', 'ao') }}" class="" id="see-all-link">
+                                        <button class="custom-button mt-2">Xem tất cả →</button>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-lg-12">
-                                <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
-                                    <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
-                                </a>
-                            </div>
+                            
+                            
                         </div>
                     </div>
                 </div>
@@ -313,7 +381,7 @@ Trang Chủ - TrendyU
             <!-- End xu hướng -->
             <br>
             <!-- Danh mục sản phẩm -->
-            <div class="pt-5">
+            <div class="pt-lg-4">
                 <div class="section__content">
                     <div class="container">
                         <div class="row">
@@ -357,100 +425,112 @@ Trang Chủ - TrendyU
                     </div>
                 </div>
             </div>
-            <br>
             <!-- End danh mục sản phẩm -->
 
             <!-- Sản phẩm sale -->
-            <div class="pt-5">
-                <div class="section__intro mb-5">
+            <div class="pt-lg-4">
+                <div class="section__intro ">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 mb-4">
                                 <div class="section__text-wrap">
-                                    <h1 class="section__heading u-c-secondary mb-2">{{$home_page->tieu_de_khuyen_mai_chinh}}</h1>
+                                    <h1 class="section__heading u-c-secondary mb-2 underline-animations">{{$home_page->tieu_de_khuyen_mai_chinh}}</h1>
                                     <span class="section__span u-c-silver">{{$home_page->tieu_de_khuyen_mai_phu}}</span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="section__content">
-                    <div class="container">
-                        <div class="row">
-                            @foreach ($sanphamsale as $item)
-                                @php 
-                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
-                                    $gia = number_format($gianew, 0, '', '.'); 
-                                @endphp
-                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 ">
-                                    <div class="product-short">
-                                        <div class="product-short__container">
-                                            <div class="card">
-                                                <a href="/detail/{{$item->id}}" id="hover-img-home">
-                                                    <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                        onerror="this.src='{{ asset('/uploads') }}'"
-                                                        style="max-height: 295px;" alt="" class="w-100">
-                                                </a>
-                                                <div class="card-body text-center">
-                                                    <a href="">
-                                                        <h5 id="hover-sp">{{$item->ten_sp}}</h5>
-                                                    </a>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                            <div class="col-7 text-start">
-                                                                <div class="d-flex align-items-center">
-                                                                    <strong id="color-gia">{{ $gia }}đ</strong>
-                                                                    @if ($item->gia_km >= 1) 
-                                                                        @php 
-                                                                            $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
-                                                                        @endphp 
-                                                                        @if ($discountPercentage > 1) 
-                                                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
-                                                                            -{{ number_format($discountPercentage, 0) }}% 
-                                                                            </div> 
-                                                                        @endif                                
-                                                                    @endif
+                            <div class="col-lg-4 position-relative p-0">
+                                <a href="{{ route('loai-san-pham' ,'giam-gia') }}" class="i3-banner rounded-5">
+                                    <div class="aspect aspect--bg-grey-fb aspect--square ">
+                                        <img src="{{ asset('/uploads/logo/' . $settings->banner_dung_sale) }}" alt="" class="aspect__img i3-banner__img w-100 h-100">
+                                    </div>
+                                </a>
+                                <div class="position-absolute bottom-0 start-50 translate-middle">
+                                    <a href="" class="d-flex justify-content-center">
+                                        <button class="custom-button-sale mt-2" style="color: red; background-color: white;">Xem tất cả →</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="section__content">
+                                    <div class="container">
+                                        <div class="row">
+                                            @foreach ($sanphamsale as $item)
+                                                @php 
+                                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                                    $gia = number_format($gianew, 0, '', '.'); 
+                                                @endphp
+                                                <div class="col-lg-4 col-md-6 col-sm-6 mt-1">
+                                                    <div class="product-short">
+                                                        <div class="product-short__container">
+                                                            <div class="card">
+                                                                <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                                    <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                                        onerror="this.src='{{ asset('/uploads') }}'"
+                                                                        style="max-height: 295px;" alt="" class="w-100">
+                                                                        <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                </a>
+                                                                <div class="card-body text-center">
+                                                                    <a href="">
+                                                                        <h5 id="hover-sp">{{$item->ten_sp}}</h5>
+                                                                    </a>
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <div class="row">
+                                                                            <div class="col-6 text-start">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                                    @if ($item->gia_km >= 1) 
+                                                                                        @php 
+                                                                                            $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                        @endphp 
+                                                                                        @if ($discountPercentage > 1) 
+                                                                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                            -{{ number_format($discountPercentage, 0) }}% 
+                                                                                            </div> 
+                                                                                        @endif                                
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-6 text-end">
+                                                                                <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                                <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12 text-start">
+                                                                            {{$item->ten_dm}}
+                                                                        </div>
+                                                                        <div class="col-12 text-truncate">
+                                                                            <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                                {{ $item->mo_ta_ngan }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-5 text-end">
-                                                                <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                                <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
-                                                            </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 text-start">
-                                                            {{$item->ten_dm}}
-                                                        </div>
-                                                        <div class="col-12 text-truncate">
-                                                            <span class="pd-detail__click-count" style="font-size: 12px;">
-                                                                {{ $item->mo_ta_ngan }}
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
-                    <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
-                </a>
             </div>
-            <br>
             <!-- End sản phẩm sale -->  
-            <!-- Sản phẩm mới -->
-            <div class="pt-5">
-                <div class="section__intro mb-5">
+
+            <!-- Sản phẩm bán chạy -->
+            <div class="pt-lg-4">
+                <div class="section__intro mb-4">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="section__text-wrap">
-                                    <h1 class="section__heading u-c-secondary mb-2">{{$home_page->tieu_de_san_pham_moi_chinh}}</h1>
+                                    <h1 class="section__heading u-c-secondary mb-2 underline-animations">{{$home_page->tieu_de_san_pham_moi_chinh}}</h1>
                                     <span class="section__span u-c-silver">{{$home_page->tieu_de_san_pham_moi_phu}}</span>
                                 </div>
                             </div>
@@ -460,72 +540,122 @@ Trang Chủ - TrendyU
                 <div class="section__content">
                     <div class="container">
                         <div class="row">
-                            @foreach ($sanphamnew as $item)
-                                @php 
-                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
-                                    $gia = number_format($gianew, 0, '', '.'); 
-                                @endphp
-                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 ">
-                                    <div class="product-short">
-                                        <div class="product-short__container">
-                                            <div class="card">
-                                                <a href="/detail/{{$item->id}}" id="hover-img-home">
-                                                    <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                        onerror="this.src='{{ asset('/uploads') }}'"
-                                                        style="max-height: 295px;" alt="" class="w-100">
+                            <div class="col-lg-3 card p-0">
+                                <div class="parent-div text-start">
+                                    @foreach ($top_sanpham as $index => $item)
+                                        @php
+                                            $index += 1; // Tăng chỉ số lên 1 vì $index bắt đầu từ 0
+                                        @endphp
+                                        @if ($index == 1)
+                                            <div class="p-2 child-div top">
+                                                <i class="fa-solid fa-medal" style="color: #d5a90b;"></i>
+                                                <strong class="text-danger mx-2">{{$index}}</strong>
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}" class="" alt="">
+                                                <a href="{{route('product.detail' , $item->id)}}" class="hover-title text-dark fz ms-1">
+                                                    {{$item->ten_sp}}
                                                 </a>
-                                                <div class="card-body text-center">
-                                                    <a href="">
-                                                        <h5 id="hover-sp">{{$item->ten_sp}}</h5>
-                                                    </a>
-                                                    <div class="row">
-                                                        <div class="col-12">
+                                            </div>
+                                        @elseif ($index == 2)
+                                            <div class="p-2 child-div top">
+                                                <strong class="text-warning mx-2">{{$index}}</strong>
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}" class="" alt="">
+                                                <a href="{{route('product.detail' , $item->id)}}" class="hover-title text-dark fz ms-1">
+                                                    {{$item->ten_sp}}
+                                                </a>
+                                            </div>
+                                        @elseif ($index == 3)
+                                            <div class="p-2 child-div top">
+                                                <strong class="text-secondary mx-2">{{$index}}</strong>
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}" class="" alt="">
+                                                <a href="{{route('product.detail' , $item->id)}}" class="hover-title text-dark fz ms-1">
+                                                    {{$item->ten_sp}}
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="p-2 child-div top">
+                                                <p class="text-dark mx-2">{{$index}}</p>
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}" class="" alt="">
+                                                <a href="{{route('product.detail' , $item->id)}}" class="hover-title text-dark fz ms-1">
+                                                    {{$item->ten_sp}}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    @foreach ($sanphamnew as $item)
+                                        @php 
+                                            $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                            $gia = number_format($gianew, 0, '', '.'); 
+                                        @endphp
+                                        <div class="col-lg-4 col-md-6 col-sm-6  ">
+                                            <div class="product-short">
+                                                <div class="product-short__container">
+                                                    <div class="card">
+                                                        <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                            <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                                onerror="this.src='{{ asset('/uploads') }}'"
+                                                                style="max-height: 295px;" alt="" class="w-100">
+                                                            @if ($item->gia_km > 0)
+                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                            @endif
+                                                        </a>
+                                                        <div class="card-body text-center">
+                                                            <a href="">
+                                                                <h5 id="hover-sp">{{$item->ten_sp}}</h5>
+                                                            </a>
                                                             <div class="row">
-                                                            <div class="col-7 text-start">
-                                                                <div class="d-flex align-items-center">
-                                                                    <strong id="color-gia">{{ $gia }}đ</strong>
-                                                                    @if ($item->gia_km >= 1) 
-                                                                        @php 
-                                                                            $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
-                                                                        @endphp 
-                                                                        @if ($discountPercentage > 1) 
-                                                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
-                                                                            -{{ number_format($discountPercentage, 0) }}% 
-                                                                            </div> 
-                                                                        @endif                                
-                                                                    @endif
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                    <div class="col-7 text-start">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                            @if ($item->gia_km >= 1) 
+                                                                                @php 
+                                                                                    $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                @endphp 
+                                                                                @if ($discountPercentage > 1) 
+                                                                                    <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                    -{{ number_format($discountPercentage, 0) }}% 
+                                                                                    </div> 
+                                                                                @endif                                
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-5 text-end">
+                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 text-start">
+                                                                    {{$item->ten_dm}}
+                                                                </div>
+                                                                <div class="col-12 text-truncate">
+                                                                    <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                        {{ $item->mo_ta_ngan }}
+                                                                    </span>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-5 text-end">
-                                                                <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                                <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
-                                                            </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 text-start">
-                                                            {{$item->ten_dm}}
-                                                        </div>
-                                                        <div class="col-12 text-truncate">
-                                                            <span class="pd-detail__click-count" style="font-size: 12px;">
-                                                                {{ $item->mo_ta_ngan }}
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endforeach
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
                 <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
-                    <button class="btn btn-outline-dark mt-2">Cửa Hàng</button>
+                    <button class="custom-button mt-2">Xem tất cả →</button>
                 </a>
             </div>
             <br>
-            <!-- End sản phẩm mới -->
+            <!-- End sản phẩm bán chạy -->
         </section>
 
         <!-- Banner phụ -->
@@ -543,7 +673,7 @@ Trang Chủ - TrendyU
                                 </div>
                                 <span class="banner-bg__text-block banner-bg__text-3 ">{{$home_page->mo_ta_bieu_ngu_phu}}</span>
                                 <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
-                                    <button class="btn btn-outline-light mt-2">Cửa Hàng</button>
+                                    <button class="custom-button mt-2">Xem tất cả →</button>
                                 </a>
                             </div>
                         </div>
@@ -556,82 +686,92 @@ Trang Chủ - TrendyU
         <section class="container-fluid section text-black">
             <div class="container">
                 <!-- Sản phẩm sắp về hàng -->
-                <div class="pt-5">
+                <div class="pt-lg-4">
                     <div class="section__intro mb-5">
                         <div class="container">
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12 mb-lg-4">
                                     <div class="section__text-wrap">
-                                        <h1 class="section__heading u-c-secondary mb-2">{{$home_page->tieu_de_san_pham_sap_ve}}</h1>
+                                        <h1 class="section__heading u-c-secondary mb-2 underline-animations">{{$home_page->tieu_de_san_pham_sap_ve}}</h1>
                                         <span class="section__span u-c-silver">{{$home_page->tieu_de_phu_san_pham_sap_ve}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 position-relative p-0">
+                                    <a class="i3-banner rounded-5">
+                                        <div class="aspect aspect--bg-grey-fb aspect--square ">
+                                            <img src="{{ asset('/uploads/logo/' . $settings->banner_dung_cms) }}" alt="" class="aspect__img i3-banner__img w-100 h-100">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="section__content">
+                                        <div class="container">
+                                            <div class="row">
+                                                @foreach ($sanphamcs as $item)
+                                                @php 
+                                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                                                    $gia = number_format($gianew, 0, '', '.'); 
+                                                @endphp
+                                                    <div class=" col-lg-4 col-md-6 col-sm-6">
+                                                        <div class="product-short">
+                                                            <div class="product-short__container">
+                                                                <div class="card">
+                                                                    <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
+                                                                        <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                                            onerror="this.src='{{ asset('/uploads') }}'"
+                                                                            style="max-height: 295px;" alt="" class="w-100">
+                                                                            <img src="{{ asset('/uploads/logo/logocs1.png') }}" class="overlay-image" alt="">
+                                                                    </a>
+                                                                    <div class="card-body text-center">
+                                                                        <a href="">
+                                                                            <h5 id="hover-sp">{{$item->ten_sp}}</h5>
+                                                                        </a>
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <div class="row">
+                                                                                <div class="col-7 text-start">
+                                                                                    <div class="d-flex align-items-center">
+                                                                                        <a href="{{ route('user.contact') }}" id="hover-sp">
+                                                                                            <strong id="color-gia">Liên hệ</strong>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-5 text-end">
+                                                                                    <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                                    <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12 text-start">
+                                                                                {{$item->ten_dm}}
+                                                                            </div>
+                                                                            <div class="col-12 text-truncate">
+                                                                                <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                                    {{ $item->mo_ta_ngan }}
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="section__content">
-                        <div class="container">
-                            <div class="row">
-                                @foreach ($sanphamcs as $item)
-                                @php 
-                                    $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
-                                    $gia = number_format($gianew, 0, '', '.'); 
-                                @endphp
-                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-5 ">
-                                        <div class="product-short">
-                                            <div class="product-short__container">
-                                                <div class="card">
-                                                    <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
-                                                        <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                            onerror="this.src='{{ asset('/uploads') }}'"
-                                                            style="max-height: 295px;" alt="" class="w-100">
-                                                            <img src="{{ asset('/uploads/logo/logocs1.png') }}" class="overlay-image" alt="">
-                                                    </a>
-                                                    <div class="card-body text-center">
-                                                        <a href="">
-                                                            <h5 id="hover-sp">{{$item->ten_sp}}</h5>
-                                                        </a>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="row">
-                                                                <div class="col-7 text-start">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <a href="{{ route('user.contact') }}" id="hover-sp">
-                                                                            <strong id="color-gia">Liên hệ</strong>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-5 text-end">
-                                                                    <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                                    <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 text-start">
-                                                                {{$item->ten_dm}}
-                                                            </div>
-                                                            <div class="col-12 text-truncate">
-                                                                <span class="pd-detail__click-count" style="font-size: 12px;">
-                                                                    {{ $item->mo_ta_ngan }}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
                 <!-- End sản phẩm sắp về hàng -->
                 <!-- Lợi ích thành viên -->
                 <div class="row mb-4">
                     <div class="col-lg-12">
                         <div class="section__text-wrap">
-                            <h2 class="section__heading u-c-secondary">{{$home_page->tieu_de_thanh_vien}}</h2>
+                            <h2 class="section__heading u-c-secondary underline-animations">{{$home_page->tieu_de_thanh_vien}}</h2><br/>
                             <span class="">{{$home_page->tieu_de_phu_thanh_vien}}</span>
                         </div>
                     </div>
@@ -684,5 +824,45 @@ Trang Chủ - TrendyU
   </div>
 </div> -->
 <!-- End chờ load web -->
+ <script>
+    // Active button loại sản phẩm
+    document.addEventListener('DOMContentLoaded', function() {
+        var navLinks = document.querySelectorAll('.nav-link');
+        var seeAllLink = document.getElementById('see-all-link');
 
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                // Xóa lớp 'active' từ tất cả các nút
+                navLinks.forEach(function(nav) {
+                    nav.classList.remove('active');
+                });
+                // Thêm lớp 'active' vào nút được click
+                link.classList.add('active');
+
+                // Lấy giá trị loại sản phẩm từ thuộc tính data-loai
+                var loaiSanPham = link.getAttribute('data-loai');
+
+                // Cập nhật href của liên kết Xem tất cả
+                seeAllLink.href = '{{ route("loai-san-pham", ":loai") }}'.replace(':loai', loaiSanPham);
+            });
+        });
+    });
+
+    // Active button
+    document.addEventListener('DOMContentLoaded', function() {
+    var navLinks = document.querySelectorAll('.custom-btn');
+
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+            // Xóa lớp 'active' từ tất cả các nút
+            navLinks.forEach(function(nav) {
+                nav.classList.remove('active');
+            });
+            // Thêm lớp 'active' vào nút được click
+            link.classList.add('active');
+        });
+    });
+});
+
+ </script>
 @endsection

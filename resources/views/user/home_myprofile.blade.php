@@ -49,14 +49,14 @@ Thông tin tài khoản
 <h2 style="letter-spacing: 2px; text-align: center; padding-top: 40px;">Thông tin tài khoản</h2>
 <div class="container card">
     <div class="row">
-        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 bg-body-secondary card">
+        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 bg-body-tertiary card">
             <ul class="list-unstyled text-center m-0">
-                <li class="bg-body-secondary"><button type="submit" style="border: none;"><a
+                <li class=""><a
                             class="text-decoration-none  dropdown-dc mt-2 h6 {{(request()->routeIs('user.profile')) ? 'text-danger' : 'text-dark'}}"
-                            href="#">Hồ sơ của tôi</a></button></li>
-                <li class="bg-body-secondary"><button type="submit" style="border: none;"><a
+                            href="#">Hồ sơ của tôi</a></li>
+                <li class=""><a
                             class="text-decoration-none text-dark dropdown-dc mt-2 h6"
-                            href="{{route('user.purchase', [Auth::user()->id])}}">Đơn hàng đã mua</a></button></li>
+                            href="{{route('user.purchase', [Auth::user()->id])}}">Đơn hàng đã mua</a></li>
             </ul>
         </div>
         <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12 text-black p-0 bg-body-tertiary ">
@@ -65,13 +65,13 @@ Thông tin tài khoản
                     <div class="d-flex align-dcs-center">
                         <img style="border-radius: 50%;" src="" width="100" height="100" alt="" />
                         <div style="padding-top: 15px; padding-left: 15px;">
-                            <span style="font-size: 14px; letter-spacing: 1px;">Tên tài khoản:
+                            <span style="font-size: 16px; letter-spacing: 1px;" >Tên tài khoản:
                                 {{$taiKhoan->name}}</span>
                             <br>
                             <span style="font-size: 14px; letter-spacing: 1px;">ID:
                                 {{$taiKhoan->id}}</span>
                             <br>
-                            <span style="font-size: 14px; letter-spacing: 1px;">Gmail:
+                            <span style="font-size: 16px; letter-spacing: 1px;">Gmail:
                                 {{$taiKhoan->email}}</span>
                         </div>
                     </div>

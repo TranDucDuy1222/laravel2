@@ -1,7 +1,104 @@
-li{
+li {
     text-decoration: none;
     list-style-type: none;
 }
-li:hover{
+
+li:hover {
     background-color: aliceblue;
+}
+
+/* Cuộn trạng thái ở quản lý đơn hàng */
+.srcoll-status {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+@media (max-width: 500px) {
+    .srcoll-status>div {
+        flex: 0 0 auto;
+        margin-left: 1rem;
+        /* hoặc giá trị bạn mong muốn */
+        margin-right: 1rem;
+        /* hoặc giá trị bạn mong muốn */
+        min-width: 100px;
+    }
+}
+.scroll-status-od {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+@media (max-width: 500px) {
+    .scroll-status-od > .nav {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    .scroll-status-od .nav-link {
+        flex: 0 0 auto;
+    }
+}
+
+
+/* Hiện số đơn hàng trên góc phải của box trạng thái */
+.top-right-corner {
+    top: 2px;
+    left: 110%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75rem;
+    border-radius: 100%;
+    padding : 4px 5px;
+    
+}
+.top-right-corner-ship {
+    top: 2px;
+    left: 130%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75rem;
+    border-radius: 100%;
+    padding : 4px 5px;
+    
+}
+.custom-icon {
+    width: 32px; /* Thay đổi giá trị này theo kích thước bạn mong muốn */
+    height: 32px; /* Thay đổi giá trị này theo kích thước bạn mong muốn */
+    display: inline-block; /* Đảm bảo thẻ <i> được hiển thị như một phần tử inline-block */
+    font-size: 2rem; /* Điều chỉnh kích thước font để phù hợp với icon */
+}
+
+/* Click thì đổi màu của tab */
+/* Màu mặc định cho các tab */
+.click-tabs {
+    color: black; /* Màu mặc định */
+}
+
+/* Màu khi được chọn */
+.click-tabs.active {
+    color: red; /* Màu khi được chọn */
+}
+
+/* Màu khi hover */
+.click-tabs:hover {
+    color: red; /* Màu khi hover */
+}
+
+/* Đường gạch ngang chia đơn hàng */
+.with-two-lines {
+    position: relative;
+    padding-top: 2rem; /* Điều chỉnh để có không gian cho các đường */
+}
+
+.with-two-lines::before,
+.with-two-lines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Độ dày của đường */
+    background-color: black; /* Màu của đường */
+}
+
+.with-two-lines::after {
+    top: 1rem; /* Khoảng cách giữa hai đường */
 }

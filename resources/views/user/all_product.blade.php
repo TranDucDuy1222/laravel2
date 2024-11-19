@@ -4,34 +4,72 @@
 @endsection
 
 @section('category')
-@foreach ($loai as $category)
-  <li class="nav-item dropdown">
-    <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-    href="{{ route('loai-san-pham', $category->slug) }}">
-    {{$category->ten_loai}}
-    </a>
-    <ul class="dropdown-menu" id="userDropdown">
-    @foreach ($danh_muc as $dm)
-    @if ($dm->id_loai == $category->id)
-    <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a>
+  @foreach ($loai as $category)
+    <li class="nav-item dropdown">
+      <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+      href="{{ route('loai-san-pham', $category->slug) }}">
+      {{$category->ten_loai}}
+      </a>
+      <ul class="dropdown-menu" id="userDropdown">
+      @foreach ($danh_muc as $dm)
+      @if ($dm->id_loai == $category->id)
+      <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a>
+      </li>
+    @endif
+    @endforeach
+      </ul>
     </li>
-  @endif
   @endforeach
-    </ul>
-  </li>
-@endforeach
 @endsection
 
 @section('content')
 
 <!-- all product -->
-<div class="container-fluid">
-  <div class="mx-xl-5 mt-2 row">
-  <h3 class="text-black">Bộ Lọc Sản Phẩm</h3>
-    <div class="col-12 overflow-x-auto d-flex" id="box-menu-ngang">
+<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="2000">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner img-header-all">
+    <div class="carousel-item active">
+      <img src="{{ asset('/imgnew/allpro.jpg') }}" class="d-block w-100 img-header-all" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>First slide label</h5>
+        <p>Some representative placeholder content for the first slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item" >
+      <img src="{{ asset('/imgnew/allpro2.png') }}" class="d-block w-100 img-header-all" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Second slide label</h5>
+        <p>Some representative placeholder content for the second slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{{ asset('/imgnew/allpro3.webp') }}" class="d-block w-100 img-header-all" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<div class="container">
+  <div class="mt-2 row">
+    <h3 class="text-black" >Bộ Lọc Sản Phẩm</h3>
+    <div class="col-12 overflow-x-auto d-flex" id="">
       <!-- Danh mục -->
       <div class="menu-ngang">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
           data-bs-toggle="dropdown" aria-expanded="false">
           Danh mục
         </p>
@@ -47,8 +85,8 @@
         </ul>
       </div>
       <!-- Màu sắc -->
-      <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
+      <div class="ms-1 menu-ngang">
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
           data-bs-toggle="dropdown" aria-expanded="false">
           Màu Sắc
         </p>
@@ -91,8 +129,8 @@
         
       </div>
       <!-- Kích cở giày -->
-      <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
+      <div class="ms-1 menu-ngang">
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
           data-bs-toggle="dropdown" aria-expanded="false">
           Kích cở giày
         </p>
@@ -103,8 +141,8 @@
         </ul>
       </div>
       <!-- Kích cở quần áo -->
-      <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
+      <div class="ms-1 menu-ngang">
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
           data-bs-toggle="dropdown" aria-expanded="false">
           Kích cở quần áo
         </p>
@@ -113,7 +151,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-12">
+    <div class="col-12 mt-2">
       <!-- Sắp xếp -->
       <div class="d-flex justify-content-end">
         <div class="">
@@ -145,6 +183,9 @@
                           <img src="{{ asset('/uploads/product/' . $product->hinh) }}"
                               onerror="this.src='{{ asset('/uploads') }}'"
                               style="max-height: 295px;" alt="" class="w-100">
+                              @if ($product->gia_km > 0)
+                                  <img src="{{ asset('/uploads/logo/sale.png' ) }}" style="" alt="" class="img-sale">
+                              @endif
                       </a>
                   @elseif ($product->trang_thai == 3)
                       <a href="{{ route('product.detail',$product->id)}}" id="hover-img-home" class="image-container">
@@ -214,7 +255,7 @@
   function sortProducts(sortType) 
     { var url = new URL(window.location.href); 
     url.searchParams.set('sort', sortType); 
-    window.location.href = url.toString(); } 
+    window.location.href = url.toString(); }
 </script>
 <!-- end all product -->
 @endsection

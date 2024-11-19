@@ -1,6 +1,6 @@
 @extends('admin.layoutadmin')
 @section('title')
-Thống Kê
+Quản Lý Tài Khoản
 @endsection
 @section('content')
 <div id="content-page" class="content-page">

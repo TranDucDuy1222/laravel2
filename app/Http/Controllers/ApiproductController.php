@@ -12,41 +12,6 @@ use Log;
 class ApiproductController extends Controller
 {
 
-    public function sanpham_loai(Request $request, $slug)
-    {
-        $perpage = 12;
-        $danh_muc = DanhMuc::get();
-        $query = SanPham::with('danhMuc');
-        
-        $sortProduct = $request->input('sort', 'moi_nhat'); // Mặc định là sản phẩm mới nhất
-
-        if ($slug == 'tat-ca-san-pham') { $title = 'Mới và Nổi Bật'; } 
-        elseif ($slug == 'giam-gia') { $title = 'Giảm Giá'; }
-
-        // Xử lý sắp xếp sản phẩm
-        if ($slug == 'tat-ca-san-pham' || $slug == 'giam-gia') {
-            if ($slug == 'giam-gia') {
-                $query->where('gia_km', '>', 0);
-            }
-            switch ($sortProduct) {
-                case 'tang_dan':
-                    $query->orderBy('gia', 'asc');
-                    break;
-                case 'giam_dan':
-                    $query->orderBy('gia', 'desc');
-                    break;
-                default:
-                    $query->orderBy('created_at', 'desc');
-                    break;
-            }
-
-            $list_product = $query->paginate($perpage)->withQueryString();
-            return view('user.all_product', ['products' => $list_product , 'title' => $title , 'danh_muc' => $danh_muc]);
-        } else {
-            return redirect()->route('home')->with('error', 'Danh mục không tồn tại');
-        }
-    }
-
     public function sanpham_danhmuc(Request $request, $slug)
     {
         $danh_muc = DanhMuc::where('slug', $slug)->first();

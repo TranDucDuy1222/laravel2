@@ -42,3 +42,43 @@ background-color: #f0f0f0; /* Màu nền khi di chuột vào */
     
     object-fit: cover;
 }
+
+@media (min-width: 1400px) {
+    .img-header-all {
+        height: 550px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .img-header-all {
+        height: 450px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .img-header-all {
+        height: 400px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 1200px */
+    }
+}
+
+@media (max-width: 992px) {
+    .img-header-all {
+        height: 400px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 992px */
+    }
+}
+
+@media (max-width: 768px) {
+    .img-header-all {
+        height: 400px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 768px */
+    }
+}
+
+@media (max-width: 576px) {
+    .img-header-all {
+        height: 300px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 576px */
+    }
+}
