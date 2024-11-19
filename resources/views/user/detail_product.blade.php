@@ -35,7 +35,7 @@ Chi Tiết : {{$detail->ten_sp}}
 @endphp
 
 @section('content')
-<div class="app-content">
+<div class="app-content pt-lg-4">
     <div class="pt-5">
         <div class="container">
             <div class="row">
@@ -45,7 +45,7 @@ Chi Tiết : {{$detail->ten_sp}}
                             <div id="pd-o-initiate">
                                 <div class="pd-o-img-wrap">
                                     <img src="{{ asset('/uploads/product/' . $detail->hinh) }}"
-                                         class="img-fluid"
+                                         class="w-100 img-detail" 
                                         alt="...">
                                 </div>
                             </div>
@@ -299,7 +299,7 @@ Chi Tiết : {{$detail->ten_sp}}
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section__text-wrap">
-                            <h1 class="section__heading u-c-secondary mb-2">BẠN CÓ THỂ THÍCH</h1>
+                            <h1 class="section__heading u-c-secondary mb-2 underline-animations">BẠN CÓ THỂ THÍCH</h1>
                             <span class="section__span u-c-silver"></span>
                         </div>
                     </div>
@@ -310,15 +310,9 @@ Chi Tiết : {{$detail->ten_sp}}
             <div class="container">
                 <div class="row">
                     @foreach ($relatedpro as $item)
-                        @php
-                            if ($item->gia_km > 0) {
-                                $gia_moi = $item->gia_km;
-                                //   $giaold = '<del>' . $gia . '</del>';
-                            } else {
-                                $gia_moi = $item->gia;
-                            }
-                            $num = $gia_moi;
-                            $gia_chinh = number_format($num, 0, '', '.');
+                        @php 
+                            $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                            $gia = number_format($gianew, 0, '', '.'); 
                         @endphp
                         <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
                             <div class="product-short">
@@ -334,11 +328,36 @@ Chi Tiết : {{$detail->ten_sp}}
                                                 <h5 id="hover-sp">{{$item->ten_sp}}</h5>
                                             </a>
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                    <div class="col-6 text-start">
+                                                        <div class="d-flex align-items-center">
+                                                            <strong id="color-gia">{{ $gia }}đ</strong>
+                                                            @if ($item->gia_km >= 1) 
+                                                            @php 
+                                                                $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                            @endphp 
+                                                            @if ($discountPercentage > 1) 
+                                                                <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                -{{ number_format($discountPercentage, 0) }}% 
+                                                                </div> 
+                                                            @endif                                
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 text-end">
+                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 text-start">
                                                     {{$item->ten_dm}}
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <strong id="color-gia"> {{number_format($item->gia_km, 0, '', '.')}}đ </strong>
+                                                <div class="col-12 text-truncate">
+                                                    <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                        {{ $item->mo_ta_ngan }}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

@@ -91,27 +91,101 @@ class OrderController extends Controller
         }
     }
 
-    public function donHangDaMua($id)
+    // public function donHangDaMua($id)
+    // {
+    //     if (Auth::check()) {
+
+    //         // Truy vấn đơn hàng đã mua
+    //         $orders = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
+    //             ->where('don_hang.id_user', $id)
+    //             ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
+    //             ->orderBy('don_hang.id', 'desc')
+    //             ->get();
+    //         $purchased = DB::table('chi_tiet_don_hang')
+    //             ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
+    //             ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
+    //             ->join('sizes', 'sizes.id', '=', 'chi_tiet_don_hang.id_size')
+    //             ->join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
+    //             ->select('don_hang.*', 'chi_tiet_don_hang.*', 'chi_tiet_don_hang.id as id_ctdh', 'san_pham.id as id_sp', 'san_pham.ten_sp', 'san_pham.hinh', 'san_pham.color', 'sizes.size_product', 'dia_chi.*')
+    //             ->where('don_hang.id_user', $id)
+    //             ->get();
+
+    //         // Tính toán ngày dự kiến giao hàng cho từng đơn hàng
+    //         foreach ($orders as $order) {
+    //             $thoiDiemMuaHang = Carbon::parse($order->thoi_diem_mua_hang);
+    //             if ($order->thanh_pho == 'Thành Phố Hồ Chí Minh' || $order->thanh_pho == 'Hồ Chí Minh') {
+    //                 $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(2);
+    //             } else {
+    //                 $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(4);
+    //             }
+    //         }
+
+    //         // Truy vấn phí vận chuyện
+    //         $phivc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
+
+    //         // Truy vấn trạng thái chờ xác nhận
+    //         $status = DonHang::select('trang_thai')
+    //         ->where('id_user', $id)
+    //         ->orderBy('id', 'desc');
+
+    //         $status_1 = (clone $status)
+    //         ->where('trang_thai', 0)
+    //         ->count();
+
+    //         $status_2 = (clone $status)
+    //         ->where('trang_thai', 1)
+    //         ->count();
+
+    //         $status_3 = (clone $status)
+    //         ->where('trang_thai', 2)
+    //         ->count();
+
+    //         $status_4 = (clone $status)
+    //         ->where('trang_thai', 3)
+    //         ->count();
+
+    //         $status_5 = (clone $status)
+    //         ->where('trang_thai', 4)
+    //         ->count();
+
+    //         $status_6 = (clone $status)
+    //         ->where('trang_thai', 5)
+    //         ->count();
+
+    //         return view('user.home_purchased', compact(
+    //             'status_6',
+    //             'status_5',
+    //             'status_4',
+    //             'status_3',
+    //             'status_2',
+    //             'status_1',
+    //             'purchased', 
+    //             'orders', 
+    //             'phivc'
+    //         ));
+    //     } else {
+    //         return redirect()->route('login')->with('error', 'Vui lòng đăng nhập!');
+    //     }
+    // }
+
+
+    public function donHangDaMua($id, Request $request)
     {
         if (Auth::check()) {
+
+            // Truy vấn đơn hàng đã mua 
             $orders = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
-                ->where('don_hang.id_user', $id)
-                ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
-                ->orderBy('don_hang.id', 'desc')
-                ->get();
-
-            // Tính toán ngày dự kiến giao hàng cho từng đơn hàng
-            foreach ($orders as $order) {
-                $thoiDiemMuaHang = Carbon::parse($order->thoi_diem_mua_hang);
-                if ($order->thanh_pho == 'Thành Phố Hồ Chí Minh' || $order->thanh_pho == 'Hồ Chí Minh') {
-                    $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(2);
-                } else {
-                    $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(4);
-                }
-            }
-
-            // Truy vấn phí vận chuyện
-            $phivc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
+            ->where('don_hang.id_user', $id)
+            ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
+            ->orderBy('don_hang.id', 'desc');
+            
+            // Tách đơn hàng theo từng trạng thái 
+            $orders_0 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 0)->get());
+            $orders_1 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 1)->get());
+            $orders_2 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 2)->get());
+            $orders_3 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 3)->get());
+            $orders_4 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 4)->get());
+            $orders_5 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 5)->get());
 
             $purchased = DB::table('chi_tiet_don_hang')
                 ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
@@ -122,10 +196,59 @@ class OrderController extends Controller
                 ->where('don_hang.id_user', $id)
                 ->get();
 
-            return view('user.home_purchased', compact('purchased', 'orders', 'phivc'));
+            // Truy vấn phí vận chuyển
+            $phivc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
+
+            // Truy vấn trạng thái chờ xác nhận
+            $status = DonHang::select('trang_thai')
+                ->where('id_user', $id)
+                ->orderBy('id', 'desc');
+
+            $status_1 = (clone $status)
+                ->where('trang_thai', 0)
+                ->count();
+
+            $status_2 = (clone $status)
+                ->where('trang_thai', 1)
+                ->count();
+
+            $status_3 = (clone $status)
+                ->where('trang_thai', 2)
+                ->count();
+
+            $status_4 = (clone $status)
+                ->where('trang_thai', 3)
+                ->count();
+
+            $status_5 = (clone $status)
+                ->where('trang_thai', 4)
+                ->count();
+
+            $status_6 = (clone $status)
+                ->where('trang_thai', 5)
+                ->count();
+
+            return view('user.home_purchased', compact(
+                'status_6','status_5', 'status_4', 'status_3', 'status_2', 'status_1',
+                'orders_0', 'orders_1', 'orders_2', 'orders_3', 'orders_4', 'orders_5',
+                'purchased',
+                'phivc'
+            ));
         } else {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập!');
         }
+    }
+    private function tinhToanNgayDuKienGiaoHang($orders)
+    {
+        foreach ($orders as $order) {
+            $thoiDiemMuaHang = Carbon::parse($order->thoi_diem_mua_hang);
+            if ($order->thanh_pho == 'Thành Phố Hồ Chí Minh' || $order->thanh_pho == 'Hồ Chí Minh') {
+                $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(2);
+            } else {
+                $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(4);
+            }
+        }
+        return $orders;
     }
 
     public function danhGia(Request $request)

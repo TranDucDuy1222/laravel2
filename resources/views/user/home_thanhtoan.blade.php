@@ -56,7 +56,11 @@
                             <div class="d-flex align-items-center p-2">
                                 <i class="fa-solid fa-location-dot me-2 fs-4" style="color: #ee301b;"></i>
                                 <p class="fs-4 mb-0">Địa chỉ nhận hàng</p> 
-                                <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn btn-outline-dark ms-auto" style="font-size: 15px;">Chỉnh sửa</a>
+                                @if ($diachis->isEmpty()) 
+                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn btn-outline-dark ms-auto" style="font-size: 15px;"> Thêm địa chỉ </a> 
+                                @else 
+                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn btn-outline-dark ms-auto" style="font-size: 15px;"> Chỉnh sửa </a> 
+                                @endif
                             </div>
                             <hr class="m-0">
                             <select class="form-select" id="selected_address" aria-label="Default select example">
@@ -227,25 +231,28 @@
                             <input type="hidden" name="discount_amount" id="discount-amount_hidden" value="{{ $discountAmount }}">
                             <input type="hidden" name="selected_address" id="hidden_selected_address">
                             <div class="border p-3">
-                                    <div class="text-black mb-xl-2 ">
-                                        <h3>Phương thức thanh toán</h3>
-                                        <div class="card my-2">
-                                            <div class="d-flex justify-content-start align-items-center p-xl-2">
-                                                <div class="badge text-bg-success">COD</div>
-                                                <p class="ms-2 align-self-center fs-6">Thanh toán khi nhận hàng</p>
-                                                <input type="radio" name="payment_method" value="COD" class="ms-auto" checked>
-                                            </div>
-                                        </div>
-                                        <div class="card my-2">
-                                            <div class="d-flex justify-content-start align-items-center p-xl-2">
-                                                <div class="badge text-bg-warning">VNPay</div>
-                                                <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
-                                                <input type="radio" name="payment_method" value="VNPay" class="ms-auto">
-                                            </div>
+                                <div class="text-black mb-xl-2 ">
+                                    <h3>Phương thức thanh toán</h3>
+                                    <div class="card my-2">
+                                        <div class="d-flex justify-content-start align-items-center p-xl-2">
+                                            <div class="badge text-bg-success">COD</div>
+                                            <p class="ms-2 align-self-center fs-6">Thanh toán khi nhận hàng</p>
+                                            <input type="radio" name="payment_method" value="COD" class="ms-auto" checked>
                                         </div>
                                     </div>
+                                    <div class="card my-2">
+                                        <div class="d-flex justify-content-start align-items-center p-xl-2">
+                                            <div class="badge text-bg-warning">VNPay</div>
+                                            <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
+                                            <input type="radio" name="payment_method" value="VNPay" class="ms-auto">
+                                        </div>
+                                    </div>
+                                </div>
+                                @if ($diachis->isEmpty()) 
+                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-flex justify-content-center" > Vui lòng thêm địa chỉ để đặt hàng</a> 
+                                @else 
                                     <button class="btn btn--e-brand-b-2 w-100" type="submit">ĐẶT HÀNG</button>
-
+                                @endif
                             </div>
                         </form>
                     </div>

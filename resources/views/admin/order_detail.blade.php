@@ -18,9 +18,9 @@
                      <div class="table-responsive">
                         <div class="card-body">
                            <p><strong>Người Mua:</strong> {{ $donHang->user->name }}</p>
-                           <p><strong>Địa Chỉ:</strong> {{ $donHang->diaChi->dc_chi_tiet ?? "NULL"}}</p>
+                           <p><strong>Địa Chỉ:</strong> {{ $donHang->diaChi->ho_ten ?? "NULL"}} | {{ $donHang->diaChi->phone ?? "NULL"}} | {{ $donHang->diaChi->dc_chi_tiet ?? "NULL"}} , {{ $donHang->diaChi->qh ?? "NULL"}} , {{ $donHang->diaChi->thanh_pho ?? "NULL"}}</p>
                            <p><strong>Thời Điểm Mua:</strong> {{ \Carbon\Carbon::parse($donHang->thoi_diem_mua_hang)->format('d/m/Y H:i') }}</p>
-                           <p><strong>Tổng Tiền:</strong> {{ number_format($donHang->tong_dh, 0, ',', '.') }} VND</p>
+                           <p><strong>Tổng Tiền:</strong> {{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</p>
                            <p><strong>Phương Thức Thanh Toán:</strong> {{ $donHang->pttt }}</p>
                            <p><strong>Trạng Thái:</strong>
                               @if ($donHang->trang_thai == 0)
@@ -43,11 +43,9 @@
                                  <div class="row">
                                     <div class="col-md-2 mb-3" >
                                        <select name="trang_thai" id="trang_thai" class="form-control">
-                                          <option value="0" {{ $donHang->trang_thai == '0' ? 'selected' : '' }}>Chờ xử lý</option>
                                           <option value="1" {{ $donHang->trang_thai == '1' ? 'selected' : '' }}>Đã xử lý</option>
                                           <option value="2" {{ $donHang->trang_thai == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
                                           <option value="3" {{ $donHang->trang_thai == '3' ? 'selected' : '' }}>Giao hàng thành công</option>
-                                          <option value="4" {{ $donHang->trang_thai == '4' ? 'selected' : '' }}>Đã hủy</option>
                                        </select>
                                     </div>
                                     <div class="col-md-2 mb-3" >
@@ -98,7 +96,7 @@
                                         <td>{{ $ct->so_luong }}</td>
                                         <td>{{ $ct->size->size_product ?? 'N/A' }}</td>
                                         <td>{{ number_format($ct->gia, 0, ',', '.') }} đ</td>
-                                        <td>{{ number_format($ct->so_luong * $ct->gia, 0, ',', '.') }} VND</td>
+                                        <td>{{ number_format($ct->so_luong * $ct->gia, 0, ',', '.') }} đ</td>
                                     </tr>
                                  @endforeach
                            @else

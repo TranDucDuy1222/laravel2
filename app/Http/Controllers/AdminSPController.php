@@ -92,8 +92,14 @@ class AdminSPController extends AdminController
             // Kiểm tra nếu giakhuyenmai lớn hơn gia, gán giakhuyenmai bằng 0
             if ($obj->gia_km > $obj->gia) {
                 $obj->gia_km = 0;
-            } else if ($obj->gia_km == null) {
+            }else if ($obj->gia_km == null) {
                 $obj->gia_km = 0;
+            }else if ($obj->gia_km < 0){
+                $obj->gia_km = 0;
+            }else if ($obj->gia == null) {
+                return redirect()->back()->with('thongbao', 'Vui lòng nhập giá hợp lệl!');
+            }else if ($obj->gia < 0){
+                return redirect()->back()->with('thongbao', 'Vui lòng nhập giá hợp lệl!');
             }
             $obj->id_dm = (int) $request['id_dm'];
 

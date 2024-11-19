@@ -26,14 +26,11 @@ Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
 Route::get('/', [HomeController::class , 'index'])->name('home');
-Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
+// Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
-// Route::get('/category/{id}', [ProductController::class , 'category']);
-// Route::get('/allproduct', [ProductController::class , 'allproduct']);
-// Route::get('/sale', [ProductController::class , 'sale']);
 
+Route::get('/loai-san-pham/{slug}', [ProductController::class , 'sanpham_loai'])->name('loai-san-pham');
 Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
-Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
 
 
 // Giỏ hàng

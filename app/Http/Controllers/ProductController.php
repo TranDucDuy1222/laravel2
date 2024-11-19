@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use App\Models\Size as size;
 use App\Models\GioHang;
+use App\Models\SanPham;
+use App\Models\Loai;
+use App\Models\DanhMuc;
 
 Paginator::useBootstrap();
 
@@ -37,7 +40,7 @@ class ProductController extends Controller
             $relatedpro = DB::table('san_pham')
                 ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
                 ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
-                ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
+                ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm' ,'mo_ta_ngan' , 'luot_mua' )
                 ->where('danh_muc.id_loai', $query_loai->id_loai)
                 ->where('san_pham.id', '!=', $id)  // không lấy chính sản phẩm hiện tại
                 ->inRandomOrder()
@@ -81,42 +84,54 @@ class ProductController extends Controller
     }
 
     // Sản Phẩm theo danh mục
-    function category($slug)
+    public function sanpham_loai(Request $request, $slug)
     {
-        // Xử lý lại hàm này khi truyền slug thì lấy ra id của danh mục đó và sử dụng id_dm đó để tìm sản phẩm thuộc danh mục đó hiển thị ra
-        $query = DB::table('san_pham')
-            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
-            ->join('danh_muc', 'sanpham.id_dm', '=', 'danh_muc.id')
-            ->where('san_pham.id', $slug)
-            ->orderBy('masp', 'desc');
-        $category = $query->paginate(9)->withQueryString();
+        $perpage = 12;
+        // Khởi tạo query để lấy sản phẩm
+        $query = SanPham::with('danhMuc');
+        // Kiểm tra slug để xác định hành động
+        if ($slug == 'tat-ca-san-pham') {
+            $title = 'Mới và Nổi Bật';
+        } 
+        // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
+        else if ($slug == 'giam-gia') {
+            $title = 'Giảm Giá';
+            $query->where('gia_km', '>', 0);
+        }
+        else {
+            // Lấy ra loại sản phẩm dựa vào slug
+            $loai = Loai::where('slug', $slug)->first();
+            // Kiểm tra nếu loại sản phẩm không tồn tại
+            if (!$loai) {
+                return redirect()->route('home')->with('error', 'Danh mục không tồn tại');
+            }
+            // Lấy danh sách danh mục thuộc loại sản phẩm đó
+            $danh_muc_loai = DanhMuc::where('id_loai', $loai->id)->get();
+            // Lấy danh sách sản phẩm thuộc các danh mục đó
+            $query = $query->whereIn('id_dm', $danh_muc_loai->pluck('id'));
+            $title = $loai->ten_loai; // Đặt tiêu đề là tên loại sản phẩm
+        }
+        $sortProduct = $request->input('sort', 'moi_nhat'); // Mặc định là sản phẩm mới nhất
+        // Xử lý sắp xếp sản phẩm
+        switch ($sortProduct) {
+            case 'tang_dan':
+                $query->orderBy('gia_km', 'asc');
+                break;
+            case 'giam_dan':
+                $query->orderBy('gia_km', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
 
-        $query = DB::table('danh_muc')
-            ->select('ten_dm')
-            ->where('slug', $slug);
-        $danhmuc = $query->first();
+        $list_product = $query->paginate($perpage)->withQueryString();
 
-        return view('user.category', ['categories' => $category, 'danhmuc1' => $danhmuc]);
+        return view('user.all_product', [
+            'products' => $list_product,
+            'title' => $title,
+            'danh_muc_loai' => isset($danh_muc_loai) ? $danh_muc_loai : DanhMuc::get() // Lấy danh sách tất cả danh mục nếu không lọc theo loại
+        ]);
     }
 
-    function allproduct()
-    {
-        $query = DB::table('san_pham')
-            ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm')
-            ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-            ->orderBy('san_pham.id', 'desc');
-        $allproduct = $query->paginate(8)->withQueryString();
-        return view('user.all_product', compact('allproduct'));
-    }
-
-    function sale()
-    {
-        $query = DB::table('san_pham')
-            ->select('id', 'ten_sp', 'gia_km', 'hinh', 'danhmuc.tendm')
-            ->join('danhmuc', 'san_pham.madm', '=', 'danhmuc.madm')
-            ->where('gia_km', '>', 0)
-            ->orderBy('id', 'desc');
-        $sale = $query->paginate(8)->withQueryString();
-        return view('user.saleproduct', compact('sale'));
-    }
 }

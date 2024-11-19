@@ -1,13 +1,103 @@
-.img-header{
-    height: 700px;
+@media (min-width: 1400px) {
+    .img-header {
+        height: 700px;
+    }
 }
-a{
+
+@media (max-width: 1400px) {
+    .img-header {
+        height: 550px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .img-header {
+        height: 500px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 1200px */
+    }
+}
+
+@media (max-width: 992px) {
+    .img-header {
+        height: 500px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 992px */
+    }
+}
+
+@media (max-width: 768px) {
+    .img-header {
+        height: 400px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 768px */
+    }
+}
+
+@media (max-width: 576px) {
+    .img-header {
+        height: 300px;
+        /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 576px */
+    }
+}
+
+a {
     text-decoration: none;
 }
+
 .custom-input {
-    width: 98%;  /* Chiều dài của input chiếm 98% */
+    width: 98%;
+    /* Chiều dài của input chiếm 98% */
     height: 35px;
     border: none;
     outline: none;
     background-color: transparent;
+}
+
+.hover-title {
+    position: relative;
+    color: inherit;
+    /* Giữ nguyên màu chữ */
+    text-decoration: none;
+    /* Loại bỏ gạch chân mặc định */
+}
+
+.hover-title::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    /* Chiều cao của đường gạch chân */
+    bottom: 0;
+    left: 50%;
+    background-color: currentColor;
+    /* Màu gạch chân theo màu chữ */
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.hover-title:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Cuộn menu */
+.scroll-menu {
+    position: fixed;
+    top: 75px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    /* Màu nền với độ trong suốt */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Hiệu ứng đổ bóng để tạo cảm giác nổi lên */
+    z-index: 1000;
+    /* Đảm bảo scroll-menu nằm trên các phần tử khác */
+    transition: background-color 0.3s, box-shadow 0.3s;
+    /* Hiệu ứng chuyển đổi */
+}
+
+.scroll-menu.scrolled {
+    background-color: rgba(255, 255, 255, 1);
+    /* Màu nền thay đổi khi cuộn xuống */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    /* Hiệu ứng đổ bóng tăng khi cuộn xuống */
+    top :0px;
+    margin-top: 0px;
 }

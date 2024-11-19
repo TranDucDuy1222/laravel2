@@ -35,26 +35,14 @@
       <!-- Kích cỡ giày -->
       <div class="ms-1">
         <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Kích cỡ giày
+          Kích cỡ
         </p>
         <ul class="dropdown-menu">
-          <div class="row p-1 justify-content-start g-1">
-            <div class="col-4 col-md-3 col-lg-2 text-center" v-for="size in availableShoeSizes" :key="size">
-              <button class="border w-100" @click="selectShoeSize(size)">{{ size }}</button>
-            </div>
-          </div>
-        </ul>
-      </div>
-
-      <!-- Kích cỡ quần áo -->
-      <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Kích cỡ quần áo
-        </p>
-        <ul class="dropdown-menu">
-          <div class="row p-1 justify-content-center g-1">
-            <div class="col-6 col-md-3 col-lg-2 text-center" style="width: 35px;" v-for="size in availableClothingSizes" :key="size">
-              <button class="border w-100" @click="selectClothingSize(size)">{{ size }}</button>
+          <div class="row p-2 justify-content-start g-1">
+            <div class="col-4 col-md-3 col-lg-2 text-center " v-for="size in availableSizes" :key="size">
+              <button class="rounded-5 border border-dark-subtle p-1 w-120" @click="selectSize(size)">
+                {{ size }}
+              </button>
             </div>
           </div>
         </ul>
@@ -143,8 +131,7 @@ export default {
       products: [],
       danh_mucs: [],
       selectedColor: '', // Màu sắc được chọn
-      selectedShoeSize: '', // Kích thước giày được chọn
-      selectedClothingSize: '', // Kích thước quần áo được chọn
+      selectedSize: '', // Kích thước 
       sortOrder: 'newest', // Mặc định sắp xếp theo mới nhất
     };
   },
@@ -152,35 +139,34 @@ export default {
     filteredDanhMucs() { 
       return this.danh_mucs.filter(dm => dm.slug !== this.slug); 
     },
-    filteredProductsByColor() {
-      console.log("Selected Color:", this.selectedColor); // Debug: Kiểm tra màu sắc được chọn
-      if (this.selectedColor) {
-        return this.products.filter(product => product.color === this.selectedColor);
-      }
-      return this.products;
-    },
-    filteredProductsByColorAndSize() {
-      console.log("Selected Size:", this.selectedShoeSize, this.selectedClothingSize); // Debug: Kiểm tra kích thước được chọn
-      let filtered = this.filteredProductsByColor;
-      if (this.selectedShoeSize) {
-        filtered = filtered.filter(product => product.shoeSize === this.selectedShoeSize);
-      }
-      if (this.selectedClothingSize) {
-        filtered = filtered.filter(product => product.clothingSize === this.selectedClothingSize);
-      }
-      return filtered;
+    filteredProductsByColor() { 
+      console.log("Selected Color:", this.selectedColor);  
+      if (this.selectedColor) { 
+        return this.products.filter(product => product.color === this.selectedColor); 
+      } 
+      return this.products; 
+    }, 
+    filteredProductsByColorAndSize() { 
+      console.log("Selected Size:", this.selectedSize); 
+      let filtered = this.filteredProductsByColor; 
+      if (this.selectedSize) { 
+        filtered = filtered.filter(
+          product => product.sizes.some(size => size.size_product === this.selectedSize && size.so_luong > 0) 
+        ); 
+      } 
+        return filtered; 
     },
     availableColors() {
       const colors = this.products.map(product => product.color);
       return [...new Set(colors)]; // Loại bỏ các màu sắc trùng lặp
     },
-    availableShoeSizes() {
-      const sizes = this.products.map(product => product.shoeSize);
-      return [...new Set(sizes)]; // Loại bỏ các kích thước giày trùng lặp
-    },
-    availableClothingSizes() {
-      const sizes = this.products.map(product => product.clothingSize);
-      return [...new Set(sizes)]; // Loại bỏ các kích thước quần áo trùng lặp
+    availableSizes() { 
+    const sizes = this.products.flatMap(product => 
+        product.sizes
+            .filter(size => size.so_luong > 0) // Lọc những size có so_luong lớn hơn 0
+            .map(size => size.size_product)
+    ); 
+    return [...new Set(sizes)]; // Loại bỏ các kích thước trùng lặp
     },
     colorClasses() {
       return {
@@ -190,8 +176,9 @@ export default {
         'Đen': 'bg-dark',
         'Trắng': 'bg-light',
         'Xám': 'border-secondary bg-secondary',
-        'Hồng': 'bgpink',
-        'Xanh Lá': 'border-success bg-success'
+        'Hồng': 'bg-pink',
+        'Xanh Lá': 'border-success bg-success',
+        'Nâu':'bg-brown'
       };
     },
     colorNames() {
@@ -203,7 +190,8 @@ export default {
         'Trắng': 'Trắng',
         'Xám': 'Xám',
         'Hồng': 'Hồng',
-        'Xanh Lá': 'Xanh Lá'
+        'Xanh Lá': 'Xanh Lá',
+        'Nâu': 'Nâu'
       };
     }
   },
@@ -216,8 +204,7 @@ export default {
         .then(response => {
           this.products = response.data.list_product;
           this.danh_mucs = response.data.danh_mucs;
-          this.sortProducts(this.sortOrder); // Sắp xếp sản phẩm ngay sau khi lấy dữ liệu
-          console.log("Products:", this.products); // Debug: Kiểm tra dữ liệu sản phẩm
+          this.sortProducts(this.sortOrder); 
         })
         .catch(error => {
           console.error("Đã xảy ra lỗi khi lấy dữ liệu:", error);
@@ -243,16 +230,10 @@ export default {
       console.log("Sorted Products:", this.products); // Debug: Kiểm tra sản phẩm đã sắp xếp
     },
     selectColor(color) {
-      console.log("Color selected:", color); // Debug: Kiểm tra màu sắc được chọn
       this.selectedColor = color;
     },
-    selectShoeSize(size) {
-      console.log("Shoe Size selected:", size); // Debug: Kiểm tra kích thước giày được chọn
-      this.selectedShoeSize = size;
-    },
-    selectClothingSize(size) {
-      console.log("Clothing Size selected:", size); // Debug: Kiểm tra kích thước quần áo được chọn
-      this.selectedClothingSize = size;
+    selectSize(size) {
+      this.selectedSize = size;
     },
     formattedPrice(product) {
       const gianew = product.gia_km > 0 ? product.gia_km : product.gia;
@@ -283,5 +264,12 @@ export default {
 
 
 <style scoped>
-/* Thêm CSS cho component nếu cần */
+  .bg-brown{
+    color: brown;
+    background-color: brown;
+  }
+  .bg-pink{
+    color: pink;
+    background-color: pink;
+  }
 </style>
