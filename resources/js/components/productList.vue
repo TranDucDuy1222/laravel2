@@ -8,7 +8,6 @@
           data-bs-toggle="dropdown" aria-expanded="false">
           Danh mục
         </p>
-        <!-- Hiển thị danh sách danh mục --> 
         <ul class="dropdown-menu"> 
           <li v-for="dm in filteredDanhMucs" :key="dm.id" class="d-flex align-items-center"> 
             <a class="w-100 d-flex align-items-center" href="#" @click.prevent="navigateToCategory(dm.slug)"> 
@@ -17,70 +16,56 @@
           </li> 
         </ul>
       </div>
+
       <!-- Màu sắc -->
       <div class="ms-1">
-    <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
-       data-bs-toggle="dropdown" aria-expanded="false">
-       Màu Sắc
-    </p>
-    <div class="dropdown-menu">
-        <div class="row p-1 justify-content-center">
-            <!-- Danh sách các màu sắc -->
-            <div class="d-flex flex-wrap justify-content-center align-items-center">
-  <div class="col-6 col-md-4 col-lg-3 mb-3 me-3 text-center" v-for="color in availableColors" :key="color">
-    <button class="rounded-circle border" :class="colorClasses[color]"
-            @click="selectedColor = color"
-            style="height: 40px; width: 40px;"></button>
-    <p>{{ colorNames[color] }}</p>
-  </div>
-</div>
-
-        </div>
-    </div>
-</div>
-
-
-
-      <!-- Kích cở giày -->
-      <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          Kích cở giày
+        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Màu Sắc
         </p>
-        <ul class="dropdown-menu"> 
-          <div class="row p-1 justify-content-start g-1"> 
-            <div class="col-4 col-md-3 col-lg-2 text-center"> 
-              <button class="border w-100"> 37.5 </button> 
-            </div> 
-            <div class="col-4 col-md-3 col-lg-2 text-center"> 
-              <button class="border w-100"> 37 </button> 
-            </div> 
-            <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> 
-          </div> 
+        <div class="dropdown-menu">
+          <div class="row p-1 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-3 mb-3 me-3 text-center" v-for="color in availableColors" :key="color">
+              <button class="rounded-circle border" :class="colorClasses[color]" @click="selectColor(color)" style="height: 40px; width: 40px;"></button>
+              <p>{{ colorNames[color] }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kích cỡ giày -->
+      <div class="ms-1">
+        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Kích cỡ giày
+        </p>
+        <ul class="dropdown-menu">
+          <div class="row p-1 justify-content-start g-1">
+            <div class="col-4 col-md-3 col-lg-2 text-center" v-for="size in availableShoeSizes" :key="size">
+              <button class="border w-100" @click="selectShoeSize(size)">{{ size }}</button>
+            </div>
+          </div>
         </ul>
       </div>
-      <!-- Kích cở quần áo -->
+
+      <!-- Kích cỡ quần áo -->
       <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          Kích cở quần áo
+        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Kích cỡ quần áo
         </p>
-        <ul class="dropdown-menu ">
+        <ul class="dropdown-menu">
           <div class="row p-1 justify-content-center g-1">
-            <div class="col-6 col-md-3 col-lg-2 text-center" style="width: 35px;"> <button class="border w-100"> S </button> </div> 
-            <div class="col-6 col-md-3 col-lg-2 text-center" style="width: 35px;"> <button class="border w-100"> M </button> </div> 
-            <div class="col-6 col-md-3 col-lg-2 text-center" style="width: 35px;"> <button class="border w-100"> L </button> </div> 
-            <div class="col-6 col-md-3 col-lg-2 text-center" style="width: 35px;"> <button class="border w-100"> XL </button> </div>           
+            <div class="col-6 col-md-3 col-lg-2 text-center" style="width: 35px;" v-for="size in availableClothingSizes" :key="size">
+              <button class="border w-100" @click="selectClothingSize(size)">{{ size }}</button>
+            </div>
           </div>
         </ul>
       </div>
     </div>
+    
     <div class="col-12">
       <!-- Sắp xếp -->
       <div class="d-flex justify-content-end">
-        <div class="">
-          <button class="btn btn-outline-secondary rounded-pill dropdown-toggle" href="#" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
+        <div>
+          <button class="btn btn-outline-secondary rounded-pill dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Sắp xếp
           </button>
           <ul class="dropdown-menu">
@@ -93,49 +78,52 @@
       <br>
       <!-- show sản phẩm -->
 
-<div v-if="filteredProductsByColor.length === 0" class="alert alert-warning">
-  Chưa có sản phẩm trong danh mục này.
-</div>
-<div v-else class="row">
-  <div v-for="product in filteredProductsByColor" :key="product.id" class="col-lg-3 col-md-4 col-sm-6 mb-3">
-    <div class="product-short">
-      <div class="product-short__container">
-        <div class="card">
-          <a :href="`/detail/${product.id}`" id="hover-img-home" :class="{ 'image-container': product.trang_thai === 3 }">
-            <img :src="`/uploads/product/${product.hinh}`" @error="handleImageError" style="max-height: 295px;" alt="Hình sản phẩm" class="w-100">
-            <img v-if="product.trang_thai === 3" src="/public/uploads/logo/logocs1.png" @error="handleImageError" class="overlay-image" alt="">
-          </a>
-          <div class="card-body">
-            <a href="" class="text-center">
-              <h5 id="hover-sp">{{ product.ten_sp }}</h5>
-            </a>
-            <div class="row">
-              <div class="col-12">
-                <div class="row">
-                  <div class="col-7 text-start">
-                    <div class="d-flex align-items-center" v-if="product.trang_thai != 3">
-                      <strong id="color-gia">{{ formattedPrice(product) }}đ</strong>
-                      <div v-if="product.gia_km >= 1 && discountPercentage(product) > 1" class="bg-text-success text-danger ms-2" style="font-size: 10px;">
-                        -{{ discountPercentage(product) }}%
+      <div v-if="filteredProductsByColorAndSize.length === 0" class="alert alert-warning">
+        Chưa có sản phẩm trong danh mục này.
+      </div>
+      <div v-else class="row">
+        <div v-for="product in filteredProductsByColorAndSize" :key="product.id" class="col-lg-3 col-md-4 col-sm-6 mb-3">
+          <div class="product-short">
+            <div class="product-short__container">
+              <div class="card">
+                <a :href="`/detail/${product.id}`" id="hover-img-home" :class="{ 'image-container': product.trang_thai === 3 }">
+                  <img :src="`/uploads/product/${product.hinh}`" @error="handleImageError" style="max-height: 295px;" alt="Hình sản phẩm" class="w-100">
+                  <img v-if="product.trang_thai === 3" src="/public/uploads/logo/logocs1.png" @error="handleImageError" class="overlay-image" alt="">
+                </a>
+                <div class="card-body">
+                  <a href="" class="text-center">
+                    <h5 id="hover-sp">{{ product.ten_sp }}</h5>
+                  </a>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col-7 text-start">
+                          <div class="d-flex align-items-center" v-if="product.trang_thai != 3">
+                            <strong id="color-gia">{{ formattedPrice(product) }}đ</strong>
+                            <div v-if="product.gia_km >= 1 && discountPercentage(product) > 1" class="bg-text-success text-danger ms-2" style="font-size: 10px;">
+                              -{{ discountPercentage(product) }}%
+                            </div>
+                          </div>
+                          <div v-else>
+                            <a href="/lien-he" id="hover-sp">
+                              <strong id="color-gia">Liên hệ</strong>
+                            </a>
+                          </div>
+                        </div>
+                        <div class="col-5 text-end">
+                          <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                          <span class="pd-detail__click-count">Đã Bán ({{ product.luot_mua || 0 }})</span>
+                        </div>
                       </div>
                     </div>
-                    <div v-else>
-                      <a href="/lien-he" id="hover-sp">
-                        <strong id="color-gia">Liên hệ</strong>
-                      </a>
+                    <div class="col-12">{{ getDanhMucName(product.id_dm) }}</div>
+                    <div class="col-12 text-truncate">
+                      <span class="pd-detail__click-count" style="font-size: 12px;">
+                        {{ product.mo_ta_ngan }}
+                      </span>
                     </div>
                   </div>
-                  <div class="col-5 text-end">
-                    <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                    <span class="pd-detail__click-count">Đã Bán ({{ product.luot_mua || 0 }})</span>
-                  </div>
                 </div>
-              </div>
-              <div class="col-12">{{ getDanhMucName(product.id_dm) }}</div>
-              <div class="col-12 text-truncate">
-                <span class="pd-detail__click-count" style="font-size: 12px;">
-                  {{ product.mo_ta_ngan }}
-                </span>
               </div>
             </div>
           </div>
@@ -143,11 +131,8 @@
       </div>
     </div>
   </div>
-</div>
-
-    </div>
-  </div>
 </template>
+
 <script>
 import axios from 'axios';
 
@@ -158,6 +143,8 @@ export default {
       products: [],
       danh_mucs: [],
       selectedColor: '', // Màu sắc được chọn
+      selectedShoeSize: '', // Kích thước giày được chọn
+      selectedClothingSize: '', // Kích thước quần áo được chọn
       sortOrder: 'newest', // Mặc định sắp xếp theo mới nhất
     };
   },
@@ -172,9 +159,28 @@ export default {
       }
       return this.products;
     },
+    filteredProductsByColorAndSize() {
+      console.log("Selected Size:", this.selectedShoeSize, this.selectedClothingSize); // Debug: Kiểm tra kích thước được chọn
+      let filtered = this.filteredProductsByColor;
+      if (this.selectedShoeSize) {
+        filtered = filtered.filter(product => product.shoeSize === this.selectedShoeSize);
+      }
+      if (this.selectedClothingSize) {
+        filtered = filtered.filter(product => product.clothingSize === this.selectedClothingSize);
+      }
+      return filtered;
+    },
     availableColors() {
       const colors = this.products.map(product => product.color);
       return [...new Set(colors)]; // Loại bỏ các màu sắc trùng lặp
+    },
+    availableShoeSizes() {
+      const sizes = this.products.map(product => product.shoeSize);
+      return [...new Set(sizes)]; // Loại bỏ các kích thước giày trùng lặp
+    },
+    availableClothingSizes() {
+      const sizes = this.products.map(product => product.clothingSize);
+      return [...new Set(sizes)]; // Loại bỏ các kích thước quần áo trùng lặp
     },
     colorClasses() {
       return {
@@ -221,14 +227,14 @@ export default {
       this.sortOrder = order;
       if (order === 'asc') {
         this.products.sort((a, b) => {
-          const priceA = a.gia_km > 0 ? a.gia_km : a.gia;
-          const priceB = b.gia_km > 0 ? b.gia_km : b.gia;
+          const priceA = a.gia_km >= 1 ? a.gia_km : a.gia;
+          const priceB = b.gia_km >= 1 ? b.gia_km : b.gia;
           return priceA - priceB;
         });
       } else if (order === 'desc') {
         this.products.sort((a, b) => {
-          const priceA = a.gia_km > 0 ? a.gia_km : a.gia;
-          const priceB = b.gia_km > 0 ? b.gia_km : b.gia;
+          const priceA = a.gia_km >= 1 ? a.gia_km : a.gia;
+          const priceB = b.gia_km >= 1 ? b.gia_km : b.gia;
           return priceB - priceA;
         });
       } else if (order === 'newest') {
@@ -236,10 +242,17 @@ export default {
       }
       console.log("Sorted Products:", this.products); // Debug: Kiểm tra sản phẩm đã sắp xếp
     },
-
     selectColor(color) {
       console.log("Color selected:", color); // Debug: Kiểm tra màu sắc được chọn
       this.selectedColor = color;
+    },
+    selectShoeSize(size) {
+      console.log("Shoe Size selected:", size); // Debug: Kiểm tra kích thước giày được chọn
+      this.selectedShoeSize = size;
+    },
+    selectClothingSize(size) {
+      console.log("Clothing Size selected:", size); // Debug: Kiểm tra kích thước quần áo được chọn
+      this.selectedClothingSize = size;
     },
     formattedPrice(product) {
       const gianew = product.gia_km > 0 ? product.gia_km : product.gia;
@@ -264,6 +277,7 @@ export default {
   }
 };
 </script>
+
 
 
 
