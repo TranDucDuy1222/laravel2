@@ -70,12 +70,14 @@
                                         <td>{{ $donHang->pttt }}</td>
                                         <td>
                                             @if ($donHang->trang_thai == 0)
-                                                <span class="badge bg-info">Chưa xử lý</span>
+                                                <span class="badge bg-info">Chờ xử lý</span>
                                             @elseif ($donHang->trang_thai == 1)
-                                                <span class="badge bg-warning">Chưa giao hàng</span>
+                                                <span class="badge bg-warning">Đã xử lý</span>
                                             @elseif ($donHang->trang_thai == 2)
-                                                <span class="badge bg-success">Đã giao thành công</span>
+                                                <span class="badge bg-success">Đã giao cho đơn vị vận chuyển</span>
                                             @elseif ($donHang->trang_thai == 3)
+                                                <span class="badge bg-danger">Giao hàng thành công</span>
+                                            @elseif ($donHang->trang_thai == 4)
                                                 <span class="badge bg-danger">Đã hủy</span>
                                             @endif
                                         </td>

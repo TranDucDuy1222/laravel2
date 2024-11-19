@@ -244,11 +244,13 @@
                                             </div>
                                         </div>
                                         <div class="card my-2">
-                                            <div class="d-flex justify-content-start align-items-center p-xl-2">
-                                                <div class="badge text-bg-warning">VNPay</div>
-                                                <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
-                                                <input type="radio" name="payment_method" value="VNPay" class="ms-auto">
-                                            </div>
+                                            <a href="{{url('/thanh_toan_vnpay')}}" class="text-black">
+                                                <div class="d-flex justify-content-start align-items-center p-xl-2">
+                                                    <div class="badge text-bg-warning">VNPay</div>
+                                                    <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
+                                                    <input type="radio" name="payment_method" value="VNPay" class="ms-auto">
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <button class="btn btn--e-brand-b-2 w-100" type="submit">ĐẶT HÀNG</button>
