@@ -126,6 +126,7 @@ class AdminSPController extends AdminController
             $obj->mo_ta_ct = $request['mo_ta_ct'];
             $obj->mo_ta_ngan = $request['mo_ta_ngan'];
             $obj->an_hien = 0;
+            $obj->tinh_chat = 0;
             $obj->trang_thai = $request['trang_thai'];
             $obj->color = $request['color'];
             $obj->ngay = now();

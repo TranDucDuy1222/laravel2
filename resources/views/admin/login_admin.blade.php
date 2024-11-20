@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <button type="submit" class="l-f-o__create-link btn btn--e-brand-b-2">ĐĂNG NHẬP</button>
+                        <button type="submit" class="l-f-o__create-link btn btn btn-primary">ĐĂNG NHẬP</button>
                     </div>  
                 </form>
             </div>
