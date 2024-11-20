@@ -20,7 +20,7 @@
                            <p><strong>Người Mua:</strong> {{ $donHang->user->name }}</p>
                            <p><strong>Địa Chỉ:</strong> {{ $donHang->diaChi->ho_ten ?? "NULL"}} | {{ $donHang->diaChi->phone ?? "NULL"}} | {{ $donHang->diaChi->dc_chi_tiet ?? "NULL"}} , {{ $donHang->diaChi->qh ?? "NULL"}} , {{ $donHang->diaChi->thanh_pho ?? "NULL"}}</p>
                            <p><strong>Thời Điểm Mua:</strong> {{ \Carbon\Carbon::parse($donHang->thoi_diem_mua_hang)->format('d/m/Y H:i') }}</p>
-                           <p><strong>Tổng Tiền:</strong> {{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</p>
+                           <p><strong>Tổng Tiền:</strong> {{ number_format($donHang->tong_dh, 0, ',', '.') }} VND</p>
                            <p><strong>Phương Thức Thanh Toán:</strong> {{ $donHang->pttt }}</p>
                            <p><strong>Trạng Thái:</strong>
                               @if ($donHang->trang_thai == 0)

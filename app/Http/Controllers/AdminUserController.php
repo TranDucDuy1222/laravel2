@@ -65,7 +65,7 @@ class AdminUserController extends AdminController
 
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('diaChi')->findOrFail($id);
         return view('admin.account_detail', compact('user'));
     }
 
