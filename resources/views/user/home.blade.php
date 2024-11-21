@@ -176,7 +176,7 @@ Trang Chủ - TrendyU
                                                                         onerror="this.src='{{ asset('/uploads') }}'"
                                                                         style="max-height: 295px;" alt="" class="w-100">
                                                                     @if ($item->gia_km > 0)
-                                                                        <img src="{{ asset('/uploads/logo/'. $setting->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                        <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                     @endif
                                                                 </a>
                                                             @elseif ($item->trang_thai == 3)

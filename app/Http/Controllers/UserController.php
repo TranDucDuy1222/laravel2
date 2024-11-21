@@ -12,6 +12,8 @@ use App\Models\DiaChi;
 use PhpParser\Node\Expr\Cast\String_;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\GuiEmail;
 
 class UserController extends Controller
 {
@@ -228,6 +230,17 @@ class UserController extends Controller
         $lien_he = DB::table('settings')->select('phone')->first(); 
         $sdtlien_he = $lien_he ? $lien_he->phone : '';
         return view('user.home_contact' , compact('sdtlien_he'));
+    }
+    public function sendContact(Request $request)
+    {
+        $arr = $request->post();
+        $ht = trim(strip_tags($arr['name']));
+        $email = trim(strip_tags($arr['email']));
+        $nd = trim(strip_tags($arr['noidung']));
+
+        $adminEmail = 'trendyu02@gmail.com'; // Thư được gửi tới quản trị của email này
+        Mail::mailer('smtp')->to($adminEmail)->send(new GuiEmail($ht, $email, $nd));
+        return redirect()->route('user.contact')->with('success', 'Gửi mail thành công!');
     }
 
 }
