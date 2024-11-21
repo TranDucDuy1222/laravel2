@@ -227,8 +227,9 @@ class UserController extends Controller
     }
 
     public function lienHe(){
-
-        return view('user.home_contact');
+        $lien_he = DB::table('settings')->select('phone')->first(); 
+        $sdtlien_he = $lien_he ? $lien_he->phone : '';
+        return view('user.home_contact' , compact('sdtlien_he'));
     }
     public function sendContact(Request $request)
     {

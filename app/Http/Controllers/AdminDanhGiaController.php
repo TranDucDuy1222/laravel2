@@ -22,7 +22,8 @@ class AdminDanhGiaController extends AdminController
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
             ->join('chi_tiet_don_hang', 'danh_gia.id_ctdh', '=', 'chi_tiet_don_hang.id')
             ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
-            ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color')
+            ->join('sizes', 'chi_tiet_don_hang.id_size', '=', 'sizes.id')
+            ->select('danh_gia.*', 'users.name', 'chi_tiet_don_hang.id_size', 'san_pham.color' , 'sizes.size_product')
             ->where('danh_gia.an_hien', $an_hien)
             ->orderByRaw('IFNULL(danh_gia.feedback, 1) ASC')
             ->orderBy('danh_gia.id', 'asc');

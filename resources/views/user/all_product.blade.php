@@ -1,249 +1,157 @@
 @extends('user.layout')
 @section('title')
-Tất Cả Sản Phẩm
+  {{ $title }} - Trendy U
 @endsection
 
 @section('category')
-    @foreach ($loai as $category)
-        <li class="nav-item dropdown">
-            <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                href="{{ route('loai-san-pham',$category->slug) }}">
-                {{$category->ten_loai}}
-            </a>
-            <ul class="dropdown-menu" id="userDropdown">
-                @foreach ($danh_muc as $dm)
-                    @if ($dm->id_loai == $category->id)
-                        <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham' , $dm->slug)}}">{{$dm->ten_dm}}</a></li>
-                    @endif
-                @endforeach
-            </ul>
-        </li>
+  @foreach ($loai as $category)
+    <li class="nav-item dropdown">
+      <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+      href="{{ route('loai-san-pham', $category->slug) }}">
+      {{$category->ten_loai}}
+      </a>
+      <ul class="dropdown-menu" id="userDropdown">
+      @foreach ($danh_muc as $dm)
+      @if ($dm->id_loai == $category->id)
+      <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a>
+      </li>
+    @endif
     @endforeach
+      </ul>
+    </li>
+  @endforeach
 @endsection
 
 @section('content')
 
 <!-- all product -->
-<div class="container-fluid">
-  <div class="mx-xl-5 mt-2 row">
-    <div class="col-lg-2 overflow-auto" id="box-menu-dung">
-      <!-- Tìm kiếm -->
-      <div class="ms-2">
-        <div class="search-box bg-white">
-          <i class="fa-solid fa-magnifying-glass fa-fade"></i>
-          <input class="form-control" type="text" ng-model="keyw" name="keyw" placeholder="Nhập...">
-        </div>
-      </div>
-      <hr>
-      <div class="w-100 menu-dung">
-        <div class="ms-3">
-          <i class="fa-solid fa-list fa-bounce"></i>
-          <strong class="ms-2">Danh Mục</strong>
-        </div>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Giày Nam</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Giày Nữ</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Giày Trẻ Em</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Giảm Giá</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Nike Air Max DN</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Nike Air Max DN</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Nike Air Max 1</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Nike Air Max 90</p>
-          </a>
-        </li>
-        <li><a class="w-100 d-flex" href="#">
-            <input type="checkbox" class="ms-3">
-            <p class="m-auto fs-5">Nike Air Max 95</p>
-          </a>
-        </li>
-      </div>
-      <div class="accordion" id="accordionPanelsStayOpenExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-              data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-              aria-controls="panelsStayOpen-collapseOne">
-              <strong>Giá Tiền</strong>
-            </button>
-          </h2>
-          <div class="w-100 menu-dung" id="panelsStayOpen-collapseOne">
-            <li><a class="w-100 d-flex" href="#">
-                <input type="checkbox" class="ms-3">
-                <p class="m-auto fs-6"><strong>1.00.000->2.000.000 VNĐ</strong></p>
-              </a>
-            </li>
-            <li><a class="w-100 d-flex" href="#">
-                <input type="checkbox" class="ms-3">
-                <p class="m-auto fs-6"><strong>2.00.000->4.000.000 VNĐ</strong></p>
-              </a>
-            </li>
-            <li><a class="w-100 d-flex" href="#">
-                <input type="checkbox" class="ms-3">
-                <p class="m-auto fs-5">Trên 4.000.000 VNĐ</p>
-              </a>
-            </li>
-            <li><a class="w-100 d-flex" href="#">
-                <input type="checkbox" class="ms-3">
-                <p class="m-auto fs-5">Dưới 1.000.000 VNĐ</p>
-              </a>
-            </li>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
-              aria-controls="panelsStayOpen-collapseThree">
-              <strong>Màu Sắc</strong>
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-            <div class="accordion-body row">
-              <div class="col-lg-4">
-                <button class="rounded-circle border border-danger bg-danger"
-                  style="height: 40px; width: 40px;"></button>
-                <p>Đỏ</p>
-              </div>
-              <div class="col-lg-4">
-                <button class="rounded-circle border border-primary bg-primary"
-                  style="height: 40px; width: 40px;"></button>
-                <p>Xanh</p>
-              </div>
-              <div class="col-lg-4">
-                <button class="rounded-circle border border-warning bg-warning"
-                  style="height: 40px; width: 40px;"></button>
-                <p>Vàng</p>
-              </div>
-              <div class="col-lg-4">
-                <button class="rounded-circle bg-dark" style="height: 40px; width: 40px;"></button>
-                <p>Đen</p>
-              </div>
-              <div class="col-lg-4">
-                <button class="rounded-circle border border-white bg-light" style="height: 40px; width: 40px;"></button>
-                <p>Trắng</p>
-              </div>
-              <div class="col-lg-4">
-                <button class="rounded-circle border border-secondary bg-secondary"
-                  style="height: 40px; width: 40px;"></button>
-                <p>Xám</p>
-              </div>
-              <div class="col-lg-4">
-                <button class="rounded-circle border bgpink" style="height: 40px; width: 40px;"></button>
-                <p>Hồng</p>
-              </div>
-              <div class="col-lg-4">
-                <button class="rounded-circle border border-success bg-success"
-                  style="height: 40px; width: 40px;"></button>
-                <p>Xanh Lá</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false"
-              aria-controls="panelsStayOpen-collapseFour">
-              <strong>Size</strong>
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
-            <div class="w-100 menu-dung">
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">Nam</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">Nữ</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">Dành cho trẻ em</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">35->36</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">36->37</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">37->38</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">38->39</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">39->40</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">40->41</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">41->42</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">42->43</p>
-                </a>
-              </li>
-              <li><a class="w-100 d-flex" href="#">
-                  <input type="checkbox" class="ms-3">
-                  <p class="m-auto fs-5">43->44</p>
-                </a>
-              </li>
-            </div>
-          </div>
-        </div>
+<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="2000">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner img-header-all">
+    <div class="carousel-item active">
+      <img src="{{ asset('/imgnew/allpro.jpg') }}" class="d-block w-100 img-header-all" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>First slide label</h5>
+        <p>Some representative placeholder content for the first slide.</p>
       </div>
     </div>
-    <div class="col-lg-10">
+    <div class="carousel-item" >
+      <img src="{{ asset('/imgnew/allpro2.png') }}" class="d-block w-100 img-header-all" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Second slide label</h5>
+        <p>Some representative placeholder content for the second slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{{ asset('/imgnew/allpro3.webp') }}" class="d-block w-100 img-header-all" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<div class="container">
+  <div class="mt-2 row">
+    <h3 class="text-black" >Bộ Lọc Sản Phẩm</h3>
+    <div class="col-12 overflow-x-auto d-flex" id="">
+      <!-- Danh mục -->
+      <div class="menu-ngang">
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Danh mục
+        </p>
+        <ul class="dropdown-menu">
+          @foreach ($danh_muc as $dm)
+            <li class="d-flex align-items-center">
+                <a class="w-100 d-flex align-items-center" href="#">
+                    <input type="checkbox" name="selected_products[]" class="form-check-input small-checkbox ms-3 me-2" >
+                    <p class="text-start mb-0">{{ $dm->ten_dm }}</p>
+                </a>
+            </li>
+          @endforeach        
+        </ul>
+      </div>
+      <!-- Màu sắc -->
+      <div class="ms-1 menu-ngang">
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Màu Sắc
+        </p>
+        <div class="dropdown-menu">
+          <div class="row p-1 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle border border-danger bg-danger" style="height: 40px; width: 40px;"></button>
+              <p>Đỏ</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle border border-primary bg-primary" style="height: 40px; width: 40px;"></button>
+              <p>Xanh</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle border border-warning bg-warning" style="height: 40px; width: 40px;"></button>
+              <p>Vàng</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle bg-dark" style="height: 40px; width: 40px;"></button>
+              <p>Đen</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle border bg-light" style="height: 40px; width: 40px;"></button>
+              <p>Trắng</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle border border-secondary bg-secondary" style="height: 40px; width: 40px;"></button>
+              <p>Xám</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle border bgpink" style="height: 40px; width: 40px;"></button>
+              <p>Hồng</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-3 text-center">
+              <button class="rounded-circle border border-success bg-success" style="height: 40px; width: 40px;"></button>
+              <p>Xanh Lá</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <!-- Kích cở giày -->
+      <div class="ms-1 menu-ngang">
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Kích cở giày
+        </p>
+        <ul class="dropdown-menu"> 
+          <div class="row p-1 justify-content-start g-1"> 
+            <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37.5 </button> </div> <div class="col-4 col-md-3 col-lg-2 text-center"> <button class="border w-100"> 37 </button> </div> 
+          </div> 
+        </ul>
+      </div>
+      <!-- Kích cở quần áo -->
+      <div class="ms-1 menu-ngang">
+        <p class="btn btn-outline-secondary dropdown-toggle rounded-pill" href="#" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Kích cở quần áo
+        </p>
+        <ul class="dropdown-menu ">
+            <li class="dropdown-item" id="moi_nhat" name="moi_nhat" onclick="sortProducts('moi_nhat')">Mới Nhất</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-12 mt-2">
       <!-- Sắp xếp -->
       <div class="d-flex justify-content-end">
         <div class="">
@@ -252,57 +160,102 @@ Tất Cả Sản Phẩm
             Sắp xếp
           </button>
           <ul class="dropdown-menu">
-            <li class="dropdown-item" >Giá tăng dần</li>
-            <li class="dropdown-item" >Giá giảm dần</li>
-            <li class="dropdown-item" >Mới Nhất</li>
+              <li class="dropdown-item" id="moi_nhat" name="moi_nhat" onclick="sortProducts('moi_nhat')">Mới Nhất</li>
+              <li class="dropdown-item" id="tang_dan" name="tang_dan" onclick="sortProducts('tang_dan')">Giá tăng dần</li>
+              <li class="dropdown-item" id="giam_dan" name="giam_dan" onclick="sortProducts('giam_dan')">Giá giảm dần</li>
           </ul>
         </div>
       </div>
       <br>
       <!-- show sản phẩm -->
-        <div class="row">
-          @foreach ($allproduct as $item)
-          @php
-            if ($item->gia_km > 0) {
-              $gia_moi = $item->gia_km;
-            //   $giaold = '<del>' . $gia . '</del>';
-            } else {
-              $gia_moi = $item->gia;
-            }
-            $num = $gia_moi;
-            $gia_chinh = number_format($num, 0, '', '.');
-          @endphp
-          <div class="col-sm-6 col-xl-3 mb-2" >
-            <div class="card">
-              <a href="/detail/{{$item->id}}" id="hover-img-home">
-                <img src="/img/{{$item->hinh}}" onerror="this.src='/imgnew/{{$item->hinh}}'" alt="" class="w-100" style="height: 346px;" >
-              </a>
-              <div class="card-body text-center">
-                <a href="">
-                  <h5 id="hover-sp"> {{$item->ten_sp}} </h5>
-                </a>
-                <div class="row">
-                  <div class="col-sm-6">
-                    {{$item->ten_dm}}
-                  </div>
-                  <div class="col-sm-6">
-                    <strong> {{$gia_chinh}} đ</strong>
+      <div class="row">
+        @foreach($products as $product) 
+        @php 
+          $gianew = $product->gia_km > 0 ? $product->gia_km : $product->gia; 
+          $gia = number_format($gianew, 0, '', '.'); 
+        @endphp
+          <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+            <div class="product-short">
+              <div class="product-short__container">
+                <div class="card">
+                  @if ($product->trang_thai != 3)
+                      <a href="{{ route('product.detail',$product->id)}}" id="hover-img-home">
+                          <img src="{{ asset('/uploads/product/' . $product->hinh) }}"
+                              onerror="this.src='{{ asset('/uploads') }}'"
+                              style="max-height: 295px;" alt="" class="w-100">
+                              @if ($product->gia_km > 0)
+                                  <img src="{{ asset('/uploads/logo/sale.png' ) }}" style="" alt="" class="img-sale">
+                              @endif
+                      </a>
+                  @elseif ($product->trang_thai == 3)
+                      <a href="{{ route('product.detail',$product->id)}}" id="hover-img-home" class="image-container">
+                          <img src="{{ asset('/uploads/product/' . $product->hinh) }}"
+                              onerror="this.src='{{ asset('/uploads') }}'"
+                              style="max-height: 295px;" alt="" class="w-100">
+                          <img src="{{ asset('/uploads/logo/logocs1.png') }}" onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'" class="overlay-image" alt="">
+                      </a>
+                  @endif
+                  <div class="card-body">
+                    <a href="" class="text-center">
+                      <h5 id="hover-sp">{{$product->ten_sp}}</h5>
+                    </a>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-7 text-start">
+                            <div class="d-flex align-items-center">
+                                @if ($product->trang_thai != 3)
+                                    <strong id="color-gia">{{ $gia }}đ</strong>
+                                    @if ($product->gia_km >= 1) 
+                                        @php 
+                                            $discountPercentage = (($product->gia - $product->gia_km) / $product->gia) * 100; 
+                                        @endphp 
+                                        @if ($discountPercentage > 1) 
+                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                            -{{ number_format($discountPercentage, 0) }}% 
+                                            </div> 
+                                        @endif                                
+                                    @endif
+                                @else
+                                    <a href="{{ route('user.contact') }}" id="hover-sp">
+                                        <strong id="color-gia">Liên hệ</strong>
+                                    </a>
+                                @endif
+                            </div>
+                          </div>
+                          <div class="col-5 text-end">
+                            <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                            <span class="pd-detail__click-count">Đã Bán ({{$product->luot_mua ?? 0}})</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        {{$product->danhMuc->ten_dm}}
+                      </div>
+                      <div class="col-12 text-truncate">
+                          <span class="pd-detail__click-count" style="font-size: 12px;">
+                            {{ $product->mo_ta_ngan }}
+                          </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          @endforeach
-        </div>
+        @endforeach
+      </div>
       <!-- Phân trang -->
-      <div class="p-2 d-flex justify-content-center"> {{$allproduct->links()}} </div>
-
+      <div class="text-center p-2 d-flex justify-content-center">{{$products->links('pagination::bootstrap-5')}}</div>
       <!-- End phân trang -->
     </div>
   </div>
 </div>
-
-
+<script> 
+  function sortProducts(sortType) 
+    { var url = new URL(window.location.href); 
+    url.searchParams.set('sort', sortType); 
+    window.location.href = url.toString(); }
+</script>
 <!-- end all product -->
-
 @endsection

@@ -26,13 +26,10 @@ Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
 Route::get('/', [HomeController::class , 'index'])->name('home');
-Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
+// Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
-// Route::get('/category/{id}', [ProductController::class , 'category']);
-// Route::get('/allproduct', [ProductController::class , 'allproduct']);
-// Route::get('/sale', [ProductController::class , 'sale']);
 
-Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
+Route::get('/loai-san-pham/{slug}', [ProductController::class , 'sanpham_loai'])->name('loai-san-pham');
 Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
 
 
@@ -41,7 +38,7 @@ Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])-
 Route::get('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
 Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
-Route::post('/gio-hang/update/{id}', [BuyController::class, 'update'])->name('cart.update');
+Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('cart.update');
 
 // Thanh toán
 Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
@@ -50,7 +47,7 @@ Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name
 Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
 Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
 //Thanh toán vnpay
-Route::get('/thanh_toan_vnpay', [BuyController::class, 'thanh_toan_vnpay']);
+Route::post('/thanh_toan_vnpay', [BuyController::class, 'thanh_toan_vnpay']);
 
 // Đặt hàng
 Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
@@ -82,6 +79,8 @@ Route::post('/profile/dia-chi/{id}', [UserController::class, 'themDiaChi'])->nam
 // Quản lý đơn hàng
 //Route::post('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
 Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
+Route::get('/purchase-cancel/{id}', [OrderController::class, 'huyDon'])->name('user.purchase-cancel');
+Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user.purchase-reivew');
 
 //Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
@@ -99,7 +98,16 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::get('danh-muc/hidden/{id}', [AdminLoaiController::class, 'hidden'])->name('danh-muc.hidden');
     Route::get('danh-muc/show/{id}', [AdminLoaiController::class, 'show'])->name('danh-muc.show');
 
-    Route::resource('san-pham', AdminSPController::class);
+    Route::resource('san-pham', AdminSPController::class)->names([
+        'index' => 'san-pham.index',
+        'create' => 'san-pham.create',
+        'store' => 'san-pham.store',
+        'show' => 'san-pham.show',
+        'edit' => 'san-pham.edit',
+        'update' => 'san-pham.update',
+        'destroy' => 'san-pham.destroy',
+    ]);
+    
     Route::post('/san-pham/hide/{id}', [AdminSPController::class, 'hide'])->name('san-pham.hide');
     Route::post('/san-pham/show/{id}', [AdminSPController::class, 'show'])->name('san-pham.show');
     Route::get('san-pham/khoi-phuc/{id}', [AdminSPController::class, 'khoiphuc']);
@@ -130,8 +138,6 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
 
     Route::resource('magiamgia', MaGiamGiaController::class);
-
-    Route::get('/test', [AdminHomeController::class, 'statistics'])->name('admin.statistics');
 
 });
 

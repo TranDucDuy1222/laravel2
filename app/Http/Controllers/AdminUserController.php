@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Pagination\Paginator;
 
 class AdminUserController extends AdminController
 {
     public function index(Request $request)
     {
         $query = User::query();
+        $perpage = 12;
 
         // Chỉ hiển thị khách hàng không bị ẩn
         if (!$request->has('role') && !$request->has('is_hidden')) {
@@ -25,7 +27,7 @@ class AdminUserController extends AdminController
             $query->where('is_hidden', $request->is_hidden);
         }
 
-        $users = $query->get();
+        $users = $query->paginate($perpage);
 
         return view('admin.account', compact('users'));
 
@@ -33,7 +35,7 @@ class AdminUserController extends AdminController
 
     public function create()
     {
-        return view('admin.add_account');
+        return view('admin.account_add');
     }
 
     public function store(Request $request)
