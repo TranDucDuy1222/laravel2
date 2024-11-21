@@ -257,10 +257,6 @@ function redirectToProductPage() {
 }
 </script>
 
-
-
-
-
 <script>
    function applyFilters() {
       const trangthai = document.getElementById('trangthai').value;

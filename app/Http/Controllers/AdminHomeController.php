@@ -33,21 +33,13 @@ class AdminHomeController extends AdminController
             ->where('role', 0)
             ->get();
 
-        $dsSP = DB::table('san_pham')
-            ->join('sizes', 'san_pham.id', '=', 'sizes.id_product')
-            ->select(
-                'san_pham.id',
-                'san_pham.hinh',
-                'san_pham.ten_sp',
-                'san_pham.color',
-                'san_pham.trang_thai',
-                DB::raw('SUM(sizes.so_luong) as tong_so_luong')
-            )
-            ->groupBy('san_pham.id', 'san_pham.hinh', 'san_pham.ten_sp', 'san_pham.color', 'san_pham.trang_thai')
-            ->havingRaw('SUM(sizes.so_luong) < 10') // Điều kiện: tổng số lượng < 10
-            ->orderBy('tong_so_luong', 'ASC')
+        $dsSP = SanPham::with('sizes')  // Tải các size cùng với sản phẩm
+            ->whereHas('sizes', function($query) {  // Chỉ lấy sản phẩm có size có số lượng nhỏ hơn 5
+                $query->where('so_luong', '<', 10);
+            })
             ->get();
-            
+         
+        
         $dsDG = DB::table('danh_gia')
             ->join('san_pham', 'danh_gia.id_sp', '=', 'san_pham.id')
             ->join('users', 'danh_gia.id_user', '=', 'users.id')
@@ -93,21 +85,28 @@ class AdminHomeController extends AdminController
 
         $data = $query->orderBy('thoi_diem_mua_hang', 'asc')->get();
 
-        $today = now()->toDateString();
-        // Tổng số đơn hàng trong ngày
-        $orderCount = DB::table('don_hang')->whereDate('thoi_diem_mua_hang', $today)->count();
+        // Lấy kiểu lọc
+        $filterType = $request->input('filter');
+        $query = DonHang::query();
 
-        // Tổng doanh thu trong ngày
-        $totalRevenue = DB::table('don_hang')->whereDate('thoi_diem_mua_hang', $today)->sum('tong_dh');
-
-        // Tổng sản phẩm bán được trong ngày
+        if ($filterType === 'day' && $request->input('filter_date')) {
+            $query->whereDate('thoi_diem_mua_hang', $request->input('filter_date'));
+        } elseif ($filterType === 'month' && $request->input('filter_month')) {
+            $month = Carbon::parse($request->input('filter_month'))->month;
+            $year = Carbon::parse($request->input('filter_month'))->year;
+            $query->whereMonth('thoi_diem_mua_hang', $month)
+                ->whereYear('thoi_diem_mua_hang', $year);
+        } elseif ($filterType === 'year' && $request->input('filter_year')) {
+            $query->whereYear('thoi_diem_mua_hang', $request->input('filter_year'));
+        }
+        // Tính toán thống kê
+        $newCustomers = DB::table('users')->whereDate('created_at', $request->input('filter_date') ?: now())->count();
+        $orderCount = $query->count();
+        $totalRevenue = $query->sum('tong_dh');
         $totalProductsSold = DB::table('chi_tiet_don_hang')
-            ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
-            ->whereDate('don_hang.thoi_diem_mua_hang', $today)
-            ->sum('chi_tiet_don_hang.so_luong');
-
-        // Tổng số khách hàng mới tham gia trong ngày
-        $newCustomers = DB::table('users')->whereDate('created_at', $today)->count();
+        ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
+        ->whereIn('don_hang.id', $query->pluck('id')) 
+        ->sum('chi_tiet_don_hang.so_luong');
 
         $orderStatusData = DB::table('don_hang')
             ->selectRaw('trang_thai, COUNT(*) as count')
