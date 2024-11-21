@@ -14,7 +14,7 @@ Quản Lý Tài Khoản
                   </div>
                   <div class="col-sm-12 col-md-6">
                         <div class="user-list-files d-flex justify-content-end">
-                           <a href="{{route('danh-muc.create')}}" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                           <a href="{{route('tai-khoan.create')}}" class="btn btn-dark">
                               <i class="fa-solid fa-plus"></i> Thêm tài khoản mới
                            </a>
                         </div>

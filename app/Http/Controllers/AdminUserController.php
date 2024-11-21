@@ -75,7 +75,7 @@ class AdminUserController extends AdminController
         if (auth()->user()->role != 1) {
         return redirect()->route('tai-khoan.index')->with('error', 'Bạn không thể chỉnh sửa tài khoản này.');
         }
-        return view('admin.edit_account', compact('user'));
+        return view('admin.account_edit', compact('user'));
     }
 
     public function update(Request $request, $id)
