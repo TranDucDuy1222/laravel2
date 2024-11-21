@@ -126,7 +126,7 @@ a { text-decoration: none; }
 /*---------------------------------------------------------------------
                              Icon Box
 -----------------------------------------------------------------------*/
-.iq-icon-box { height: 64px; width: 64px; line-height: 64px; text-align: center; margin-right: 10px; font-size: 26px; text-decoration: none; }
+.iq-icon-box { height: 64px; width: 64px; line-height: 64px; text-align: center; font-size: 26px; text-decoration: none; }
 .iq-icon-box:hover { text-decoration: none; }
 
 /*---------------------------------------------------------------------
@@ -719,7 +719,7 @@ FAQ
 -----------------------------------------------------------------------*/
 .iq-accordion.career-style.faq-style .iq-accordion-block .accordion-title span { padding-left: 0px; }
 .iq-accordion.career-style .iq-accordion-block { margin-bottom: 30px; }
-.iq-accordion.career-style.faq-style .accordion-title:before { display: inline-block; cursor: pointer; content: "\f218"; font-family: "Ionicons"; position: absolute; top: -8px; right: 15px; color: #1e1e1e; font-size: 16px; line-height: 16px; font-weight: normal; -webkit-transition: all 0.25s ease-in-out 0s; -moz-transition: all 0.25s ease-in-out 0s; transition: all 0.25s ease-in-out 0s; border-radius: 15px; width: 45px; height: 45px; line-height: 45px; text-align: center; }
+.iq-accordion.career-style.faq-style .accordion-title:before { display: inline-block; cursor: pointer; content: "\f218"; ; position: absolute; top: -8px; right: 15px; color: #1e1e1e; font-size: 16px; line-height: 16px; font-weight: normal; -webkit-transition: all 0.25s ease-in-out 0s; -moz-transition: all 0.25s ease-in-out 0s; transition: all 0.25s ease-in-out 0s; border-radius: 15px; width: 45px; height: 45px; line-height: 45px; text-align: center; }
 .iq-accordion.career-style.faq-style .iq-accordion-block .accordion-details p { padding-left: 15px; padding-top: 15px; padding-bottom: 15px; }
 .iq-accordion.career-style .iq-accordion-block .accordion-title span { font-size: 16px; display: table-cell; color: var(--iq-dark); }
 .iq-accordion.career-style.faq-style .iq-accordion-block.accordion-active .accordion-title:before { content: "\f209"; display: inline-block; }
@@ -931,7 +931,7 @@ Calender
 #form-wizard3 fieldset:not(:first-of-type) { display: none }
 #top-tabbar-vertical { overflow: hidden; color: var(--iq-body-text); margin: 0 -20px 60px; }
 #top-tabbar-vertical .active {color: #964B58; }
-#top-tabbar-vertical li { list-style-type: none; font-size: 18px; width: 100%; float: left; position: relative; font-weight: 400 }
+#top-tabbar-vertical li { list-style-type: none; font-size: 14px; width: 100%; float: left; position: relative; font-weight: 400 }
 #top-tabbar-vertical li i { display: inline-block; text-align: center; height: 50px; width: 50px; line-height: 50px; font-size: 20px; border-radius: 50%; margin: 0 20px 0 0; }
 #top-tabbar-vertical li#personal i { background: var(--iq-light-primary);color: #964B58; }
 #top-tabbar-vertical li#contact i { background: var(--iq-light-danger); color: var(--iq-danger); }
