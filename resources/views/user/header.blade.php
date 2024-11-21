@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="/FE/css/cssHome.css">
   <link rel="stylesheet" href="/FE/css/buy.css">
   <link rel="stylesheet" href="/FE/css/profile.css">
+  <link rel="stylesheet" href="/FE/css/search.css">
 
 
   @vite('resources/css/app.css')
@@ -55,15 +56,12 @@
     <nav class="primary-nav primary-nav-wrapper--border">
       <div class="container">
         <div class="primary-nav">
-          <a class="main-logo" href="/">
+          <a class="main-logo-big" href="/">
             <img src="{{ asset('uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
           </a>
-          <form class=" ms-xl-5 main-form border rounded-4 border-dark-subtle">
-            <div class="d-flex align-items-center ms-2">
-              <i class="fa-solid fa-magnifying-glass fa-beat-fade" style="color: #080808;"></i>
-              <input class="custom-input border-0 ms-2" type="search" name="keyw" placeholder="Nhập...">
-            </div>
-          </form>
+          <div id="searchApp" class="search-reponsive main-form border rounded-4 border-dark-subtle">
+              <search-component></search-component>
+          </div>
           <div class="menu-init">
             <div class="ah-lg-mode">
               <ul class="ah-list ah-list--design1 ah-list--link-color-secondary">
@@ -114,14 +112,14 @@
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <ul class="navbar-nav ms-auto ah-list--design2 ah-list--link-color-secondary">
-              <li class="nav-item">
+              <li class="nav-item" style="background: none;">
                 <a class="nav-link fz " href="{{ url('loai-san-pham/tat-ca-san-pham') }}">
                   <p class="hover-title fz">
                     Mới và Nổi Bật
                   </p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" style="background: none;">
                 <a class="nav-link fz" href="{{ url('loai-san-pham/giam-gia') }}">
                   <p class="hover-title fz">
                     Giảm Giá
@@ -129,10 +127,12 @@
                 </a>
               </li>
               @yield('category')
-
             </ul>
           </div>
         </div>
+        <a class="main-logo-small" href="/">
+            <img src="{{ asset('uploads/logo/logolight.png') }}" width="140" height="60" alt="" />
+          </a>
         <div class="menu-init">
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample3"
             aria-controls="offcanvasExample3">

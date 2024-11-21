@@ -45,6 +45,11 @@
                            <span class="app-menu__label">Đánh Giá</span>
                         </a>
                      </li>
+                     <li><a href="{{url('admin/email')}}">
+                           <i class='sa-nav__icon fa-solid fa-envelope-open-text'></i>
+                           <span class="app-menu__label">Email</span>
+                        </a>
+                     </li>
                      <li><a href="{{url('admin/trang-chu')}}">
                            <i class='sa-nav__icon fa-solid fa-house-user'></i>
                            <span class="app-menu__label">Trang Chủ</span>

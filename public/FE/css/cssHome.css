@@ -434,7 +434,6 @@ input::-ms-clear {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     position: relative;
-    height: 80px;
     width: 100%;
     -ms-flex-pack: justify;
     justify-content: space-between;
@@ -451,10 +450,7 @@ input::-ms-clear {
     display: block;
 }
 
-.main-form {
-    position: relative;
-    width: 35%;
-}
+
 
 #main-search {
     padding: 0 36px 0 18px;
@@ -2023,10 +2019,10 @@ input::-ms-clear {
 
 .overlay-image {
     position: absolute;
-    top: -20px;
-    left: -10px;
-    width: 150px;
-    height: 150px;
+    top: -14px;
+    left: -6px;
+    width: 100px;
+    height: 100px;
     z-index: 1;
     pointer-events: none;
     /* Để hình ảnh chồng không ảnh hưởng đến tương tác */

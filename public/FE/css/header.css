@@ -1,12 +1,28 @@
 @media (min-width: 1400px) {
     .img-header {
-        height: 700px;
+        height: 600px;
     }
 }
 
 @media (max-width: 1400px) {
     .img-header {
-        height: 550px;
+        height: 500px;
+    }
+}
+
+@media (min-width: 1201px) {
+    .main-logo-big {
+        display: block;
+    }
+    .main-logo-small {
+        display: none;
+    }
+    .search-reponsive{
+        margin: 0 auto;
+    }
+    .main-form {
+        position: relative;
+        width: 35%;
     }
 }
 
@@ -14,6 +30,19 @@
     .img-header {
         height: 500px;
         /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 1200px */
+    }
+    .search-reponsive{
+        margin: 0 10%;
+    }
+    .main-form{
+        width: 90%;
+    }
+    .main-logo-big {
+        display: none;
+    }
+
+    .main-logo-small {
+        display: block;
     }
 }
 
@@ -98,6 +127,6 @@ a {
     /* Màu nền thay đổi khi cuộn xuống */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     /* Hiệu ứng đổ bóng tăng khi cuộn xuống */
-    top :0px;
+    top: 0px;
     margin-top: 0px;
 }

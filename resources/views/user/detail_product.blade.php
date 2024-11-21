@@ -318,11 +318,22 @@ Chi Tiết : {{$detail->ten_sp}}
                             <div class="product-short">
                                 <div class="product-short__container">
                                     <div class="card">
-                                        <a href="/detail/{{$item->id}}" id="hover-img-home">
-                                            <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                
-                                                style="max-height: 295px;" alt="" class="w-100">
-                                        </a>
+                                        @if ($item->trang_thai_san_pham != 3)
+                                            <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                    onerror="this.src='{{ asset('/uploads') }}'"
+                                                    style="max-height: 295px;" alt="" class="w-100">
+                                                @if ($item->gia_km > 0)
+                                                    <img src="{{ asset('/uploads/logo/sale.png' ) }}" style="" alt="" class="img-sale">
+                                                @endif
+                                            </a>
+                                        @elseif ($item->trang_thai_san_pham == 3)
+                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                    style="max-height: 295px;" alt="" class="w-100">
+                                                <img src="{{ asset('/uploads/logo/') }}" onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'" class="overlay-image" alt="">
+                                            </a>
+                                        @endif
                                         <div class="card-body text-center">
                                             <a href="">
                                                 <h5 id="hover-sp">{{$item->ten_sp}}</h5>

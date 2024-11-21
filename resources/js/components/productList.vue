@@ -1,10 +1,10 @@
 <template>
   <div class="mx-xl-5 mt-2 row">
-    <h3 class="text-black">Bộ Lọc Sản Phẩm</h3>
+    <h3 class="text-black my-md-2">Bộ Lọc Sản Phẩm</h3>
     <div class="col-12 overflow-x-auto d-flex" id="box-menu-ngang">
       <!-- Danh mục -->
       <div class="menu-ngang">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button"
+        <p class="btn btn-outline-secondary p-1 rounded-3 dropdown-toggle" href="#" role="button"
           data-bs-toggle="dropdown" aria-expanded="false">
           Danh mục
         </p>
@@ -19,7 +19,7 @@
 
       <!-- Màu sắc -->
       <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <p class="btn btn-outline-secondary p-1 rounded-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Màu Sắc
         </p>
         <div class="dropdown-menu">
@@ -34,13 +34,13 @@
 
       <!-- Kích cỡ giày -->
       <div class="ms-1">
-        <p class="border p-1 rounded-1 text-black dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <p class="btn btn-outline-secondary p-1 rounded-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Kích cỡ
         </p>
-        <ul class="dropdown-menu">
-          <div class="row p-2 justify-content-start g-1">
-            <div class="col-4 col-md-3 col-lg-2 text-center " v-for="size in availableSizes" :key="size">
-              <button class="rounded-5 border border-dark-subtle p-1 w-120" @click="selectSize(size)">
+        <ul class="dropdown-menu" >
+          <div class="row p-1 justify-content-start g-1" style="width: 210px;">
+            <div class="col-4 text-center" v-for="size in availableSizes" :key="size">
+              <button class="custom-button-size" @click="selectSize(size)">
                 {{ size }}
               </button>
             </div>
@@ -48,21 +48,41 @@
         </ul>
       </div>
     </div>
+    <div v-if="selectedColor || selectedSize" class="col-12 text-dark">
+      <h4 class="my-md-2">Đang lọc theo </h4>
+      <div class="d-flex">
+        <p v-if="selectedColor" @click="removeColorFilter" class="btn btn-outline-danger mx-1 rounded-3 p-1">
+          <i class="fa-solid fa-xmark"></i> Màu : {{ selectedColor }} 
+        </p>
+        <p v-if="selectedSize" @click="removeSizeFilter" class="btn btn-outline-danger mx-1 rounded-3 p-1">
+          <i class="fa-solid fa-xmark"></i> Kích cở : {{ selectedSize }} 
+        </p>
+      </div>
+    </div>
     
     <div class="col-12">
       <!-- Sắp xếp -->
-      <div class="d-flex justify-content-end">
-        <div>
-          <button class="btn btn-outline-secondary rounded-pill dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Sắp xếp
-          </button>
-          <ul class="dropdown-menu">
-              <li class="dropdown-item" @click="sortProducts('asc')">Giá tăng dần</li>
-              <li class="dropdown-item" @click="sortProducts('desc')">Giá giảm dần</li>
-              <li class="dropdown-item" @click="sortProducts('newest')">Mới Nhất</li>
-          </ul>
+      <h3 class="text-dark my-2">Sắp xếp theo</h3>
+      <div class="overflow-x-auto " >
+        <div class="d-flex">
+            <p @click="sortProducts('newest')" 
+            :class="{'border border-dark-subtle text-dark p-1 rounded-3 menu-ngang mx-1 ': true,  'bg-danger text-white': sortOrder === 'newest'}">
+                Mới nhất
+            </p>
+            <p @click="sortProducts('desc')" 
+            :class="{'border border-dark-subtle text-dark p-1 rounded-3 menu-ngang mx-1 ': true,  'bg-danger text-white': sortOrder === 'desc'}">
+                Giá giảm dần
+            </p>
+            <p @click="sortProducts('asc')" 
+            :class="{'border border-dark-subtle text-dark p-1 rounded-3 menu-ngang mx-1 ': true,  'bg-danger text-white': sortOrder === 'asc'}">
+                Giá tăng dần
+            </p>
+            <p @click="sortProducts('sold')" 
+            :class="{'border border-dark-subtle text-dark p-1 rounded-3 menu-ngang mx-1 ': true,  'bg-danger text-white': sortOrder === 'sold'}">
+                Đã bán
+            </p>
         </div>
-      </div>
+      </div> 
       <br>
       <!-- show sản phẩm -->
 
@@ -161,12 +181,12 @@ export default {
       return [...new Set(colors)]; // Loại bỏ các màu sắc trùng lặp
     },
     availableSizes() { 
-    const sizes = this.products.flatMap(product => 
+      const sizes = this.products.flatMap(product => 
         product.sizes
             .filter(size => size.so_luong > 0) // Lọc những size có so_luong lớn hơn 0
             .map(size => size.size_product)
-    ); 
-    return [...new Set(sizes)]; // Loại bỏ các kích thước trùng lặp
+      ); 
+      return [...new Set(sizes)]; // Loại bỏ các kích thước trùng lặp
     },
     colorClasses() {
       return {
@@ -226,6 +246,8 @@ export default {
         });
       } else if (order === 'newest') {
         this.products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      } else if (order === 'sold') {
+            this.products.sort((a, b) => b.luot_mua - a.luot_mua);
       }
       console.log("Sorted Products:", this.products); // Debug: Kiểm tra sản phẩm đã sắp xếp
     },
@@ -234,6 +256,12 @@ export default {
     },
     selectSize(size) {
       this.selectedSize = size;
+    },
+    removeColorFilter() { 
+      this.selectedColor = ''; 
+    }, 
+    removeSizeFilter() { 
+      this.selectedSize = ''; 
     },
     formattedPrice(product) {
       const gianew = product.gia_km > 0 ? product.gia_km : product.gia;

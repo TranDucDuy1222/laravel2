@@ -1,9 +1,11 @@
 #box-menu-ngang{
-    min-width: 700px;
+    max-width: 700px;
 }
 .menu-ngang {
     list-style-type: none;
     font-size: 16px;
+    white-space: nowrap; 
+
 }
 .menu-ngang li {
     transition: background-color 0.3s; /* Hiệu ứng màu nền khi di chuột vào */
@@ -82,3 +84,24 @@ background-color: #f0f0f0; /* Màu nền khi di chuột vào */
         /* Thiết bị có chiều rộng nhỏ hơn hoặc bằng 576px */
     }
 }
+
+/* Đổ bóng và viền box lọc sản phẩm */
+.custom-border {
+    border: 1px solid red;
+    box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5); /* Đổ bóng màu đỏ nhạt vào trong */
+}
+
+.custom-button-size {
+    width: 60px;                /* Chiều rộng cố định */ 
+    white-space: nowrap;        /* Không cho phép nội dung xuống dòng */
+    border: 1px solid #ffffff;     /* Thêm viền màu xám nhạt */
+    border-radius: 5px;         /* Bo tròn các góc */
+    background-color: #f8f9fa;  /* Màu nền mặc định */
+    transition: background-color 0.3s, border-color 0.3s; /* Hiệu ứng chuyển màu mượt mà */
+}
+
+.custom-button-size:hover {
+    border-color: #ff4949;      /* Thay đổi màu viền khi di chuột */
+    background-color: #e7eaf1;  /* Thay đổi màu nền khi di chuột */
+}
+
