@@ -34,6 +34,6 @@ class User extends Authenticatable
     }
     public function diaChi()
     {
-        return $this->hasOne(DiaChi::class, 'id_user', 'id');
+        return $this->hasMany(DiaChi::class, 'id_user', 'id');
     }
 }
