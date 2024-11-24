@@ -339,6 +339,8 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
+=======
                     <div class="col-lg-12">
                         <div class="route-box">
                             <div class="route-box__g1">
@@ -357,6 +359,7 @@
                             </div>
                         </div>
                     </div>
+>>>>>>> 13a06339565967f304541f1cbe54a2b50ba6d14d
                 </div>
             </div>
         </div>
@@ -365,6 +368,7 @@
 
 <!-- code khác -->
 <script>
+    //jquery để lấy được pttt khi người dùng thay đổi pttt
     $(document).ready(function () {
         $('input[type="radio"]').on('change', function () {
             // Bỏ chọn tất cả các radio button trước khi chọn mới

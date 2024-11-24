@@ -71,9 +71,6 @@ class HomeController extends Controller
         // Dữ liệu cài đặt 
         $settings = DB::table('settings')->select('logo_sale' , 'logo_cms' , 'banner_dung_sale' , 'banner_dung_cms')->first();
 
-        
-
-
         return view('user.home', compact('settings', 'top_sanpham', 'home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
     }
 
