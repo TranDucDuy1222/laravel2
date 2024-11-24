@@ -1,21 +1,19 @@
-
 #hover-sp {
     color: #000;
     transition: color 1s ease, text-decoration 1s ease;
 }
+
 #hover-sp:hover {
     color: #ff0000;
     text-decoration: underline;
 }
-
-
 
 /* Mã giảm giá */
 .sharp-corners {
     position: relative;
     color: white;
     clip-path: polygon(35px 0, calc(100% - 35px) 0, 100% 35px, 100% calc(100% - 33px), calc(100% - 35px) 100%, 35px 100%, 0 calc(100% - 33px), 0 35px);
-    background: linear-gradient(90deg, red 50% , rgb(89, 88, 88) 50%);
+    background: linear-gradient(90deg, red 50%, rgb(89, 88, 88) 50%);
     background-size: 200% 100%;
     background-position: center;
     animation: color-change 4s infinite;
@@ -25,25 +23,26 @@
     0% {
         background-position: 100% 0;
     }
+
     50% {
         background-position: 0 0;
     }
+
     100% {
         background-position: 100% 0;
     }
 }
 
-
-
-
 .black-icons .carousel-control-prev-icon,
 .black-icons .carousel-control-next-icon {
-    filter: invert(100%); /* Màu của icon */
+    filter: invert(100%);
+    /* Màu của icon */
 }
 
 .chuyen {
-    top: -20px; /* Di chuyển các nút xuống dưới */
-    
+    top: -20px;
+    /* Di chuyển các nút xuống dưới */
+
 }
 
 .chuyen button::before {
@@ -51,33 +50,34 @@
     display: block;
     width: 100%;
     height: 100%;
-    background-color: black; 
-    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+    background-color: black;
+    transition: background-color 0.3s;
+    /* Hiệu ứng chuyển màu */
 }
 
 .chuyen .active::before {
-    background-color: red; /* Màu đỏ khi active */
+    background-color: red;
+    /* Màu đỏ khi active */
 }
+
 .carousel-control-prev,
 .carousel-control-next {
     top: 50%;
     transform: translateY(-50%);
-    width: 5%; /* Điều chỉnh độ rộng của nút nếu cần */
+    width: 5%;
+    /* Điều chỉnh độ rộng của nút nếu cần */
 }
 
-.img-detail {
-    height: auto;
-    overflow: hidden; /* Đảm bảo hình ảnh không tràn ra ngoài */
-}
-
-.img-detail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Đảm bảo hình ảnh giữ nguyên tỉ lệ */
-}
 @media(max-width:500px) {
-    .img-detail img {
+    .img-details img {
         max-width: 375px;
-        max-height: 300px;
+        max-height: 370px;
     }
 }
+@media(max-width:900px) {
+    .img-details img {
+        max-width: 100%;
+        max-height: 750px;
+    }
+}
+

@@ -51,7 +51,7 @@ Chi Tiết : {{$detail->ten_sp}}
                 <div class="col-lg-6">
                     <div class="pd mb-4">
                         <div class="pd-wrap">
-                            <div class="img-detail">
+                            <div class="img-details">
                                 <img src="{{ asset('/uploads/product/' . $detail->hinh) }}" class="w-100" alt="...">
                             </div>
                         </div>
@@ -441,12 +441,12 @@ Chi Tiết : {{$detail->ten_sp}}
     // Tuỳ chỉnh ảnh cao bằng cột nội dung
     document.addEventListener("DOMContentLoaded", function() {
         function adjustImageHeight() {
-            const imgContainer = document.querySelector('.img-detail');
+            const imgContainer = document.querySelector('.img-details');
             const content = document.querySelector('.pd-detail');
 
             if (imgContainer && content) {
                 const contentHeight = content.clientHeight;
-                if (window.innerWidth >= 768) { // Điều kiện cho col-md trở lên
+                if (window.innerWidth >= 1000) { // Điều kiện cho col-md trở lên
                     imgContainer.style.height = `${contentHeight}px`;
                 } else {
                     imgContainer.style.height = 'auto'; // Đặt lại chiều cao khi dưới col-md
