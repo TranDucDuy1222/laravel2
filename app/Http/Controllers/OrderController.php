@@ -155,16 +155,15 @@ class OrderController extends Controller
             // Truy vấn đơn hàng đã mua 
             $orders = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
             ->where('don_hang.id_user', $id)
-            ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
-            ->orderBy('don_hang.id', 'desc');
+            ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten');
             
             // Tách đơn hàng theo từng trạng thái 
-            $orders_0 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 0)->get());
-            $orders_1 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 1)->get());
-            $orders_2 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 2)->get());
-            $orders_3 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 3)->get());
-            $orders_4 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 4)->get());
-            $orders_5 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 5)->get());
+            $orders_0 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 0)->orderBy('don_hang.id', 'desc')->get());
+            $orders_1 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 1)->orderBy('don_hang.id', 'desc')->get());
+            $orders_2 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 2)->orderBy('don_hang.id', 'desc')->get());
+            $orders_3 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 3)->orderBy('don_hang.id', 'desc')->get());
+            $orders_4 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 4)->orderBy('don_hang.id', 'desc')->get());
+            $orders_5 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 5)->orderBy('don_hang.id', 'ASC')->get());
 
             $purchased = DB::table('chi_tiet_don_hang')
                 ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')

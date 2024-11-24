@@ -241,9 +241,33 @@
                                     <div class="row">
                                         <div class="col-5">
                                             @if ($dh->trang_thai == 0)
-                                                <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
-                                                    <i>Xác Nhận Hủy Đơn</i>
-                                                </a>
+                                                <button type="button" data-bs-toggle="modal" data-bs-target="#cancel-{{$dh->id}}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
+                                                    Xác Nhận Hủy Đơn
+                                                </button>
+                                                <!-- Modal huỷ đơn hàng -->
+                                                <div class="modal fade" id="cancel-{{$dh->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Huỷ đơn hàng : {{$dh->id}}</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="text-center">
+                                                            <i class="fa-regular fa-circle-xmark display-1" style="color: #e04300;"></i>
+                                                            <br>
+                                                            <p >Bạn có chắc chắn muốn huỷ đơn hàng này không!</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="btn btn-outline-danger" style="font-size: 14px;">
+                                                            Xác Nhận Hủy Đơn
+                                                        </a>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
                                             @elseif($dh->trang_thai == 1)
                                                 <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
                                                     <i>Xác Nhận Hủy Đơn</i>
@@ -463,14 +487,34 @@
                                     <hr class="mt-0">
                                     <div class="row">
                                         <div class="col-5">
-                                            @if ($dh->trang_thai == 0)
-                                                <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
-                                                    <i>Xác Nhận Hủy Đơn</i>
-                                                </a>
-                                            @elseif($dh->trang_thai == 1)
-                                                <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
-                                                    <i>Xác Nhận Hủy Đơn</i>
-                                                </a>
+                                            @if($dh->trang_thai == 1)
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#cancel-{{$dh->id}}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
+                                                    Xác Nhận Hủy Đơn
+                                                </button>
+                                                <!-- Modal huỷ đơn hàng -->
+                                                <div class="modal fade" id="cancel-{{$dh->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Huỷ đơn hàng : {{$dh->id}}</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="text-center">
+                                                            <i class="fa-regular fa-circle-xmark display-1" style="color: #e04300;"></i>
+                                                            <br>
+                                                            <p >Bạn có chắc chắn muốn huỷ đơn hàng này không!</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="btn btn-outline-danger" style="font-size: 14px;">
+                                                            Xác Nhận Hủy Đơn
+                                                        </a>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
                                             @elseif($dh->trang_thai == 2)
                                             <p class="text-black"><i>Đơn hàng đang được giao đến bạn</i></p>
                                             @elseif($dh->trang_thai == 3)

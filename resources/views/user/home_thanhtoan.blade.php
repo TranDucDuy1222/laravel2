@@ -254,7 +254,7 @@
                                 <div class="text-black mb-xl-2 ">
                                     <h3>Phương thức thanh toán</h3>
                                     <div class="card my-2">
-                                        <div class="d-flex justify-content-start align-items-center p-xl-2 payment-options" data-payment="COD">
+                                        <div class="d-flex justify-content-start align-items-center p-2 payment-options" data-payment="COD">
                                             <div class="badge text-bg-success">COD</div>
                                             <p class="ms-2 align-self-center fs-6">Thanh toán khi nhận hàng</p>
                                             <input type="radio" id="payment_cod" name="payment_option" value="COD"
@@ -263,7 +263,7 @@
                                     </div>
                                     <div class="card my-2">
                                         <div class="d-flex justify-content-start align-items-center p-xl-2 payment-options" data-payment="VNPay">
-                                            <div class="badge text-bg-warning">VNPay</div>
+                                            <img src="{{ asset('/uploads/logo/logo-vnpay.png') }}" class="img-vnpay" alt="">
                                             <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
                                             <input type="radio" id="payment_vnpay" name="payment_option" value="VNPay"
                                                 class="ms-auto">
