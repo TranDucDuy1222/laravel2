@@ -15,6 +15,11 @@
   text-overflow: ellipsis;
 }
 
+/* logo vnpay */
+.img-vnpay{
+  width: 55px;
+  height: 35px;
+}
 
 @media (max-width: 576px) {
   .ms-xs-2 {

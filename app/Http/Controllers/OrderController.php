@@ -83,7 +83,10 @@ class OrderController extends Controller
             // Xóa session voucher sau khi đặt hàng thành công
             session()->forget('voucher');
             DB::commit();
-
+            // Kiểm tra phương thức thanh toán 
+            if ($paymentMethod == 'VNPAY') { 
+                return $this->thanh_toan_vnpay($request); 
+            }
             return redirect()->route('user.purchase', ['id' => $userId])->with('success', 'Đặt hàng thành công!');
 
         } catch (\Exception $e) {
@@ -92,83 +95,62 @@ class OrderController extends Controller
         }
     }
 
-    // public function donHangDaMua($id)
-    // {
-    //     if (Auth::check()) {
-
-    //         // Truy vấn đơn hàng đã mua
-    //         $orders = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
-    //             ->where('don_hang.id_user', $id)
-    //             ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten')
-    //             ->orderBy('don_hang.id', 'desc')
-    //             ->get();
-    //         $purchased = DB::table('chi_tiet_don_hang')
-    //             ->join('don_hang', 'don_hang.id', '=', 'chi_tiet_don_hang.id_dh')
-    //             ->join('san_pham', 'san_pham.id', '=', 'chi_tiet_don_hang.id_sp')
-    //             ->join('sizes', 'sizes.id', '=', 'chi_tiet_don_hang.id_size')
-    //             ->join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
-    //             ->select('don_hang.*', 'chi_tiet_don_hang.*', 'chi_tiet_don_hang.id as id_ctdh', 'san_pham.id as id_sp', 'san_pham.ten_sp', 'san_pham.hinh', 'san_pham.color', 'sizes.size_product', 'dia_chi.*')
-    //             ->where('don_hang.id_user', $id)
-    //             ->get();
-
-    //         // Tính toán ngày dự kiến giao hàng cho từng đơn hàng
-    //         foreach ($orders as $order) {
-    //             $thoiDiemMuaHang = Carbon::parse($order->thoi_diem_mua_hang);
-    //             if ($order->thanh_pho == 'Thành Phố Hồ Chí Minh' || $order->thanh_pho == 'Hồ Chí Minh') {
-    //                 $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(2);
-    //             } else {
-    //                 $order->ngay_du_kien_giao_hang = $thoiDiemMuaHang->addDays(4);
-    //             }
-    //         }
-
-    //         // Truy vấn phí vận chuyện
-    //         $phivc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
-
-    //         // Truy vấn trạng thái chờ xác nhận
-    //         $status = DonHang::select('trang_thai')
-    //         ->where('id_user', $id)
-    //         ->orderBy('id', 'desc');
-
-    //         $status_1 = (clone $status)
-    //         ->where('trang_thai', 0)
-    //         ->count();
-
-    //         $status_2 = (clone $status)
-    //         ->where('trang_thai', 1)
-    //         ->count();
-
-    //         $status_3 = (clone $status)
-    //         ->where('trang_thai', 2)
-    //         ->count();
-
-    //         $status_4 = (clone $status)
-    //         ->where('trang_thai', 3)
-    //         ->count();
-
-    //         $status_5 = (clone $status)
-    //         ->where('trang_thai', 4)
-    //         ->count();
-
-    //         $status_6 = (clone $status)
-    //         ->where('trang_thai', 5)
-    //         ->count();
-
-    //         return view('user.home_purchased', compact(
-    //             'status_6',
-    //             'status_5',
-    //             'status_4',
-    //             'status_3',
-    //             'status_2',
-    //             'status_1',
-    //             'purchased', 
-    //             'orders', 
-    //             'phivc'
-    //         ));
-    //     } else {
-    //         return redirect()->route('login')->with('error', 'Vui lòng đăng nhập!');
-    //     }
-    // }
-
+    public function thanh_toan_vnpay(Request $request) {
+        $data = $request->all();
+        $code_cart = rand(00, 9999);
+        $userId = Auth::id();
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('user.purchase', $userId); // URL trả về sau khi thanh toán
+        $vnp_TmnCode = "18AB16MA";
+        $vnp_HashSecret = "MH03RA1FG6Q1859GFPSKQPKUMY5P5I5G";
+        $vnp_TxnRef = $code_cart;
+        $vnp_OrderInfo = 'Thanh toán đơn hàng';
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = $data['total_payables'] * 100;
+        $vnp_Locale = 'vn';
+        $vnp_BankCode = 'NCB';
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+    
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        );
+    
+        ksort($inputData);
+        $query = "";
+        $hashdata = "";
+        $i = 0;
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+    
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+    
+        // \Log::info('VNPAY URL: ' . $vnp_Url);
+        // \Log::info('VNPAY Return URL: ' . $vnp_Returnurl);
+    
+        return redirect()->to($vnp_Url);
+    }
 
     public function donHangDaMua($id, Request $request)
     {

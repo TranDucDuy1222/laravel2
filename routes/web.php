@@ -47,12 +47,11 @@ Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
 Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
 Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
-//Thanh toán vnpay
-Route::post('/thanh_toan_vnpay', [BuyController::class, 'thanh_toan_vnpay']);
 
 // Đặt hàng
 Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
-//Route::post('/dat-hang', [OrderController::class, 'datHang_form'])->name('dat-hang');
+//Thanh toán vnpay
+Route::get('/thanh_toan_vnpay', [OrderController::class, 'thanh_toan_vnpay']);
 
 // Đăng nhập
 Route::get('/login', [UserController::class , 'login'])->name('login');
