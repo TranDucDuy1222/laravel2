@@ -44,6 +44,7 @@ class OrderController extends Controller
             // Tạo đơn hàng mới
             $donHang = new DonHang();
             $donHang->id_user = $userId;
+            
             $donHang->thoi_diem_mua_hang = now();
             $donHang->id_dc = $selectedAddressId;
             $donHang->tong_dh = $totalPayable;

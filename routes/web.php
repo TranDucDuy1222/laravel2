@@ -21,15 +21,16 @@ use App\Http\Controllers\SettingController;
 use App\Mail\GuiEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiproductController;
+use App\Http\Controllers\AdminemailController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
 Route::get('/', [HomeController::class , 'index'])->name('home');
-// Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
+//Route::get('/tim-kiem/{slug}', [ApiproductController::class, 'tim_kiem']);
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
 
-Route::get('/loai-san-pham/{slug}', [ProductController::class , 'sanpham_loai'])->name('loai-san-pham');
+Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
 Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
 
 
@@ -86,6 +87,7 @@ Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
 Route::post('gui-lien-he', [UserController::class, 'sendContact']);
 
+
 // URL Admin
 Route::group(['prefix' => 'admin'], function() { 
     Route::get('/', [AdminHomeController::class,'index'])->middleware(Quantri::class);
@@ -136,6 +138,9 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::resource('danh-gia', AdminDanhGiaController::class);
     Route::post('/danh-gia/hide/{id}', [AdminDanhGiaController::class,'hide'])->name('danh-gia.hide');
     Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
+
+    Route::resource('email', AdminemailController::class);
+    Route::post('phan-hoi/{id}', [AdminemailController::class, 'sendReply'])->name('admin.contact');
 
     Route::resource('magiamgia', MaGiamGiaController::class);
 

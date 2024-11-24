@@ -1,0 +1,42 @@
+.col-id {
+    width: 5%;
+}
+
+.col-sender {
+    width: 15%;
+}
+
+.col-email {
+    width: 10%;
+}
+
+.col-content {
+    width: 25%;
+}
+.col-feedbck {
+    width: 25%;
+}
+.col-action {
+    width: 10%;
+}
+
+/*  */
+.col-id-td {
+    max-width: 5%;
+}
+
+.col-sender-td {
+    max-width: 15%;
+}
+
+.col-email-td {
+    max-width: 200px;
+}
+
+.col-content-td {
+    max-width: 250px;
+}
+
+.col-action-td {
+    max-width: 10%;
+}

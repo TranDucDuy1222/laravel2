@@ -1,6 +1,6 @@
 @extends('user.layout')
 @section('title')
-  {{ $title }} - Trendy U
+  Tìm kiếm: {{ $title }}
 @endsection
 
 @section('category')
@@ -57,7 +57,7 @@
   </button>
 </div>
 <div class="container">
-  <div id="product_category"> <product-category :slug="'{{ $slug }}'"></product-category> </div>
+  <div id=""> </div>
 </div>
 <!-- end all product -->
 @endsection

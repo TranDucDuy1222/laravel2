@@ -281,25 +281,22 @@ class BuyController extends Controller
         return redirect()->route('pay')->with('success', 'Đã hủy mã giảm giá.');
     }
 
-    public function thanh_toan_vnpay(Request $request){
-        $data = $request->all();
-        $code_cart = rand(00,9999);
-        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://127.0.0.1:8000/thanh-toan";
-        $vnp_TmnCode = "18AB16MA";//Mã website tại VNPAY 
-        $vnp_HashSecret = "MH03RA1FG6Q1859GFPSKQPKUMY5P5I5G"; //Chuỗi bí mật
+    public function thanh_toan_vnpay(Request $request) {
+        $code_cart = rand(00, 9999);
+        $userId = Auth::id();
         
-        $vnp_TxnRef = $code_cart; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('user.purchase', $userId); // URL trả về sau khi thanh toán
+        $vnp_TmnCode = "18AB16MA";
+        $vnp_HashSecret = "MH03RA1FG6Q1859GFPSKQPKUMY5P5I5G";
+        $vnp_TxnRef = $code_cart;
         $vnp_OrderInfo = 'Thanh toán đơn hàng';
         $vnp_OrderType = 'billpayment';
         $vnp_Amount = 20000 * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-        //$vnp_BankName = 'NGUYEN VAN A';
-        //Add Params of 2.0.1 Version
-        // $vnp_ExpireDate = $_POST['txtexpire'];
-        //Billing
+    
         $inputData = array(
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
@@ -313,22 +310,12 @@ class BuyController extends Controller
             "vnp_OrderType" => $vnp_OrderType,
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
-            //"card_number_mask" => $vnp_BankName
-            // "vnp_ExpireDate"=>$vnp_ExpireDate
         );
-        
-        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-            $inputData['vnp_BankCode'] = $vnp_BankCode;
-        }
-        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-        }
-        
-        //var_dump($inputData);
+    
         ksort($inputData);
         $query = "";
-        $i = 0;
         $hashdata = "";
+        $i = 0;
         foreach ($inputData as $key => $value) {
             if ($i == 1) {
                 $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
@@ -338,22 +325,19 @@ class BuyController extends Controller
             }
             $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
-        
+    
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
-        $returnData = array('code' => '00'
-            , 'message' => 'success'
-            , 'data' => $vnp_Url);
-            if (isset($_POST['redirect'])) {
-                header('Location: ' . $vnp_Url);
-                die();
-            } else {
-                echo json_encode($returnData);
-            }
+    
+        \Log::info('VNPAY URL: ' . $vnp_Url);
+        \Log::info('VNPAY Return URL: ' . $vnp_Returnurl);
+    
+        return redirect()->to($vnp_Url);
     }
+    
 
 }
 

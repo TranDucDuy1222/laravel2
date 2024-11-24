@@ -40,7 +40,7 @@ class ProductController extends Controller
             $relatedpro = DB::table('san_pham')
                 ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
                 ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
-                ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm' ,'mo_ta_ngan' , 'luot_mua' )
+                ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm' ,'mo_ta_ngan' , 'luot_mua' , 'san_pham.trang_thai as trang_thai_san_pham')
                 ->where('danh_muc.id_loai', $query_loai->id_loai)
                 ->where('san_pham.id', '!=', $id)  // không lấy chính sản phẩm hiện tại
                 ->inRandomOrder()
@@ -80,58 +80,12 @@ class ProductController extends Controller
             ->where('id_sp', $id)
             ->count();
 
-        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
+        // Truy vấn mã khuyến mãi
+        $ma_giam_gia = DB::table('maGiamGia')->select('code' , 'mo_ta')->get();
+
+        return view('user.detail_product', ['ma_giam_gia' => $ma_giam_gia ,'sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
     }
 
-    // Sản Phẩm theo danh mục
-    public function sanpham_loai(Request $request, $slug)
-    {
-        $perpage = 12;
-        // Khởi tạo query để lấy sản phẩm
-        $query = SanPham::with('danhMuc');
-        // Kiểm tra slug để xác định hành động
-        if ($slug == 'tat-ca-san-pham') {
-            $title = 'Mới và Nổi Bật';
-        } 
-        // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
-        else if ($slug == 'giam-gia') {
-            $title = 'Giảm Giá';
-            $query->where('gia_km', '>', 0);
-        }
-        else {
-            // Lấy ra loại sản phẩm dựa vào slug
-            $loai = Loai::where('slug', $slug)->first();
-            // Kiểm tra nếu loại sản phẩm không tồn tại
-            if (!$loai) {
-                return redirect()->route('home')->with('error', 'Danh mục không tồn tại');
-            }
-            // Lấy danh sách danh mục thuộc loại sản phẩm đó
-            $danh_muc_loai = DanhMuc::where('id_loai', $loai->id)->get();
-            // Lấy danh sách sản phẩm thuộc các danh mục đó
-            $query = $query->whereIn('id_dm', $danh_muc_loai->pluck('id'));
-            $title = $loai->ten_loai; // Đặt tiêu đề là tên loại sản phẩm
-        }
-        $sortProduct = $request->input('sort', 'moi_nhat'); // Mặc định là sản phẩm mới nhất
-        // Xử lý sắp xếp sản phẩm
-        switch ($sortProduct) {
-            case 'tang_dan':
-                $query->orderBy('gia_km', 'asc');
-                break;
-            case 'giam_dan':
-                $query->orderBy('gia_km', 'desc');
-                break;
-            default:
-                $query->orderBy('created_at', 'desc');
-                break;
-        }
-
-        $list_product = $query->paginate($perpage)->withQueryString();
-
-        return view('user.all_product', [
-            'products' => $list_product,
-            'title' => $title,
-            'danh_muc_loai' => isset($danh_muc_loai) ? $danh_muc_loai : DanhMuc::get() // Lấy danh sách tất cả danh mục nếu không lọc theo loại
-        ]);
-    }
+    
 
 }

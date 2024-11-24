@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import AddressForm from './components/AddressForm.vue';
 import ProductList from './components/productList.vue';
+import productCategory from './components/productCategory.vue';
+import SearchComponent from './components/search.vue';
 
 // Tạo ứng dụng cho AddressForm
 const appAddDC = createApp({
@@ -12,12 +14,13 @@ appAddDC.mount('#appAddDC');
 
 // Tạo ứng dụng cho ProductList với slug từ URL
 const urlParams = new URLSearchParams(window.location.search);
-const slug = urlParams.get('slug') || 'tat-ca-san-pham';
 
+// Danh mục sản phẩm
+const slug_list = urlParams.get('slug');
 const productListApp = createApp({
     data() {
         return {
-            slug: slug
+            slug: slug_list
         };
     },
     components: {
@@ -25,3 +28,31 @@ const productListApp = createApp({
     }
 });
 productListApp.mount('#product_list');
+
+// Tất cả sản phẩm và giảm giá
+const slug_category = urlParams.get('slug');
+const productCategoryApp = createApp({
+    data() {
+        return {
+            slug: slug_category
+        };
+    },
+    components: {
+        'product-category': productCategory
+    }
+});
+productCategoryApp.mount('#product_category');
+
+// Tất cả sản phẩm và giảm giá
+const slug_search = urlParams.get('slug');
+const searchapp = createApp({
+    // data() {
+    //     return {
+    //         slug: slug_search
+    //     };
+    // },
+    components: {
+        'search-component': SearchComponent
+    }
+});
+searchapp.mount('#searchApp');
