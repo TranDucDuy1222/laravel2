@@ -115,7 +115,7 @@
               <li class="nav-item" style="background: none;">
                 <a class="nav-link fz " href="{{ url('loai-san-pham/tat-ca-san-pham') }}">
                   <p class="hover-title fz">
-                    Mới và Nổi Bật
+                    Cửa Hàng
                   </p>
                 </a>
               </li>

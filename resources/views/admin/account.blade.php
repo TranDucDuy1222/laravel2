@@ -10,15 +10,15 @@ Quản Lý Tài Khoản
             <div class="iq-card">
                <div class="iq-card-header row py-4">
                   <div class="iq-header-title col-sm-12 col-md-6">
-                     <h4 class="card-title">Danh sách tài khoản Admin</h4>
+                     <h4 class="card-title">Danh sách tài khoản</h4>
                   </div>
-                  <div class="col-sm-12 col-md-6">
+                  <!-- <div class="col-sm-12 col-md-6">
                         <div class="user-list-files d-flex justify-content-end">
                            <a href="{{route('danh-muc.create')}}" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
                               <i class="fa-solid fa-plus"></i> Thêm tài khoản mới
                            </a>
                         </div>
-                     </div>
+                     </div> -->
                </div>
                <div class="iq-card-body">
                      <div class="table-responsive">
@@ -94,16 +94,10 @@ Quản Lý Tài Khoản
                      <div id="user-list-page-info" class="col-md-6">
                         <span>Hiển thị</span>
                      </div>
-                     <div class="col-md-6">
-                        <nav aria-label="Page navigation example">
-                           <ul class="pagination justify-content-end mb-0">
-                              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                              <li class="page-item"><a class="page-link" href="#">1</a></li>
-                              <li class="page-item"><a class="page-link" href="#">2</a></li>
-                              <li class="page-item"><a class="page-link" href="#">3</a></li>
-                              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                           </ul>
-                        </nav>
+                     <div class="col-md-6 d-flex justify-content-end">
+                        <!-- Phân trang -->
+                        {{$users->links('pagination::bootstrap-5')}}
+                        <!-- End phân trang -->
                      </div>
                   </div>
                </div>

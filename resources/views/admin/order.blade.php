@@ -55,18 +55,20 @@ Quản lý đơn hàng - TrendyU
                                  <td>{{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</td>
                                  <td>{{ $donHang->pttt }}</td>
                                  <td>
-                                    <div class="d-flex justify-content-center">
-                                    @if ($donHang->trang_thai == 0)
-                                       <span class="btn bg-warning">Chờ xử lý</span>
-                                    @elseif ($donHang->trang_thai == 1)
-                                       <span class="btn bg-primary">Đã xử lý</span>
-                                    @elseif ($donHang->trang_thai == 2)
-                                       <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
-                                    @elseif ($donHang->trang_thai == 3)
-                                       <span class="btn bg-success">Giao hàng thành công</span>
-                                    @elseif ($donHang->trang_thai == 4)
-                                       <span class="btn bg-danger">Đã hủy</span>
-                                    @endif
+                                    <div class="">
+                                       @if ($donHang->trang_thai == 0)
+                                        <span class="btn bg-warning">Chờ xử lý</span>
+                                        @elseif ($donHang->trang_thai == 1)
+                                        <span class="btn bg-primary">Đã xác nhận đơn hàng</span>
+                                        @elseif ($donHang->trang_thai == 2)
+                                        <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
+                                        @elseif ($donHang->trang_thai == 3)
+                                        <span class="btn bg-success">Đã giao thành công</span>
+                                        @elseif ($donHang->trang_thai == 4)
+                                        <span class="btn bg-dark">Đã đánh giá sản phẩm</span>
+                                        @elseif ($donHang->trang_thai == 5)
+                                        <span class="btn bg-danger">Đã hủy</span>
+                                        @endif
                                     </div>
                                  </td>
                                  <td>

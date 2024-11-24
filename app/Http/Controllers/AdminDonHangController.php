@@ -39,7 +39,6 @@ class AdminDonHangController extends AdminController
         $request->validate([
             'trang_thai' => 'required|integer|in:0,1,2',
         ]);
-    
         $donHang = DonHang::findOrFail($id);
         $donHang->trang_thai = $request->trang_thai;
         $donHang->save();
@@ -48,16 +47,23 @@ class AdminDonHangController extends AdminController
     }
 
     public function updateTrangThai(Request $request, $id)
-    {
-        $request->validate([
-            'trang_thai' => 'required|integer|in:0,1,2',
-        ]);
-    
-        $donHang = DonHang::findOrFail($id);
-        $donHang->trang_thai = $request->trang_thai;
-        $donHang->save();
-    
-            return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
+{
+    $request->validate([
+        'trang_thai' => 'required|integer|in:1,2,3', // Cập nhật các trạng thái hợp lệ là 1, 2, 3
+    ]);
+
+    $donHang = DonHang::findOrFail($id);
+
+    // Kiểm tra trạng thái mới có nhỏ hơn trạng thái hiện tại không
+    if ($request->trang_thai < $donHang->trang_thai) {
+        return redirect()->back()->with('thongbao', 'Hãy kiểm tra lại trạng thái bạn muốn cập nhật!');
     }
+
+    $donHang->trang_thai = $request->trang_thai;
+    $donHang->save();
+
+    return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
+}
+
 }
 

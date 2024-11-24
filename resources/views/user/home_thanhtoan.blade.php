@@ -6,25 +6,25 @@
 
 @section('category')
 @foreach ($loai as $category)
-<li class="nav-item dropdown">
-  <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-    href="{{ url('/category'. '/' . $category->slug) }}">
-    {{$category->ten_loai}}
-  </a>
-  <ul class="dropdown-menu" id="userDropdown">
-    @foreach ($danh_muc as $dm)
-    @if ($dm->id_loai == $category->id)
-    <li class="hover-dm"><a class="dropdown-item" href="{{$dm->slug}}">{{$dm->ten_dm}}</a></li>
-    @endif
-    @endforeach
-  </ul>
-</li>
+    <li class="nav-item dropdown">
+        <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+            href="{{ url('/category' . '/' . $category->slug) }}">
+            {{$category->ten_loai}}
+        </a>
+        <ul class="dropdown-menu" id="userDropdown">
+            @foreach ($danh_muc as $dm)
+                @if ($dm->id_loai == $category->id)
+                    <li class="hover-dm"><a class="dropdown-item" href="{{$dm->slug}}">{{$dm->ten_dm}}</a></li>
+                @endif
+            @endforeach
+        </ul>
+    </li>
 @endforeach
 @endsection
 
 @section('content')
 <div class="container">
-@if(session()->has('error'))
+    @if(session()->has('error'))
         <div class="toast show align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
             aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -55,18 +55,21 @@
                         <div class="card text-black p-0 ">
                             <div class="d-flex align-items-center p-2">
                                 <i class="fa-solid fa-location-dot me-2 fs-4" style="color: #ee301b;"></i>
-                                <p class="fs-4 mb-0">Địa chỉ nhận hàng</p> 
-                                @if ($diachis->isEmpty()) 
-                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn btn-outline-dark ms-auto" style="font-size: 15px;"> Thêm địa chỉ </a> 
-                                @else 
-                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn btn-outline-dark ms-auto" style="font-size: 15px;"> Chỉnh sửa </a> 
+                                <p class="fs-4 mb-0">Địa chỉ nhận hàng</p>
+                                @if ($diachis->isEmpty())
+                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}"
+                                        class="btn btn-outline-dark ms-auto" style="font-size: 15px;"> Thêm địa chỉ </a>
+                                @else
+                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}"
+                                        class="btn btn-outline-dark ms-auto" style="font-size: 15px;"> Chỉnh sửa </a>
                                 @endif
                             </div>
                             <hr class="m-0">
                             <select class="form-select" id="selected_address" aria-label="Default select example">
                                 @foreach ($diachis as $dc)
-                                    <option value="{{$dc->id}}"> 
-                                        {{$dc->ho_ten}} {{ $dc->phone }} | {{ $dc->dc_chi_tiet }} , {{ $dc->qh }}, {{ $dc->thanh_pho }}
+                                    <option value="{{$dc->id}}">
+                                        {{$dc->ho_ten}} {{ $dc->phone }} | {{ $dc->dc_chi_tiet }} , {{ $dc->qh }},
+                                        {{ $dc->thanh_pho }}
                                     </option>
                                 @endforeach
                             </select>
@@ -90,20 +93,24 @@
                                                 <span class="table-p__name"><a>Tổng</a></span>
                                             </td>
                                         </tr>
-                                        
+
                                         @foreach($pays as $item)
                                             <tr>
                                                 <td>
                                                     <div class="table-p__box">
                                                         <div class="table-p__img-wrap">
-                                                            <img class="h-100 w-100" src="{{ asset('/uploads/product/'.$item->sanPham->hinh) }}" alt="{{ $item->sanPham->ten_sp }}">
+                                                            <img class="h-100 w-100"
+                                                                src="{{ asset('/uploads/product/' . $item->sanPham->hinh) }}"
+                                                                alt="{{ $item->sanPham->ten_sp }}">
                                                         </div>
                                                         <div class="table-p__info">
                                                             <span class="table-p__name">
-                                                                <a href="{{ route('product.detail', $item->sanPham->id) }}">{{ $item->sanPham->ten_sp }}</a>
+                                                                <a
+                                                                    href="{{ route('product.detail', $item->sanPham->id) }}">{{ $item->sanPham->ten_sp }}</a>
                                                             </span>
                                                             <span class="table-p__category">
-                                                                <a href="">{{ $item->sanPham->danhMuc ? $item->sanPham->danhMuc->ten_dm : 'Không xác định' }}</a>
+                                                                <a
+                                                                    href="">{{ $item->sanPham->danhMuc ? $item->sanPham->danhMuc->ten_dm : 'Không xác định' }}</a>
                                                             </span>
                                                             <ul class="table-p__variant-list">
                                                                 <li>
@@ -119,16 +126,19 @@
                                                 <td>
                                                     <span class="table-p__price">
                                                         @if ($item->sanPham->gia_km > 0)
-                                                            {{ number_format($item->sanPham->gia_km , 0, '','.') }} đ
+                                                            {{ number_format($item->sanPham->gia_km, 0, '', '.') }} đ
                                                         @else
-                                                            {{ number_format($item->sanPham->gia , 0, '','.') }} đ
+                                                            {{ number_format($item->sanPham->gia, 0, '', '.') }} đ
                                                         @endif
                                                     </span>
                                                 </td>
                                                 <td>
                                                     <div class="table-p__input-counter-wrap">
                                                         <div class="input-counter">
-                                                        <input class="input-counter__text input-counter--text-primary-style" type="number" name="quantity" value="{{ $item->so_luong }}" id="quantity-{{ $item->id }}" readonly>
+                                                            <input
+                                                                class="input-counter__text input-counter--text-primary-style"
+                                                                type="number" name="quantity" value="{{ $item->so_luong }}"
+                                                                id="quantity-{{ $item->id }}" readonly>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -136,13 +146,15 @@
                                                 <td id="total-price-{{ $item->id }}" class="item-total-price">
                                                     <span class="table-p__price">
                                                         @if ($item->sanPham->gia_km > 0)
-                                                            {{ number_format($item->sanPham->gia_km * $item->so_luong , 0, '','.') }} đ
+                                                            {{ number_format($item->sanPham->gia_km * $item->so_luong, 0, '', '.') }}
+                                                            đ
                                                         @else
-                                                            {{ number_format($item->sanPham->gia * $item->so_luong , 0, '','.') }} đ
+                                                            {{ number_format($item->sanPham->gia * $item->so_luong, 0, '', '.') }}
+                                                            đ
                                                         @endif
                                                     </span>
                                                 </td>
-                                                
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -156,18 +168,21 @@
                             <div class="f-cart__pad-box">
                                 <div class="mb-3">
                                     <div class="newsletter__group mb-4">
-                                        <input class="input-text input-text--primary-style" type="text" placeholder="Nhập mã giảm giá" name="voucher">
+                                        <input class="input-text input-text--primary-style" type="text"
+                                            placeholder="Nhập mã giảm giá" name="voucher">
                                         <button class="btn voucher__btn" type="submit">Áp dụng</button>
                                     </div>
                                     @if(session('voucher'))
                                         <div class="route-box row">
                                             <div class="route-box__g2 col-lg-6">
                                                 <a class="route-box__link" href="">
-                                                    Mã giảm giá: {{ session('voucher.code') }} đã được áp dụng với mức giảm: {{ session('voucher.amount') }}%.
+                                                    Mã giảm giá: {{ session('voucher.code') }} đã được áp dụng với mức giảm:
+                                                    {{ session('voucher.amount') }}%.
                                                 </a>
                                             </div>
                                             <div class="route-box__g1 col-lg-6">
-                                                <a class="route-box__link" href="javascript:void(0);" onclick="removeVoucher()">
+                                                <a class="route-box__link" href="javascript:void(0);"
+                                                    onclick="removeVoucher()">
                                                     <i class="fas fa-trash"></i>
                                                     <span>Hủy mã giảm giá</span>
                                                 </a>
@@ -192,19 +207,19 @@
                                         </span>
                                     </div>
                                 @endif
-                                
+
                                 <table class="f-cart__table">
                                     <tbody>
                                         <tr>
                                             <td>Tổng tiền sản phẩm</td>
                                             <td id="grand-total">
-                                                {{ number_format($pays->sum(function($item) {
-                                                    if ($item->sanPham->gia_km >0 ){
-                                                        return $item->sanPham->gia_km * $item->so_luong;
-                                                    }else{
-                                                    return $item->sanPham->gia * $item->so_luong;
-                                                    }
-                                                }), 0, '','.') }} đ
+                                                {{ number_format($pays->sum(function ($item) {
+    if ($item->sanPham->gia_km > 0) {
+        return $item->sanPham->gia_km * $item->so_luong;
+    } else {
+        return $item->sanPham->gia * $item->so_luong;
+    }
+}), 0, '', '.') }} đ
                                             </td>
                                         </tr>
                                         <tr>
@@ -213,7 +228,9 @@
                                         </tr>
                                         <tr>
                                             <td>Voucher giảm giá</td>
-                                            <td id="discount-amount">- {{ number_format($discountAmount , 0, '','.' ?? 0) }} đ</td>
+                                            <td id="discount-amount">-
+                                                {{ number_format($discountAmount, 0, '', '.' ?? 0) }} đ
+                                            </td>
                                         </tr>
 
                                     </tbody>
@@ -227,9 +244,12 @@
                         <form id="order_form" action="{{ route('dat-hang') }}" method="post">
                             @csrf
                             <!-- Thông tin muốn lấy -->
-                            <input type="hidden" name="total_payables" id="total_payables_hidden" value="{{ $totalPayable }}">
-                            <input type="hidden" name="discount_amount" id="discount-amount_hidden" value="{{ $discountAmount }}">
+                            <input type="hidden" name="total_payables" id="total_payables_hidden"
+                                value="{{ $totalPayable }}">
+                            <input type="hidden" name="discount_amount" id="discount-amount_hidden"
+                                value="{{ $discountAmount }}">
                             <input type="hidden" name="selected_address" id="hidden_selected_address">
+                            <input type="hidden" name="payment_method" value="COD" id="payment_method">
                             <div class="border p-3">
                                 <div class="text-black mb-xl-2 ">
                                     <h3>Phương thức thanh toán</h3>
@@ -237,29 +257,92 @@
                                         <div class="d-flex justify-content-start align-items-center p-xl-2">
                                             <div class="badge text-bg-success">COD</div>
                                             <p class="ms-2 align-self-center fs-6">Thanh toán khi nhận hàng</p>
-                                            <input type="radio" name="payment_method" value="COD" class="ms-auto" checked>
+                                            <input type="radio" id="payment_cod" name="payment_option" value="COD"
+                                                class="ms-auto" checked>
                                         </div>
                                     </div>
                                     <div class="card my-2">
                                         <div class="d-flex justify-content-start align-items-center p-xl-2">
                                             <div class="badge text-bg-warning">VNPay</div>
                                             <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
-                                            <input type="radio" name="payment_method" value="VNPay" class="ms-auto">
+                                            <input type="radio" id="payment_vnpay" name="payment_option" value="VNPay"
+                                                class="ms-auto">
                                         </div>
                                     </div>
                                 </div>
-                                @if ($diachis->isEmpty()) 
-                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-flex justify-content-center" > Vui lòng thêm địa chỉ để đặt hàng</a> 
-                                @else 
-                                    <button class="btn btn--e-brand-b-2 w-100" type="submit">ĐẶT HÀNG</button>
-                                @endif
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" id="add-address-link"
+                                        class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                        style="display: none;">Vui lòng thêm địa chỉ để đặt hàng</a>
+                                    <button class="btn btn--e-brand-b-2 w-100" id="place-order-button" type="submit">ĐẶT
+                                        HÀNG</button>
+                                    <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
+                                        style="display: none;" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">THANH TOÁN VÍ ĐIỆN TỬ</button>
+                                </div>
                             </div>
                         </form>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin đơn hàng</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="f-cart__table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Tổng tiền sản phẩm</td>
+                                                    <td id="grand-total">
+                                                        {{ number_format($pays->sum(function ($item) {
+                                                            if ($item->sanPham->gia_km > 0) {
+                                                                return $item->sanPham->gia_km * $item->so_luong;
+                                                            } else {
+                                                                return $item->sanPham->gia * $item->so_luong;
+                                                            }
+                                                        }), 0, '', '.') }} đ
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phí vận chuyển</td>
+                                                    <td id="shipping-cost"> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Voucher giảm giá</td>
+                                                    <td id="discount-amount">-
+                                                        {{ number_format($discountAmount, 0, '', '.' ?? 0) }} đ
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tr>
+                                                <td>TỔNG THANH TOÁN</td>
+                                                <td id="total-payable">{{ number_format($totalPayable, 0, '', '.') }} đ
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Đóng</button>
+                                        <form action="{{url('/thanh_toan_vnpay')}}" method="POST">
+                                            @csrf
+                                            
+                                            <button type="submit" class="btn btn-primary" name="redirect">Xác nhận</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="route-box">
                             <div class="route-box__g1">
-                                <a class="route-box__link" href="">
+                                <a class="route-box__link" href="{{url('/loai-san-pham/tat-ca-san-pham')}}">
                                     <i class="fas fa-long-arrow-alt-left"></i>
                                     <span>Tiếp tục mua sắm</span>
                                 </a>
@@ -282,20 +365,50 @@
 
 <!-- code khác -->
 <script>
+    $(document).ready(function () {
+        $('input[type="radio"]').on('change', function () {
+            // Bỏ chọn tất cả các radio button trước khi chọn mới
+            $('input[type="radio"]').prop('checked', false);
+            // Chọn radio button hiện tại
+            $(this).prop('checked', true);
+            var selectedValue = $(this).val();
+            $('#payment_method').val(selectedValue);
+
+            // Hiển thị nút phù hợp với phương thức thanh toán được chọn
+            if (selectedValue === 'COD') {
+                $('#place-order-button').show();
+                $('#pay-vnpay-button').hide();
+            } else if (selectedValue === 'VNPay') {
+                $('#place-order-button').hide();
+                $('#pay-vnpay-button').show();
+            }
+
+            // console.log("Phương thức thanh toán đã chọn: " + selectedValue);
+        });
+
+        // Kiểm tra nếu không có địa chỉ, hiển thị liên kết thêm địa chỉ
+        if ("{{ $diachis->isEmpty() }}") {
+            $('#add-address-link').show();
+            $('#place-order-button, #pay-vnpay-button').hide();
+        } else {
+            $('#add-address-link').hide();
+        }
+    });
+
     // Đảm bảo không có form nào khác bị submit
     document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function(event) {
-            console.log('Form submitting: ' + form.id);  // Ghi nhật ký để theo dõi form nào đang được submit
+        form.addEventListener('submit', function (event) {
+            console.log('Form submitting: ' + form.id); // Ghi nhật ký để theo dõi form nào đang được submit
         });
     });
 
     // Lấy id_dc vào form đặt hàng
-    document.getElementById('order_form').addEventListener('submit', function(event) {
+    document.getElementById('order_form').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn chặn submit mặc định
-        
+
         var selectedAddress = document.getElementById('selected_address').value;
         document.getElementById('hidden_selected_address').value = selectedAddress;
-        
+
         console.log('Submitting order_form with address: ' + selectedAddress);
 
         // Thực hiện submit form đặt hàng
@@ -303,78 +416,67 @@
     });
 
     // Lấy địa chỉ để tính tổng tiền 
-    document.addEventListener('DOMContentLoaded', function() {
-        const addressSelect = document.getElementById('selected_address');
-        const shippingCostField = document.getElementById('shipping-cost');
-        const totalPayableField = document.getElementById('total-payable');
-        const totalPayablesHidden = document.getElementById('total_payables_hidden');  // Hidden field for total payable
-
-        const shipCostInnerCity = {{ $giavc->ship_cost_inner_city }};
-        const shipCostNationwide = {{ $giavc->ship_cost_nationwide }};
-        const totalAmount = {{ $totalAmount }};
-        const discountAmount = {{ $discountAmount }};
-
-        addressSelect.addEventListener('change', function() {
-            const selectedOption = addressSelect.options[addressSelect.selectedIndex];
-            const thanhPho = selectedOption.text.split(',').pop().trim();
-            let shippingCost = 0;
-
-            if (thanhPho === 'Hồ Chí Minh' || thanhPho === 'Thành phố Hồ Chí Minh') {
-                shippingCost = shipCostInnerCity;
-            } else {
-                shippingCost = shipCostNationwide;
-            }
-
-            const totalPayable = totalAmount - discountAmount + shippingCost;
-            shippingCostField.innerText = shippingCost.toLocaleString() + ' đ';
-            totalPayableField.innerText = totalPayable.toLocaleString() + ' đ';
-            totalPayablesHidden.value = totalPayable;  // Update the hidden field
-        });
-
-        // Trigger change event on page load to set initial values
+    document.addEventListener('DOMContentLoaded', function () {
+        const addressSelect = document.getElementById('selected_address'); 
+        const shippingCostField = document.getElementById('shipping-cost'); 
+        const totalPayableField = document.getElementById('total-payable'); 
+        const totalPayablesHidden = document.getElementById('total_payables_hidden');
+        const shipCostInnerCity = {{ $giavc->ship_cost_inner_city }}; 
+        const shipCostNationwide = {{ $giavc->ship_cost_nationwide }}; 
+        const totalAmount = {{ $totalAmount }}; 
+        const discountAmount = {{ $discountAmount }}; addressSelect.addEventListener('change', function () {
+        const selectedOption = addressSelect.options[addressSelect.selectedIndex]; 
+        const thanhPho = selectedOption.text.split(',').pop().trim(); 
+        let shippingCost = 0; 
+        if (thanhPho === 'Hồ Chí Minh' || thanhPho === 'Thành phố Hồ Chí Minh') { 
+            shippingCost = shipCostInnerCity;
+        } 
+        else { 
+            shippingCost = shipCostNationwide; 
+        } 
+        const totalPayable = totalAmount - discountAmount + shippingCost; 
+        shippingCostField.innerText = shippingCost.toLocaleString() + ' đ'; 
+        totalPayableField.innerText = totalPayable.toLocaleString() + ' đ'; 
+        totalPayablesHidden.value = totalPayable;  
+        }); 
         addressSelect.dispatchEvent(new Event('change'));
     });
 
 
-// Tuỳ chỉnh số lượng sản phẩm
-function changeQuantityPay(itemId, change) {
-    const quantityInput = document.getElementById(`quantity-${itemId}`);
-    const stockLimit = parseInt(document.getElementById(`stock-${itemId}`).value);
-    let currentQuantity = parseInt(quantityInput.value);
-    currentQuantity += change;
+    // Tuỳ chỉnh số lượng sản phẩm
+    function changeQuantityPay(itemId, change) {
+        const quantityInput = document.getElementById(`quantity-${itemId}`);
+        const stockLimit = parseInt(document.getElementById(`stock-${itemId}`).value);
+        let currentQuantity = parseInt(quantityInput.value);
+        currentQuantity += change;
 
-    if (currentQuantity < 1) {
-        currentQuantity = 1;
-    } 
-    if (currentQuantity > stockLimit) {
-        currentQuantity = stockLimit;
-        alert("Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.");
+        if (currentQuantity < 1) {
+            currentQuantity = 1;
+        }
+        if (currentQuantity > stockLimit) {
+            currentQuantity = stockLimit;
+            alert("Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.");
+        }
+
+        quantityInput.value = currentQuantity;
+        document.getElementById(`form-quantity-${itemId}`).submit();
     }
 
-    quantityInput.value = currentQuantity;
-    document.getElementById(`form-quantity-${itemId}`).submit();
-}
+    // Xử lý giảm giá khi người dùng nhập
+    document.addEventListener('DOMContentLoaded', function () {
+        const cartItems = document.querySelectorAll('.cart-product');
+        cartItems.forEach(item => {
+            const quantityInput = item.querySelector('.product-quantity');
+            const stockQuantity = parseInt(item.querySelector('.stock-quantity').getAttribute('data-stock'));
+            let currentQuantity = parseInt(quantityInput.value);
 
-// Xử lý giảm giá khi người dùng nhập
-document.addEventListener('DOMContentLoaded', function() {
-    const cartItems = document.querySelectorAll('.cart-product');
-    cartItems.forEach(item => {
-        const quantityInput = item.querySelector('.product-quantity');
-        const stockQuantity = parseInt(item.querySelector('.stock-quantity').getAttribute('data-stock'));
-        let currentQuantity = parseInt(quantityInput.value);
-
-        // Nếu số lượng trong giỏ lớn hơn số lượng trong kho
-        if (currentQuantity > stockQuantity) {
-            quantityInput.value = stockQuantity;
-            alert(`Số lượng sản phẩm đã điều chỉnh về ${stockQuantity} do vượt quá hàng trong kho.`);
-        }
+            // Nếu số lượng trong giỏ lớn hơn số lượng trong kho
+            if (currentQuantity > stockQuantity) {
+                quantityInput.value = stockQuantity;
+                alert(`Số lượng sản phẩm đã điều chỉnh về ${stockQuantity} do vượt quá hàng trong kho.`);
+            }
+        });
     });
-});
-
 </script>
 
 @endsection
-
-
-
-

@@ -69,7 +69,7 @@ Mã giảm giá
                            </tbody>
                         </table>
                      </div>
-                  <div class="row justify-content-between mt-3">
+                  <!-- <div class="row justify-content-between mt-3">
                      <div id="user-list-page-info" class="col-md-6">
                         <span>Hiển thị</span>
                      </div>
@@ -84,7 +84,7 @@ Mã giảm giá
                            </ul>
                         </nav>
                      </div>
-                  </div>
+                  </div> -->
                </div>
             </div>
          </div>

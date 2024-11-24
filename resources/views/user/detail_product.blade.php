@@ -4,21 +4,22 @@ Chi Tiết : {{$detail->ten_sp}}
 @endsection
 
 @section('category')
-    @foreach ($loai as $category)
-        <li class="nav-item dropdown">
-            <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                href="{{ route('loai-san-pham',$category->slug) }}">
-                {{$category->ten_loai}}
-            </a>
-            <ul class="dropdown-menu" id="userDropdown">
-                @foreach ($danh_muc as $dm)
-                    @if ($dm->id_loai == $category->id)
-                        <li class="hover-dm"><a class="dropdown-item" href="{{ route('danh-muc-san-pham' , $dm->slug)}}">{{$dm->ten_dm}}</a></li>
-                    @endif
-                @endforeach
-            </ul>
-        </li>
-    @endforeach
+@foreach ($loai as $category)
+    <li class="nav-item dropdown">
+        <a class="nav-link fz dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+            href="{{ route('loai-san-pham', $category->slug) }}">
+            {{$category->ten_loai}}
+        </a>
+        <ul class="dropdown-menu" id="userDropdown">
+            @foreach ($danh_muc as $dm)
+                @if ($dm->id_loai == $category->id)
+                    <li class="hover-dm"><a class="dropdown-item"
+                            href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a></li>
+                @endif
+            @endforeach
+        </ul>
+    </li>
+@endforeach
 @endsection
 
 @php
@@ -36,24 +37,28 @@ Chi Tiết : {{$detail->ten_sp}}
 
 @section('content')
 <div class="app-content pt-lg-4">
+    <!-- Thông báo lấy mã giảm giá -->
+        <div class="z-1 toast align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true" id="toast-vocher"> 
+            <div class="d-flex"> 
+                <div class="toast-body" id="toast-body"></div> 
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button> 
+            </div> 
+        </div>
+    <!-- end thông báo lấy mã giảm giá -->
     <div class="pt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="pd mb-4">
                         <div class="pd-wrap">
-                            <div id="pd-o-initiate">
-                                <div class="pd-o-img-wrap">
-                                    <img src="{{ asset('/uploads/product/' . $detail->hinh) }}"
-                                         class="w-100 img-detail" 
-                                        alt="...">
-                                </div>
+                            <div class="img-detail">
+                                <img src="{{ asset('/uploads/product/' . $detail->hinh) }}" class="w-100" alt="...">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="pd-detail">
+                <div class="col-lg-6 ">
+                    <div class="pd-detail ">
                         <div>
                             <span class="pd-detail__name">{{$detail->ten_sp}}</span>
                             <!-- <span class="section__span u-c-silver"></span> -->
@@ -65,7 +70,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                     <span class="text-danger" style="font-size: 2rem;">
                                         {{$gia_chinh}} đ
                                     </span>
-                                @else 
+                                @else
                                     <span class="pd-detail__price">
                                         {{$gia_chinh}} đ
                                     </span>
@@ -91,15 +96,17 @@ Chi Tiết : {{$detail->ten_sp}}
                                 <div class="col-xl-6 col-lg-6 col-md-4 col-sm-4 col-12">
                                     <div class="pd-detail__inline">
                                         <span class="pd-detail__click-wrap">
-                                            <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                            <a >Đã Bán</a>
+                                            <i class="fa-solid fa-basket-shopping u-s-m-r-6"
+                                                style="color: #ec3609;"></i>
+                                            <a>Đã Bán</a>
                                             <span class="pd-detail__click-count">({{$detail->luot_mua ?? 0}})</span>
                                         </span>
                                     </div>
                                 </div>
                                 <!-- Cột chứa Thêm vào danh sách yêu thích -->
                                 <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-12">
-                                    <div class="d-flex justify-content-md-end justify-content-xs-start"> <!-- Căn phải với màn hình lớn, căn trái với màn hình nhỏ -->
+                                    <div class="d-flex justify-content-md-end justify-content-xs-start">
+                                        <!-- Căn phải với màn hình lớn, căn trái với màn hình nhỏ -->
                                         <div class="pd-detail__inline">
                                             <span class="pd-detail__click-wrap">
                                                 <i class="far fa-heart u-s-m-r-6"></i>
@@ -193,6 +200,46 @@ Chi Tiết : {{$detail->ten_sp}}
                                     </div>
                                 </div>
                             </form>
+                            <br/>
+                            <!-- Mã giảm giá -->
+                            @if (!$ma_giam_gia->isEmpty()) 
+                                <div id="discountCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3600"> 
+                                    <div class="carousel-indicators chuyen"> 
+                                        @foreach ($ma_giam_gia as $index => $item) 
+                                            <button type="button" data-bs-target="#discountCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}" aria-current="{{ $index == 0 ? 'true' : '' }}" aria-label="Slide {{ $index + 1 }}"></button> 
+                                        @endforeach
+                                    </div>
+                                    <div class="carousel-inner"> 
+                                        @foreach ($ma_giam_gia as $index => $item) 
+                                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}"> 
+                                                <div class="container"> 
+                                                    <div class="sharp-corners p-1"> 
+                                                        <div class="d-flex justify-content-center align-content-center" > 
+                                                            <u>
+                                                                <p id="copy{{ $index }}">{{ $item->code }} </p> 
+                                                            </u>
+                                                            <p class="ms-md-2 text-truncate" style="width: 220px;"> {{ $item->mo_ta }}</p> 
+                                                        </div> 
+                                                        <div class="d-flex justify-content-center">
+                                                            <button style="font-size: 14px;" class="btn btn-outline-light" onclick="copyText({{ $index }})">Lấy mã</button> 
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div> 
+                                        @endforeach 
+                                    </div> 
+                                    <a class="carousel-control-prev black-icons position-absolute" href="#discountCarousel" role="button" data-bs-slide="prev"> 
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span> 
+                                    </a> 
+                                    <a class="carousel-control-next black-icons position-absolute" href="#discountCarousel" role="button" data-bs-slide="next"> 
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span> 
+                                        <span class="sr-only">Next</span> 
+                                    </a> 
+                                </div>
+
+                            @endif
+                            <!-- End mã giảm giá -->
                         </div>
                     </div>
                 </div>
@@ -246,31 +293,32 @@ Chi Tiết : {{$detail->ten_sp}}
                                                             <span class="review-o__date">{{$item->thoi_diem}}</span>
                                                         </div>
                                                         <div class="review-o__rating gl-rating-style mb-2">
-                                                        @if ($item->quality_product == 5)
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                        @elseif($item->quality_product == 4)
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                        @elseif($item->quality_product == 3)
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                        @elseif($item->quality_product == 2)
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                        @else
-                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                        @endif
+                                                            @if ($item->quality_product == 5)
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @elseif($item->quality_product == 4)
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @elseif($item->quality_product == 3)
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @elseif($item->quality_product == 2)
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @else
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @endif
                                                         </div>
                                                         <p>Phân Loại : {{$item->ten_sp}} </p>
-                                                        <p>Size: {{$item->size_product ?? 'Null'}} - Màu: {{$item->color}}</p>
-                                                        <p><strong>Chất lượng sản phẩm:</strong> 
+                                                        <p>Size: {{$item->size_product ?? 'Null'}} - Màu: {{$item->color}}
+                                                        </p>
+                                                        <p><strong>Chất lượng sản phẩm:</strong>
                                                         </p>
                                                         <p class="review-o__text">{{$item->noi_dung}}.</p>
                                                         @if (!empty($item->feedback))
@@ -279,7 +327,8 @@ Chi Tiết : {{$detail->ten_sp}}
                                                         @endif
                                                     </div>
                                                     <div class="col-xl-8 col-12">
-                                                        <img src="{{ asset('/uploads/review/' . $item->hinh_dg) }}" class="img-circle" height="220px" alt="Ảnh từ người mua">
+                                                        <img src="{{ asset('/uploads/review/' . $item->hinh_dg) }}"
+                                                            class="img-circle" height="220px" alt="Ảnh từ người mua">
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -311,55 +360,61 @@ Chi Tiết : {{$detail->ten_sp}}
                 <div class="row">
                     @foreach ($relatedpro as $item)
                         @php 
-                            $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
+                            $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia;
                             $gia = number_format($gianew, 0, '', '.'); 
                         @endphp
-                        <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-5">
                             <div class="product-short">
                                 <div class="product-short__container">
                                     <div class="card">
                                         @if ($item->trang_thai_san_pham != 3)
                                             <a href="/detail/{{$item->id}}" id="hover-img-home">
                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                    onerror="this.src='{{ asset('/uploads') }}'"
-                                                    style="max-height: 295px;" alt="" class="w-100">
+                                                    onerror="this.src='{{ asset('/uploads') }}'" style="max-height: 295px;"
+                                                    alt="" class="w-100">
                                                 @if ($item->gia_km > 0)
-                                                    <img src="{{ asset('/uploads/logo/sale.png' ) }}" style="" alt="" class="img-sale">
+                                                    <img src="{{ asset('/uploads/logo/sale.png') }}" style="" alt=""
+                                                        class="img-sale">
                                                 @endif
                                             </a>
                                         @elseif ($item->trang_thai_san_pham == 3)
                                             <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                     style="max-height: 295px;" alt="" class="w-100">
-                                                <img src="{{ asset('/uploads/logo/') }}" onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'" class="overlay-image" alt="">
+                                                <img src="{{ asset('/uploads/logo/') }}"
+                                                    onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'"
+                                                    class="overlay-image" alt="">
                                             </a>
                                         @endif
                                         <div class="card-body text-center">
                                             <a href="">
-                                                <h5 id="hover-sp">{{$item->ten_sp}}</h5>
+                                                <h5 id="hover-sp" class="text-truncate">{{$item->ten_sp}}</h5>
                                             </a>
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                    <div class="col-6 text-start">
-                                                        <div class="d-flex align-items-center">
-                                                            <strong id="color-gia">{{ $gia }}đ</strong>
-                                                            @if ($item->gia_km >= 1) 
-                                                            @php 
-                                                                $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
-                                                            @endphp 
-                                                            @if ($discountPercentage > 1) 
-                                                                <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
-                                                                -{{ number_format($discountPercentage, 0) }}% 
-                                                                </div> 
-                                                            @endif                                
-                                                            @endif
+                                                        <div class="col-sm-7 col-12 text-start">
+                                                            <div class="d-flex align-items-center">
+                                                                <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                @if ($item->gia_km >= 1)
+                                                                    @php 
+                                                                        $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                    @endphp 
+                                                                    @if ($discountPercentage > 1)
+                                                                        <div class="bg-text-success text-danger ms-2"
+                                                                            style="font-size: 10px;">
+                                                                            -{{ number_format($discountPercentage, 0) }}%
+                                                                        </div>
+                                                                    @endif
+                                                                @endif
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
-                                                    </div>
+                                                        <div class="col-sm-5 col-12 text-start text-sm-end">
+                                                            <i class="fa-solid fa-basket-shopping u-s-m-r-6"
+                                                                style="color: #ec3609;"></i>
+                                                            <span class="pd-detail__click-count">Đã Bán
+                                                                ({{$item->luot_mua ?? 0}})</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 text-start">
@@ -383,6 +438,48 @@ Chi Tiết : {{$detail->ten_sp}}
     </div>
 </div>
 <script>
+    // Tuỳ chỉnh ảnh cao bằng cột nội dung
+    document.addEventListener("DOMContentLoaded", function() {
+        function adjustImageHeight() {
+            const imgContainer = document.querySelector('.img-detail');
+            const content = document.querySelector('.pd-detail');
+
+            if (imgContainer && content) {
+                const contentHeight = content.clientHeight;
+                if (window.innerWidth >= 768) { // Điều kiện cho col-md trở lên
+                    imgContainer.style.height = `${contentHeight}px`;
+                } else {
+                    imgContainer.style.height = 'auto'; // Đặt lại chiều cao khi dưới col-md
+                }
+            }
+        }
+
+        // Gọi hàm điều chỉnh ngay khi trang được tải
+        adjustImageHeight();
+
+        // Gọi hàm điều chỉnh khi cửa sổ thay đổi kích thước
+        window.addEventListener('resize', adjustImageHeight);
+    });
+    // copy mã giảm giá 
+    document.addEventListener('DOMContentLoaded', function () { 
+        window.copyText = function (index) { 
+            var copyText = document.getElementById("copy" + index); 
+            navigator.clipboard.writeText(copyText.textContent).then(function () { 
+                var toastContainer = document.getElementById("toast-vocher"); 
+                var toastBody = document.getElementById("toast-body"); 
+                toastBody.textContent = "Đã lấy mã giảm giá thành công: " + copyText.textContent; 
+                toastContainer.classList.remove("d-none"); 
+                toastContainer.classList.add("show"); setTimeout(function () { 
+                    toastContainer.classList.remove("show"); 
+                    toastContainer.classList.add("d-none"); 
+                }, 4000); }, 
+                function (err) { 
+                    console.error('Lỗi sao chép: ', err); 
+                }); 
+            } 
+        }
+    );
+
     document.addEventListener('DOMContentLoaded', function () {
         let selectedSize = null;
         let hangTrongKho = 0;
@@ -396,12 +493,12 @@ Chi Tiết : {{$detail->ten_sp}}
         sizeRadios.forEach(radio => {
             radio.addEventListener('change', function () {
                 selectedSize = this.value;
-                if(this.getAttribute('data-size') > 10){
+                if (this.getAttribute('data-size') > 10) {
                     hangTrongKho = Math.floor(parseFloat(this.getAttribute('data-size')) / 2);
-                }else{
+                } else {
                     hangTrongKho = this.getAttribute('data-size');
                 }
-                
+
 
                 var soluong = parseInt(quantityInput.value);
                 if (soluong > hangTrongKho) {
@@ -424,7 +521,7 @@ Chi Tiết : {{$detail->ten_sp}}
                 return;
             }
 
-        // Kiểm tra số lượng trong giỏ hàng
+            // Kiểm tra số lượng trong giỏ hàng
             let quantityToAdd = parseInt(quantityInput.value);
             let currentQuantityInCart = cart[selectedSize] ? cart[selectedSize].quantity : 0;
 

@@ -114,11 +114,11 @@ Quản lý danh mục - TrendyU
                                                          onclick="return confirm('Nếu bạn hiện danh mục này. Các sản phẩm nằm trong danh mục này sẽ hiển thị')">Hiện</button>
                                                 </form>
                                              @endif
-                                             <form action="{{ route('danh-muc.delete', $dm->id) }}" method="get">
+                                             <!-- <form action="{{ route('danh-muc.delete', $dm->id) }}" method="get">
                                                 <button
                                                    onclick="return confirm('Bạn có chắc chắn muốn xoá danh mục này không?')"
                                                    class="btn btn-outline-danger">Xóa</button>
-                                             </form>
+                                             </form> -->
                                        </div>
                                     </td>
                                  </tr>

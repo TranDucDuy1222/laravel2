@@ -17,11 +17,11 @@ class ApiproductController extends Controller
     {
         // Kiểm tra slug để xác định hành động
         if ($slug == 'tat-ca-san-pham') {
-            $title = 'Mới và Nổi Bật';
+            $title = 'Tất cả sản phẩm';
         } 
         // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
         else if ($slug == 'giam-gia') {
-            $title = 'Giảm Giá';
+            $title = 'Giảm giá';
         } else{
             return back()->with('thongbao', 'Loại sản phẩm không tồn tại.');
         }

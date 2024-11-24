@@ -47,6 +47,8 @@ Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
 Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
 Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
+//Thanh toán vnpay
+Route::post('/thanh_toan_vnpay', [BuyController::class, 'thanh_toan_vnpay']);
 
 // Đặt hàng
 Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
@@ -83,16 +85,8 @@ Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user
 
 //Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
-Route::post("gui-lien-he", function(Illuminate\Http\Request $request){
-    $arr = request()->post();
-    $ht = trim(strip_tags($arr['name']));
-    $email = trim(strip_tags($arr['email']));
-    $nd = trim(strip_tags($arr['noidung']));
+Route::post('gui-lien-he', [UserController::class, 'sendContact']);
 
-    $adminEmail = 'trendyu02@gmail.com';//Thư được gửi tới quản trị của email này
-    Mail::mailer('smtp')->to($adminEmail)->send(new GuiEmail($ht, $email, $nd));
-    return redirect()->route('user.contact')->with('success', 'Gửi mail thành công !');
-});
 
 // URL Admin
 Route::group(['prefix' => 'admin'], function() { 
@@ -146,6 +140,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
 
     Route::resource('email', AdminemailController::class);
+    Route::post('phan-hoi/{id}', [AdminemailController::class, 'sendReply'])->name('admin.contact');
 
     Route::resource('magiamgia', MaGiamGiaController::class);
 

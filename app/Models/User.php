@@ -32,4 +32,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function diaChi()
+    {
+        return $this->hasOne(DiaChi::class, 'id_user', 'id');
+    }
 }

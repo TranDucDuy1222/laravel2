@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/cssadmin/admin/css/typography.css">
         <link rel="stylesheet" href="/cssadmin/admin/css/style.css">
         <link rel="stylesheet" href="/cssadmin/admin/css/responsive.css">
+        <link rel="stylesheet" href="/cssadmin/admin/css/reply_email.css">
         <script src="https://kit.fontawesome.com/50a28ba58a.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- @vite(['resources/js/app.js', 'resources/css/app.css']) -->

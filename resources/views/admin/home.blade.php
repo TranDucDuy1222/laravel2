@@ -9,83 +9,98 @@ Thống Kê
             <div class="col-lg-12 row m-0 p-0">
                 <div class="col-sm-6 col-md-6 col-lg-3">
                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-body d-flex">
-                            <div class="icon iq-icon-box iq-bg-primary rounded">
-                                <i class="fa-solid fa-person"></i>
+                        <div class="iq-card-body">
+                            <div class="row m-1 row m-1 pb-2 border-bottom">
+                                <div class="icon iq-icon-box iq-bg-primary rounded col-2">
+                                    <i class="fa-solid fa-person"></i>
+                                </div>
+                                <div class="col-8">
+                                    <h3 class="text-black">Khách hàng</h3>
+                                    <h4 class="d-flex text-primary">{{$newCustomers}}</h4>
+                                </div>
                             </div>
-                            <div>
-                                <h5 class="text-black">khách hàng</h5>
-                                <h3 class="d-flex text-primary">{{$user_quantity}}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                    <div class="iq-card-body d-flex">
-                        <div class="icon iq-icon-box iq-bg-danger rounded" data-wow-delay="0.2s">
-                            <i class="fa-solid fa-box"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-black">Sản phẩm</h5>
-                            <h3 class="d-flex text-danger">{{$product_quantity}}</h3>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-body d-flex">
-                            <div class="icon iq-icon-box iq-bg-primary rounded" data-wow-delay="0.2s">
-                                <i class="sa-nav__icon fa-solid fa-cart-shopping"></i>
-                            </div>
-                            <div>
-                                <h5 class="text-black">Đơn hàng</h5>
-                                <h3 class="d-flex text-primary">{{$order_quantity}}</h3>
-                            </div>
+                            <h8>Tổng số Khách hàng mới</h8>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-3">
                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-body d-flex">
-                            <div class="icon iq-icon-box iq-bg-danger rounded" data-wow-delay="0.2s">
-                                <i class='sa-nav__icon fa-solid fa-comment'></i>
+                        <div class="iq-card-body">
+                            <div class="row m-1 pb-2 border-bottom">
+                                <div class="icon iq-icon-box iq-bg-danger rounded col-2">
+                                    <i class="fa-solid fa-person"></i>
+                                </div>
+                                <div class="col-8">
+                                    <h3 class="text-black">Đơn hàng</h3>
+                                    <h4 class="d-flex text-danger">{{$orderCount}}</h4>
+                                </div>
                             </div>
-                            <div>
-                                <h5 class="text-black">Đánh giá</h5>
-                                <h3 class="d-flex text-danger">{{$review_quantity}}</h3>
+                            <h8>Tổng số đơn hàng trong ngày</h8>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-3">
+                    <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-body">
+                            <div class="row m-1 row m-1 pb-2 border-bottom">
+                                <div class="icon iq-icon-box iq-bg-primary rounded col-2">
+                                    <i class="fa-solid fa-person"></i>
+                                </div>
+                                <div class="col-8">
+                                    <h3 class="text-black">Doanh thu</h3>
+                                    <h4 class="d-flex text-primary">{{number_format($totalRevenue, 0, ',' , '.' )}} VND</h4>
+                                </div>
                             </div>
+                            <h8>Tổng số doanh thu trong ngày</h8>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-3">
+                    <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-body">
+                            <div class="row m-1 pb-2 border-bottom">
+                                <div class="icon iq-icon-box iq-bg-danger rounded col-2">
+                                    <i class="fa-solid fa-person"></i>
+                                </div>
+                                <div class="col-8">
+                                    <h3 class="text-black">Sản phẩm</h3>
+                                    <h4 class="d-flex text-danger">{{$totalProductsSold}}</h4>
+                                </div>
+                            </div>
+                            <h8>Tổng sản phẩm bán được trong ngày</h8>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-7">
                 <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                 <div class="iq-card-header d-flex justify-content-between">
                     <div class="iq-header-title">
                         <h4 class="card-title">Thống kê doanh thu</h4>
                     </div>
                     <div class="iq-card-header-toolbar d-flex align-items-center">
-                        <form action="{{ url('/admin') }}" method="GET" id="filterForm">
+                        <form action="{{ url('/admin') }}" method="GET">
                             <div class="row g-3 align-items-center mt-2 mb-4">
                                 <div class="col-auto">
-                                    <select class="form-select" name="filter" onchange="document.getElementById('filterForm').submit()">
-                                        <option value="week" {{ $filter == 'week' ? 'selected' : '' }}>Theo tháng</option>
-                                        <option value="month" {{ $filter == 'month' ? 'selected' : '' }}>Theo năm</option>
+                                    <select class="form-select" name="filter" id="filter" onchange="this.form.submit()">
+                                        <option value="day" {{ request('filter') == 'day' ? 'selected' : '' }}>Ngày trong tháng</option>
+                                        <option value="week" {{ request('filter') == 'week' ? 'selected' : '' }}>Tuần trong tháng</option>
+                                        <option value="month" {{ request('filter') == 'month' ? 'selected' : '' }}>Tháng trong năm</option>
                                     </select>
                                 </div>
                                 <div class="col-auto">
-                                    <select class="form-select" name="year" onchange="document.getElementById('filterForm').submit()">
-                                        @foreach(range(now()->year - 5, now()->year + 5) as $y) <!-- 5 năm trước và sau -->
-                                            <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>Năm {{ $y }}</option>
-                                        @endforeach
+                                    <select class="form-select" name="year" id="year" onchange="this.form.submit()">
+                                        @for ($i = now()->year; $i >= 2020; $i--)
+                                            <option value="{{ $i }}" {{ request('year') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                        @endfor
                                     </select>
                                 </div>
                                 <div class="col-auto">
-                                    <select class="form-select" name="month" onchange="document.getElementById('filterForm').submit()" {{ $filter != 'week' ? 'disabled' : '' }}>
-                                        @foreach(range(1, 12) as $m)
-                                            <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>Tháng {{ $m }}</option>
+                                    <select class="form-select" name="month" id="month" onchange="this.form.submit()" {{ $filter == 'month' ? 'disabled' : '' }}>
+                                        @foreach(range(1, 12) as $monthNum)
+                                            <option value="{{ $monthNum }}" {{ request('month') == $monthNum ? 'selected' : '' }}>
+                                                {{ \Carbon\Carbon::createFromFormat('m', $monthNum)->format('F') }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -98,125 +113,27 @@ Thống Kê
                 </div>
                 </div>
             </div>
-            <!-- <div class="col-lg-5">
-                <div class="iq-card bg-danger iq-card-block iq-card-stretch iq-card-height-half">
-                <div class="iq-card-body box iq-box-relative">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="col-7 p-0">
-                            <div class="float-left progress-round income-progress mr-3" data-value="80">
-                            <span class="progress-left">
-                            <span class="progress-bar border-white" style="transform: rotate(108deg);"></span>
-                            </span>
-                            <span class="progress-right">
-                            <span class="progress-bar border-white" style="transform: rotate(180deg);"></span>
-                            </span>
-                            <div class="progress-value w-100 h-100 rounded d-flex align-items-center justify-content-center text-center">
-                                <div class="h4 mb-0">75</div>
-                            </div>
-                            </div>
-                            <h5 class="d-block mt-2 text-white font-weight-500">Storage<br> Usage</h5>
-                        </div>
-                        <div class="col-5 pr-0 right-border-block position-relative">
-                            <h5 class="text-white mt-2">594875625</h5>
-                            <span class="text-white">Online Users</span>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <div class="iq-card iq-card-block iq-card-stretch iq-card-height-half iq-background-image">
-                <div class="iq-card-body box iq-box-relative rounded">
-                    <div class="d-flex justify-content-between align-items-left">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="float-left progress-round income-progress" data-value="80">
-                            <span class="progress-left">
-                            <span class="progress-bar border-primary" style="transform: rotate(108deg);"></span>
-                            </span>
-                            <span class="progress-right">
-                            <span class="progress-bar border-success" style="transform: rotate(180deg);"></span>
-                            </span>
-                            </div>
-                            <div class="pl-3">
-                            <ul class="float-right d-inline-block p-0 m-0 list-inline">
-                                <li class="line-height-3">
-                                    <span class="text-danger total-progress position-relative pl-2">
-                                    <span class="bg-danger rounded"></span>Total Processes: 61<i class="ri-arrow-up-line"></i>
-                                    </span>
-                                </li>
-                                <li class="line-height-3">
-                                    <span class="text-primary total-progress position-relative pl-2">
-                                    <span class="bg-primary rounded"></span>Total Threands: 993<i class="ri-arrow-down-line"></i>
-                                    </span>
-                                </li>
-                                <li class="line-height-3">
-                                    <span class="text-success total-progress position-relative pl-2">
-                                    <span class="bg-success rounded"></span>Total Handles: 26957<i class="ri-arrow-up-line"></i>
-                                    </span>
-                                </li>
-                            </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div> -->
-            <!-- <div class="col-lg-7">
-                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+            <div class="col-lg-5">
+                <div class="iq-card iq-card-block iq-card-stretch iq-card-height bg-primary-light rounded background-image-overlap">
                 <div class="iq-card-header d-flex justify-content-between">
-                    <div class="iq-header-title">
-                        <h4 class="card-title">Bandwidth Public</h4>
-                    </div>
-                    <div class="mt-1">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <a href="javascript:void();" class="d-flex align-items-center mr-4">
-                            <span class="bg-danger p-1 rounded mr-2"></span>
-                            <p class="text-danger mb-0">Lowest Speed </p>
-                            </a>
-                            <a href="javascript:void();" class="d-flex align-items-center">
-                            <span class="bg-primary p-1 rounded mr-2"></span>
-                            <p class="text-primary mb-0">Highest Speed</p>
-                            </a>
+                        <div class="iq-header-title">
+                            <h4 class="card-title">Số lượng đơn hàng theo trạng thái</h4>
                         </div>
                     </div>
-                </div>
-                <div class="iq-card-body">
-                    <div id="iq-income-chart"></div>
-                </div>
+                    <div class="iq-card-body">
+                        <canvas class="embed-responsive-item" style="max-height: 250px;" id="orderStatusChart"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="iq-card iq-card-block iq-card-stretch iq-card-height bg-primary rounded background-image-overlap">
-                <div class="iq-card-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <div><img class="rounded" src="images/page-img/38.png" alt=""></div>
-                        <h5 class="pl-3 text-white">Unauthorized Threats has been Terminated</h5>
-                    </div>
-                    <p class="mb-2"><span class="text-white">5</span> Unnecessary Data</p>
-                    <p class="mb-2"><span class="text-white">12</span> Undentified Source Data</p>
-                    <p class="mb-3"><span class="text-white">8</span> Unused Images</p>
-                    <button type="submit" class="btn w-100 btn-white mt-4 text-primary viwe-more">View More</button>
-                </div>
-                </div>
-            </div> -->
             <div class="col-lg-7">
                 <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                 <div class="iq-card-header d-flex justify-content-between">
                     <div class="iq-header-title">
                         <h4 class="card-title">Đơn hàng gần đây</h4>
                     </div>
-                    <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle text-primary" id="dropdownMenuButton2" data-toggle="dropdown">
-                            <i class="ri-more-2-fill"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                            <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                            <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                            <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                            <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                            </div>
-                        </div>
-                    </div> -->
+                    <div class="d-flex justify-content-end">
+                        <a href="{{url('admin/san-pham')}}" class="btn btn-outline-secondary"><i class="fa-regular fa-eye m-0 p-0"></i></a>
+                    </div>
                 </div>
                 <div class="iq-card-body">
                     <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
@@ -235,22 +152,25 @@ Thống Kê
                                     <td>{{$dh->id}}</td>
                                     <td>{{$dh->name}}</td>
                                     <td>
-                                    {{number_format($dh->tong_dh, 0, ',' , '.' )}} đ
+                                    {{number_format($dh->tong_dh, 0, ',' , '.' )}} VND
                                     </td>
                                     <td>
-                                    <div class="d-flex justify-content-center">
-                                        @if ($dh->trang_thai == 0)
-                                        <span class="btn bg-warning">Chờ xử lý</span>
-                                        @elseif ($dh->trang_thai == 1)
-                                        <span class="btn bg-primary">Đã xử lý</span>
-                                        @elseif ($dh->trang_thai == 2)
-                                        <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
-                                        @elseif ($dh->trang_thai == 3)
-                                        <span class="btn bg-success">Giao hàng thành công</span>
-                                        @elseif ($dh->trang_thai == 4)
-                                        <span class="btn bg-danger">Đã hủy</span>
-                                    @endif
-                                </div>
+                                        <div class="">
+                                            @if ($dh->trang_thai == 0)
+                                            <span class="btn bg-warning">Chờ xử lý</span>
+                                            @elseif ($dh->trang_thai == 1)
+                                            <span class="btn bg-primary">Đã xác nhận đơn hàng</span>
+                                            @elseif ($dh->trang_thai == 2)
+                                            <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
+                                            @elseif ($dh->trang_thai == 3)
+                                            <span class="btn bg-success">Đã giao thành công</span>
+                                            @elseif ($dh->trang_thai == 4)
+                                            <span class="btn bg-dark">Đã đánh giá sản phẩm</span>
+                                            @elseif ($dh->trang_thai == 5)
+                                            <span class="btn bg-danger">Đã hủy</span>
+                                            @endif
+                                        </div>
+                                    </td>
                                 </tr>   
                                 @endforeach
                             </tbody>
@@ -265,20 +185,9 @@ Thống Kê
                     <div class="iq-header-title">
                         <h4 class="card-title">Khách hàng mới</h4>
                     </div>
-                    <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle text-primary" id="dropdownMenuButton2" data-toggle="dropdown">
-                            <i class="ri-more-2-fill"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                            <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                            <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                            <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                            <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                            </div>
-                        </div>
-                    </div> -->
+                    <div class="d-flex justify-content-end">
+                        <a href="{{url('admin/tai-khoan')}}" class="btn btn-outline-secondary"><i class="fa-regular fa-eye m-0 p-0"></i></a>
+                    </div>
                 </div>
                 <div class="iq-card-body">
                     <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
@@ -306,21 +215,125 @@ Thống Kê
                 </div>
                 </div>
             </div>
+            <div class="col-lg-7">
+                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                    <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                            <h4 class="card-title">Đánh giá mới nhất</h4>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('admin/danh-gia')}}" class="btn btn-outline-secondary"><i class="fa-regular fa-eye m-0 p-0"></i></a>
+                        </div>
+                    </div>
+                    <div class="iq-card-body">
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table id="recent-reviews-table" class="table table-striped table-bordered mt-4">
+                                <thead class="shadow-sm sticky-top z-1 bg-white text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên khách hàng</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Đánh giá</th>
+                                        <th>Sao</th>
+                                        <th>Thời điểm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($dsDG as $review)
+                                    <tr>
+                                        <td>{{ $review->id }}</td>
+                                        <td>{{ $review->ten_khach_hang }}</td>
+                                        <td>{{ $review->ten_sp }}</td>
+                                        <td>{{ $review->noi_dung }}</td>
+                                        <td class="text-center">
+                                            {{-- Chuyển đổi quality_product thành số nguyên và tạo sao đánh giá --}}
+                                            {{ str_repeat('★', intval($review->quality_product)) }}
+                                            {{ str_repeat('☆', 5 - intval($review->quality_product)) }}
+                                        </td>
+                                        <td>{{ \Carbon\Carbon::parse($review->thoi_diem)->format('d-m-Y H:i') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                    <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                            <h4 class="card-title">Sản phẩm sắp hết hàng</h4>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('admin/san-pham?trangthai=1')}}" class="btn btn-outline-secondary"><i class="fa-regular fa-eye m-0 p-0"></i></a>
+                        </div>
+                    </div>
+                    <div class="iq-card-body">
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table id="low-stock-products-table" class="table table-striped table-bordered mt-4">
+                                <thead class="shadow-sm sticky-top z-1 bg-white text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Màu</th>
+                                        <th>Tổng số lượng</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($dsSP as $sp)
+                                    <tr>
+                                        <td>{{ $sp->id }}</td>
+                                        <td class="text-center">
+                                            <img class="rounded img-fluid avatar-70" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/imgnew/{{$sp->hinh}}'" alt="">
+                                        </td>
+                                        <td>{{ $sp->ten_sp }}</td>
+                                        <td>{{ $sp->color }}</td>
+                                        <td class="text-center"><span>{{ $sp->tong_so_luong }}</span></td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                @if ($sp -> trang_thai == 0)
+                                                    <span class="btn btn-outline-dark">Còn hàng</span>
+                                                @endif
+                                                @if ($sp -> trang_thai == 1)
+                                                    <span class="btn btn-outline-dark">Sắp hết hàng</span>
+                                                @endif
+                                                @if ($sp -> trang_thai == 2)
+                                                    <span class="btn btn-outline-dark">Ngừng kinh doanh</span>
+                                                @endif
+                                                @if ($sp -> trang_thai == 3)
+                                                    <span class="btn btn-outline-dark">Sắp về hàng</span>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<!-- Biểu đồ doanh thu -->
 <script>
-    const labels = {!! json_encode($data->pluck($filter == 'day' ? 'date' : ($filter == 'week' ? 'week' : 'month'))) !!};
+    const labels = {!! json_encode($filter == 'day' ? $data->pluck('day') : ($filter == 'week' ? $data->pluck('week') : $data->pluck('month'))) !!};
+    
     const data = {
         labels: labels,
         datasets: [{
-            label: 'Doanh thu theo ' + @json($filter == 'day' ? 'Ngày' : ($filter == 'week' ? 'Tháng' : 'Năm')),
+            label: 'Doanh thu theo ' + @json($filter == 'day' ? 'Ngày' : ($filter == 'week' ? 'Tuần' : 'Tháng')),
             data: {!! json_encode($data->pluck('revenue')) !!},
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(150, 75, 88, 0.5)',
+            borderColor: 'rgba(150, 75, 88, 0.5)',
             borderWidth: 1
         }]
     };
+
     const config = {
         type: 'bar',
         data: data,
@@ -332,9 +345,45 @@ Thống Kê
             }
         }
     };
+
     const revenueChart = new Chart(
         document.getElementById('revenueChart'),
         config
     );
 </script>
+<!-- Biểu đồ trạng thái -->
+<script>
+    const ctx = document.getElementById('orderStatusChart');
+    const orderStatusData = {!! json_encode($orderStatusData) !!};
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: orderStatusData.map(data => {
+                switch(data.trang_thai) {
+                    case 0: return 'Chờ xử lý';
+                    case 1: return 'Đã xác nhận đơn hàng';
+                    case 2: return 'Đã giao cho đơn vị vận chuyển';
+                    case 3: return 'Đã giao thành công';
+                    case 4: return 'Đã đánh giá sản phẩm';
+                    case 5: return 'Đã hủy';
+                    default: return 'Khác';
+                }
+            }),
+            datasets: [{
+                data: orderStatusData.map(data => data.count),
+                backgroundColor: ['#ffc107', '#0d6efd', '#0dcaf0', '#198754', '#212529', '#dc3545' ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'right',
+                }
+            }
+        }
+    });
+</script>
+
 @endsection

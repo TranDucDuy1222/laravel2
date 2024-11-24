@@ -80,7 +80,10 @@ class ProductController extends Controller
             ->where('id_sp', $id)
             ->count();
 
-        return view('user.detail_product', ['sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
+        // Truy vấn mã khuyến mãi
+        $ma_giam_gia = DB::table('maGiamGia')->select('code' , 'mo_ta')->get();
+
+        return view('user.detail_product', ['ma_giam_gia' => $ma_giam_gia ,'sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
     }
 
     

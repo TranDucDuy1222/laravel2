@@ -48,6 +48,7 @@
         </ul>
       </div>
     </div>
+
     <div v-if="selectedColor || selectedSize" class="col-12 text-dark">
       <h4 class="my-md-2">Đang lọc theo </h4>
       <div class="d-flex">
@@ -59,7 +60,6 @@
         </p>
       </div>
     </div>
-    
     <div class="col-12">
       <!-- Sắp xếp -->
       <h3 class="text-dark my-2">Sắp xếp theo</h3>
@@ -90,7 +90,7 @@
         Chưa có sản phẩm trong danh mục này.
       </div>
       <div v-else class="row">
-        <div v-for="product in filteredProductsByColorAndSize" :key="product.id" class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div v-for="product in filteredProductsByColorAndSize" :key="product.id" class="col-lg-3 col-md-4 col-sm-6 col-6 mb-3">
           <div class="product-short">
             <div class="product-short__container">
               <div class="card">
@@ -100,12 +100,12 @@
                 </a>
                 <div class="card-body">
                   <a href="" class="text-center">
-                    <h5 id="hover-sp">{{ product.ten_sp }}</h5>
+                    <h5 id="hover-sp" class="text-truncate">{{ product.ten_sp }}</h5>
                   </a>
                   <div class="row">
                     <div class="col-12">
                       <div class="row">
-                        <div class="col-7 text-start">
+                        <div class="col-sm-7 col-12 text-start">
                           <div class="d-flex align-items-center" v-if="product.trang_thai != 3">
                             <strong id="color-gia">{{ formattedPrice(product) }}đ</strong>
                             <div v-if="product.gia_km >= 1 && discountPercentage(product) > 1" class="bg-text-success text-danger ms-2" style="font-size: 10px;">
@@ -118,7 +118,7 @@
                             </a>
                           </div>
                         </div>
-                        <div class="col-5 text-end">
+                        <div class="col-sm-5 col-12 text-start text-sm-end">
                           <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
                           <span class="pd-detail__click-count">Đã Bán ({{ product.luot_mua || 0 }})</span>
                         </div>

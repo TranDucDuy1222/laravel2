@@ -62,14 +62,7 @@ Trang Chủ - TrendyU
             </button>
         </div>
         <!-- slogan -->
-        <div class="z-1 toast align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
-            aria-live="assertive" aria-atomic="true" id="toast-vocher">
-            <div class="d-flex">
-                <div class="toast-body" id="toast-body"></div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>        
+            
         <!-- End slogan -->
     </header>
 <!-- End header -->
@@ -458,7 +451,9 @@ Trang Chủ - TrendyU
                                 </div>
                             </div>
                         </div>
-                        
+                        <a href="{{ route('loai-san-pham' ,'giam-gia') }}" class="d-flex justify-content-center">
+                            <button class="custom-button mt-2">Xem tất cả →</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -592,9 +587,9 @@ Trang Chủ - TrendyU
                     </div>
                 </div>
             </div>
-            <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
+            <!-- <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
                 <button class="custom-button mt-2">Xem tất cả →</button>
-            </a>
+            </a> -->
         </div>
         <br>
         <!-- End sản phẩm bán chạy -->
