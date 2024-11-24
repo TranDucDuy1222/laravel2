@@ -50,8 +50,9 @@ Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher']
 
 // Đặt hàng
 Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
-//Thanh toán vnpay
-Route::get('/thanh_toan_vnpay', [OrderController::class, 'thanh_toan_vnpay']);
+Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayReturn'])->name('vnpay.return'); // Chuyển thành GET
+Route::post('/vnpay/store-order', [OrderController::class, 'storeOrder'])->name('vnpay.storeOrder');
+
 
 // Đăng nhập
 Route::get('/login', [UserController::class , 'login'])->name('login');

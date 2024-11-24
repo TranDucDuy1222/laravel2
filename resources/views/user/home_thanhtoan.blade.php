@@ -271,11 +271,11 @@
                                 class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
                                 style="display: none;">Vui lòng thêm địa chỉ để đặt hàng</a> 
                                 <button class="btn btn--e-brand-b-2 w-100" id="place-order-button" type="submit">ĐẶT HÀNG</button> 
+                                <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
+                                    style="display: none;" type="submit">THANH TOÁN VÍ ĐIỆN TỬ
+                                </button>
                             </div> 
-                            <a href="javascript:void(0)" onclick="submitVNPAYForm()" class="w-100 text-secondary"> 
-                                <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button" style="display: none;" type="button">THANH TOÁN VÍ ĐIỆN TỬ</button> 
-                            </a> 
-                            </form>
+                        </form>
                     </div>
                     <div class="col-lg-12">
                         <div class="route-box">
@@ -358,11 +358,6 @@ $(document).ready(function () {
 
     // Gọi hàm cập nhật nút ban đầu
     updateButtons();
-    // Hàm gửi form khi chọn VNPay 
-    window.submitVNPAYForm = function() { 
-        $('#payment_method').val('VNPAY'); 
-        $('#order_form').submit(); 
-    }
 });
 
 // Đảm bảo không có form nào khác bị submit
