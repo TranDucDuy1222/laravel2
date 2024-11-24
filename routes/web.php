@@ -42,10 +42,10 @@ Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->na
 Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('cart.update');
 
 // Thanh toán
-Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
+//Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
-Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
+Route::post('/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
 Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
 
 // Đặt hàng

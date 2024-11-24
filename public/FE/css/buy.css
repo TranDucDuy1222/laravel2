@@ -7,8 +7,6 @@
   overflow-y: auto;
 }
 
-
-
 .text-truncate {
   white-space: nowrap;
   overflow: hidden;
