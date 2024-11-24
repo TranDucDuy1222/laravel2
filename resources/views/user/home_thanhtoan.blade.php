@@ -214,12 +214,12 @@
                                             <td>Tổng tiền sản phẩm</td>
                                             <td id="grand-total">
                                                 {{ number_format($pays->sum(function ($item) {
-    if ($item->sanPham->gia_km > 0) {
-        return $item->sanPham->gia_km * $item->so_luong;
-    } else {
-        return $item->sanPham->gia * $item->so_luong;
-    }
-}), 0, '', '.') }} đ
+                                                    if ($item->sanPham->gia_km > 0) {
+                                                        return $item->sanPham->gia_km * $item->so_luong;
+                                                    } else {
+                                                        return $item->sanPham->gia * $item->so_luong;
+                                                    }
+                                                }), 0, '', '.') }} đ
                                             </td>
                                         </tr>
                                         <tr>
@@ -254,7 +254,7 @@
                                 <div class="text-black mb-xl-2 ">
                                     <h3>Phương thức thanh toán</h3>
                                     <div class="card my-2">
-                                        <div class="d-flex justify-content-start align-items-center p-xl-2">
+                                        <div class="d-flex justify-content-start align-items-center p-xl-2 payment-options" data-payment="COD">
                                             <div class="badge text-bg-success">COD</div>
                                             <p class="ms-2 align-self-center fs-6">Thanh toán khi nhận hàng</p>
                                             <input type="radio" id="payment_cod" name="payment_option" value="COD"
@@ -262,7 +262,7 @@
                                         </div>
                                     </div>
                                     <div class="card my-2">
-                                        <div class="d-flex justify-content-start align-items-center p-xl-2">
+                                        <div class="d-flex justify-content-start align-items-center p-xl-2 payment-options" data-payment="VNPay">
                                             <div class="badge text-bg-warning">VNPay</div>
                                             <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
                                             <input type="radio" id="payment_vnpay" name="payment_option" value="VNPay"
@@ -274,70 +274,17 @@
                                     <a href="{{ route('user.profile', [Auth::user()->id]) }}" id="add-address-link"
                                         class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                         style="display: none;">Vui lòng thêm địa chỉ để đặt hàng</a>
-                                    <button class="btn btn--e-brand-b-2 w-100" id="place-order-button" type="submit">ĐẶT
-                                        HÀNG</button>
-                                    <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
-                                        style="display: none;" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">THANH TOÁN VÍ ĐIỆN TỬ</button>
+                                    <button class="btn btn--e-brand-b-2 w-100 " id="place-order-button" type="submit">
+                                        ĐẶT HÀNG
+                                    </button>
                                 </div>
+                                <a href="{{url('/thanh_toan_vnpay')}}" class="w-100 text-secondary">
+                                    <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
+                                        style="display: none;" type="button">THANH TOÁN VÍ ĐIỆN TỬ
+                                    </button>
+                                </a>
                             </div>
                         </form>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin đơn hàng</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <table class="f-cart__table">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Tổng tiền sản phẩm</td>
-                                                    <td id="grand-total">
-                                                        {{ number_format($pays->sum(function ($item) {
-                                                            if ($item->sanPham->gia_km > 0) {
-                                                                return $item->sanPham->gia_km * $item->so_luong;
-                                                            } else {
-                                                                return $item->sanPham->gia * $item->so_luong;
-                                                            }
-                                                        }), 0, '', '.') }} đ
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Phí vận chuyển</td>
-                                                    <td id="shipping-cost"> </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Voucher giảm giá</td>
-                                                    <td id="discount-amount">-
-                                                        {{ number_format($discountAmount, 0, '', '.' ?? 0) }} đ
-                                                    </td>
-                                                </tr>
-
-                                            </tbody>
-                                            <tr>
-                                                <td>TỔNG THANH TOÁN</td>
-                                                <td id="total-payable">{{ number_format($totalPayable, 0, '', '.') }} đ
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Đóng</button>
-                                        <form action="{{url('/thanh_toan_vnpay')}}" method="POST">
-                                            @csrf
-                                            
-                                            <button type="submit" class="btn btn-primary" name="redirect">Xác nhận</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="route-box">
@@ -365,118 +312,115 @@
 
 <!-- code khác -->
 <script>
-    $(document).ready(function () {
-        $('input[type="radio"]').on('change', function () {
-            // Bỏ chọn tất cả các radio button trước khi chọn mới
-            $('input[type="radio"]').prop('checked', false);
-            // Chọn radio button hiện tại
-            $(this).prop('checked', true);
-            var selectedValue = $(this).val();
-            $('#payment_method').val(selectedValue);
+// Đảm bảo payment_method có giá trị theo radio đã chọn 
+document.addEventListener('DOMContentLoaded', function() { 
+    const paymentMethodInputs = document.querySelectorAll('#payment_method'); 
+    const paymentOptions = document.getElementsByName('payment_option'); 
+    paymentOptions.forEach(option => { 
+        option.addEventListener('change', function() { 
+            paymentMethodInputs.forEach(input => { input.value = this.value; }); 
+            console.log('Selected payment method: ' + this.value); }); 
+        }); 
+        // Đặt giá trị ban đầu cho payment_method 
+        const initialPaymentValue = document.querySelector('input[name="payment_option"]:checked').value; 
+        paymentMethodInputs.forEach(input => { 
+            input.value = initialPaymentValue; 
+        }); 
+});
 
-            // Hiển thị nút phù hợp với phương thức thanh toán được chọn
-            if (selectedValue === 'COD') {
-                $('#place-order-button').show();
-                $('#pay-vnpay-button').hide();
-            } else if (selectedValue === 'VNPay') {
-                $('#place-order-button').hide();
-                $('#pay-vnpay-button').show();
-            }
+$(document).ready(function () {
+    // Hàm để cập nhật trạng thái của các nút dựa trên radio button được chọn
+    function updateButtons() {
+        var selectedValue = $('input[name="payment_option"]:checked').val();
+        $('#payment_method').val(selectedValue);
 
-            // console.log("Phương thức thanh toán đã chọn: " + selectedValue);
-        });
-
-        // Kiểm tra nếu không có địa chỉ, hiển thị liên kết thêm địa chỉ
-        if ("{{ $diachis->isEmpty() }}") {
-            $('#add-address-link').show();
-            $('#place-order-button, #pay-vnpay-button').hide();
-        } else {
-            $('#add-address-link').hide();
+        // Hiển thị nút phù hợp với phương thức thanh toán được chọn
+        if (selectedValue === 'COD') {
+            $('#place-order-button').show();
+            $('#pay-vnpay-button').hide();
+        } else if (selectedValue === 'VNPay') {
+            $('#place-order-button').hide();
+            $('#pay-vnpay-button').show();
         }
+    }
+
+    // Đăng ký sự kiện click cho các div chứa radio button
+    $('.payment-options').on('click', function () {
+        var selectedValue = $(this).data('payment');
+        $('input[name="payment_option"][value="' + selectedValue + '"]').prop('checked', true);
+        
+        updateButtons();
     });
 
-    // Đảm bảo không có form nào khác bị submit
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function (event) {
-            console.log('Form submitting: ' + form.id); // Ghi nhật ký để theo dõi form nào đang được submit
-        });
+    // Đăng ký sự kiện thay đổi cho radio button
+    $('input[name="payment_option"]').on('change', function () {
+        updateButtons();
     });
 
-    // Lấy id_dc vào form đặt hàng
-    document.getElementById('order_form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Ngăn chặn submit mặc định
+    // Kiểm tra nếu không có địa chỉ, hiển thị liên kết thêm địa chỉ
+    if ("{{ $diachis->isEmpty() }}") {
+        $('#add-address-link').show();
+        $('#place-order-button, #pay-vnpay-button').hide();
+    } else {
+        $('#add-address-link').hide();
+    }
 
-        var selectedAddress = document.getElementById('selected_address').value;
-        document.getElementById('hidden_selected_address').value = selectedAddress;
+    // Gọi hàm cập nhật nút ban đầu
+    updateButtons();
+});
 
-        console.log('Submitting order_form with address: ' + selectedAddress);
-
-        // Thực hiện submit form đặt hàng
-        this.submit();
+// Đảm bảo không có form nào khác bị submit
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function (event) {
+        console.log('Form submitting: ' + form.id); // Ghi nhật ký để theo dõi form nào đang được submit
     });
+});
 
-    // Lấy địa chỉ để tính tổng tiền 
-    document.addEventListener('DOMContentLoaded', function () {
-        const addressSelect = document.getElementById('selected_address'); 
-        const shippingCostField = document.getElementById('shipping-cost'); 
-        const totalPayableField = document.getElementById('total-payable'); 
-        const totalPayablesHidden = document.getElementById('total_payables_hidden');
-        const shipCostInnerCity = {{ $giavc->ship_cost_inner_city }}; 
-        const shipCostNationwide = {{ $giavc->ship_cost_nationwide }}; 
-        const totalAmount = {{ $totalAmount }}; 
-        const discountAmount = {{ $discountAmount }}; addressSelect.addEventListener('change', function () {
+// Lấy id_dc vào form đặt hàng
+document.getElementById('order_form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Ngăn chặn submit mặc định
+
+    var selectedAddress = document.getElementById('selected_address').value;
+    document.getElementById('hidden_selected_address').value = selectedAddress;
+
+    console.log('Submitting order_form with address: ' + selectedAddress);
+
+    // Thực hiện submit form đặt hàng
+    this.submit();
+});
+
+// Lấy địa chỉ để tính tổng tiền 
+document.addEventListener('DOMContentLoaded', function() {
+    const addressSelect = document.getElementById('selected_address'); 
+    const shippingCostField = document.getElementById('shipping-cost'); 
+    const totalPayableField = document.getElementById('total-payable'); 
+    const totalPayablesHidden = document.getElementById('total_payables_hidden');
+    const discountAmountField = document.getElementById('discount-amount_hidden');
+    const shipCostInnerCity = {{ $giavc->ship_cost_inner_city }}; 
+    const shipCostNationwide = {{ $giavc->ship_cost_nationwide }}; 
+    const totalAmount = {{ $totalAmount }};
+    
+    addressSelect.addEventListener('change', function() {
         const selectedOption = addressSelect.options[addressSelect.selectedIndex]; 
         const thanhPho = selectedOption.text.split(',').pop().trim(); 
         let shippingCost = 0; 
+
         if (thanhPho === 'Hồ Chí Minh' || thanhPho === 'Thành phố Hồ Chí Minh') { 
             shippingCost = shipCostInnerCity;
-        } 
-        else { 
+        } else { 
             shippingCost = shipCostNationwide; 
-        } 
-        const totalPayable = totalAmount - discountAmount + shippingCost; 
+        }
+
+        const discountAmount = parseFloat(discountAmountField.value) || 0;
+        const totalPayable = totalAmount - discountAmount + shippingCost;
+
         shippingCostField.innerText = shippingCost.toLocaleString() + ' đ'; 
         totalPayableField.innerText = totalPayable.toLocaleString() + ' đ'; 
         totalPayablesHidden.value = totalPayable;  
-        }); 
-        addressSelect.dispatchEvent(new Event('change'));
     });
-
-
-    // Tuỳ chỉnh số lượng sản phẩm
-    function changeQuantityPay(itemId, change) {
-        const quantityInput = document.getElementById(`quantity-${itemId}`);
-        const stockLimit = parseInt(document.getElementById(`stock-${itemId}`).value);
-        let currentQuantity = parseInt(quantityInput.value);
-        currentQuantity += change;
-
-        if (currentQuantity < 1) {
-            currentQuantity = 1;
-        }
-        if (currentQuantity > stockLimit) {
-            currentQuantity = stockLimit;
-            alert("Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.");
-        }
-
-        quantityInput.value = currentQuantity;
-        document.getElementById(`form-quantity-${itemId}`).submit();
-    }
-
-    // Xử lý giảm giá khi người dùng nhập
-    document.addEventListener('DOMContentLoaded', function () {
-        const cartItems = document.querySelectorAll('.cart-product');
-        cartItems.forEach(item => {
-            const quantityInput = item.querySelector('.product-quantity');
-            const stockQuantity = parseInt(item.querySelector('.stock-quantity').getAttribute('data-stock'));
-            let currentQuantity = parseInt(quantityInput.value);
-
-            // Nếu số lượng trong giỏ lớn hơn số lượng trong kho
-            if (currentQuantity > stockQuantity) {
-                quantityInput.value = stockQuantity;
-                alert(`Số lượng sản phẩm đã điều chỉnh về ${stockQuantity} do vượt quá hàng trong kho.`);
-            }
-        });
-    });
+    
+    addressSelect.dispatchEvent(new Event('change'));
+});
 </script>
 
 @endsection
