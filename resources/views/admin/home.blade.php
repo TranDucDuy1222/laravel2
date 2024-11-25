@@ -8,8 +8,11 @@ Thống Kê
         <div class="row content-body">
             <div class="col-lg-12">
                 <div class="iq-card">
-                    <div class="iq-card-header d-flex justify-content-end">
+                    <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
+                            <h4 class="card-title">Tổng quan</h4>
+                        </div>
+                        <div class="iq-card-header-toolbar d-flex align-items-center">
                             <form action="{{ url('/admin') }}" method="GET">
                                 <div class="row g-3 align-items-center mt-2 mb-4">
                                     <!-- Bộ lọc chọn loại -->
