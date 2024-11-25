@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GuiEmail;
+use App\Models\ReplyEmail;
 
 class UserController extends Controller
 {
@@ -238,9 +239,18 @@ class UserController extends Controller
         $email = trim(strip_tags($arr['email']));
         $nd = trim(strip_tags($arr['noidung']));
 
+        // Lưu thông tin vào bảng reply_email 
+        $replyEmail = new ReplyEmail(); 
+        $replyEmail->ho_ten = $ht; 
+        $replyEmail->email = $email; 
+        $replyEmail->noi_dung = $nd; 
+        $replyEmail->save();
+
         $adminEmail = 'trendyu02@gmail.com'; // Thư được gửi tới quản trị của email này
         Mail::mailer('smtp')->to($adminEmail)->send(new GuiEmail($ht, $email, $nd));
         return redirect()->route('user.contact')->with('success', 'Gửi mail thành công!');
     }
+
+    
 
 }

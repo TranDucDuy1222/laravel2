@@ -110,98 +110,55 @@ class BuyController extends Controller
 
     return redirect()->route('cart.gio-hang')->with('success', 'Cập nhật số lượng sản phẩm thành công!');
     }
-
-
-    // public function pay(Request $request) {
-    //     $userId = Auth::id();
-    //     $selectedProductIds = $request->input('selected_products', session('selected_products', []));
-    //     session(['selected_products' => $selectedProductIds]);
-    
-    //     if (empty($selectedProductIds)) {
-    //         return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
-    //     }
-    
-    //     $gioHangs = GioHang::with(['sanPham', 'size'])
-    //                 ->whereIn('id', $selectedProductIds)
-    //                 ->where('user_id', $userId)
-    //                 ->get();
-    
-    //     if ($gioHangs->isEmpty()) {
-    //         return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
-    //     }
-    
-    //     // Truy vấn địa chỉ 
-    //     $diachis = DiaChi::where('id_user', $userId)->get();
-    
-    //     // Truy vấn giá vận chuyển
-    //     $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
-    
-    //     $totalAmount = $gioHangs->sum(function ($item) {
-    //         if ($item->sanPham->gia_km > 0) {
-    //             return $item->sanPham->gia_km * $item->so_luong;
-    //         } else {
-    //             return $item->sanPham->gia * $item->so_luong;
-    //         }
-    //     });
-    
-    //     $discountAmount = 0;
-    //     if (session()->has('voucher')) {
-    //         $voucherData = session('voucher');
-    //         $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
-    //     }
-    
-    //     $totalPayable = $totalAmount - $discountAmount;
-    //     $availableVouchers = MaGiamGia::where('is_active', true)->get();
-    //     $pays = $gioHangs;
-    
-    //     return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
-    // }
-    
     
     public function pay(Request $request) {
-        $userId = Auth::id();
-        $selectedProductIdsString = $request->input('selected_products', '');
-        $selectedProductIds = explode(',', $selectedProductIdsString);
-        session(['selected_products' => $selectedProductIds]);
-    
-        if (empty($selectedProductIds)) {
-            return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
-        }
-    
-        $gioHangs = GioHang::with(['sanPham', 'size'])
-                    ->whereIn('id', $selectedProductIds)
-                    ->where('user_id', $userId)
-                    ->get();
-    
-        if ($gioHangs->isEmpty()) {
-            return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
-        }
-    
-        // Truy vấn địa chỉ 
-        $diachis = DiaChi::where('id_user', $userId)->get();
-    
-        // Truy vấn giá vận chuyển
-        $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
-    
-        $totalAmount = $gioHangs->sum(function ($item) {
-            if ($item->sanPham->gia_km > 0) {
-                return $item->sanPham->gia_km * $item->so_luong;
-            } else {
-                return $item->sanPham->gia * $item->so_luong;
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('thongbao', 'Bạn cần đăng nhập để thực hiện thanh toán.');
+        }else{
+            $userId = Auth::id();
+            $selectedProductIdsString = $request->input('selected_products', '');
+            $selectedProductIds = explode(',', $selectedProductIdsString);
+            session(['selected_products' => $selectedProductIds]);
+        
+            if (empty($selectedProductIds)) {
+                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
             }
-        });
-    
-        $discountAmount = 0;
-        if (session()->has('voucher')) {
-            $voucherData = session('voucher');
-            $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
+        
+            $gioHangs = GioHang::with(['sanPham', 'size'])
+                        ->whereIn('id', $selectedProductIds)
+                        ->where('user_id', $userId)
+                        ->get();
+        
+            if ($gioHangs->isEmpty()) {
+                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
+            }
+        
+            // Truy vấn địa chỉ 
+            $diachis = DiaChi::where('id_user', $userId)->get();
+        
+            // Truy vấn giá vận chuyển
+            $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
+        
+            $totalAmount = $gioHangs->sum(function ($item) {
+                if ($item->sanPham->gia_km > 0) {
+                    return $item->sanPham->gia_km * $item->so_luong;
+                } else {
+                    return $item->sanPham->gia * $item->so_luong;
+                }
+            });
+        
+            $discountAmount = 0;
+            if (session()->has('voucher')) {
+                $voucherData = session('voucher');
+                $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
+            }
+        
+            $totalPayable = $totalAmount - $discountAmount;
+            $availableVouchers = MaGiamGia::where('is_active', true)->get();
+            $pays = $gioHangs;
+        
+            return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
         }
-    
-        $totalPayable = $totalAmount - $discountAmount;
-        $availableVouchers = MaGiamGia::where('is_active', true)->get();
-        $pays = $gioHangs;
-    
-        return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
     }
     
     public function applyVoucher(Request $request) {
@@ -214,7 +171,7 @@ class BuyController extends Controller
         if (!$voucher) {
             $error = 'Mã giảm giá không hợp lệ.';
             session()->flash('thongbao', $error);
-            return $this->handleInvalidVoucher($selectedProductIds);
+            return redirect()->route('thanh-toan')->with('thongbao', $error);
         }
     
         // Kiểm tra xem mã giảm giá đã được sử dụng cho khách hàng này chưa
@@ -222,7 +179,7 @@ class BuyController extends Controller
         if ($voucher->mot_nhieu == false && $voucher->id_kh == $userId) {
             $error = 'Mã giảm giá chỉ được sử dụng một lần cho mỗi khách hàng.';
             session()->flash('thongbao', $error);
-            return $this->handleInvalidVoucher($selectedProductIds);
+            return redirect()->route('thanh-toan')->with('thongbao', $error);
         }
     
         // Áp dụng mã giảm giá
@@ -241,37 +198,9 @@ class BuyController extends Controller
         }
         $voucher->save();
     
-        return $this->pay($request)->with('success', 'Áp dụng mã giảm giá thành công!');
+        return redirect()->route('pay')->with('success', 'Áp dụng mã giảm giá thành công!');
     }
     
-    public function updatePay(Request $request, $id) {
-        try {
-            // Lấy danh sách sản phẩm đã chọn từ session
-            $selectedProductIds = session('selected_products', $request->input('selected_products', []));
-            session(['selected_products' => $selectedProductIds]);  // Lưu danh sách sản phẩm đã chọn vào session
-    
-            // Tìm giỏ hàng bằng id
-            $gioHang = GioHang::findOrFail($id);
-            $newQuantity = $request->input('quantity');
-    
-            // Lấy thông tin size sản phẩm
-            $sizeInfo = Size::where('id', $gioHang->id_size)->first();
-            if ($newQuantity > $sizeInfo->so_luong) {
-                return redirect()->route('pay')->with('error', 'Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
-            }
-    
-            // Cập nhật số lượng sản phẩm trong giỏ hàng
-            $gioHang->so_luong = $newQuantity;
-            $gioHang->save();
-    
-            // Chuyển hướng về trang thanh toán
-            return $this->pay($request);
-    
-        } catch (\Exception $e) {
-            // Trả về lỗi nếu có vấn đề
-            return redirect()->route('pay')->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
-        }
-    }
 
     public function removeVoucher()
     {
@@ -279,80 +208,6 @@ class BuyController extends Controller
         session()->forget('discountAmount');
 
         return redirect()->route('pay')->with('success', 'Đã hủy mã giảm giá.');
-    }
-
-    public function thanh_toan_vnpay(Request $request){
-        $data = $request->all();
-        $code_cart = rand(00,9999);
-        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://127.0.0.1:8000/thanh-toan";
-        $vnp_TmnCode = "18AB16MA";//Mã website tại VNPAY 
-        $vnp_HashSecret = "MH03RA1FG6Q1859GFPSKQPKUMY5P5I5G"; //Chuỗi bí mật
-        
-        $vnp_TxnRef = $code_cart; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-        $vnp_OrderInfo = 'Thanh toán đơn hàng';
-        $vnp_OrderType = 'billpayment';
-        $vnp_Amount = 20000 * 100;
-        $vnp_Locale = 'vn';
-        $vnp_BankCode = 'NCB';
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-        //$vnp_BankName = 'NGUYEN VAN A';
-        //Add Params of 2.0.1 Version
-        // $vnp_ExpireDate = $_POST['txtexpire'];
-        //Billing
-        $inputData = array(
-            "vnp_Version" => "2.1.0",
-            "vnp_TmnCode" => $vnp_TmnCode,
-            "vnp_Amount" => $vnp_Amount,
-            "vnp_Command" => "pay",
-            "vnp_CreateDate" => date('YmdHis'),
-            "vnp_CurrCode" => "VND",
-            "vnp_IpAddr" => $vnp_IpAddr,
-            "vnp_Locale" => $vnp_Locale,
-            "vnp_OrderInfo" => $vnp_OrderInfo,
-            "vnp_OrderType" => $vnp_OrderType,
-            "vnp_ReturnUrl" => $vnp_Returnurl,
-            "vnp_TxnRef" => $vnp_TxnRef,
-            //"card_number_mask" => $vnp_BankName
-            // "vnp_ExpireDate"=>$vnp_ExpireDate
-        );
-        
-        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-            $inputData['vnp_BankCode'] = $vnp_BankCode;
-        }
-        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-        }
-        
-        //var_dump($inputData);
-        ksort($inputData);
-        $query = "";
-        $i = 0;
-        $hashdata = "";
-        foreach ($inputData as $key => $value) {
-            if ($i == 1) {
-                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
-            } else {
-                $hashdata .= urlencode($key) . "=" . urlencode($value);
-                $i = 1;
-            }
-            $query .= urlencode($key) . "=" . urlencode($value) . '&';
-        }
-        
-        $vnp_Url = $vnp_Url . "?" . $query;
-        if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
-            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
-        }
-        $returnData = array('code' => '00'
-            , 'message' => 'success'
-            , 'data' => $vnp_Url);
-            if (isset($_POST['redirect'])) {
-                header('Location: ' . $vnp_Url);
-                die();
-            } else {
-                echo json_encode($returnData);
-            }
     }
 
 }

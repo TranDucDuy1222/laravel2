@@ -71,11 +71,7 @@ class HomeController extends Controller
         // Dữ liệu cài đặt 
         $settings = DB::table('settings')->select('logo_sale' , 'logo_cms' , 'banner_dung_sale' , 'banner_dung_cms')->first();
 
-        // Truy vấn mã khuyến mãi
-        $ma_giam_gia = DB::table('maGiamGia')->select('code' , 'mo_ta')->get();
-
-
-        return view('user.home', compact('settings', 'top_sanpham', 'ma_giam_gia', 'home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
+        return view('user.home', compact('settings', 'top_sanpham', 'home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
     }
 
 

@@ -21,15 +21,16 @@ use App\Http\Controllers\SettingController;
 use App\Mail\GuiEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiproductController;
+use App\Http\Controllers\AdminemailController;
 
 Route::get('/erros', function () {
     return view('Thông báo lỗi !');
 });
 Route::get('/', [HomeController::class , 'index'])->name('home');
-// Route::post('/loai/{slug}', [HomeController::class , 'loai'])->name('loai');
+//Route::get('/tim-kiem/{slug}', [ApiproductController::class, 'tim_kiem']);
 Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
 
-Route::get('/loai-san-pham/{slug}', [ProductController::class , 'sanpham_loai'])->name('loai-san-pham');
+Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
 Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
 
 
@@ -41,17 +42,17 @@ Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->na
 Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('cart.update');
 
 // Thanh toán
-Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
+//Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
-Route::post('/thanh-toan/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
+Route::post('/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
 Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
-//Thanh toán vnpay
-Route::post('/thanh_toan_vnpay', [BuyController::class, 'thanh_toan_vnpay']);
 
 // Đặt hàng
 Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
-//Route::post('/dat-hang', [OrderController::class, 'datHang_form'])->name('dat-hang');
+Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayReturn'])->name('vnpay.return'); // Chuyển thành GET
+Route::post('/vnpay/store-order', [OrderController::class, 'storeOrder'])->name('vnpay.storeOrder');
+
 
 // Đăng nhập
 Route::get('/login', [UserController::class , 'login'])->name('login');
@@ -85,6 +86,7 @@ Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user
 //Liên hệ
 Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
 Route::post('gui-lien-he', [UserController::class, 'sendContact']);
+
 
 // URL Admin
 Route::group(['prefix' => 'admin'], function() { 
@@ -136,6 +138,9 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::resource('danh-gia', AdminDanhGiaController::class);
     Route::post('/danh-gia/hide/{id}', [AdminDanhGiaController::class,'hide'])->name('danh-gia.hide');
     Route::post('/danh-gia/show/{id}', [AdminDanhGiaController::class,'show'])->name('danh-gia.show');
+
+    Route::resource('email', AdminemailController::class);
+    Route::post('phan-hoi/{id}', [AdminemailController::class, 'sendReply'])->name('admin.contact');
 
     Route::resource('magiamgia', MaGiamGiaController::class);
 

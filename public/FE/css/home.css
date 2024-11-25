@@ -11,6 +11,7 @@
     color: white; /* Màu chữ */
     padding: 10px; /* Khoảng cách giữa nội dung và viền */
     border-radius: 5px; /* Bo tròn viền */
+    white-space: nowrap;
     display: none; /* Ẩn ban đầu */
   }
 
@@ -52,4 +53,8 @@
 .active_li{
     background-color: #007bff; /* Màu nền khi active */
     color: white; /* Màu chữ khi active */
+}
+
+.box-product-search{
+    white-space: nowrap;
 }

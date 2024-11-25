@@ -53,8 +53,30 @@
                                  <tr>
                                     <td>ID: {{$item->id}}</td>
                                     <td>{{$item->name}}</td>
-                                    <td>{{$item->id_size}} - {{$item->color}}</td>
-                                    <td>{{$item->quality_product}}</td>
+                                    <td>{{$item->size_product}} - {{$item->color}}</td>
+                                    <td>
+                                       @if ($item->quality_product == 5)
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                       @elseif($item->quality_product == 4)
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                       @elseif($item->quality_product == 3)
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                       @elseif($item->quality_product == 2)
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                       @else
+                                             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                       @endif
+                                    </td>
                                     <td>{{$item->noi_dung}}
                                     <td>{{$item->thoi_diem}}</td>
                                     <td>{{$item->feedback}}</td>
@@ -122,4 +144,24 @@
       </div>
    </div>
 </div>
+<script type="text/javascript">
+    // Lấy tất cả các thẻ select
+    var selects = document.querySelectorAll('select');
+
+    // Thêm sự kiện cho mỗi thẻ select
+    selects.forEach(function(select) {
+        select.addEventListener('change', function() {
+            // Lấy ID của thẻ select
+            var id = this.id.replace('selectOption', '');
+
+            // Tìm thẻ input tương ứng
+            var input = document.getElementById('inputPH' + id);
+
+            // Cập nhật giá trị của thẻ input
+            if (input) {
+                input.value = this.options[this.selectedIndex].innerText;
+            }
+        });
+    });
+</script>
 @endsection
