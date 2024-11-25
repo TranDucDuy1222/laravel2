@@ -112,49 +112,54 @@ class BuyController extends Controller
     }
     
     public function pay(Request $request) {
-        $userId = Auth::id();
-        $selectedProductIdsString = $request->input('selected_products', '');
-        $selectedProductIds = explode(',', $selectedProductIdsString);
-        session(['selected_products' => $selectedProductIds]);
-    
-        if (empty($selectedProductIds)) {
-            return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
-        }
-    
-        $gioHangs = GioHang::with(['sanPham', 'size'])
-                    ->whereIn('id', $selectedProductIds)
-                    ->where('user_id', $userId)
-                    ->get();
-    
-        if ($gioHangs->isEmpty()) {
-            return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
-        }
-    
-        // Truy vấn địa chỉ 
-        $diachis = DiaChi::where('id_user', $userId)->get();
-    
-        // Truy vấn giá vận chuyển
-        $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
-    
-        $totalAmount = $gioHangs->sum(function ($item) {
-            if ($item->sanPham->gia_km > 0) {
-                return $item->sanPham->gia_km * $item->so_luong;
-            } else {
-                return $item->sanPham->gia * $item->so_luong;
+        
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('thongbao', 'Bạn cần đăng nhập để thực hiện thanh toán.');
+        }else{
+            $userId = Auth::id();
+            $selectedProductIdsString = $request->input('selected_products', '');
+            $selectedProductIds = explode(',', $selectedProductIdsString);
+            session(['selected_products' => $selectedProductIds]);
+        
+            if (empty($selectedProductIds)) {
+                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
             }
-        });
-    
-        $discountAmount = 0;
-        if (session()->has('voucher')) {
-            $voucherData = session('voucher');
-            $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
+        
+            $gioHangs = GioHang::with(['sanPham', 'size'])
+                        ->whereIn('id', $selectedProductIds)
+                        ->where('user_id', $userId)
+                        ->get();
+        
+            if ($gioHangs->isEmpty()) {
+                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
+            }
+        
+            // Truy vấn địa chỉ 
+            $diachis = DiaChi::where('id_user', $userId)->get();
+        
+            // Truy vấn giá vận chuyển
+            $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
+        
+            $totalAmount = $gioHangs->sum(function ($item) {
+                if ($item->sanPham->gia_km > 0) {
+                    return $item->sanPham->gia_km * $item->so_luong;
+                } else {
+                    return $item->sanPham->gia * $item->so_luong;
+                }
+            });
+        
+            $discountAmount = 0;
+            if (session()->has('voucher')) {
+                $voucherData = session('voucher');
+                $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
+            }
+        
+            $totalPayable = $totalAmount - $discountAmount;
+            $availableVouchers = MaGiamGia::where('is_active', true)->get();
+            $pays = $gioHangs;
+        
+            return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
         }
-    
-        $totalPayable = $totalAmount - $discountAmount;
-        $availableVouchers = MaGiamGia::where('is_active', true)->get();
-        $pays = $gioHangs;
-    
-        return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
     }    
     
     public function applyVoucher(Request $request) {
