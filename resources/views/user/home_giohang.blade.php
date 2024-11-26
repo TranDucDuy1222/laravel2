@@ -65,7 +65,6 @@ Giỏ Hàng - Trendy U
         </div>
         <div class="section__content">
             <div class="container">
-
                 <div class="row">
                     <div class="col-xl-12 mb-3">
                         <div class="table-responsive">
@@ -187,7 +186,7 @@ Giỏ Hàng - Trendy U
                             </div>
                         </div>
                     </div>
-                    <form action="{{ route('pay') }}" method="post" id="checkout-form">
+                    <form action="{{ route('pay') }}" method="POST" id="checkout-form">
                         @csrf
                         <input type="hidden" name="selected_products" id="selected-products">
                         <div class="d-flex justify-content-end align-items-center my-2">

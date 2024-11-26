@@ -1,5 +1,4 @@
 @extends('user.layout')
-
 @section('title')
 Đặt hàng - Trendy U
 @endsection
@@ -24,18 +23,6 @@
 
 @section('content')
 <div class="container">
-    @if(session()->has('error'))
-        <div class="toast show align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
-            aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    {!! session('error') !!}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    @endif
     <div class="pb-5">
         <div class="section__intro mb-5">
             <div class="container">
@@ -93,7 +80,6 @@
                                                 <span class="table-p__name"><a>Tổng</a></span>
                                             </td>
                                         </tr>
-
                                         @foreach($pays as $item)
                                             <tr>
                                                 <td>
@@ -168,10 +154,8 @@
                             <div class="f-cart__pad-box">
                                 <div class="mb-3">
                                     <div class="newsletter__group mb-4">
-                                        <form class="f-cart" action="{{ route('pay.applyVoucher') }}" method="post">
-                                            <input class="input-text input-text--primary-style" type="text" placeholder="Nhập mã giảm giá" name="voucher">
-                                            <button class="btn voucher__btn" type="submit">Áp dụng</button>
-                                        </form>
+                                        <input class="input-text input-text--primary-style" type="text" placeholder="Nhập mã giảm giá" name="voucher">
+                                        <button class="btn voucher__btn" type="submit">Áp dụng</button>
                                     </div>
                                     @if(session('voucher'))
                                         <div class="route-box row">
@@ -191,7 +175,6 @@
                                         </div>
                                     @endif
                                 </div>
-
                                 @if ($errors->any())
                                     <div class="pd-detail__inline">
                                         <span class="pd-detail__click-wrap">
@@ -208,7 +191,6 @@
                                         </span>
                                     </div>
                                 @endif
-
                                 <table class="f-cart__table">
                                     <tbody>
                                         <tr>
@@ -233,7 +215,6 @@
                                                 {{ number_format($discountAmount, 0, '', '.' ?? 0) }} đ
                                             </td>
                                         </tr>
-
                                     </tbody>
                                     <tr>
                                         <td>TỔNG THANH TOÁN</td>
@@ -242,6 +223,7 @@
                                 </table>
                             </div>
                         </form>
+
                         <form id="order_form" action="{{ route('dat-hang') }}" method="post"> 
                             @csrf 
                             <input type="hidden" name="total_payables" id="total_payables_hidden" value="{{ $totalPayable }}"> 
@@ -304,23 +286,20 @@
 
 <!-- code khác -->
 <script>
-    function removeVoucher() {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = "{{ route('pay.removeVoucher') }}";
-        const csrf = document.createElement('input');
-        csrf.type = 'hidden';
-        csrf.name = '_token';
-        csrf.value = "{{ csrf_token() }}";
-        form.appendChild(csrf);
-        document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
-    }
-</script>
+function removeVoucher() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = "{{ route('pay.removeVoucher') }}";
+    const csrf = document.createElement('input');
+    csrf.type = 'hidden';
+    csrf.name = '_token';
+    csrf.value = "{{ csrf_token() }}";
+    form.appendChild(csrf);
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+}
 
-
-<script>
 // Đảm bảo payment_method có giá trị theo radio đã chọn 
 document.addEventListener('DOMContentLoaded', function() { 
     const paymentMethodInputs = document.querySelectorAll('#payment_method'); 
