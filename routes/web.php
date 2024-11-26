@@ -42,7 +42,6 @@ Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->na
 Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('cart.update');
 
 // Thanh toán
-//Route::get('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
 Route::post('/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');

@@ -121,7 +121,7 @@ class BuyController extends Controller
             session(['selected_products' => $selectedProductIds]);
         
             if (empty($selectedProductIds)) {
-                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
+                return back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
             }
         
             $gioHangs = GioHang::with(['sanPham', 'size'])
@@ -130,7 +130,7 @@ class BuyController extends Controller
                         ->get();
         
             if ($gioHangs->isEmpty()) {
-                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
+                return back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
             }
         
             // Truy vấn địa chỉ 
@@ -161,49 +161,64 @@ class BuyController extends Controller
         }
     }
     
-    public function applyVoucher(Request $request) {
+    public function applyVoucher(Request $request)
+    {
+        
         $selectedProductIds = session('selected_products', $request->input('selected_products', []));
         session(['selected_products' => $selectedProductIds]);
-    
+
         $voucherCode = $request->input('voucher');
         $voucher = MaGiamGia::where('code', $voucherCode)->first();
-    
+
         if (!$voucher) {
-            return redirect()->back()->with('thongbao', 'Mã giảm giá không hợp lệ.');
+            return back()->with('thongbao', 'Mã giảm giá không hợp lệ.');
         }
-    
+
+        // Kiểm tra xem mã giảm giá có hết hạn không
+        if ($voucher->ngay_het_han && $voucher->ngay_het_han < now()) {
+            return back()->with('thongbao', 'Mã giảm giá đã hết hạn.');
+        }
+
+        // Kiểm tra xem số lượng mã giảm giá còn lại có đủ không
+        if ($voucher->ma_gioi_han <= 0) {
+            return back()->with('thongbao', 'Mã giảm giá đã hết số lượng sử dụng.');
+        }
+
         // Kiểm tra nếu mã giảm giá chỉ sử dụng một lần cho mỗi khách hàng
         $userId = Auth::id();
-        if ($voucher->mot_nhieu == false && $voucher->id_kh == $userId) {
-            return redirect()->back()->with('thongbao', 'Mã giảm giá chỉ được sử dụng một lần cho mỗi khách hàng.');
+        
+        // Kiểm tra xem khách hàng đã sử dụng mã giảm giá chưa
+        $usedByUsers = json_decode($voucher->id_kh, true) ?? [];
+
+        if (in_array($userId, $usedByUsers)) {
+            return back()->with('thongbao', 'Bạn đã sử dụng mã giảm giá này rồi.');
         }
-    
+
         // Áp dụng mã giảm giá vào session
         session(['voucher' => [
             'code' => $voucherCode,
             'amount' => $voucher->phan_tram
         ]]);
-    
+
         // Giảm số lượng mã giảm giá (1 lần mỗi lần sử dụng)
         if ($voucher->mot_nhieu == true && $voucher->ma_gioi_han > 0) {
             $voucher->ma_gioi_han--; // Giảm số lượng có thể sử dụng
         }
-        
-        // Nếu mã giảm giá chỉ sử dụng 1 lần, lưu id của khách hàng đã sử dụng
-        if ($voucher->mot_nhieu == false) {
-            $voucher->id_kh = $userId; // Lưu id khách hàng đã dùng
-        }
-    
+
+        // Cập nhật thông tin khách hàng đã sử dụng mã giảm giá vào trường `id_kh`
+        $usedByUsers[] = $userId; // Thêm user_id vào mảng
+        $voucher->id_kh = json_encode($usedByUsers); // Lưu lại dưới dạng chuỗi JSON
+
         $voucher->save(); // Lưu lại thay đổi vào cơ sở dữ liệu
-    
-        return redirect()->route('pay.form')->with('thongbao', 'Áp dụng mã giảm giá thành công!');
+
+        return back()->with('thongbao', 'Áp dụng mã giảm giá thành công!');
     }
     
     public function removeVoucher(Request $request) {
         // Logic để xóa voucher
         session()->forget('voucher');
         session()->forget('discountAmount');
-        return redirect()->back()->with('success', 'Voucher đã được hủy!');
+        return back()->with('success', 'Voucher đã được hủy!');
     }
 
 }

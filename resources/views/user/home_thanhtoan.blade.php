@@ -168,10 +168,8 @@
                             <div class="f-cart__pad-box">
                                 <div class="mb-3">
                                     <div class="newsletter__group mb-4">
-                                        <form class="f-cart" action="{{ route('pay.applyVoucher') }}" method="post">
-                                            <input class="input-text input-text--primary-style" type="text" placeholder="Nhập mã giảm giá" name="voucher">
-                                            <button class="btn voucher__btn" type="submit">Áp dụng</button>
-                                        </form>
+                                        <input class="input-text input-text--primary-style" type="text" placeholder="Nhập mã giảm giá" name="voucher">
+                                        <button class="btn voucher__btn" type="submit">Áp dụng</button>
                                     </div>
                                     @if(session('voucher'))
                                         <div class="route-box row">
