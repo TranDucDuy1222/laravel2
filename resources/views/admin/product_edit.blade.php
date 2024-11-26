@@ -35,7 +35,9 @@ Sản phẩm
                         </ul>
                      </div>
                      <div class="col-md-9">
-                        <form id="form-wizard3">
+                        <form id="form-wizard3" action="{{route('san-pham.update', $sp->id )}}" method="post">
+                           @csrf
+                           @method('PUT')
                            <!-- fieldsets -->
                            <fieldset>
                               <div class="form-card">
@@ -117,10 +119,7 @@ Sản phẩm
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
                                           <label for="" class="form-label fw-semibold">Ảnh</label>
-                                          <!-- <input value="{{old('hinh')}}" class="form-select" name="hinh" type="file" class="upload-button btn iq-bg-primary" accept="image/*" required> -->
                                           <a href="javascript:void();" class="">
-                                          <!-- <img src="{{ asset('/uploads/product/'. $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" class="w-50"> -->
-
                                           <input value="{{$sp->hinh}}" name="hinh" class="file-up form-control mb-3" type="file" accept="image/*"></a>
                                           <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/'. $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
                                        </div>
@@ -199,7 +198,7 @@ Sản phẩm
                                  </div>
                                  @endforeach
                               </div>
-                              <button type="submit" name="submit" class="btn btn-primary action-button float-end" value="save" >Cập nhật sản phẩm</button>
+                              <button type="submit" class="btn btn-primary action-button float-end">Cập nhật sản phẩm</button>
                               <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-end me-3" value="Previous" >Quay lại</button>
                            </fieldset>
                         </form>
