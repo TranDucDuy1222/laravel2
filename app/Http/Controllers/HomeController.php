@@ -66,7 +66,7 @@ class HomeController extends Controller
         }
 
         // Dữ liệu trang chủ
-        $home_page = DB::table('landing_page')->first();
+        $home_page = DB::table('home_layout')->first();
 
         // Dữ liệu cài đặt 
         $settings = DB::table('settings')->select('logo_sale' , 'logo_cms' , 'banner_dung_sale' , 'banner_dung_cms')->first();

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Loai;
 use DB;
 
-class LandingpageController extends AdminController
+class HomelayoutController extends AdminController
 {
     public function index(Request $request){
         $loai_arr = Loai::all();
@@ -47,13 +47,13 @@ class LandingpageController extends AdminController
         }
 
         // Dữ liệu trang chủ
-        $home_page = DB::table('landing_page')->first();
+        $home_page = DB::table('home_layout')->first();
         return view('admin/home_landingpage' , compact('home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
     }
 
     public function update(Request $request, $id){
         // Lấy dữ liệu hiện tại từ bảng
-        $currentData = DB::table('landing_page')->where('id', $id)->first();
+        $currentData = DB::table('home_layout')->where('id', $id)->first();
         // Chuyển đổi thành mảng
         $currentData = (array) $currentData;
         // Lấy dữ liệu từ request
@@ -98,7 +98,7 @@ class LandingpageController extends AdminController
     
         // Nếu có dữ liệu thay đổi, tiến hành cập nhật
         if (!empty($updateData)) {
-            DB::table('landing_page')->where('id', $id)->update($updateData);
+            DB::table('home_layout')->where('id', $id)->update($updateData);
         }
     
         return redirect()->route('trang-chu.index')->with('thongbao', 'Cập nhật thành công!');
