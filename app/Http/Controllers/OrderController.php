@@ -8,6 +8,7 @@ use App\Models\DonHang;
 use App\Models\GioHang;
 use App\Models\SanPham;
 use App\Models\Size;
+use App\Models\MaGiamGia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use DB;
@@ -88,7 +89,30 @@ class OrderController extends Controller
                 // Xóa sản phẩm khỏi giỏ hàng
                 $gioHang->delete();
             }
-    
+
+            // Xử lý mã giảm giá sau khi đặt hàng thành công
+            $voucherData = session('voucher');
+            if ($voucherData) {
+                $voucher = MaGiamGia::where('code', $voucherData['code'])->first();
+
+                if ($voucher) {
+                    // Giảm số lượng mã giảm giá
+                    if ($voucher->ma_gioi_han > 0) {
+                        $voucher->ma_gioi_han--;
+                    }
+
+                    // Cập nhật danh sách khách hàng đã sử dụng
+                    $usedByUsers = json_decode($voucher->id_kh, true) ?? [];
+                    $usedByUsers[$userId] = ($usedByUsers[$userId] ?? 0) + 1;
+                    $voucher->id_kh = json_encode($usedByUsers);
+
+                    $voucher->save();
+                }
+
+                // Xóa session voucher sau khi đặt hàng thành công
+                session()->forget('voucher');
+            }
+
             // Xóa session voucher sau khi đặt hàng thành công
             session()->forget('voucher');
             DB::commit();

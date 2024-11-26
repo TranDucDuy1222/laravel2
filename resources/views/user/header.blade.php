@@ -195,12 +195,15 @@
                 </ul>
               </li>
               <li class="nav-item position-relative" style="width: 35px;">
-                <a class="nav-link" href="{{url('/gio-hang')}}">
-                  <i class="fa-solid fa-cart-shopping"></i>
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{ session('totalProducts', 0) }}
-                  </span>
-                </a>
+                <form action="{{ url('/gio-hang') }}" method="POST" id="cartForm" class="nav-link btn btn-link">
+                    @csrf
+                    <button type="submit" class="" style="padding: 0; border: none; background: none;">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ session('totalProducts', 0) }}
+                        </span>
+                    </button>
+                </form>
               </li>
             </ul>
           </div>

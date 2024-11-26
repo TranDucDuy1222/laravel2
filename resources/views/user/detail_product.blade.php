@@ -119,8 +119,7 @@ Chi Tiết : {{$detail->ten_sp}}
                             </div>
                         </div>
                         <div class="mb-3">
-                            <form class="pd-detail__form" action="{{ route('cart.add', ['id' => $detail->id]) }}"
-                                method="POST">
+                            <form class="pd-detail__form" action="{{ route('cart.add', ['id' => $detail->id]) }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
                                     <div class="d-flex">
