@@ -24,7 +24,7 @@
 @section('content')
 <h2 style="letter-spacing: 2px; text-align: center; padding-top: 40px;">Đơn hàng đã mua</h2>
 <div class="container card">
-    <div class="row">
+    <div class="row" style="min-height: 200px;">
         <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 bg-body-tertiary card">
             <ul class="list-unstyled text-center m-0">
                 <li class=""><a class="text-decoration-none  dropdown-dc mt-2 h6 {{(request()->routeIs('user.profile')) ? 'text-danger' : 'text-dark'}}"
@@ -151,7 +151,6 @@
                                             <i class="fa-solid fa-location-dot" style="color: #000000;"></i> {{ $dh->ho_ten }} | {{ $dh->phone }} | {{$dh->dc_chi_tiet}}, {{$dh->qh}} {{$dh->thanh_pho}}
                                             </p>
                                         </div>
-                                        
                                         <p class="text-center">Xem chi tiết <i class="fa-solid fa-chevron-down" style="color: #0c0d0d;"></i></p>
                                     </div>
                                     <div id="flush-collapse{{$dh->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$dh->id}}" data-bs-parent="#accordionFlushExample">
@@ -195,54 +194,55 @@
                                             @endforeach
                                         </div>
                                         <hr class="m-0">
-                                    <div class="row" style="font-size: 13px;">
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phương thức thanh toán</p>
-
-                                        </div>
-                                        <div class="col-4 text-end text-truncate">
-                                            @if($dh->pttt == "COD")
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <div class="badge text-bg-success">COD</div>
-                                                <p class="ms-2 mb-0 align-self-center fs-6 text-truncate">Thanh toán khi nhận hàng</p>
+                                        <div class="row" style="font-size: 13px;">
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-start text-sm-end">
+                                                <p class="ms-auto mb-0 pttt">Phương thức thanh toán</p>
                                             </div>
-
-                                            @else
-                                            <p class="mb-0 text-truncate">Đã thanh toán</p>
-                                            @endif
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phí vận chuyển</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                    @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
-                                                        {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
-                                                    @else
-                                                        {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
-                                                    @endif
-                                                </p>
+                                            <div class="col-sm-4 col-7 text-sm-end text-start">
+                                                @if($dh->pttt == "COD")
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="badge text-bg-success">COD</div>
+                                                        <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Phí vận chuyển</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                        @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
+                                                            + {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
+                                                        @else
+                                                            + {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                    {{number_format($dh->uu_dai, 0, '','.');}} đ
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                {{number_format($dh->uu_dai, 0, '','.');}} đ
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <hr class="mt-0">
                                     <div class="row">
-                                        <div class="col-5">
+                                        <div class="col-sm-5 col-6">
                                             @if ($dh->trang_thai == 0)
-                                                <button type="button" data-bs-toggle="modal" data-bs-target="#cancel-{{$dh->id}}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
-                                                    Xác Nhận Hủy Đơn
+                                                <button type="button" data-bs-toggle="modal" data-bs-target="#cancel-{{$dh->id}}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px; background: none;">
+                                                    Hủy Đơn
                                                 </button>
                                                 <!-- Modal huỷ đơn hàng -->
                                                 <div class="modal fade" id="cancel-{{$dh->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -335,8 +335,8 @@
                                                 <button class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px; background: none;"><i>Mua lại</i></button>
                                             @endif
                                         </div>
-                                        <div class="col-7">
-                                            <div class="text-end">Thành tiền: {{number_format($dh->tong_dh, 0, '','.');}} đ</div>
+                                        <div class="col-sm-7 col-6">
+                                            <div class="text-sm-end text-end">Thành tiền: {{number_format($dh->tong_dh, 0, '','.');}} đ</div>
                                         </div>
                                     </div>
                                 @else
@@ -442,79 +442,58 @@
                                             @endforeach
                                         </div>
                                         <hr class="m-0">
-                                    <div class="row" style="font-size: 13px;">
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phương thức thanh toán</p>
-
-                                        </div>
-                                        <div class="col-4 text-end text-truncate">
-                                            @if($dh->pttt == "COD")
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <div class="badge text-bg-success">COD</div>
-                                                <p class="ms-2 mb-0 align-self-center fs-6 text-truncate">Thanh toán khi nhận hàng</p>
+                                        <div class="row" style="font-size: 13px;">
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-start text-sm-end">
+                                                <p class="ms-auto mb-0 pttt">Phương thức thanh toán</p>
                                             </div>
-
-                                            @else
-                                            <p class="mb-0 text-truncate">Đã thanh toán</p>
-                                            @endif
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phí vận chuyển</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                    @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
-                                                        {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
-                                                    @else
-                                                        {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
-                                                    @endif
-                                                </p>
+                                            <div class="col-sm-4 col-7 text-sm-end text-start">
+                                                @if($dh->pttt == "COD")
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="badge text-bg-success">COD</div>
+                                                        <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Phí vận chuyển</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                        @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
+                                                            + {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
+                                                        @else
+                                                            + {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                    {{number_format($dh->uu_dai, 0, '','.');}} đ
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                {{number_format($dh->uu_dai, 0, '','.');}} đ
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <hr class="mt-0">
                                     <div class="row">
                                         <div class="col-5">
-                                            @if($dh->trang_thai == 1)
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#cancel-{{$dh->id}}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
-                                                    Xác Nhận Hủy Đơn
-                                                </button>
-                                                <!-- Modal huỷ đơn hàng -->
-                                                <div class="modal fade" id="cancel-{{$dh->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Huỷ đơn hàng : {{$dh->id}}</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="text-center">
-                                                            <i class="fa-regular fa-circle-xmark display-1" style="color: #e04300;"></i>
-                                                            <br>
-                                                            <p >Bạn có chắc chắn muốn huỷ đơn hàng này không!</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                        <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="btn btn-outline-danger" style="font-size: 14px;">
-                                                            Xác Nhận Hủy Đơn
-                                                        </a>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                </div>
+                                            @if($dh->trang_thai == 1 )
+                                                @if($dh->pttt == 'COD')
+                                                    <p class="text-black"><i>Thanh toán khi nhận hàng</i> <u>{{number_format($dh->tong_dh, 0, '','.');}} đ</u></p>
+                                                @else
+                                                    <p class="text-black"><i>Thanh toán khi nhận hàng</i> <u>0đ</u></p>
+                                                @endif
                                             @elseif($dh->trang_thai == 2)
                                             <p class="text-black"><i>Đơn hàng đang được giao đến bạn</i></p>
                                             @elseif($dh->trang_thai == 3)
@@ -685,47 +664,48 @@
                                             @endforeach
                                         </div>
                                         <hr class="m-0">
-                                    <div class="row" style="font-size: 13px;">
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phương thức thanh toán</p>
-
-                                        </div>
-                                        <div class="col-4 text-end text-truncate">
-                                            @if($dh->pttt == "COD")
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <div class="badge text-bg-success">COD</div>
-                                                <p class="ms-2 mb-0 align-self-center fs-6 text-truncate">Thanh toán khi nhận hàng</p>
+                                        <div class="row" style="font-size: 13px;">
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-start text-sm-end">
+                                                <p class="ms-auto mb-0 pttt">Phương thức thanh toán</p>
                                             </div>
-
-                                            @else
-                                            <p class="mb-0 text-truncate">Đã thanh toán</p>
-                                            @endif
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phí vận chuyển</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                    @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
-                                                        {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
-                                                    @else
-                                                        {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
-                                                    @endif
-                                                </p>
+                                            <div class="col-sm-4 col-7 text-sm-end text-start">
+                                                @if($dh->pttt == "COD")
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="badge text-bg-success">COD</div>
+                                                        <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Phí vận chuyển</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                        @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
+                                                            + {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
+                                                        @else
+                                                            + {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                    {{number_format($dh->uu_dai, 0, '','.');}} đ
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                {{number_format($dh->uu_dai, 0, '','.');}} đ
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <hr class="mt-0">
                                     <div class="row">
@@ -739,7 +719,11 @@
                                                     <i>Xác Nhận Hủy Đơn</i>
                                                 </a>
                                             @elseif($dh->trang_thai == 2)
-                                            <p class="text-black"><i>Đơn hàng đang được giao đến bạn</i></p>
+                                                @if($dh->pttt == 'COD')
+                                                    <p class="text-black"><i>Thanh toán khi nhận hàng</i> <u>{{number_format($dh->tong_dh, 0, '','.');}} đ</u></p>
+                                                @else
+                                                <p class="text-black"><i>Thanh toán khi nhận hàng</i> <u>0đ</u></p>
+                                                @endif
                                             @elseif($dh->trang_thai == 3)
                                                 <button data-bs-toggle="modal" data-bs-target="#exampleModal-{{$dh->id}}" class="border-0 btn-link link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="background: none; font-size: 14px;">
                                                     <i>Đánh giá</i>
@@ -908,47 +892,48 @@
                                             @endforeach
                                         </div>
                                         <hr class="m-0">
-                                    <div class="row" style="font-size: 13px;">
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phương thức thanh toán</p>
-
-                                        </div>
-                                        <div class="col-4 text-end text-truncate">
-                                            @if($dh->pttt == "COD")
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <div class="badge text-bg-success">COD</div>
-                                                <p class="ms-2 mb-0 align-self-center fs-6 text-truncate">Thanh toán khi nhận hàng</p>
+                                        <div class="row" style="font-size: 13px;">
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-start text-sm-end">
+                                                <p class="ms-auto mb-0 pttt">Phương thức thanh toán</p>
                                             </div>
-
-                                            @else
-                                            <p class="mb-0 text-truncate">Đã thanh toán</p>
-                                            @endif
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phí vận chuyển</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                    @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
-                                                        {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
-                                                    @else
-                                                        {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
-                                                    @endif
-                                                </p>
+                                            <div class="col-sm-4 col-7 text-sm-end text-start">
+                                                @if($dh->pttt == "COD")
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="badge text-bg-success">COD</div>
+                                                        <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Phí vận chuyển</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                        @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
+                                                            + {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
+                                                        @else
+                                                            + {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                    {{number_format($dh->uu_dai, 0, '','.');}} đ
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                {{number_format($dh->uu_dai, 0, '','.');}} đ
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <hr class="mt-0">
                                     <div class="row">
@@ -1131,47 +1116,48 @@
                                             @endforeach
                                         </div>
                                         <hr class="m-0">
-                                    <div class="row" style="font-size: 13px;">
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phương thức thanh toán</p>
-
-                                        </div>
-                                        <div class="col-4 text-end text-truncate">
-                                            @if($dh->pttt == "COD")
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <div class="badge text-bg-success">COD</div>
-                                                <p class="ms-2 mb-0 align-self-center fs-6 text-truncate">Thanh toán khi nhận hàng</p>
+                                        <div class="row" style="font-size: 13px;">
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-start text-sm-end">
+                                                <p class="ms-auto mb-0 pttt">Phương thức thanh toán</p>
                                             </div>
-
-                                            @else
-                                            <p class="mb-0 text-truncate">Đã thanh toán</p>
-                                            @endif
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phí vận chuyển</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                    @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
-                                                        {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
-                                                    @else
-                                                        {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
-                                                    @endif
-                                                </p>
+                                            <div class="col-sm-4 col-7 text-sm-end text-start">
+                                                @if($dh->pttt == "COD")
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="badge text-bg-success">COD</div>
+                                                        <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Phí vận chuyển</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                        @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
+                                                            + {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
+                                                        @else
+                                                            + {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                    {{number_format($dh->uu_dai, 0, '','.');}} đ
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                {{number_format($dh->uu_dai, 0, '','.');}} đ
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <hr class="mt-0">
                                     <div class="row">
@@ -1354,47 +1340,48 @@
                                             @endforeach
                                         </div>
                                         <hr class="m-0">
-                                    <div class="row" style="font-size: 13px;">
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phương thức thanh toán</p>
-
-                                        </div>
-                                        <div class="col-4 text-end text-truncate">
-                                            @if($dh->pttt == "COD")
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <div class="badge text-bg-success">COD</div>
-                                                <p class="ms-2 mb-0 align-self-center fs-6 text-truncate">Thanh toán khi nhận hàng</p>
+                                        <div class="row" style="font-size: 13px;">
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-start text-sm-end">
+                                                <p class="ms-auto mb-0 pttt">Phương thức thanh toán</p>
                                             </div>
-
-                                            @else
-                                            <p class="mb-0 text-truncate">Đã thanh toán</p>
-                                            @endif
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Phí vận chuyển</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                    @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
-                                                        {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
-                                                    @else
-                                                        {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
-                                                    @endif
-                                                </p>
+                                            <div class="col-sm-4 col-7 text-sm-end text-start">
+                                                @if($dh->pttt == "COD")
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="badge text-bg-success">COD</div>
+                                                        <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Phí vận chuyển</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                        @if($dh->thanh_pho === "Thành phố Hồ Chí Minh" || $dh->thanh_pho === "Hồ Chí Minh")
+                                                            + {{number_format($phivc->ship_cost_inner_city, 0, '','.');}} đ
+                                                        @else
+                                                            + {{number_format($phivc->ship_cost_nationwide, 0, '','.');}} đ
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-5 d-flex align-items-center text-end">
+                                                <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
+                                            </div>
+                                            <div class="col-sm-4 col-7">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <p class="fs-6">
+                                                    {{number_format($dh->uu_dai, 0, '','.');}} đ
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-8 d-flex align-items-center text-end">
-                                            <p class="ms-auto mb-0">Ưu đãi sản phẩm</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <p class="fs-6">
-                                                {{number_format($dh->uu_dai, 0, '','.');}} đ
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <hr class="mt-0">
                                     <div class="row">

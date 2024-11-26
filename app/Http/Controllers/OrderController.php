@@ -25,26 +25,33 @@ class OrderController extends Controller
         $paymentMethod = $request->input('payment_method');
         $totalPayable = $request->input('total_payables');
         $discountAmount = $request->input('discount_amount');
-
+        session(['selected_address' => $selectedAddressId , 'discount_amount'=>$discountAmount]);
         if (empty($selectedProductIds)) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại sản phẩm được chọn.');
         } elseif (!$selectedAddressId) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại thông tin giao hàng.');
-
         } elseif (!$paymentMethod) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại phương thức thanh toán.');
-
         } elseif (!$totalPayable) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại tổng tiền.');
         }
-
+    
+        // Kiểm tra phương thức thanh toán
+        if ($paymentMethod == 'VNPay') {
+            $paymentUrl = $this->processVNPAY($totalPayable, $userId);
+            if ($paymentUrl) {
+                return redirect()->away($paymentUrl);
+            } else {
+                return redirect()->back()->with('error', 'Thanh toán không thành công. Vui lòng thử lại.');
+            }
+        }
+    
         DB::beginTransaction();
-
+    
         try {
             // Tạo đơn hàng mới
             $donHang = new DonHang();
             $donHang->id_user = $userId;
-            
             $donHang->thoi_diem_mua_hang = now();
             $donHang->id_dc = $selectedAddressId;
             $donHang->tong_dh = $totalPayable;
@@ -52,7 +59,7 @@ class OrderController extends Controller
             $donHang->uu_dai = $discountAmount;
             $donHang->trang_thai = 0;
             $donHang->save();
-
+    
             // Lưu chi tiết đơn hàng
             foreach ($selectedProductIds as $productId) {
                 $gioHang = GioHang::with(['sanPham', 'size'])->where('id', $productId)->first();
@@ -63,46 +70,48 @@ class OrderController extends Controller
                 $chiTietDonHang->id_size = $gioHang->id_size;
                 $chiTietDonHang->gia = $gioHang->sanPham->gia_km > 0 ? $gioHang->sanPham->gia_km : $gioHang->sanPham->gia;
                 $chiTietDonHang->save();
-
+    
                 // Cập nhật số lượng sản phẩm trong bảng sizes
                 $size = Size::find($gioHang->id_size);
                 if ($size) {
                     $size->so_luong -= $gioHang->so_luong;
                     $size->save();
                 }
-                // Cập nhật luot_mua cho sản phẩm
+    
+                // Cập nhật lượt mua cho sản phẩm
                 $sanPham = $gioHang->sanPham;
                 if ($sanPham) {
                     $sanPham->luot_mua += $gioHang->so_luong;
                     $sanPham->save();
                 }
+    
                 // Xóa sản phẩm khỏi giỏ hàng
                 $gioHang->delete();
             }
-
+    
             // Xóa session voucher sau khi đặt hàng thành công
             session()->forget('voucher');
             DB::commit();
-
-            return redirect()->route('user.purchase', ['id' => $userId])->with('success', 'Đặt hàng thành công!');
-
+    
+            return redirect()->route('user.purchase', ['id' => $userId])->with('thongbao', 'Đặt hàng thành công!');
+    
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
+            return redirect()->back()->with('error', 'Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.');
         }
     }
-
-    public function thanh_toan_vnpay(Request $request) {
+    
+    private function processVNPAY($totalPayable, $userId)
+    {
         $code_cart = rand(00, 9999);
-        $userId = Auth::id();
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = route('user.purchase', $userId); // URL trả về sau khi thanh toán
+        $vnp_Returnurl = route('vnpay.return', $userId); // URL trả về sau khi thanh toán
         $vnp_TmnCode = "18AB16MA";
         $vnp_HashSecret = "MH03RA1FG6Q1859GFPSKQPKUMY5P5I5G";
         $vnp_TxnRef = $code_cart;
         $vnp_OrderInfo = 'Thanh toán đơn hàng';
         $vnp_OrderType = 'billpayment';
-        $vnp_Amount = 20000 * 100;
+        $vnp_Amount = $totalPayable * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -142,10 +151,124 @@ class OrderController extends Controller
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
     
-        // \Log::info('VNPAY URL: ' . $vnp_Url);
-        // \Log::info('VNPAY Return URL: ' . $vnp_Returnurl);
+        return $vnp_Url; // Trả về URL để điều hướng người dùng đến trang thanh toán VNPay
+    }
     
-        return redirect()->to($vnp_Url);
+    public function vnpayReturn(Request $request, $userId)
+    {
+        $vnp_ResponseCode = $request->input('vnp_ResponseCode');
+        $vnp_Amount = $request->input('vnp_Amount');
+        $vnp_TxnRef = $request->input('vnp_TxnRef');
+    
+        if ($vnp_ResponseCode == '00') {
+            // Thanh toán thành công, tạo form để gửi dữ liệu bằng POST
+            $inputs = $request->all();
+            return '
+                <html>
+                <body>
+                    <form id="vnpayForm" action="'. route('vnpay.storeOrder') .'" method="POST">
+                        '. csrf_field() .'
+                        '. $this->generateHiddenFields($inputs) .'
+                    </form>
+                    <script type="text/javascript">
+                        document.getElementById("vnpayForm").submit();
+                    </script>
+                </body>
+                </html>
+            ';
+        } else {
+            // Thanh toán thất bại
+            return redirect()->route('cart.gio-hang')->with('error', 'Thanh toán không thành công. Vui lòng thử lại.');
+        }
+    }
+    
+    private function generateHiddenFields($inputs)
+    {
+        $html = '';
+        foreach ($inputs as $key => $value) {
+            $html .= '<input type="hidden" name="'. $key .'" value="'. $value .'">';
+        }
+        return $html;
+    }
+    
+    public function storeOrder(Request $request)
+    {
+        $userId = Auth::id();
+        $vnp_ResponseCode = $request->input('vnp_ResponseCode');
+        $vnp_Amount = $request->input('vnp_Amount');
+        $vnp_TxnRef = $request->input('vnp_TxnRef');
+    
+        if ($vnp_ResponseCode == '00') {
+            // Thanh toán thành công
+            DB::beginTransaction();
+            try {
+                // Lấy thông tin đơn hàng từ session hoặc request
+                $selectedProductIds = session('selected_products', []);
+                $selectedAddressId = session('selected_address');
+                $discountAmount = session('discount_amount');
+                $totalPayable = $vnp_Amount / 100;
+    
+                // Tạo đơn hàng mới
+                $donHang = new DonHang();
+                $donHang->id_user = $userId;
+                $donHang->thoi_diem_mua_hang = now();
+                $donHang->id_dc = $selectedAddressId;
+                $donHang->tong_dh = $totalPayable;
+                $donHang->pttt = 'VNPay';
+                $donHang->uu_dai = $discountAmount;
+                $donHang->trang_thai = 1;
+                $donHang->save();
+    
+                // Lưu chi tiết đơn hàng
+                foreach ($selectedProductIds as $productId) {
+                    $gioHang = GioHang::with(['sanPham', 'size'])->where('id', $productId)->first();
+                    $chiTietDonHang = new ChiTietDonHang();
+                    $chiTietDonHang->id_dh = $donHang->id;
+                    $chiTietDonHang->id_sp = $gioHang->sanPham->id;
+                    $chiTietDonHang->so_luong = $gioHang->so_luong;
+                    $chiTietDonHang->id_size = $gioHang->id_size;
+                    $chiTietDonHang->gia = $gioHang->sanPham->gia_km > 0 ? $gioHang->sanPham->gia_km : $gioHang->sanPham->gia;
+                    $chiTietDonHang->save();
+    
+                    // Cập nhật số lượng sản phẩm trong bảng sizes
+                    $size = Size::find($gioHang->id_size);
+                    if ($size) {
+                        $size->so_luong -= $gioHang->so_luong;
+                        $size->save();
+                    }
+    
+                    // Cập nhật lượt mua cho sản phẩm
+                    $sanPham = $gioHang->sanPham;
+                    if ($sanPham) {
+                        $sanPham->luot_mua += $gioHang->so_luong;
+                        $sanPham->save();
+                    }
+    
+                    // Xóa sản phẩm khỏi giỏ hàng
+                    $gioHang->delete();
+                }
+    
+                // Xóa session sau khi đặt hàng thành công
+                session()->forget('selected_products');
+                session()->forget('selected_address');
+                session()->forget('discount_amount');
+                session()->forget('voucher');
+    
+                DB::commit();
+    
+                // Chuyển hướng đến trang 'user.purchase'
+                return redirect()->route('user.purchase', ['id' => $userId])->with('thongbao', 'Đặt hàng thành công!');
+            } catch (\Exception $e) {
+                DB::rollBack();
+    
+                // Ghi log lỗi chi tiết
+                Log::error('Lỗi lưu đơn hàng: ' . $e->getMessage());
+                return redirect()->route('cart.gio-hang')->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
+            }
+        } else {
+            // Thanh toán thất bại
+            return redirect()->route('cart.gio-hang')->with('error', 'Thanh toán không thành công. Vui lòng thử lại.');
+        }
     }
 
     public function donHangDaMua($id, Request $request)
@@ -228,7 +351,6 @@ class OrderController extends Controller
         }
         return $orders;
     }
-
     public function danhGia(Request $request)
     {
         $id_user = $request->input('id_user');

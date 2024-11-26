@@ -102,8 +102,8 @@ Thống Kê
                                             <i class="fa-solid fa-person"></i>
                                         </div>
                                         <div class="col-8">
-                                            <h4 class="text-black">Sản phẩm</h4>
-                                            <h5 class="d-flex text-danger">{{$totalProductsSold}}</h5>
+                                            <h4 class="text-black">Bán Được</h4>
+                                            <h5 class="d-flex text-danger">{{$totalProductsSold}} sản phẩm</h5>
                                         </div>
                                     </div>
                                     <h8>Tổng sản phẩm bán được</h8>

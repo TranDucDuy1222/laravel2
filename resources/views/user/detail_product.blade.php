@@ -52,7 +52,7 @@ Chi Tiết : {{$detail->ten_sp}}
                     <div class="pd mb-4">
                         <div class="pd-wrap">
                             <div class="img-details">
-                                <img src="{{ asset('/uploads/product/' . $detail->hinh) }}" class="w-100" alt="...">
+                                <img src="{{ asset('/uploads/product/' . $detail->hinh) }}" class="h-100 w-100" alt="...">
                             </div>
                         </div>
                     </div>
@@ -203,7 +203,7 @@ Chi Tiết : {{$detail->ten_sp}}
                             <br/>
                             <!-- Mã giảm giá -->
                             @if (!$ma_giam_gia->isEmpty()) 
-                                <div id="discountCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3600"> 
+                                <div id="discountCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5600" > 
                                     <div class="carousel-indicators chuyen"> 
                                         @foreach ($ma_giam_gia as $index => $item) 
                                             <button type="button" data-bs-target="#discountCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}" aria-current="{{ $index == 0 ? 'true' : '' }}" aria-label="Slide {{ $index + 1 }}"></button> 
@@ -214,14 +214,14 @@ Chi Tiết : {{$detail->ten_sp}}
                                             <div class="carousel-item {{ $index == 0 ? 'active' : '' }}"> 
                                                 <div class="container"> 
                                                     <div class="sharp-corners p-1"> 
-                                                        <div class="d-flex justify-content-center align-content-center" > 
+                                                        <div class="d-flex justify-content-center align-content-center mb-1" > 
                                                             <u>
                                                                 <p id="copy{{ $index }}">{{ $item->code }} </p> 
                                                             </u>
                                                             <p class="ms-md-2 text-truncate" style="width: 220px;"> {{ $item->mo_ta }}</p> 
                                                         </div> 
                                                         <div class="d-flex justify-content-center">
-                                                            <button style="font-size: 14px;" class="btn btn-outline-light" onclick="copyText({{ $index }})">Lấy mã</button> 
+                                                            <button style="font-size: 14px;" class="btn btn-outline-light p-1 m-0" onclick="copyText({{ $index }})">Lấy mã</button> 
                                                         </div>
                                                     </div>
                                                 </div> 

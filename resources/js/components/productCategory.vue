@@ -35,7 +35,7 @@
       </div>
 
       <!-- Kích cỡ -->
-      <div class="mx-1">
+      <div class="mx-1" v-if="shoeSizesList.length > 0">
           <p class="btn btn-outline-secondary p-1 rounded-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Kích cỡ giày
           </p>
@@ -49,7 +49,7 @@
               </div>
           </ul>
       </div>
-      <div class="mx-1">
+      <div class="mx-1" v-if="clothingSizesList.length > 0">
           <p class="btn btn-outline-secondary p-1 rounded-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Kích cỡ quần áo
           </p>
@@ -63,7 +63,7 @@
               </div>
           </ul>
       </div>
-      <div class="mx-1">
+      <div class="mx-1" v-if="accessorySizesList.length > 0">
           <p class="btn btn-outline-secondary p-1 rounded-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Kích cỡ phụ kiện
           </p>
@@ -275,7 +275,9 @@ export default {
           console.error("Đã xảy ra lỗi khi lấy dữ liệu:", error);
         });
     },
-    handleSortChange(event) { const order = event.target.value; this.sortProducts(order); },
+    handleSortChange(event) { 
+      const order = event.target.value; this.sortProducts(order); 
+    },
     sortProducts(order) {
       this.sortOrder = order;
       if (order === 'asc') {

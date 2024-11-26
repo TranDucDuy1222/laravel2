@@ -56,7 +56,7 @@
   </button>
 </div>
 <div class="container">
-  <div id="product_list"> <product-list :slug="'{{ $slug }}'"></product-list> </div>
+  <div id="product_list"> <product-list :slug="'{{ $slug ?? "default-slug"}}'"></product-list> </div>
 </div>
 
 <!-- end all product -->

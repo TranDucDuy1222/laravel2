@@ -22,8 +22,14 @@ class ApiproductController extends Controller
         // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
         else if ($slug == 'giam-gia') {
             $title = 'Giảm giá';
-        } else{
-            return back()->with('thongbao', 'Loại sản phẩm không tồn tại.');
+        } 
+        else{
+            $category = Loai::where('slug', $slug)->first(); 
+            if ($category) { 
+                $title = $category->ten_loai; 
+            } else { 
+                return back()->with('thongbao', 'Loại sản phẩm không tồn tại.'); 
+            }
         }
 
         return view('user.all_product', [
@@ -34,15 +40,31 @@ class ApiproductController extends Controller
 
     public function api_sanpham_loai(Request $request, $slug)
     {
+        // Kiểm tra slug để xác định hành động
         if ($slug === 'tat-ca-san-pham') {
-            // Lấy tất cả sản phẩm
             $list_product = SanPham::with('sizes')->get();
-            $danh_mucs = DanhMuc::all();
-        } else{
-            // Lấy những sản phẩm có gia_km lớn hơn 0
+        } 
+        // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
+        else if ($slug === 'giam-gia') {
             $list_product = SanPham::with('sizes')->where('gia_km', '>', 0)->get();
-            $danh_mucs = DanhMuc::all();
         }
+        // Lọc sản phẩm theo loại khác dựa trên slug 
+        else { 
+            $loai = Loai::where('slug', $slug)->first(); 
+            if ($loai) { 
+                // Lấy các danh mục thuộc loại đó 
+                $danh_muc = DanhMuc::where('id_loai', $loai->id)->get(); 
+                // Lấy các sản phẩm trong các danh mục đó 
+                $danh_muc_ids = $danh_muc->pluck('id'); 
+                $list_product = SanPham::with('sizes')
+                ->whereIn('id_dm', $danh_muc_ids)
+                ->get(); 
+                } else { 
+                    return response()->json(['error' => 'Loại sản phẩm không tồn tại.'], 404); 
+                } 
+            }
+
+        $danh_mucs = DanhMuc::all();
 
         return response()->json([
             'list_product' => $list_product,
@@ -73,8 +95,8 @@ class ApiproductController extends Controller
             $list_product = SanPham::with('sizes')->where('id_dm', $danh_muc->id)->get();
             $danh_mucs = DanhMuc::all();
         } else {
-            $list_product = collect(); // Trả về một collection rỗng nếu không tìm thấy danh mục
-            $danh_mucs = collect(); // Trả về một collection rỗng nếu không tìm thấy danh mục
+            $list_product = collect(); 
+            $danh_mucs = collect(); 
         }
 
         return response()->json([
@@ -82,13 +104,6 @@ class ApiproductController extends Controller
             'danh_mucs' => $danh_mucs
         ]);
     }
-
-    // Tìm kiếm
-    // public function tim_kiem(Request $request, $slug) { 
-    //     $keyword = $request->query('q', ''); 
-    //     $title = $keyword; 
-    //     return view('user.search' , compact('title')); 
-    // }
 
     public function api_tim_kiem(Request $request, $slug)
     {
@@ -99,6 +114,5 @@ class ApiproductController extends Controller
         ->get(); 
         return response()->json([ 'products' => $products ]); 
     }
-
 
 }

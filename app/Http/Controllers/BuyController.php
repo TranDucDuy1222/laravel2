@@ -58,7 +58,7 @@ class BuyController extends Controller
             $gioHang->so_luong = $soluong;
         }
         $gioHang->save();    
-        return redirect()->route('cart.gio-hang')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng.');
+        return redirect()->route('cart.gio-hang')->with('thongbao', 'Sản phẩm đã được thêm vào giỏ hàng.');
     }
 
     public function hiengiohang()
@@ -75,7 +75,7 @@ class BuyController extends Controller
     public function xoasptronggio($idsp)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('success', 'Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng.');
+            return redirect()->route('login')->with('thongbao', 'Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng.');
         }
         $userId = Auth::id();
         $gioHang = GioHang::where('user_id', $userId)
@@ -83,9 +83,9 @@ class BuyController extends Controller
                         ->first();
         if ($gioHang) {
             $gioHang->delete();
-            return redirect()->route('cart.gio-hang')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
+            return redirect()->route('cart.gio-hang')->with('error', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
         } else {
-            return redirect()->route('cart.gio-hang')->with('thongbao', 'Sản phẩm không tồn tại trong giỏ hàng.');
+            return redirect()->route('cart.gio-hang')->with('error', 'Sản phẩm không tồn tại trong giỏ hàng.');
         }
     }
 
@@ -108,11 +108,10 @@ class BuyController extends Controller
     $gioHang->so_luong = $newQuantity;
     $gioHang->save();
 
-    return redirect()->route('cart.gio-hang')->with('success', 'Cập nhật số lượng sản phẩm thành công!');
+    return redirect()->route('cart.gio-hang')->with('thongbao', 'Cập nhật số lượng sản phẩm thành công!');
     }
     
     public function pay(Request $request) {
-        
         if (!Auth::check()) {
             return redirect()->route('login')->with('thongbao', 'Bạn cần đăng nhập để thực hiện thanh toán.');
         }else{
@@ -160,7 +159,7 @@ class BuyController extends Controller
         
             return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
         }
-    }    
+    }
     
     public function applyVoucher(Request $request) {
         $selectedProductIds = session('selected_products', $request->input('selected_products', []));
@@ -199,7 +198,7 @@ class BuyController extends Controller
         }
         $voucher->save();
     
-        return redirect()->route('thanh-toan')->with('success', 'Áp dụng mã giảm giá thành công!');
+        return redirect()->route('pay')->with('thongbao', 'Áp dụng mã giảm giá thành công!');
     }
     
 
@@ -208,7 +207,7 @@ class BuyController extends Controller
         session()->forget('voucher');
         session()->forget('discountAmount');
 
-        return redirect()->route('pay')->with('success', 'Đã hủy mã giảm giá.');
+        return redirect()->route('pay')->with('thongbao', 'Đã hủy mã giảm giá.');
     }
 
 }

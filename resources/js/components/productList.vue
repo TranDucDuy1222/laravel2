@@ -159,15 +159,13 @@ export default {
     filteredDanhMucs() { 
       return this.danh_mucs.filter(dm => dm.slug !== this.slug); 
     },
-    filteredProductsByColor() { 
-      console.log("Selected Color:", this.selectedColor);  
+    filteredProductsByColor() {  
       if (this.selectedColor) { 
         return this.products.filter(product => product.color === this.selectedColor); 
       } 
       return this.products; 
     }, 
     filteredProductsByColorAndSize() { 
-      console.log("Selected Size:", this.selectedSize); 
       let filtered = this.filteredProductsByColor; 
       if (this.selectedSize) { 
         filtered = filtered.filter(
@@ -217,6 +215,7 @@ export default {
   },
   mounted() {
     this.fetchProducts();
+    console.log("Received slug: ", this.slug);
   },
   methods: {
     fetchProducts() {
@@ -227,7 +226,7 @@ export default {
           this.sortProducts(this.sortOrder); 
         })
         .catch(error => {
-          console.error("Đã xảy ra lỗi khi lấy dữ liệu:", error);
+          //console.error("Đã xảy ra lỗi khi lấy dữ liệu:", error);
         });
     },
     sortProducts(order) {
@@ -249,7 +248,6 @@ export default {
       } else if (order === 'sold') {
             this.products.sort((a, b) => b.luot_mua - a.luot_mua);
       }
-      console.log("Sorted Products:", this.products); // Debug: Kiểm tra sản phẩm đã sắp xếp
     },
     selectColor(color) {
       this.selectedColor = color;

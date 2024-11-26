@@ -174,19 +174,19 @@
                                     </div>
                                     @if(session('voucher'))
                                         <div class="route-box row">
-                                            <div class="route-box__g2 col-lg-6">
+                                            <div class="route-box__g2 col-lg-12">
                                                 <a class="route-box__link" href="">
-                                                    Mã giảm giá: {{ session('voucher.code') }} đã được áp dụng với mức giảm:
+                                                    Mã giảm giá: <u>{{ session('voucher.code') }}</u> đã được áp dụng với mức giảm:
                                                     {{ session('voucher.amount') }}%.
                                                 </a>
                                             </div>
-                                            <div class="route-box__g1 col-lg-6">
+                                            <!-- <div class="route-box__g1 col-lg-6">
                                                 <a class="route-box__link" href="javascript:void(0);"
                                                     onclick="removeVoucher()">
                                                     <i class="fas fa-trash"></i>
                                                     <span>Hủy mã giảm giá</span>
                                                 </a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     @endif
                                 </div>
@@ -241,18 +241,14 @@
                                 </table>
                             </div>
                         </form>
-                        <form id="order_form" action="{{ route('dat-hang') }}" method="post">
-                            @csrf
-                            <!-- Thông tin muốn lấy -->
-                            <input type="hidden" name="total_payables" id="total_payables_hidden"
-                                value="{{ $totalPayable }}">
-                            <input type="hidden" name="discount_amount" id="discount-amount_hidden"
-                                value="{{ $discountAmount }}">
-                            <input type="hidden" name="selected_address" id="hidden_selected_address">
-                            <input type="hidden" name="payment_method" value="COD" id="payment_method">
-                            <div class="border p-3">
-                                <div class="text-black mb-xl-2 ">
-                                    <h3>Phương thức thanh toán</h3>
+                        <form id="order_form" action="{{ route('dat-hang') }}" method="post"> 
+                            @csrf 
+                            <input type="hidden" name="total_payables" id="total_payables_hidden" value="{{ $totalPayable }}"> 
+                            <input type="hidden" name="discount_amount" id="discount-amount_hidden" value="{{ $discountAmount }}"> 
+                            <input type="hidden" name="selected_address" id="hidden_selected_address"> 
+                            <input type="hidden" name="payment_method" value="COD" id="payment_method"> 
+
+                            <h3>Phương thức thanh toán</h3>
                                     <div class="card my-2">
                                         <div class="d-flex justify-content-start align-items-center p-2 payment-options" data-payment="COD">
                                             <div class="badge text-bg-success">COD</div>
@@ -269,21 +265,16 @@
                                                 class="ms-auto">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" id="add-address-link"
-                                        class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                                        style="display: none;">Vui lòng thêm địa chỉ để đặt hàng</a>
-                                    <button class="btn btn--e-brand-b-2 w-100 " id="place-order-button" type="submit">
-                                        ĐẶT HÀNG
-                                    </button>
-                                </div>
-                                <a href="{{url('/thanh_toan_vnpay')}}" class="w-100 text-secondary">
-                                    <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
-                                        style="display: none;" type="button">THANH TOÁN VÍ ĐIỆN TỬ
-                                    </button>
-                                </a>
-                            </div>
+
+                            <div class="d-flex justify-content-center"> 
+                                <a href="{{ route('user.profile', [Auth::user()->id]) }}" id="add-address-link" 
+                                class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
+                                style="display: none;">Vui lòng thêm địa chỉ để đặt hàng</a> 
+                                <button class="btn btn--e-brand-b-2 w-100" id="place-order-button" type="submit">ĐẶT HÀNG</button> 
+                                <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
+                                    style="display: none;" type="submit">THANH TOÁN VÍ ĐIỆN TỬ
+                                </button>
+                            </div> 
                         </form>
                     </div>
                     <div class="col-lg-12">

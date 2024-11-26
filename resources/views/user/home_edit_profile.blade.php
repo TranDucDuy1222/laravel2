@@ -35,17 +35,18 @@ Thông tin tài khoản
             </div>
 @endif
 <h2 style="letter-spacing: 2px; text-align: center; padding-top: 40px;">Thông tin tài khoản</h2>
-<div class="row" style="padding-bottom: 50px;  padding-top: 20px; margin-left: 0; margin-right: 0;">
-
-    <body style=" background-color: #F5F5F5;">
-        <div class="col-8 container">
-            <div class="row" style="border: 1px solid #DCDCDC; height: 70vh;">
-                <div class="col-3 bg-body-secondary">
-                    <ul class="list-unstyled">
-                        <li class="bg-body-secondary"><a class="text-decoration-none  dropdown-item mt-2 h6 {{(request()->routeIs('user.edit_profile'))?'text-danger':'text-dark'}}" href="#">Hồ sơ của tôi</a></li>
-                        <li class="bg-body-secondary"><a class="text-decoration-none text-dark dropdown-item mt-2 h6" href="index.php?mod=thongtin&act=order">Đơn hàng đã mua</a></li>
-                    </ul>
-                </div>
+<div class="container card">
+    <div class="row">
+        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 bg-body-tertiary card">
+            <ul class="list-unstyled text-center m-0">
+                <li class=""><a
+                            class="text-decoration-none  dropdown-dc mt-2 h6 {{(request()->routeIs('user.profile')) ? 'text-danger' : 'text-dark'}}"
+                            href="{{ route('user.profile', [Auth::user()->id]) }}">Hồ sơ của tôi</a></li>
+                <li class=""><a
+                            class="text-decoration-none text-dark dropdown-dc mt-2 h6"
+                            href="{{route('user.purchase', [Auth::user()->id])}}">Đơn hàng đã mua</a></li>
+            </ul>
+        </div>
                 <div class="col-9">
                     <div style="padding-top: 30px; padding-left: 30px;">
                         <form action="{{route('user.update_mk', [Auth::user()->id])}}" method="POST">

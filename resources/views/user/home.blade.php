@@ -111,7 +111,7 @@ Trang Chủ - TrendyU
                                                                     onerror="this.src='{{ asset('/uploads') }}'"
                                                                     style="max-height: 295px;" alt="" class="w-100">
                                                                 @if ($item->gia_km > 0)
-                                                                    <img src="{{ asset('/uploads/logo/'. $setting->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                    <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                 @endif
                                                             </a>
                                                         @elseif ($item->trang_thai == 3)
@@ -596,20 +596,20 @@ Trang Chủ - TrendyU
     </section>
 
     <!-- Banner phụ -->
-    <div class="banner-bg w-100" style="background-image: url({{ asset('/uploads/banner/' . $home_page->anh_bieu_ngu_phu) }});">
-        <div class="section__content">
+    <div class="banner-bg banner-bg-phu w-100" style="background-image: url({{ asset('/uploads/banner/' . $home_page->anh_bieu_ngu_phu) }});">
+        <div class="section__content content-bg-phu">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="banner-bg__wrap" >
+                        <div class="banner-bg__wrap">
                             <div class="banner-bg__text-1">
-                                <span style="color: {{$home_page->mau_tieu_de_chinh_bieu_ngu_phu}};">{{$home_page->tieu_de_chinh_bieu_ngu_phu}}</span>
+                                <span style="color: {{ $home_page->mau_tieu_de_chinh_bieu_ngu_phu }};">{{ $home_page->tieu_de_chinh_bieu_ngu_phu }}</span>
                             </div>
                             <div class="banner-bg__text-2">
-                                <span class="u-c-white">{{$home_page->tieu_de_phu_bieu_ngu_phu}}</span>
+                                <span class="u-c-white">{{ $home_page->tieu_de_phu_bieu_ngu_phu }}</span>
                             </div>
-                            <span class="banner-bg__text-block banner-bg__text-3 ">{{$home_page->mo_ta_bieu_ngu_phu}}</span>
-                            <a href="{{ route('loai-san-pham' ,'tat-ca-san-pham') }}" class="d-flex justify-content-center">
+                            <span class="banner-bg__text-block u-c-white banner-bg__text-3">{{ $home_page->mo_ta_bieu_ngu_phu }}</span>
+                            <a href="{{ route('loai-san-pham', 'giam-gia') }}" class="d-flex justify-content-center">
                                 <button class="custom-button mt-2">Xem tất cả →</button>
                             </a>
                         </div>
@@ -714,33 +714,33 @@ Trang Chủ - TrendyU
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4 ht-titile">
+                <div class="col-sm-4 ht-titile" >
                     <img src="{{ asset('/uploads/banner/' . $home_page->anh_loi_ich_thanh_vien_1) }}"
                             onerror="this.src='{{ asset('/imgnew/litv1.png') }}'"
-                            alt="" class="w-100">
-                    <div class="titile">
+                            alt="" class="img-fluid custom-img">
+                    <div class="">
                         <h5 class="text-light">{{$home_page->tieu_de_loi_ich_thanh_vien_1}}</h5>
                         <a href="#" class="d-flex justify-content-center">
                             <button class="btn btn-light mt-1">{{$home_page->noi_dung_nut_1}}</button>
                         </a>
                     </div>
                 </div>
-                <div class="col-sm-4 ht-titile">
+                <div class="col-sm-4 ht-titile" >
                     <img src="{{ asset('/uploads/banner/' . $home_page->anh_loi_ich_thanh_vien_2) }}"
                             onerror="this.src='{{ asset('/imgnew/litv2.png') }}'"
-                            alt="" class="w-100">
-                    <div class="titile">
+                            alt="" class="img-fluid custom-img">
+                    <div class="">
                         <h5 class="text-light">{{$home_page->tieu_de_loi_ich_thanh_vien_2}}</h5>
                         <a href="/allproduct" class="d-flex justify-content-center">
                             <button class="btn btn-light mt-1">{{$home_page->noi_dung_nut_2}}</button>
                         </a>
                     </div>
                 </div>
-                <div class="col-sm-4 ht-titile">
+                <div class="col-sm-4 ht-titile" >
                     <img src="{{ asset('/uploads/banner/' . $home_page->anh_loi_ich_thanh_vien_3) }}"
                             onerror="this.src='{{ asset('/imgnew/litv3.jpg') }}'"
-                            alt="" class="w-100">
-                    <div class="titile">
+                            alt="" class="img-fluid custom-img">
+                    <div class="">
                         <h5 class="text-light">{{$home_page->tieu_de_loi_ich_thanh_vien_3}}</h5>
                         <a href="/allproduct" class="d-flex justify-content-center">
                             <button class="btn btn-light mt-1">{{$home_page->noi_dung_nut_3}}</button>

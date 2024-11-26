@@ -102,3 +102,11 @@ li:hover {
 .with-two-lines::after {
     top: 1rem; /* Khoảng cách giữa hai đường */
 }
+
+.icon-vnpay{
+    width: 25px;
+    height: 20px;
+}
+.pttt{
+    white-space: nowrap;
+}

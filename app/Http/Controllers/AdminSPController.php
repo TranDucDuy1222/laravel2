@@ -74,7 +74,6 @@ class AdminSPController extends AdminController
         return view('admin.product_add', compact('loai_arr', 'selectedOption'));
     }
 
-
     public function store(Request $request)
     {
         $hasproduct = false;
@@ -159,8 +158,6 @@ class AdminSPController extends AdminController
 
         return redirect()->route('san-pham.index')->with('thongbao', 'Thêm thành công');
     }
-
-
     public function edit(Request $request, string $id)
     {
         $sp = san_pham::where('id', $id)->first();
@@ -175,84 +172,82 @@ class AdminSPController extends AdminController
 
     public function update(Request $request, string $id)
     {
-        //dd($request->all());
         // Kiểm tra xem sản phẩm có tồn tại
         $obj = san_pham::find($id);
         if (!$obj) {
             return redirect()->back()->with('thongbao', 'Sản phẩm không tồn tại.');
         }
-
         // Kiểm tra xem tên sản phẩm đã tồn tại trong cơ sở dữ liệu hay chưa
         $checkProduct = san_pham::where('ten_sp', $request['ten_sp'])->where('id', '!=', $id)->first();
         if ($checkProduct) {
             return redirect()->back()->with('thongbao', 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.');
         }
-
-        // Kiểm tra các trường bắt buộc
-        if ($request->filled(['ten_sp', 'gia', 'gia_km', 'id_dm', 'mo_ta_ct', 'mo_ta_ngan', 'color', 'hinh'])) {
-
-            $obj->ten_sp = $request['ten_sp'];
-            $obj->slug = Str::slug($obj->ten_sp);
-            $obj->gia = (int) $request['gia'];
-            $obj->gia_km = (int) $request['gia_km'];
-
-            // Kiểm tra nếu giá khuyến mãi lớn hơn giá, gán giá khuyến mãi bằng 0
-            if ($obj->gia_km > $obj->gia) {
-                $obj->gia_km = 0;
-            }
-
-            $obj->id_dm = (int) $request['id_dm'];
-
-            // Lấy tệp tin từ trường input file
-            if ($request->hasFile('hinh')) {
-                $file = $request->file('hinh');
-                $fileName = $file->getClientOriginalName();
-                $ext = pathinfo($fileName, PATHINFO_EXTENSION); // Lấy phần mở rộng của tệp tin
-                // Mảng chứa các phần mở rộng bạn muốn kiểm tra
-                $allowedExtensions = ['jpg', 'png', 'gif', 'webp', 'jpeg'];
-                if (in_array($ext, $allowedExtensions)) {
-                    $filePath = 'uploads/product/' . $fileName;
-                    if (Storage::exists($filePath)) {
-                        Storage::delete($filePath); // Xóa tệp tin nếu đã tồn tại
-                    }
-                    $file->move(public_path('uploads/product'), $fileName);
-                    $obj->hinh = $fileName;
-                } else {
-                    return redirect()->back()->with('thongbao', 'Phần mở rộng tệp tin không đúng định dạng');
+    
+        // Cập nhật các trường nếu có giá trị mới, giữ nguyên nếu không có giá trị mới
+        $obj->ten_sp = $request->filled('ten_sp') ? $request['ten_sp'] : $obj->ten_sp;
+        $obj->slug = Str::slug($obj->ten_sp);
+        $obj->gia = $request->filled('gia') ? (int) $request['gia'] : $obj->gia;
+        $obj->gia_km = $request->filled('gia_km') ? (int) $request['gia_km'] : $obj->gia_km;
+    
+        // Kiểm tra nếu giá khuyến mãi lớn hơn giá, gán giá khuyến mãi bằng 0
+        if ($obj->gia_km > $obj->gia) {
+            $obj->gia_km = 0;
+        }
+        $obj->id_dm = $request->filled('id_dm') ? (int) $request['id_dm'] : $obj->id_dm;
+        $obj->mo_ta_ct = $request->filled('mo_ta_ct') ? $request['mo_ta_ct'] : $obj->mo_ta_ct;
+        $obj->mo_ta_ngan = $request->filled('mo_ta_ngan') ? $request['mo_ta_ngan'] : $obj->mo_ta_ngan;
+        $obj->trang_thai = $request->filled('trang_thai') ? $request['trang_thai'] : $obj->trang_thai;
+        $obj->color = $request->filled('color') ? $request['color'] : $obj->color;
+    
+        // Lấy tệp tin từ trường input file
+        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
+            $file = $request->file('hinh');
+            $fileName = $file->getClientOriginalName();
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION); // Lấy phần mở rộng của tệp tin
+    
+            // Mảng chứa các phần mở rộng bạn muốn kiểm tra
+            $allowedExtensions = ['jpg', 'png', 'gif', 'webp', 'jpeg'];
+            if (in_array($ext, $allowedExtensions)) {
+                $filePath = '/uploads/product/' . $fileName;
+                if (Storage::exists($filePath)) {
+                    Storage::delete($filePath); // Xóa tệp tin nếu đã tồn tại
                 }
+                $file->move(public_path('/uploads/product'), $fileName);
+                $obj->hinh = $fileName;
+            } else {
+                return redirect()->back()->with('thongbao', 'Phần mở rộng tệp tin không đúng định dạng');
             }
-
-            $obj->mo_ta_ct = $request['mo_ta_ct'];
-            $obj->mo_ta_ngan = $request['mo_ta_ngan'];
-            $obj->trang_thai = $request['trang_thai'];
-            $obj->color = $request['color'];
-            $obj->ngay = now();
-            $obj->save();
-
-            // Xử lý size và số lượng sản phẩm
-            if (is_array($request['size_product']) && is_array($request['so_luong'])) {
-                $size_products = $request->input('size_product');
-                $so_luongs = $request->input('so_luong');
-                $product_id = $obj->id; // lấy id sản phẩm hiện tại
-                foreach ($size_products as $index => $sizes) {
-                    // Kiểm tra xem bản ghi size đã tồn tại hay chưa
-                    $sizeObj = Size::where('id_product', $product_id)
-                        ->where('size_product', $sizes)
-                        ->first();
+        }
+        $obj->ngay = now();
+        $obj->save();
+        // Xử lý size và số lượng sản phẩm
+        if (is_array($request['size_product']) && is_array($request['so_luong'])) {
+            $size_products = $request->input('size_product');
+            $so_luongs = $request->input('so_luong');
+            $product_id = $obj->id; // lấy id sản phẩm hiện tại
+    
+            // Lấy tất cả các size hiện tại của sản phẩm
+            $currentSizes = Size::where('id_product', $product_id)->get();
+    
+            foreach ($size_products as $index => $sizes) {
+                // Kiểm tra xem bản ghi size đã tồn tại hay chưa
+                $sizeObj = $currentSizes->where('size_product', $sizes)->first();
+    
+                if ($sizeObj) {
                     // Nếu tồn tại, cập nhật bản ghi
-                    $sizeObj->so_luong = intval($so_luongs[$index]);
+                    if (isset($so_luongs[$index]) || $so_luongs[$index] === 0) {
+                        $sizeObj->so_luong = intval($so_luongs[$index]);
+                    }
                     $sizeObj->save();
                 }
-            } else {
-                return redirect()->back()->with('thongbao', 'Vui lòng nhập thông tin số lượng đầy đủ.');
             }
-
-            return redirect(route('san-pham.index'))->with('thongbao', 'Cập nhật thành công');
         } else {
-            return redirect()->back()->with('thongbao', 'Thông tin sản phẩm chưa đầy đủ!');
+            return redirect()->back()->with('thongbao', 'Vui lòng nhập thông tin số lượng đầy đủ.');
         }
+    
+        return redirect(route('san-pham.index'))->with('thongbao', 'Cập nhật thành công');
     }
-
+    
     public function destroy(Request $request, string $id)
     {
         $cokhong = san_pham::where('id', $id)->exists();
