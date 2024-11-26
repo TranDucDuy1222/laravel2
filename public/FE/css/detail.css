@@ -16,7 +16,7 @@
     background: linear-gradient(90deg, red 50%, rgb(89, 88, 88) 50%);
     background-size: 200% 100%;
     background-position: center;
-    animation: color-change 4s infinite;
+    animation: color-change 6s infinite;
 }
 
 @keyframes color-change {

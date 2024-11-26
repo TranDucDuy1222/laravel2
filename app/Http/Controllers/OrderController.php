@@ -93,7 +93,7 @@ class OrderController extends Controller
             session()->forget('voucher');
             DB::commit();
     
-            return redirect()->route('user.purchase', ['id' => $userId])->with('success', 'Đặt hàng thành công!');
+            return redirect()->route('user.purchase', ['id' => $userId])->with('thongbao', 'Đặt hàng thành công!');
     
         } catch (\Exception $e) {
             DB::rollBack();
@@ -216,7 +216,7 @@ class OrderController extends Controller
                 $donHang->tong_dh = $totalPayable;
                 $donHang->pttt = 'VNPay';
                 $donHang->uu_dai = $discountAmount;
-                $donHang->trang_thai = 0;
+                $donHang->trang_thai = 1;
                 $donHang->save();
     
                 // Lưu chi tiết đơn hàng
@@ -257,7 +257,7 @@ class OrderController extends Controller
                 DB::commit();
     
                 // Chuyển hướng đến trang 'user.purchase'
-                return redirect()->route('user.purchase', ['id' => $userId])->with('success', 'Đặt hàng thành công!');
+                return redirect()->route('user.purchase', ['id' => $userId])->with('thongbao', 'Đặt hàng thành công!');
             } catch (\Exception $e) {
                 DB::rollBack();
     

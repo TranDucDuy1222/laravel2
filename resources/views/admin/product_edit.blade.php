@@ -35,7 +35,7 @@ Sản phẩm
                         </ul>
                      </div>
                      <div class="col-md-9">
-                        <form id="form-wizard3" action="{{route('san-pham.update', $sp->id )}}" method="post">
+                        <form id="form-wizard3" action="{{route('san-pham.update', $sp->id )}}" method="post" enctype="multipart/form-data">
                            @csrf
                            @method('PUT')
                            <!-- fieldsets -->
@@ -120,8 +120,8 @@ Sản phẩm
                                        <div class="form-group">
                                           <label for="" class="form-label fw-semibold">Ảnh</label>
                                           <a href="javascript:void();" class="">
-                                          <input value="{{$sp->hinh}}" name="hinh" class="file-up form-control mb-3" type="file" accept="image/*"></a>
-                                          <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/'. $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
+                                          <input name="hinh" class="file-up form-control mb-3" type="file" accept="image/*">
+                                          <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
@@ -179,23 +179,24 @@ Sản phẩm
                                     </div>
                                  </div>
                                  @foreach ($sizeProduct as $ssl)
-                                 <div class="row">
-                                    @if ($errors->has('so_luong'))
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first('so_luong') }}
-                                        </div>
+                                    <div class="row">
+                                       @if ($errors->has('so_luong'))
+                                          <div class="alert alert-danger">
+                                                {{ $errors->first('so_luong') }}
+                                          </div>
                                        @endif
-                                    <div class="col-md-6 mb-3">
-                                       <div class="form-group">
-                                       <input class="form-control" disabled readonly value="{{$ssl->size_product}}" name="size_product[]" />
+                                       <div class="col-md-6 mb-3">
+                                          <div class="form-group">
+                                                <input type="hidden" name="size_product[]" value="{{ $ssl->size_product }}">
+                                                <input class="form-control" disabled readonly value="{{ $ssl->size_product }}">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6 mb-3">
+                                          <div class="form-group">
+                                                <input value="{{ old('so_luong.' . $loop->index, $ssl->so_luong) }}" type="number" class="form-control" name="so_luong[]" required>
+                                          </div>
                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                       <div class="form-group">
-                                       <input value="{{$ssl->so_luong}}" type="number" class="form-control" name="so_luong[]" required />
-                                       </div>
-                                    </div>
-                                 </div>
                                  @endforeach
                               </div>
                               <button type="submit" class="btn btn-primary action-button float-end">Cập nhật sản phẩm</button>

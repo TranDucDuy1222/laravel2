@@ -24,35 +24,18 @@ Giỏ Hàng - Trendy U
 @endsection
 
 @section('content')
-@if(session()->has('error'))
-    <div class="z-1 toast show align-items-center text-bg-danger border-0 position-fixed top-3 end-0 p-3" role="alert"
-        aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                {!! session('error') !!}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close">
-            </button>
-        </div>
-    </div>
-@endif
-@if(session()->has('success'))
-    <div class="z-1 toast show align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
-        aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                {!! session('success') !!}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close">
-            </button>
-        </div>
-    </div>
-@endif
 <div class="app-content">
     <div class="pt-5">
-        <div class="section__content">
+    <div class="z-1 toast align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
+            aria-live="assertive" aria-atomic="true" id="toast-container">
+            <div class="d-flex">
+                <div class="toast-body" id="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="section__content content-bg-phu">
             <div class="container">
-
                 <div class="breadcrumb">
                     <div class="breadcrumb__wrap">
                         <ul class="breadcrumb__list">
@@ -69,14 +52,6 @@ Giỏ Hàng - Trendy U
         </div>
     </div>
     <div class="pb-5">
-        <div class="z-1 toast align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
-            aria-live="assertive" aria-atomic="true" id="toast-container">
-            <div class="d-flex">
-                <div class="toast-body" id="toast-body"></div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
         <div class="section__intro mb-5">
             <div class="container">
                 <div class="row">
@@ -226,7 +201,7 @@ Giỏ Hàng - Trendy U
                     <div class="col-lg-12">
                         <div class="route-box">
                             <div class="route-box__g1">
-                                <a class="route-box__link" href="">
+                                <a class="route-box__link" href="{{url('/loai-san-pham/tat-ca-san-pham')}}">
                                     <i class="fas fa-long-arrow-alt-left"></i>
                                     <span>Tiếp tục mua sắm</span>
                                 </a>

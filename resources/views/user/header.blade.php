@@ -88,17 +88,29 @@
     </nav>
     <nav class="navbar navbar-expand-lg bg-body secondary-nav-wrapper shadow ">
       @if(session()->has('thongbao'))
-      <div class="z-1 toast show align-items-center text-bg-danger border-0 position-fixed top-3 end-0 p-3" role="alert"
-      aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body">
-        {!! session('thongbao') !!}
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-        aria-label="Close"></button>
-      </div>
-      </div>
-    @endif
+          <div class="z-1 toast show align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
+          aria-live="assertive" aria-atomic="true" id="toast-container">
+              <div class="d-flex">
+                  <div class="toast-body" id="toast-body">
+                      {!! session('thongbao') !!}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                  aria-label="Close"></button>
+              </div>
+          </div>
+      @endif
+      @if(session()->has('error'))
+          <div class="z-1 toast show align-items-center text-bg-danger border-0 position-fixed top-3 end-0 p-3" role="alert"
+          aria-live="assertive" aria-atomic="true" id="toast-container">
+              <div class="d-flex">
+                  <div class="toast-body">
+                      {!! session('error') !!}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                  aria-label="Close"></button>
+              </div>
+          </div>
+      @endif
       <div class="container">
         <div class="menu-init">
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
@@ -197,3 +209,17 @@
     </nav>
   </nav>
   <!-- End Nav -->
+
+<!-- JS hiển thị thông báo -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toastContainer = document.getElementById('toast-container');
+        if (toastContainer) {
+            // Tự động ẩn thông báo sau 3 giây
+            setTimeout(() => {
+                toastContainer.classList.remove('show');
+                toastContainer.classList.add('d-none');
+            }, 2000);
+        }
+    });
+</script>

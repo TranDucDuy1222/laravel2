@@ -174,19 +174,19 @@
                                     </div>
                                     @if(session('voucher'))
                                         <div class="route-box row">
-                                            <div class="route-box__g2 col-lg-6">
+                                            <div class="route-box__g2 col-lg-12">
                                                 <a class="route-box__link" href="">
-                                                    Mã giảm giá: {{ session('voucher.code') }} đã được áp dụng với mức giảm:
+                                                    Mã giảm giá: <u>{{ session('voucher.code') }}</u> đã được áp dụng với mức giảm:
                                                     {{ session('voucher.amount') }}%.
                                                 </a>
                                             </div>
-                                            <div class="route-box__g1 col-lg-6">
+                                            <!-- <div class="route-box__g1 col-lg-6">
                                                 <a class="route-box__link" href="javascript:void(0);"
                                                     onclick="removeVoucher()">
                                                     <i class="fas fa-trash"></i>
                                                     <span>Hủy mã giảm giá</span>
                                                 </a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     @endif
                                 </div>

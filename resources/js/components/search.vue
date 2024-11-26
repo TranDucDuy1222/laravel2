@@ -3,7 +3,7 @@
         <form @submit.prevent="handleSearch" >
             <div class="d-flex align-items-center ms-2">
                 <i class="fa-solid fa-magnifying-glass fa-beat-fade" style="color: #080808;"></i>
-                <input class="custom-input border-0 ms-2" type="search" placeholder="Nhập..." @input="debouncedSearch">
+                <input class="custom-input border-0 ms-2" type="search" placeholder="Nhập từ khoá..." @input="debouncedSearch">
             </div>
         </form>
         <div v-if="products.length" class="search-results">
