@@ -196,7 +196,7 @@ class BuyController extends Controller
     
         $voucher->save(); // Lưu lại thay đổi vào cơ sở dữ liệu
     
-        return redirect()->route('pay.form')->with('thongbao', 'Áp dụng mã giảm giá thành công!');
+        return redirect()->route('pay')->with('thongbao', 'Áp dụng mã giảm giá thành công!');
     }
     
     public function removeVoucher(Request $request) {

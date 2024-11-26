@@ -33,14 +33,14 @@ class AdminSPController extends AdminController
         }
 
         // Kiểm tra và gán giá trị cho $trangthai nếu có trong request, mặc định là 0
-        $trangthai = $request->has('trangthai') ? $request['trangthai'] : 0;
+        $trangthai = $request->has('trangthai') ? $request['trangthai'] : "all";
 
         // Lọc sản phẩm theo trạng thái
         $query = san_pham::join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
             ->select('san_pham.*', 'danh_muc.ten_dm')
             ->orderBy('san_pham.id', 'desc');
 
-        if ($trangthai != 0) {
+        if ($trangthai != "all") {
             $query->where('san_pham.trang_thai', $trangthai);
         }
 
@@ -58,8 +58,6 @@ class AdminSPController extends AdminController
 
         // Lấy danh sách sản phẩm với phân trang
         $sanpham_arr = $query->paginate($perpage)->withQueryString();
-
-
 
         // Trả về view với các biến cần thiết
         return view('admin.product', compact('trangthai', 'id_dm', 'sanpham_arr', 'loai_arr', 'size_arr', 'idsp'));
@@ -113,7 +111,7 @@ class AdminSPController extends AdminController
                     $filePath = public_path('/uploads/product/' . $fileName);
                     if (file_exists($filePath)) {
                         // Hiện thông báo nếu tệp tin đã tồn tại
-                        return redirect()->back()->with('thongbao', 'Sản phẩm này đã tồn tại');
+                        return redirect()->back()->with('thongbao', 'Ảnh sản phẩm này đã tồn tại');
                     } else {
                         $file->move(public_path('/uploads/product/'), $fileName);
                         $obj->hinh = $fileName;
@@ -125,7 +123,6 @@ class AdminSPController extends AdminController
             $obj->mo_ta_ct = $request['mo_ta_ct'];
             $obj->mo_ta_ngan = $request['mo_ta_ngan'];
             $obj->an_hien = 0;
-            $obj->tinh_chat = 0;
             $obj->trang_thai = $request['trang_thai'];
             $obj->color = $request['color'];
             $obj->ngay = now();
@@ -247,19 +244,6 @@ class AdminSPController extends AdminController
     
         return redirect(route('san-pham.index'))->with('thongbao', 'Cập nhật thành công');
     }
-    
-    public function destroy(Request $request, string $id)
-    {
-        $cokhong = san_pham::where('id', $id)->exists();
-        if ($cokhong == false) {
-            $request->session()->flash('thongbao', 'Sản phẩm không tồn tại');
-            return redirect('/admin/san-pham');
-        }
-        san_pham::where('id', $id)->delete();
-        $request->session()->flash('thongbao', 'Đã xóa sản phẩm');
-        return redirect('/admin/san-pham');
-    }
-
     public function hide($id)
     {
         $san_pham = san_pham::findOrFail($id);

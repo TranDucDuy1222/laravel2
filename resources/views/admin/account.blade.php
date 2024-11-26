@@ -12,13 +12,13 @@ Quản Lý Tài Khoản
                   <div class="iq-header-title col-sm-12 col-md-6">
                      <h4 class="card-title">Danh sách tài khoản</h4>
                   </div>
-                  <!-- <div class="col-sm-12 col-md-6">
+                  <div class="col-sm-12 col-md-6">
                         <div class="user-list-files d-flex justify-content-end">
                            <a href="{{route('tai-khoan.create')}}" class="btn btn-dark">
                               <i class="fa-solid fa-plus"></i> Thêm tài khoản mới
                            </a>
                         </div>
-                     </div> -->
+                     </div>
                </div>
                <div class="iq-card-body">
                      <div class="table-responsive">

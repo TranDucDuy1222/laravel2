@@ -27,10 +27,10 @@ Quản lý sản phẩm - TrendyU
                            <div class="row">
                               <div class="col-auto">
                                  <select id="trangthai" name="trangthai" class="form-select" aria-label="Default select example">
+                                    <option value="all" {{$trangthai == "all" ? "selected" : ""}}>Tất cả</option>
                                     <option value="0" {{$trangthai == "0" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
                                     <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Sắp Hết Hàng</option>
                                     <option value="2" {{$trangthai == "2" ? "selected" : ""}}>Sản Phẩm Ngừng Kinh Doanh</option>
-                                    <option value="3" {{$trangthai == "3" ? "selected" : ""}}>Sản Phẩm Sắp Về Hàng</option>
                                  </select>
                               </div>
                               <div class="col-auto">
@@ -101,7 +101,7 @@ Quản lý sản phẩm - TrendyU
                                                 Hiện
                                              </button>
                                        </form>
-                                       @else
+                                       @elseif ($sp -> trang_thai == 0)
                                        <form class="d-inline" action="{{ route('san-pham.hide', $sp->id) }}" method="POST">
                                              @csrf
                                              <button type='submit' onclick="return confirm('Bạn có chắc muốn ẩn sản phẩm này không ?')" class="btn btn-outline-danger">
@@ -173,9 +173,6 @@ Quản lý sản phẩm - TrendyU
                               @if ($sp -> trang_thai == 2)
                               Ngừng kinh doanh
                               @endif
-                              @if ($sp -> trang_thai == 3)
-                              Sắp về hàng
-                              @endif
                         </label>
                      </div>
                   </div>
@@ -245,19 +242,16 @@ Quản lý sản phẩm - TrendyU
 </div>
 
 <script>
-function redirectToProductPage() {
-    var selectLoai = document.getElementById('selectLoai');
-    var selectedValue = selectLoai.value;
-    var url = new URL("/admin/san-pham/create", window.location.origin);
-    url.searchParams.set('selection', selectedValue);
-    window.location.href = url.toString();
+   function redirectToProductPage() {
+      var selectLoai = document.getElementById('selectLoai');
+      var selectedValue = selectLoai.value;
+      var url = new URL("/admin/san-pham/create", window.location.origin);
+      url.searchParams.set('selection', selectedValue);
+      window.location.href = url.toString();
 
-    // Kiểm tra URL được tạo
-    console.log('Redirecting to:', window.location.href);
-}
-</script>
-
-<script>
+      // Kiểm tra URL được tạo
+      console.log('Redirecting to:', window.location.href);
+   }
    function applyFilters() {
       const trangthai = document.getElementById('trangthai').value;
       const id_dm = document.getElementById('selLoai').value;
@@ -266,7 +260,7 @@ function redirectToProductPage() {
       const params = new URLSearchParams();
 
       // Thiết lập giá trị cho trangthai nếu có
-      if (trangthai && trangthai !== '0') {
+      if (trangthai && trangthai !== 'all') {
             params.set('trangthai', trangthai);
       }
 

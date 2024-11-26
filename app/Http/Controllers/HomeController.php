@@ -19,6 +19,7 @@ class HomeController extends Controller
         //$first_loai = $loai_arr->first(); // Lấy loại đầu tiên
         $query = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm','mo_ta_ngan' , 'luot_mua')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
+        // ->where('')
         ->orderBy('san_pham.id', 'desc');
         
         $sanphamhome = (clone $query)->limit(2)->get();
