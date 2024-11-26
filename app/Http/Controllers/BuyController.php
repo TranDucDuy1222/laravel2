@@ -171,7 +171,7 @@ class BuyController extends Controller
         if (!$voucher) {
             $error = 'Mã giảm giá không hợp lệ.';
             session()->flash('thongbao', $error);
-            return redirect()->route('thanh-toan')->with('thongbao', $error);
+            return redirect()->route('pay')->with('thongbao', $error);
         }
     
         // Kiểm tra xem mã giảm giá đã được sử dụng cho khách hàng này chưa
@@ -179,7 +179,7 @@ class BuyController extends Controller
         if ($voucher->mot_nhieu == false && $voucher->id_kh == $userId) {
             $error = 'Mã giảm giá chỉ được sử dụng một lần cho mỗi khách hàng.';
             session()->flash('thongbao', $error);
-            return redirect()->route('thanh-toan')->with('thongbao', $error);
+            return redirect()->route('pay')->with('thongbao', $error);
         }
     
         // Áp dụng mã giảm giá
@@ -202,12 +202,17 @@ class BuyController extends Controller
     }
     
 
-    public function removeVoucher()
-    {
+    // public function removeVoucher()
+    // {
+    //     session()->forget('voucher');
+
+    //     return redirect()->route('pay')->with('thongbao', 'Đã hủy mã giảm giá.');
+    // }
+    public function removeVoucher(Request $request) {
+        // Logic để xóa voucher
         session()->forget('voucher');
         session()->forget('discountAmount');
-
-        return redirect()->route('pay')->with('thongbao', 'Đã hủy mã giảm giá.');
+        return redirect()->back()->with('success', 'Voucher đã được hủy!');
     }
 
 }

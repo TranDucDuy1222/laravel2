@@ -46,7 +46,7 @@ Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('
 Route::post('/thanh-toan', [BuyController::class, 'pay'])->name('pay');
 Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
 Route::post('/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
-Route::get('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
+Route::post('/thanh-toan/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
 
 // Đặt hàng
 Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');

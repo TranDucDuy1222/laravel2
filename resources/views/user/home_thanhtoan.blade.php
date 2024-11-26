@@ -168,25 +168,26 @@
                             <div class="f-cart__pad-box">
                                 <div class="mb-3">
                                     <div class="newsletter__group mb-4">
-                                        <input class="input-text input-text--primary-style" type="text"
-                                            placeholder="Nhập mã giảm giá" name="voucher">
-                                        <button class="btn voucher__btn" type="submit">Áp dụng</button>
+                                        <form class="f-cart" action="{{ route('pay.applyVoucher') }}" method="post">
+                                            <input class="input-text input-text--primary-style" type="text" placeholder="Nhập mã giảm giá" name="voucher">
+                                            <button class="btn voucher__btn" type="submit">Áp dụng</button>
+                                        </form>
                                     </div>
                                     @if(session('voucher'))
                                         <div class="route-box row">
-                                            <div class="route-box__g2 col-lg-12">
+                                            <div class="route-box__g2 col-lg-6">
                                                 <a class="route-box__link" href="">
                                                     Mã giảm giá: <u>{{ session('voucher.code') }}</u> đã được áp dụng với mức giảm:
                                                     {{ session('voucher.amount') }}%.
                                                 </a>
                                             </div>
-                                            <!-- <div class="route-box__g1 col-lg-6">
+                                            <div class="route-box__g1 col-lg-6">
                                                 <a class="route-box__link" href="javascript:void(0);"
                                                     onclick="removeVoucher()">
                                                     <i class="fas fa-trash"></i>
                                                     <span>Hủy mã giảm giá</span>
                                                 </a>
-                                            </div> -->
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
@@ -302,6 +303,23 @@
 </div>
 
 <!-- code khác -->
+<script>
+    function removeVoucher() {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{{ route('pay.removeVoucher') }}";
+        const csrf = document.createElement('input');
+        csrf.type = 'hidden';
+        csrf.name = '_token';
+        csrf.value = "{{ csrf_token() }}";
+        form.appendChild(csrf);
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+</script>
+
+
 <script>
 // Đảm bảo payment_method có giá trị theo radio đã chọn 
 document.addEventListener('DOMContentLoaded', function() { 
