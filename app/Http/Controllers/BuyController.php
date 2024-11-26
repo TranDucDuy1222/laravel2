@@ -169,45 +169,36 @@ class BuyController extends Controller
         $voucher = MaGiamGia::where('code', $voucherCode)->first();
     
         if (!$voucher) {
-            $error = 'Mã giảm giá không hợp lệ.';
-            session()->flash('thongbao', $error);
-            return redirect()->route('pay')->with('thongbao', $error);
+            return redirect()->back()->with('thongbao', 'Mã giảm giá không hợp lệ.');
         }
     
-        // Kiểm tra xem mã giảm giá đã được sử dụng cho khách hàng này chưa
+        // Kiểm tra nếu mã giảm giá chỉ sử dụng một lần cho mỗi khách hàng
         $userId = Auth::id();
         if ($voucher->mot_nhieu == false && $voucher->id_kh == $userId) {
-            $error = 'Mã giảm giá chỉ được sử dụng một lần cho mỗi khách hàng.';
-            session()->flash('thongbao', $error);
-            return redirect()->route('pay')->with('thongbao', $error);
+            return redirect()->back()->with('thongbao', 'Mã giảm giá chỉ được sử dụng một lần cho mỗi khách hàng.');
         }
     
-        // Áp dụng mã giảm giá
+        // Áp dụng mã giảm giá vào session
         session(['voucher' => [
             'code' => $voucherCode,
             'amount' => $voucher->phan_tram
         ]]);
     
-        // Cập nhật trạng thái mã giảm giá nếu nó chỉ có thể sử dụng một lần
-        if ($voucher->mot_nhieu == false) {
-            $voucher->id_kh = $userId;
-        } else {
-            if ($voucher->ma_gioi_han > 0) {
-                $voucher->ma_gioi_han--; // Giảm số lần sử dụng
-            }
+        // Giảm số lượng mã giảm giá (1 lần mỗi lần sử dụng)
+        if ($voucher->mot_nhieu == true && $voucher->ma_gioi_han > 0) {
+            $voucher->ma_gioi_han--; // Giảm số lượng có thể sử dụng
         }
-        $voucher->save();
+        
+        // Nếu mã giảm giá chỉ sử dụng 1 lần, lưu id của khách hàng đã sử dụng
+        if ($voucher->mot_nhieu == false) {
+            $voucher->id_kh = $userId; // Lưu id khách hàng đã dùng
+        }
     
-        return redirect()->route('pay')->with('thongbao', 'Áp dụng mã giảm giá thành công!');
+        $voucher->save(); // Lưu lại thay đổi vào cơ sở dữ liệu
+    
+        return redirect()->route('pay.form')->with('thongbao', 'Áp dụng mã giảm giá thành công!');
     }
     
-
-    // public function removeVoucher()
-    // {
-    //     session()->forget('voucher');
-
-    //     return redirect()->route('pay')->with('thongbao', 'Đã hủy mã giảm giá.');
-    // }
     public function removeVoucher(Request $request) {
         // Logic để xóa voucher
         session()->forget('voucher');
