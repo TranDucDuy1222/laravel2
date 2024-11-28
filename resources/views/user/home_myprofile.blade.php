@@ -60,10 +60,10 @@ Thông tin tài khoản
             </ul>
         </div>
         <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12 text-black p-0 bg-body-tertiary ">
-            <div class="row">
+            <div class="row p-2">
                 <div class="col-xl-9">
                     <div class="d-flex align-dcs-center">
-                        <img style="border-radius: 50%;" src="" width="100" height="100" alt="" />
+                        <img style="border-radius: 50%;" src="{{ asset('/uploads/logo/avata.jpg') }}" width="100" height="100" alt="" />
                         <div style="padding-top: 15px; padding-left: 15px;">
                             <span style="font-size: 16px; letter-spacing: 1px;" >Tên tài khoản:
                                 {{$taiKhoan->name}}</span>

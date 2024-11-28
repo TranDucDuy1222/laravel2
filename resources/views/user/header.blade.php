@@ -222,7 +222,7 @@
             setTimeout(() => {
                 toastContainer.classList.remove('show');
                 toastContainer.classList.add('d-none');
-            }, 2000);
+            }, 3000);
         }
     });
 </script>

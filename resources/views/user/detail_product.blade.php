@@ -65,7 +65,7 @@ Chi Tiết : {{$detail->ten_sp}}
                         </div>
                         <div>
                             <div class="pd-detail__inline">
-                                @if ($detail->trang_thai === 3)
+                                @if ($detail->trang_thai === 2)
                                     <span style="font-size: 2rem;" class="text-black">Giá dự kiến </span>
                                     <span class="text-danger" style="font-size: 2rem;">
                                         {{$gia_chinh}} đ
@@ -131,19 +131,21 @@ Chi Tiết : {{$detail->ten_sp}}
                                         </div>
                                     </div>
                                     <div class="pd-detail__size">
-                                        @foreach ($size as $ssl)
-                                            @if ($ssl->so_luong > 0)
-                                                <div class="size__radio">
-                                                    <input type="radio" id="size-{{ $loop->index }}" name="size"
-                                                        value="{{ $ssl->size_product }}" data-size="{{ $ssl->so_luong }}">
-                                                    <label class="size__radio-label"
-                                                        for="size-{{ $loop->index }}">{{ $ssl->size_product }}
-                                                    </label>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                        <div id="error-message" style="color: red; display: none;">Vui lòng chọn size trước khi thêm vào giỏ hàng.</div>
+                                        @if ($detail->trang_thai != 1)
+                                            @foreach ($size as $ssl)
+                                                @if ($ssl->so_luong > 0 )
+                                                    <div class="size__radio">
+                                                        <input type="radio" id="size-{{ $loop->index }}" name="size"
+                                                            value="{{ $ssl->size_product }}" data-size="{{ $ssl->so_luong }}">
+                                                        <label class="size__radio-label"
+                                                            for="size-{{ $loop->index }}">{{ $ssl->size_product }}
+                                                        </label>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     </div>
+                                    <div id="error-message" style="color: red; display: none;">Vui lòng chọn size trước khi thêm vào giỏ hàng.</div>
                                 </div>
                                 <div class="pd-detail-inline-2">
                                     <div class="mb-3">
@@ -166,12 +168,14 @@ Chi Tiết : {{$detail->ten_sp}}
                                     </div>
                                 @endif
                                 <hr>
-                                <div class="row">
-                                    <div class="my-3 col-lg-6">
-                                        @if ($detail->trang_thai === 3)
+                                <div class="d-flex justify-content-center align-content-center ">
+                                    <div class="my-3">
+                                        @if ($detail->trang_thai === 2)
                                             <a href="{{ route('user.contact') }}" class="btn-link text-black">
                                                 Liên hệ với chúng tôi để đặt hàng
                                             </a>
+                                        @elseif ($detail->trang_thai === 1 )
+                                            <button class="btn btn-dark " type="button">Sản phẩm ngừng kinh doanh</button>
                                         @else
                                             <button class="btn btn--e-brand-b-2" type="submit">Thêm vào giỏ hàng</button>
                                         @endif
@@ -366,7 +370,7 @@ Chi Tiết : {{$detail->ten_sp}}
                             <div class="product-short">
                                 <div class="product-short__container">
                                     <div class="card">
-                                        @if ($item->trang_thai_san_pham != 3)
+                                        @if ($item->trang_thai_san_pham != 2)
                                             <a href="/detail/{{$item->id}}" id="hover-img-home">
                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                     onerror="this.src='{{ asset('/uploads') }}'" style="max-height: 295px;"
@@ -376,7 +380,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                                         class="img-sale">
                                                 @endif
                                             </a>
-                                        @elseif ($item->trang_thai_san_pham == 3)
+                                        @elseif ($item->trang_thai_san_pham == 2)
                                             <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                     style="max-height: 295px;" alt="" class="w-100">

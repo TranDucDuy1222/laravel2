@@ -122,15 +122,15 @@
         <div v-for="product in filteredProductsByColorAndSize" :key="product.id"
           class="col-lg-3 col-md-4 col-sm-6 col-6 mb-3 ">
           <div class="product-short">
-            <div class="product-short__container">
+            <div :class="['product-short__container', { 'out-stock': product.trang_thai === 1 }]">
               <div class="card">
                 <a :href="`/detail/${product.id}`" id="hover-img-home"
-                  :class="{ 'image-container': product.trang_thai === 3 }">
+                  :class="{ 'image-container': product.trang_thai === 2 }" class="d-flex justify-content-center align-content-center">
                   <img :src="`/uploads/product/${product.hinh}`" @error="handleImageError" style="max-height: 295px;"
-                    alt="Hình sản phẩm" class="w-100">
-                  <img v-if="product.trang_thai === 3" src="/public/uploads/logo/logocs1.png" @error="handleImageError"
+                    alt="Hình sản phẩm" class="img-fluid ">
+                  <img v-if="product.trang_thai === 2" src="/public/uploads/logo/logocs1.png" @error="handleImageError"
                     class="overlay-image" alt="">
-                  <img v-if="product.trang_thai != 3 && product.gia_km >= 1" src="/public/uploads/logo/sale.png"
+                  <img v-if="product.trang_thai != 2 && product.gia_km >= 1" src="/public/uploads/logo/sale.png"
                     @error="handleImageError" class="img-sale" alt="">
                 </a>
                 <div class="card-body">
@@ -141,7 +141,7 @@
                     <div class="col-12">
                       <div class="row">
                         <div class="col-sm-7 col-12 text-start">
-                          <div class="d-flex align-items-center" v-if="product.trang_thai != 3">
+                          <div class="d-flex align-items-center" v-if="product.trang_thai != 2">
                             <strong id="color-gia">{{ formattedPrice(product) }}đ</strong>
                             <div v-if="product.gia_km >= 1 && discountPercentage(product) > 1"
                               class="bg-text-success text-danger ms-2" style="font-size: 10px;">

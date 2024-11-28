@@ -21,32 +21,36 @@ class HomeController extends Controller
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
         ->orderBy('san_pham.id', 'desc');
         
-        $sanphamhome = (clone $query)->limit(2)->get();
+        $sanphamhome = (clone $query)
+        ->where('san_pham.trang_thai', '!=', [1, 2])
+        ->limit(2)
+        ->get();
+
 
         // Sản phẩm khuyến mãi
         $sanphamsale = (clone $query)
         ->where('san_pham.gia_km','>',0)
-        ->where('san_pham.trang_thai', '!=', 3)
+        ->whereNotIn('san_pham.trang_thai', [1, 2])
         ->inRandomOrder()
         ->limit(6)
         ->get();    
 
         // Sản phẩm sắp về hàng
-        $sanphamcs = (clone $query)->where('san_pham.trang_thai','=',3)->limit(4)->get();
+        $sanphamcs = (clone $query)->where('san_pham.trang_thai','=',2)->limit(4)->get();
 
         // Sản phảm bán chạy
         $sanphamnew = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm','mo_ta_ngan' , 'luot_mua')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-        ->where('san_pham.trang_thai', '!=', 3)
+        ->where('san_pham.trang_thai', '!=', 2)
         ->where('san_pham.luot_mua', '!=', 0)
         ->orderBy('luot_mua', 'desc')
-        ->limit(3)
+        ->limit(4)
         ->get();
 
-        // Top sản phẩm bán chạy
+        // Bảng top sản phẩm bán chạy
         $top_sanpham = DB::table('san_pham')->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh','san_pham.trang_thai', 'danh_muc.ten_dm', 'mo_ta_ngan' ,'luot_mua')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-        ->where('san_pham.trang_thai', '!=', 3)
+        ->where('san_pham.trang_thai', '!=', 2)
         ->where('san_pham.luot_mua', '!=', 0)
         ->orderBy('luot_mua', 'desc')
         ->limit(6)
@@ -57,6 +61,7 @@ class HomeController extends Controller
         ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh','san_pham.trang_thai', 'danh_muc.ten_dm', 'mo_ta_ngan' ,'luot_mua')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
         ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
+        ->whereNotIn('san_pham.trang_thai', [2])
         ->inRandomOrder() // Random sản phẩm
         ->limit(4); // Lấy ra 4 sản phẩm
 

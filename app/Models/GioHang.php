@@ -14,6 +14,7 @@ class GioHang extends Model
         'id_sp',
         'id_size',
         'so_luong',
+        'status',
     ];
 
     public function sanPham()
