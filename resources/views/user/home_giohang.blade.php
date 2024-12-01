@@ -26,10 +26,10 @@ Giỏ Hàng - Trendy U
 @section('content')
 <div class="app-content">
     <div class="pt-5">
-    <div class="z-1 toast align-items-center text-bg-dark border-0 position-fixed top-3 end-0 p-3" role="alert"
-            aria-live="assertive" aria-atomic="true" id="toast-container">
+    <div class="z-1 toast align-items-center text-bg-danger border-0 position-fixed top-3 end-0 p-3" role="alert"
+            aria-live="assertive" aria-atomic="true" id="toast-container-giohang">
             <div class="d-flex">
-                <div class="toast-body" id="toast-body"></div>
+                <div class="toast-body" id="toast-body-giohang"></div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     aria-label="Close"></button>
             </div>
@@ -92,9 +92,11 @@ Giỏ Hàng - Trendy U
                                         @foreach($carts as $index => $item)
                                             <tr class="border-bottom">
                                                 <td>
+                                                    @if ($item->status === 0)
                                                     <input type="checkbox" name="selected_products[]"
                                                         class="form-check-input large-checkbox" value="{{ $item->id }}"
                                                         onclick="calculateTotal()" checked>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <div class="table-p__box">
@@ -135,23 +137,13 @@ Giỏ Hàng - Trendy U
                                                 <td>
                                                     <div class="table-p__input-counter-wrap">
                                                         <div class="input-counter">
-                                                            <input type="hidden" id="so_luong_kho-{{ $item->id }}"
-                                                                value="{{ $item->size->so_luong }}">
-                                                            <form action="{{ route('cart.update', $item->id) }}"
-                                                                method="POST" id="form-quantity-{{ $item->id }}">
+                                                            <form action="{{ route('cart.update', $item->id) }}" method="POST" id="form-quantity-{{ $item->id }}">
                                                                 @csrf
-                                                                <span class="input-counter__minus fas fa-minus"
-                                                                    onclick="changeQuantity({{ $item->id }}, -1)"></span>
-                                                                <input
-                                                                    class="input-counter__text input-counter--text-primary-style"
-                                                                    type="number" name="quantity"
-                                                                    value="{{ $item->so_luong }}"
-                                                                    id="quantity-{{ $item->id }}" min="1"
-                                                                    onchange="checkQuantity({{ $item->id }})">
-                                                                <span class="input-counter__plus fas fa-plus"
-                                                                    onclick="changeQuantity({{ $item->id }}, 1)"></span>
-                                                                <input type="hidden" id="stock-{{ $item->id }}"
-                                                                    value="{{ $item->size->so_luong }}">
+                                                                <span class="input-counter__minus fas fa-minus" onclick="updateQuantity({{ $item->id }}, -1)"></span>
+                                                                <input class="input-counter__text input-counter--text-primary-style" type="number" name="quantity"
+                                                                    value="{{ $item->so_luong }}" id="quantity-{{ $item->id }}" min="1" onchange="updateQuantity({{ $item->id }})">
+                                                                <span class="input-counter__plus fas fa-plus" onclick="updateQuantity({{ $item->id }}, 1)"></span>
+                                                                <input type="hidden" id="stock-{{ $item->id }}" value="{{ $item->size->so_luong }}">
                                                             </form>
                                                         </div>
                                                     </div>
@@ -207,10 +199,7 @@ Giỏ Hàng - Trendy U
                             </div>
                             <div class="route-box__g2">
                                 <a class="route-box__link" href=""><i class="fas fa-trash"></i>
-                                    <span>Xóa</span>
-                                </a>
-                                <a class="route-box__link" href=""><i class="fas fa-sync"></i>
-                                    <span>Cập nhật</span>
+                                    <span>Xóa sản phẩm hết hàng</span>
                                 </a>
                             </div>
                         </div>
@@ -222,50 +211,58 @@ Giỏ Hàng - Trendy U
     </div>
 </div>
 <script>
-    function changeQuantity(itemId, change) { 
-        const quantityInput = document.getElementById(`quantity-${itemId}`); 
-        const stockInput = document.getElementById(`stock-${itemId}`); 
-        let currentQuantity = parseInt(quantityInput.value); 
-        const stockQuantity = parseInt(stockInput.value); 
-        if (stockQuantity > 10) { 
-            if (currentQuantity + change > Math.floor(stockQuantity / 2)) { 
-                showToast('Số lượng sản phẩm không được vượt quá 50% số lượng hàng có sẵn.'); 
-                return; 
-            } 
-        } 
-        if (currentQuantity + change < 1) { 
-            currentQuantity = 1; 
-        } else { 
-            currentQuantity += change; 
-        } quantityInput.value = currentQuantity; 
-        checkQuantity(itemId); 
-    } 
-    function checkQuantity(itemId) { 
-        const quantityInput = document.getElementById(`quantity-${itemId}`); 
-        const stockQuantity = parseInt(document.getElementById(`stock-${itemId}`).value); 
-        const currentQuantity = parseInt(quantityInput.value); 
-        if (currentQuantity > stockQuantity) { 
-            quantityInput.value = stockQuantity; 
-            showToast('Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.'); 
-            return false; 
-        } 
-        const form = document.getElementById(`form-quantity-${itemId}`); if (form) { form.submit(); } return true; 
+    function updateQuantity(itemId, change = 0) {
+    const quantityInput = document.getElementById(`quantity-${itemId}`);
+    const stockInput = document.getElementById(`stock-${itemId}`);
+    let currentQuantity = parseInt(quantityInput.value);
+    const stockQuantity = parseInt(stockInput.value);
+    let maxAllowedQuantity = stockQuantity; // Mặc định không chia số lượng
+
+    if (stockQuantity > 10) {
+        maxAllowedQuantity = Math.floor(stockQuantity / 2); // Chia số lượng nếu stockQuantity > 10
     }
 
-    function showToast(message) {
-        const toastContainer = document.getElementById('toast-container');
-        const toastBody = document.getElementById('toast-body');
-
-        toastBody.textContent = message;
-        toastContainer.classList.remove('d-none');
-        toastContainer.classList.add('show');
-
-        // Tự động ẩn thông báo sau 3 giây
-        setTimeout(() => {
-            toastContainer.classList.remove('show');
-            toastContainer.classList.add('d-none');
-        }, 3000);
+    if (change !== 0) {
+        if (currentQuantity + change < 1) {
+            currentQuantity = 1;
+        } else if (currentQuantity + change > maxAllowedQuantity) {
+            showToastGH('Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
+            currentQuantity = maxAllowedQuantity;
+        } else {
+            currentQuantity += change;
+        }
     }
+
+    quantityInput.value = currentQuantity;
+
+    if (currentQuantity > maxAllowedQuantity) {
+        quantityInput.value = maxAllowedQuantity;
+        showToastGH('Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
+        return false;
+    }
+
+    const form = document.getElementById(`form-quantity-${itemId}`);
+    if (form) {
+        form.submit();
+    }
+    return true;
+}
+
+function showToastGH(message) {
+    const toastContainer = document.getElementById('toast-container-giohang');
+    const toastBody = document.getElementById('toast-body-giohang');
+
+    toastBody.textContent = message;
+    toastContainer.classList.remove('d-none');
+    toastContainer.classList.add('show');
+
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+        toastContainer.classList.remove('show');
+        toastContainer.classList.add('d-none');
+    }, 3000);
+}
+
 
     document.getElementById('checkout-button').addEventListener('click', function (e) {
         e.preventDefault(); // Ngăn chặn form submit mặc định

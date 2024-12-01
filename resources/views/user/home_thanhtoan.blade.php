@@ -223,7 +223,6 @@
                                 </table>
                             </div>
                         </form>
-
                         <form id="order_form" action="{{ route('dat-hang') }}" method="post"> 
                             @csrf 
                             <input type="hidden" name="total_payables" id="total_payables_hidden" value="{{ $totalPayable }}"> 
@@ -250,13 +249,17 @@
                                     </div>
 
                             <div class="d-flex justify-content-center"> 
-                                <a href="{{ route('user.profile', [Auth::user()->id]) }}" id="add-address-link" 
-                                class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
-                                style="display: none;">Vui lòng thêm địa chỉ để đặt hàng</a> 
-                                <button class="btn btn--e-brand-b-2 w-100" id="place-order-button" type="submit">ĐẶT HÀNG</button> 
-                                <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
-                                    style="display: none;" type="submit">THANH TOÁN VÍ ĐIỆN TỬ
-                                </button>
+                                @if ($diachis->isEmpty())
+                                    <a href="{{ route('user.profile', [Auth::user()->id]) }}" id="add-address-link" 
+                                    class="btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
+                                    style="display: none;">Vui lòng thêm địa chỉ để đặt hàng</a>
+                                @else
+                                    <button class="btn btn--e-brand-b-2 w-100" id="place-order-button" type="submit">ĐẶT HÀNG</button> 
+                                    <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
+                                        style="display: none;" type="submit">THANH TOÁN VÍ ĐIỆN TỬ
+                                    </button>
+                                @endif
+                                
                             </div> 
                         </form>
                     </div>

@@ -82,7 +82,7 @@ Sản phẩm
                                           <label for="" class="form-label fw-semibold">Trạng Thái</label>
                                           <select class="sa-select2 form-select" name="trang_thai" required>
                                              <option value="0">Sản Phẩm Đang Kinh Doanh</option>
-                                             <option value="1">Sản Phẩm Ngừng Kinh Doanh</option>
+                                             <option value="1">Sản Phẩm Hết Hàng</option>
                                              <option value="2">Sản Phẩm Sắp Về Hàng</option>
                                              <!-- @foreach($loai_arr as $dm)
                                           <option value="{{ $dm->id }}" {{ old('id_dm') == $dm->id ? 'selected' : '' }}>

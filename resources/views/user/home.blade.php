@@ -106,19 +106,19 @@ Trang Chủ - TrendyU
                                                 <div class="product-short__container">
                                                     <div class="card">
                                                         @if ($item->trang_thai != 3)
-                                                            <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
                                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                     onerror="this.src='{{ asset('/uploads') }}'"
-                                                                    style="max-height: 295px;" alt="" class="w-100">
+                                                                    style="max-height: 295px;" alt="" class=" img-fluid">
                                                                 @if ($item->gia_km > 0)
                                                                     <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                 @endif
                                                             </a>
                                                         @elseif ($item->trang_thai == 3)
-                                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
+                                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container d-flex justify-content-center align-content-center">
                                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                     onerror="this.src='{{ asset('/uploads') }}'"
-                                                                    style="max-height: 295px;" alt="" class="w-100">
+                                                                    style="max-height: 295px;" alt="" class="img-fluid">
                                                                 <img src="{{ asset('/uploads/logo/') }}" onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'" class="overlay-image" alt="">
                                                             </a>
                                                         @endif
@@ -232,67 +232,113 @@ Trang Chủ - TrendyU
                                                             $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
                                                             $gia = number_format($gianew, 0, '', '.'); 
                                                         @endphp
-                                                        <div class="product-short">
-                                                            <div class="product-short__container">
-                                                                <div class="card">
-                                                                    @if ($item->trang_thai != 3)
-                                                                        <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                        @if ($item->trang_thai === 1)
+                                                            <div class="product-short ">
+                                                                <div class="product-short__container out-stock">
+                                                                    <div class="card p-0">
+                                                                        <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
                                                                             <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                                 onerror="this.src='{{ asset('/uploads') }}'"
-                                                                                style="max-height: 295px;" alt="" class="w-100">
+                                                                                style="max-height: 295px;" alt="" class="img-fluid ">
                                                                             @if ($item->gia_km > 0)
                                                                                 <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                             @endif
                                                                         </a>
-                                                                    @elseif ($item->trang_thai == 3)
-                                                                        <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
-                                                                            <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                                                onerror="this.src='{{ asset('/uploads') }}'"
-                                                                                style="max-height: 295px;" alt="" class="w-100">
-                                                                            <img src="{{ asset('/uploads/logo/') }}" onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'" class="overlay-image" alt="">
-                                                                        </a>
-                                                                    @endif
-                                                                    <div class="card-body text-center">
-                                                                        <a href="">
-                                                                            <h5 id="hover-sp">{{$item->ten_sp}}</h5>
-                                                                        </a>
-                                                                        <div class="row">
-                                                                            <div class="col-12">
-                                                                                <div class="row">
-                                                                                <div class="col-6 text-start">
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <strong id="color-gia">{{ $gia }}đ</strong>
-                                                                                        @if ($item->gia_km >= 1) 
-                                                                                        @php 
-                                                                                            $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
-                                                                                        @endphp 
-                                                                                        @if ($discountPercentage > 1) 
-                                                                                            <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
-                                                                                            -{{ number_format($discountPercentage, 0) }}% 
-                                                                                            </div> 
-                                                                                        @endif                                
-                                                                                        @endif
+                                                                        <div class="card-body text-center">
+                                                                            <a href="">
+                                                                                <h5 id="hover-sp" class="text-truncate">{{$item->ten_sp}}</h5>
+                                                                            </a>
+                                                                            <div class="row">
+                                                                                <div class="col-12">
+                                                                                    <div class="row">
+                                                                                    <div class="col-sm-6 col-12 text-start">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                                            @if ($item->gia_km >= 1) 
+                                                                                                @php 
+                                                                                                    $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                                @endphp 
+                                                                                                @if ($discountPercentage > 1) 
+                                                                                                    <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                                    -{{ number_format($discountPercentage, 0) }}% 
+                                                                                                    </div> 
+                                                                                                @endif                                
+                                                                                            @endif
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6 col-12 text-start text-sm-end">
+                                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                                    </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-6 text-end">
-                                                                                    <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                                                    <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                                <div class="col-12 text-start">
+                                                                                    {{$item->ten_dm}}
                                                                                 </div>
+                                                                                <div class="col-12 text-truncate">
+                                                                                    <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                                        {{ $item->mo_ta_ngan }}
+                                                                                    </span>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="col-12 text-start">
-                                                                                {{$item->ten_dm}}
-                                                                            </div>
-                                                                            <div class="col-12 text-truncate">
-                                                                                <span class="pd-detail__click-count" style="font-size: 12px;">
-                                                                                    {{ $item->mo_ta_ngan }}
-                                                                                </span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        @else
+                                                            <div class="product-short">
+                                                                <div class="product-short__container">
+                                                                    <div class="card">
+                                                                        <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
+                                                                            <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                                                onerror="this.src='{{ asset('/uploads') }}'"
+                                                                                style="max-height: 295px;" alt="" class="img-fluid ">
+                                                                            @if ($item->gia_km > 0)
+                                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                            @endif
+                                                                        </a>
+                                                                        <div class="card-body text-center">
+                                                                            <a href="">
+                                                                                <h5 id="hover-sp" class="text-truncate">{{$item->ten_sp}}</h5>
+                                                                            </a>
+                                                                            <div class="row">
+                                                                                <div class="col-12">
+                                                                                    <div class="row">
+                                                                                    <div class="col-sm-6 col-12 text-start">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                                            @if ($item->gia_km >= 1) 
+                                                                                                @php 
+                                                                                                    $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                                @endphp 
+                                                                                                @if ($discountPercentage > 1) 
+                                                                                                    <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                                    -{{ number_format($discountPercentage, 0) }}% 
+                                                                                                    </div> 
+                                                                                                @endif                                
+                                                                                            @endif
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6 col-12 text-start text-sm-end">
+                                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                                    </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-12 text-start">
+                                                                                    {{$item->ten_dm}}
+                                                                                </div>
+                                                                                <div class="col-12 text-truncate">
+                                                                                    <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                                        {{ $item->mo_ta_ngan }}
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -398,10 +444,10 @@ Trang Chủ - TrendyU
                                                 <div class="product-short">
                                                     <div class="product-short__container">
                                                         <div class="card">
-                                                            <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
                                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                     onerror="this.src='{{ asset('/uploads') }}'"
-                                                                    style="max-height: 295px;" alt="" class="w-100">
+                                                                    style="max-height: 295px;" alt="" class="img-fluid">
                                                                     <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
                                                             </a>
                                                             <div class="card-body text-center">
@@ -477,7 +523,7 @@ Trang Chủ - TrendyU
             <div class="section__content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-3 card p-0">
+                        <div class="col-lg-3 card p-0 ">
                             <div class="parent-div text-start">
                                 @foreach ($top_sanpham as $index => $item)
                                     @php
@@ -520,66 +566,121 @@ Trang Chủ - TrendyU
                                 @endforeach
                             </div>
                         </div>
-                        <div class="col-lg-9">
-                            <div class="row">
+                        <div class="col-lg-9 ">
+                            <div class="row ">
                                 @foreach ($sanphamnew as $item)
                                     @php 
                                         $gianew = $item->gia_km > 0 ? $item->gia_km : $item->gia; 
                                         $gia = number_format($gianew, 0, '', '.'); 
                                     @endphp
-                                    <div class="col-lg-4 col-md-6 col-sm-6  ">
-                                        <div class="product-short">
-                                            <div class="product-short__container">
-                                                <div class="card">
-                                                    <a href="/detail/{{$item->id}}" id="hover-img-home">
-                                                        <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                            onerror="this.src='{{ asset('/uploads') }}'"
-                                                            style="max-height: 295px;" alt="" class="w-100">
-                                                        @if ($item->gia_km > 0)
-                                                            <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
-                                                        @endif
-                                                    </a>
-                                                    <div class="card-body text-center">
-                                                        <a href="">
-                                                            <h5 id="hover-sp">{{$item->ten_sp}}</h5>
+                                    <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt-2">
+                                        @if ($item->trang_thai === 1)
+                                            <div class="product-short ">
+                                                <div class="product-short__container out-stock">
+                                                    <div class="card">
+                                                        <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
+                                                            <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                                onerror="this.src='{{ asset('/uploads') }}'"
+                                                                style="max-height: 295px;" alt="" class="img-fluid">
+                                                            @if ($item->gia_km > 0)
+                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                            @endif
                                                         </a>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="row">
-                                                                <div class="col-7 text-start">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <strong id="color-gia">{{ $gia }}đ</strong>
-                                                                        @if ($item->gia_km >= 1) 
-                                                                            @php 
-                                                                                $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
-                                                                            @endphp 
-                                                                            @if ($discountPercentage > 1) 
-                                                                                <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
-                                                                                -{{ number_format($discountPercentage, 0) }}% 
-                                                                                </div> 
-                                                                            @endif                                
-                                                                        @endif
+                                                        <div class="card-body text-center">
+                                                            <a href="">
+                                                                <h5 id="hover-sp" class="text-truncate">{{$item->ten_sp}}</h5>
+                                                            </a>
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                    <div class="col-sm-6 col-12 text-start">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                            @if ($item->gia_km >= 1) 
+                                                                                @php 
+                                                                                    $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                @endphp 
+                                                                                @if ($discountPercentage > 1) 
+                                                                                    <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                    -{{ number_format($discountPercentage, 0) }}% 
+                                                                                    </div> 
+                                                                                @endif                                
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-12 text-start text-sm-end">
+                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                    </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-5 text-end">
-                                                                    <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                                    <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                <div class="col-12 text-start">
+                                                                    {{$item->ten_dm}}
                                                                 </div>
+                                                                <div class="col-12 text-truncate">
+                                                                    <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                        {{ $item->mo_ta_ngan }}
+                                                                    </span>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-12 text-start">
-                                                                {{$item->ten_dm}}
-                                                            </div>
-                                                            <div class="col-12 text-truncate">
-                                                                <span class="pd-detail__click-count" style="font-size: 12px;">
-                                                                    {{ $item->mo_ta_ngan }}
-                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @else
+                                            <div class="product-short">
+                                                <div class="product-short__container">
+                                                    <div class="card">
+                                                        <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
+                                                            <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                                onerror="this.src='{{ asset('/uploads') }}'"
+                                                                style="max-height: 295px;" alt="" class="img-fluid">
+                                                            @if ($item->gia_km > 0)
+                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                            @endif
+                                                        </a>
+                                                        <div class="card-body text-center">
+                                                            <a href="">
+                                                                <h5 id="hover-sp" class="text-truncate">{{$item->ten_sp}}</h5>
+                                                            </a>
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                    <div class="col-sm-6 col-12 text-start">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                            @if ($item->gia_km >= 1) 
+                                                                                @php 
+                                                                                    $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                @endphp 
+                                                                                @if ($discountPercentage > 1) 
+                                                                                    <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                    -{{ number_format($discountPercentage, 0) }}% 
+                                                                                    </div> 
+                                                                                @endif                                
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-12 text-start text-sm-end">
+                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 text-start">
+                                                                    {{$item->ten_dm}}
+                                                                </div>
+                                                                <div class="col-12 text-truncate">
+                                                                    <span class="pd-detail__click-count" style="font-size: 12px;">
+                                                                        {{ $item->mo_ta_ngan }}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endforeach
                             </div>
@@ -653,10 +754,10 @@ Trang Chủ - TrendyU
                                                     <div class="product-short">
                                                         <div class="product-short__container">
                                                             <div class="card">
-                                                                <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
+                                                                <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container d-flex justify-content-center align-content-center">
                                                                     <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                         onerror="this.src='{{ asset('/uploads') }}'"
-                                                                        style="max-height: 295px;" alt="" class="w-100">
+                                                                        style="max-height: 295px;" alt="" class="img-fluid">
                                                                         <img src="{{ asset('/uploads/logo/logocs1.png') }}" class="overlay-image" alt="">
                                                                 </a>
                                                                 <div class="card-body text-center">

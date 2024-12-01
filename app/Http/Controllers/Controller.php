@@ -23,11 +23,11 @@ abstract class Controller
         // Kiểm tra người dùng đã đăng nhập hay chưa
         if (Auth::check()) {
             $userId = Auth::id();
-            // Thực hiện truy vấn SQL và lấy tổng số lượng sản phẩm có id_sp và id_size duy nhất
+            // Truy vấn và lấy tổng số lượng sản phẩm có id_sp và id_size trùng nhau
             $totalProducts = DB::table('gio_hang')
                 ->where('user_id', $userId)
                 ->distinct('id_sp', 'id_size')
-                ->count('id_sp'); // Đếm số lượng id_sp duy nhất
+                ->count('id_sp'); // Đếm số lượng id_sp 
         } else {
             // Người dùng chưa đăng nhập
             $totalProducts = 0;

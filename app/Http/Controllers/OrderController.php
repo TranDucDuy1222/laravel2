@@ -112,9 +112,6 @@ class OrderController extends Controller
                 // Xóa session voucher sau khi đặt hàng thành công
                 session()->forget('voucher');
             }
-
-            // Xóa session voucher sau khi đặt hàng thành công
-            session()->forget('voucher');
             DB::commit();
     
             return redirect()->route('user.purchase', ['id' => $userId])->with('thongbao', 'Đặt hàng thành công!');
