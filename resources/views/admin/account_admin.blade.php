@@ -62,9 +62,7 @@ Quản Lý Tài Khoản
                                     <td>
                                        <div class="d-flex justify-content-center">
                                           <a href="{{ route('tai-khoan.show', $user->id) }}" class="btn btn-outline-dark me-2">Xem</a>
-                                          @if($user->role == 1)  <!-- Nếu là Admin -->
-                                             <a href="{{ route('tai-khoan.edit', $user->id) }}" class="btn btn-outline-primary me-2">Sửa</a>
-                                          @endif
+                                          <a href="{{ route('tai-khoan.edit', $user->id) }}" class="btn btn-outline-primary me-2">Sửa</a>
                                           @if($user->is_hidden)
                                              <form action="{{ route('tai-khoan.restore', $user->id) }}" method="POST" style="display:inline-block;">
                                                    @csrf
