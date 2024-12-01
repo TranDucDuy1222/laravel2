@@ -119,6 +119,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::resource('cai-dat', SettingController::class);
 
     Route::resource('tai-khoan', AdminUserController::class);
+    Route::get('tai-khoan-kh', [AdminUserController::class, 'accCustomer']);
     Route::post('/tai-khoan/{id}/hide', [AdminUserController::class, 'hide'])->name('tai-khoan.hide');
     Route::post('tai-khoan/{id}/restore', [AdminUserController::class, 'restore'])->name('tai-khoan.restore');
 

@@ -184,6 +184,11 @@ class BuyController extends Controller
             return $this->pay($request);
         }
 
+        if ($voucher->ngay_het_han && $voucher->ngay_het_han < now()) {
+            session()->flash('thongbao', 'Mã giảm giá đã hết hạn.');
+            return $this->pay($request);
+        }
+
         $userId = Auth::id();
 
         // Kiểm tra mã giảm giá chỉ dùng một lần cho mỗi khách hàng
@@ -203,7 +208,7 @@ class BuyController extends Controller
         // Kiểm tra nếu mã giảm giá có giới hạn số lượng
         if ($voucher->mot_nhieu == true && $voucher->ma_gioi_han > 0) {
             if ($voucher->ma_gioi_han <= 0) {
-                return back()->with('thongbao', 'Mã giảm giá đã hết hạn sử dụng.');
+                return back()->with('thongbao', 'Mã giảm giá đã hết.');
             }
         }
 

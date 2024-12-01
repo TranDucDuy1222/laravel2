@@ -10,28 +10,14 @@ Quản Lý Tài Khoản
             <div class="iq-card">
                <div class="iq-card-header row py-4">
                   <div class="iq-header-title col-sm-12 col-md-6">
-                     <h4 class="card-title">Danh sách tài khoản</h4>
+                     <h4 class="card-title">Danh sách tài khoản khách hàng</h4>
                   </div>
-                  <!-- <div class="col-sm-12 col-md-6">
-                        <div class="user-list-files d-flex justify-content-end">
-                           <a href="{{route('tai-khoan.create')}}" class="btn btn-dark">
-                              <i class="fa-solid fa-plus"></i> Thêm tài khoản mới
-                           </a>
-                        </div>
-                     </div> -->
                </div>
                <div class="iq-card-body">
                      <div class="table-responsive">
                         <div class="row justify-content-between">
                            <form id="searchForm" action="{{ route('tai-khoan.index') }}" method="GET">
                                  <div class="row">
-                                    <div class="col-auto">
-                                       <select name="role" class="form-select">
-                                          <option value="0" {{ request('role') == '0' ? 'selected' : '' }}>Người Dùng</option>
-                                          <option value="1" {{ request('role') == '1' ? 'selected' : '' }}>Admin</option>
-                                          <option value="">Tất cả vai trò</option>
-                                       </select>
-                                    </div>
                                     <div class="col-auto">
                                        <select name="is_hidden" class="form-select">
                                           <option value="0" {{ request('is_hidden') == '0' ? 'selected' : '' }}>Hiện</option>
