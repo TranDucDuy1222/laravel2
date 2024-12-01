@@ -37,7 +37,7 @@ Quản Lý Tài Khoản
                                     <th>ID</th>
                                     <th>Tên</th>
                                     <th>Email</th>
-                                    <th>Trạng thái</th>  
+                                    <th>Vai trò</th>  
                                     <th>Hành động</th>
                                  </tr>
                            </thead>
