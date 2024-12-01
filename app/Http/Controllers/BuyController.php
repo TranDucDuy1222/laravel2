@@ -10,6 +10,7 @@ use App\Models\MaGiamGia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class BuyController extends Controller
 {
@@ -112,98 +113,116 @@ class BuyController extends Controller
     }
     
     public function pay(Request $request) {
+        Log::info('Handling pay request', $request->all());
+    
         if (!Auth::check()) {
-            return redirect()->route('login')->with('thongbao', 'Bạn cần đăng nhập để thực hiện thanh toán.');
-        }else{
-            $userId = Auth::id();
-            $selectedProductIdsString = $request->input('selected_products', '');
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thực hiện thanh toán.');
+        }
+    
+        $userId = Auth::id();
+        $selectedProductIdsString = $request->input('selected_products', '');
+    
+        // Thiết lập lại session chỉ khi selected_products có giá trị
+        if ($selectedProductIdsString) {
             $selectedProductIds = explode(',', $selectedProductIdsString);
             session(['selected_products' => $selectedProductIds]);
-        
-            if (empty($selectedProductIds)) {
-                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được chọn.');
-            }
-        
-            $gioHangs = GioHang::with(['sanPham', 'size'])
-                        ->whereIn('id', $selectedProductIds)
-                        ->where('user_id', $userId)
-                        ->get();
-        
-            if ($gioHangs->isEmpty()) {
-                return redirect()->back()->with('thongbao', 'Không có sản phẩm nào được tìm thấy.');
-            }
-        
-            // Truy vấn địa chỉ 
-            $diachis = DiaChi::where('id_user', $userId)->get();
-        
-            // Truy vấn giá vận chuyển
-            $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
-        
-            $totalAmount = $gioHangs->sum(function ($item) {
-                if ($item->sanPham->gia_km > 0) {
-                    return $item->sanPham->gia_km * $item->so_luong;
-                } else {
-                    return $item->sanPham->gia * $item->so_luong;
-                }
-            });
-        
-            $discountAmount = 0;
-            if (session()->has('voucher')) {
-                $voucherData = session('voucher');
-                $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
-            }
-        
-            $totalPayable = $totalAmount - $discountAmount;
-            $availableVouchers = MaGiamGia::where('is_active', true)->get();
-            $pays = $gioHangs;
-        
-            return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
+        } else {
+            $selectedProductIds = session('selected_products', []);
         }
-    }
+    
+        // Kiểm tra nếu không có sản phẩm nào được chọn 
+        if (empty($selectedProductIds)) { 
+            return redirect()->back()->with('error', 'Không có sản phẩm nào được chọn.'); 
+        }
+    
+        $gioHangs = GioHang::with(['sanPham', 'size'])
+                    ->whereIn('id', $selectedProductIds)
+                    ->where('user_id', $userId)
+                    ->get();
+    
+        if ($gioHangs->isEmpty()) {
+            return redirect()->back()->with('error', 'Không có sản phẩm nào được tìm thấy.');
+        }
+    
+        // Truy vấn địa chỉ 
+        $diachis = DiaChi::where('id_user', $userId)->get();
+    
+        // Truy vấn giá vận chuyển
+        $giavc = DB::table('settings')->select('ship_cost_inner_city', 'ship_cost_nationwide')->first();
+    
+        $totalAmount = $gioHangs->sum(function ($item) {
+            if ($item->sanPham->gia_km > 0) {
+                return $item->sanPham->gia_km * $item->so_luong;
+            } else {
+                return $item->sanPham->gia * $item->so_luong;
+            }
+        });
+    
+        $discountAmount = 0;
+        if (session()->has('voucher')) {
+            $voucherData = session('voucher');
+            $discountAmount = ($totalAmount * $voucherData['amount']) / 100;
+        }
+    
+        $totalPayable = $totalAmount - $discountAmount;
+        $availableVouchers = MaGiamGia::where('is_active', true)->get();
+        $pays = $gioHangs;
+    
+        return view('user.home_thanhtoan', compact('pays', 'totalAmount', 'diachis', 'totalPayable', 'discountAmount', 'availableVouchers', 'giavc'));
+    }    
     
     public function applyVoucher(Request $request) {
+        Log::info('Applying voucher', $request->all());
         $selectedProductIds = session('selected_products', $request->input('selected_products', []));
         session(['selected_products' => $selectedProductIds]);
-    
+
         $voucherCode = $request->input('voucher');
         $voucher = MaGiamGia::where('code', $voucherCode)->first();
-    
+
         if (!$voucher) {
-            return redirect()->back()->with('thongbao', 'Mã giảm giá không hợp lệ.');
+            session()->flash('thongbao', 'Mã giảm giá không hợp lệ.');
+            return $this->pay($request);
         }
-    
-        // Kiểm tra nếu mã giảm giá chỉ sử dụng một lần cho mỗi khách hàng
+
         $userId = Auth::id();
-        if ($voucher->mot_nhieu == false && $voucher->id_kh == $userId) {
-            return redirect()->back()->with('thongbao', 'Mã giảm giá chỉ được sử dụng một lần cho mỗi khách hàng.');
+
+        // Kiểm tra mã giảm giá chỉ dùng một lần cho mỗi khách hàng
+        if ($voucher->mot_nhieu == false) {
+            // Kiểm tra xem khách hàng đã sử dụng mã này chưa
+            $usedCustomers = json_decode($voucher->id_kh, true) ?: [];
+            if (in_array($userId, $usedCustomers)) {
+                session()->flash('thongbao', 'Mã giảm giá này bạn đã sử dụng rồi.');
+                return $this->pay($request);
+            }
+
+            // Nếu chưa sử dụng, thêm khách hàng vào mảng đã sử dụng
+            $usedCustomers[] = $userId;
+            $voucher->id_kh = json_encode($usedCustomers);
         }
-    
+
+        // Kiểm tra nếu mã giảm giá có giới hạn số lượng
+        if ($voucher->mot_nhieu == true && $voucher->ma_gioi_han > 0) {
+            if ($voucher->ma_gioi_han <= 0) {
+                return back()->with('thongbao', 'Mã giảm giá đã hết hạn sử dụng.');
+            }
+        }
+
         // Áp dụng mã giảm giá vào session
         session(['voucher' => [
             'code' => $voucherCode,
-            'amount' => $voucher->phan_tram
+            'amount' => $voucher->phan_tram,
         ]]);
-    
-        // Giảm số lượng mã giảm giá (1 lần mỗi lần sử dụng)
-        if ($voucher->mot_nhieu == true && $voucher->ma_gioi_han > 0) {
-            $voucher->ma_gioi_han--; // Giảm số lượng có thể sử dụng
-        }
-        
-        // Nếu mã giảm giá chỉ sử dụng 1 lần, lưu id của khách hàng đã sử dụng
-        if ($voucher->mot_nhieu == false) {
-            $voucher->id_kh = $userId; // Lưu id khách hàng đã dùng
-        }
-    
-        $voucher->save(); // Lưu lại thay đổi vào cơ sở dữ liệu
-    
-        return redirect()->route('pay')->with('thongbao', 'Áp dụng mã giảm giá thành công!');
+
+        session()->flash('thongbao', 'Áp dụng mã giảm giá thành công!');
+        // Chuyển hướng đến hàm `pay` để tính toán và hiển thị lại trang thanh toán
+        return $this->pay($request);
     }
     
     public function removeVoucher(Request $request) {
-        // Logic để xóa voucher
         session()->forget('voucher');
         session()->forget('discountAmount');
-        return redirect()->back()->with('success', 'Voucher đã được hủy!');
+        session()->flash('thongbao', 'Hủy mã giảm giá thành công!');
+        return $this->pay($request);
     }
 
 }

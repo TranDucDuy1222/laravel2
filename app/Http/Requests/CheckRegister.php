@@ -24,7 +24,7 @@ class CheckRegister extends FormRequest
         return [
             'name' => ['required', 'string', 'regex:/^[\p{L}\p{N}\s]+$/u', 'min:3', 'max:30'],
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/[a-z]/', 'regex:/[0-9]/', 'regex:/[@$!%*?&#]/'],            
+            'password' => ['required', 'string', 'confirmed', 'min:8'],            
         ];
     }
 
@@ -45,7 +45,6 @@ class CheckRegister extends FormRequest
             'password.required' => 'Vui lòng nhập mật khẩu của bạn.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp. Vui lòng kiểm tra lại.',
             'password.min' => 'Mật khẩu phải chứa ít nhất :min ký tự. Vui lòng chọn mật khẩu dài hơn.',
-            'password.regex' => 'Mật khẩu phải chứa ít nhất một một chữ cái, một chữ số và một ký tự đặc biệt.',
         ];
     }
 

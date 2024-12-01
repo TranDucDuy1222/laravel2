@@ -88,7 +88,7 @@ Sản phẩm
                                           <option value="{{ $dm->id }}" {{ old('id_dm') == $dm->id ? 'selected' : '' }}>
                                              {{$dm->ten_dm}}
                                           </option>
-                                          @endforeach -->
+                                          @endforeach -->   
                                           </select>
                                           @error('id_dm')
                                           <span class="text-danger">{{$message}}</span>
@@ -123,12 +123,14 @@ Sản phẩm
                                           <a href="javascript:void();" class="">
                                           <input name="hinh" class="file-up form-control mb-3" type="file" accept="image/*">
                                           <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
+                                          </a>                                       
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
                                           <label for="" class="form-label fw-semibold">Ngày tạo</label>
-                                          <input name="ngay" type="date" value="{{$sp->ngay}}" class="form-control shadow-none border-primary" required>                                                </div>
+                                          <input name="ngay" type="date" value="{{$sp->ngay}}" class="form-control shadow-none border-primary" required> 
+                                       </div>
                                     </div>
                                  </div>
                               </div>
