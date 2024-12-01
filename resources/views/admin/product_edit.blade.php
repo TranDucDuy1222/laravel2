@@ -82,12 +82,13 @@ Sản phẩm
                                           <label for="" class="form-label fw-semibold">Trạng Thái</label>
                                           <select class="sa-select2 form-select" name="trang_thai" required>
                                              <option value="0">Sản Phẩm Đang Kinh Doanh</option>
-                                             <option value="3">Sản Phẩm Sắp Về Hàng</option>
+                                             <option value="1">Sản Phẩm Hết Hàng</option>
+                                             <option value="2">Sản Phẩm Sắp Về Hàng</option>
                                              <!-- @foreach($loai_arr as $dm)
                                           <option value="{{ $dm->id }}" {{ old('id_dm') == $dm->id ? 'selected' : '' }}>
                                              {{$dm->ten_dm}}
                                           </option>
-                                          @endforeach -->
+                                          @endforeach -->   
                                           </select>
                                           @error('id_dm')
                                           <span class="text-danger">{{$message}}</span>
@@ -120,15 +121,25 @@ Sản phẩm
                                        <div class="form-group">
                                           <label for="" class="form-label fw-semibold">Ảnh</label>
                                           <a href="javascript:void();" class="">
+<<<<<<< HEAD
                                              <input name="hinh" class="file-up form-control mb-3" type="file" accept="image/*">
                                              <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
                                           </a>
+=======
+                                          <input name="hinh" class="file-up form-control mb-3" type="file" accept="image/*">
+                                          <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
+                                          </a>                                       
+>>>>>>> da811aaa324a5e7ba12f4f1bd395f92ab6085c2f
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
                                           <label for="" class="form-label fw-semibold">Ngày tạo</label>
+<<<<<<< HEAD
                                           <input name="ngay" type="date" value="{{$sp->ngay}}" class="form-control shadow-none border-primary" required>     
+=======
+                                          <input name="ngay" type="date" value="{{$sp->ngay}}" class="form-control shadow-none border-primary" required> 
+>>>>>>> da811aaa324a5e7ba12f4f1bd395f92ab6085c2f
                                        </div>
                                     </div>
                                  </div>

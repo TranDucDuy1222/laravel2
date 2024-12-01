@@ -68,11 +68,43 @@ class BuyController extends Controller
         $gioHangs = GioHang::with(['sanPham', 'size'])
                         ->where('user_id', $userId)
                         ->get();
+    
+        $outOfStockItems = []; 
+    
+        // Kiểm tra số lượng và cập nhật trạng thái sản phẩm 
+        foreach ($gioHangs as $gioHang) {
+            if ($gioHang->size->so_luong === 0) {
+                $gioHang->status = 1; 
+                $gioHang->save();
+                $outOfStockItems[] = $gioHang; 
+            } elseif ($gioHang->so_luong > $gioHang->size->so_luong) {
+                // Nếu số lượng trong giỏ hàng lớn hơn số lượng còn lại trong kho thì cập nhật lại bằng số lượng trong kho
+                $gioHang->so_luong = $gioHang->size->so_luong; 
+                $gioHang->save();
+                $outOfStockItems[] = $gioHang; 
+            }else { 
+                // Nếu số lượng thuộc size đó đã được cập nhật mới, chuyển status thành 0 
+                if ($gioHang->status == 1 && $gioHang->so_luong <= $gioHang->size->so_luong) { 
+                    $gioHang->status = 0; 
+                    $gioHang->save(); 
+                } 
+            }
+        }
+    
+        // Sắp xếp sản phẩm theo trạng thái: status 0 trước, status 1 sau
+        $gioHangs = $gioHangs->sortBy('status');
+    
         // Hiển thị sản phẩm bằng session 
         session(['carts' => $gioHangs]);
+    
+        // Nếu có sản phẩm hết hàng hiển thị thông báo
+        if (!empty($outOfStockItems)) {
+            session()->flash('error', 'Một số sản phẩm trong giỏ hàng không còn đủ số lượng, số lượng đã được cập nhật.');
+        }
+    
         return view('user.home_giohang');
-    }
-
+    }    
+    
     public function xoasptronggio($idsp)
     {
         if (!Auth::check()) {
@@ -96,7 +128,7 @@ class BuyController extends Controller
         $newQuantity = $request->input('quantity');
         $sizeInfo = Size::where('id', $gioHang->id_size)->first();
         if ($newQuantity > $sizeInfo->so_luong) {
-            return redirect()->route('cart.gio-hang')->with('thongbao', 'Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
+            return redirect()->route('cart.gio-hang')->with('error', 'Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
         }
         $gioHang->so_luong = $newQuantity;
         $gioHang->save();
@@ -172,15 +204,18 @@ class BuyController extends Controller
     }    
     
     public function applyVoucher(Request $request) {
-        Log::info('Applying voucher', $request->all());
         $selectedProductIds = session('selected_products', $request->input('selected_products', []));
         session(['selected_products' => $selectedProductIds]);
-
+    
         $voucherCode = $request->input('voucher');
         $voucher = MaGiamGia::where('code', $voucherCode)->first();
-
+    
         if (!$voucher) {
             session()->flash('thongbao', 'Mã giảm giá không hợp lệ.');
+            return redirect()->route('pay');
+        }
+        if ($voucher->ngay_het_han && $voucher->ngay_het_han < now()) {
+            session()->flash('thongbao', 'Mã giảm giá đã hết hạn.');
             return $this->pay($request);
         }
 
@@ -190,38 +225,40 @@ class BuyController extends Controller
         }
 
         $userId = Auth::id();
-
+    
         // Kiểm tra mã giảm giá chỉ dùng một lần cho mỗi khách hàng
         if ($voucher->mot_nhieu == false) {
             // Kiểm tra xem khách hàng đã sử dụng mã này chưa
             $usedCustomers = json_decode($voucher->id_kh, true) ?: [];
             if (in_array($userId, $usedCustomers)) {
                 session()->flash('thongbao', 'Mã giảm giá này bạn đã sử dụng rồi.');
-                return $this->pay($request);
+                return redirect()->route('pay');
             }
-
+    
             // Nếu chưa sử dụng, thêm khách hàng vào mảng đã sử dụng
             $usedCustomers[] = $userId;
             $voucher->id_kh = json_encode($usedCustomers);
         }
-
+    
         // Kiểm tra nếu mã giảm giá có giới hạn số lượng
         if ($voucher->mot_nhieu == true && $voucher->ma_gioi_han > 0) {
             if ($voucher->ma_gioi_han <= 0) {
                 return back()->with('thongbao', 'Mã giảm giá đã hết.');
             }
         }
-
+    
         // Áp dụng mã giảm giá vào session
         session(['voucher' => [
             'code' => $voucherCode,
             'amount' => $voucher->phan_tram,
         ]]);
-
+    
         session()->flash('thongbao', 'Áp dụng mã giảm giá thành công!');
-        // Chuyển hướng đến hàm `pay` để tính toán và hiển thị lại trang thanh toán
-        return $this->pay($request);
+        
+        // Chuyển hướng đến route `pay` để tính toán và hiển thị lại trang thanh toán
+        return redirect()->route('pay');
     }
+    
     
     public function removeVoucher(Request $request) {
         session()->forget('voucher');

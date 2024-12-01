@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BuyController;
+use App\Http\Controllers\HomelayoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Quantri;
@@ -11,7 +12,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\AdminLoaiController;
 use App\Http\Controllers\AdminSPController;
-use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminDanhGiaController;
@@ -114,7 +114,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::get('san-pham/khoi-phuc/{id}', [AdminSPController::class, 'khoiphuc']);
     Route::get('san-pham/xoa-vinh-vien/{id}', [AdminSPController::class, 'xoavinhvien']);
 
-    Route::resource('trang-chu', LandingpageController::class);
+    Route::resource('trang-chu', HomelayoutController::class);
 
     Route::resource('cai-dat', SettingController::class);
 
