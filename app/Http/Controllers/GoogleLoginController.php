@@ -38,7 +38,6 @@ class GoogleLoginController extends Controller
 
             return redirect()->intended('/');
         } catch (\Exception $e) {
-            // Hiển thị lỗi Google API trong nhật ký Laravel
             \Log::error($e);
             return redirect('/login')->with('thongbao', 'Đăng nhập bằng Google không thành công. Vui lòng thử lại.');
         }

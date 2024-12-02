@@ -56,6 +56,11 @@ class UserController extends Controller
                 Auth::guard('web')->logout();
                 return back()->with('error', 'Tài khoản này hiện tạm khóa và không thể đăng nhập.');
             }
+            
+            if ($user->role == 1) {
+                return redirect('admin/');  // Chuyển hướng về trang admin
+            } 
+
             return redirect()->intended('/');
         }
         return back()->with('thongbao', 'Đăng nhập không thành công, vui lòng thử lại.');
