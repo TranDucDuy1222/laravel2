@@ -31,6 +31,9 @@ Route::get('/logout', [UserController::class,'logout']);
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'register_form'])->name('register_form'); 
 
+Route::get('/verify-otp', [UserController::class, 'showOtpForm'])->name('otpform');
+Route::post('/verify-otp', [UserController::class, 'verifyOtp'])->name('verify.otp');
+
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
 
@@ -38,6 +41,7 @@ Route::get('/forgot-password', [UserController::class, 'forgot_pass'])->name('pa
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('password.email');
 Route::get('/reset-password/{token}', [UserController::class, 'show_reset'])->name('password.reset');
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.update');
+
 Route::middleware(['khachhang'])->group(function() {
     Route::get('/erros', function () {
         return view('Thông báo lỗi !');

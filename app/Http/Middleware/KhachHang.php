@@ -19,8 +19,6 @@ class KhachHang
         // if (Auth::check() && Auth::user()->role == 0) {
         //     return $next($request);
         // }
-
-        // // Nếu là admin, chuyển hướng đến trang admin
         // return redirect('admin')->with('thongbao', 'Bạn đã đăng nhập bằng tài khoản admin');
 
         if (auth()->check() && Auth::user()->role == 1) {
