@@ -81,7 +81,8 @@ Sản phẩm
                                           <label for="" class="form-label fw-semibold">Trạng Thái</label>
                                           <select class="sa-select2 form-select " name="trang_thai" required>
                                              <option value="0">Sản Phẩm Đang Kinh Doanh</option>
-                                             <option value="3">Sản Phẩm Sắp Về Hàng</option>
+                                             <option value="1">Sản Phẩm Sắp Về Hàng</option>
+                                             <option value="2">Sản Phẩm Ngừng Kinh Doanh</option>
                                              
                                           </select>
                                           @error('id_dm')

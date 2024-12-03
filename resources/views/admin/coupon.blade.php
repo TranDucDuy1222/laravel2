@@ -14,9 +14,6 @@ Mã giảm giá
                   </div>
                   <div class="col-sm-12 col-md-6">
                      <div class="user-list-files d-flex justify-content-end">
-                        <!-- <button type="button" class="btn btn-dark">
-                           <i class="fa-solid fa-plus"></i> Thêm mã giảm giá
-                        </button> -->
                         <a href="{{route('magiamgia.create')}}" class="btn btn-dark">
                            <i class="fa-solid fa-plus"></i> Thêm mã giảm giá
                         </a>

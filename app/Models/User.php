@@ -19,7 +19,8 @@ class User extends Authenticatable
         'dien_thoai', 
         'dia_chi', 
         'role',
-        'google_id'
+        'google_id',
+        'otp'
     ];
     protected $hidden = [
         'password',

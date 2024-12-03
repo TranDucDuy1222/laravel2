@@ -25,10 +25,16 @@
                         <span class="app-menu__label">Quản lý danh mục</span>
                         </a>
                      </li>
-                     <li><a href="{{url('/admin/tai-khoan')}}">
-                        <i class='sa-nav__icon fas fa-user'></i>
-                        <span class="app-menu__label">Quản lý tài Khoản</span>
+                     <li>
+                        <a href="#user" class="iq-waves-effect" data-toggle="collapse" aria-expanded="false">
+                           <i class='sa-nav__icon fas fa-user'></i>
+                           <span>Quản lý tài khoản</span>
+                           <i class="ri-arrow-right-s-line iq-arrow-right"></i>
                         </a>
+                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                           <li><a href="{{url('/admin/tai-khoan')}}"><i class="fa-solid fa-user-tie"></i>Tài khoản admin</a></li>
+                           <li><a href="{{url('/admin/tai-khoan-kh')}}"><i class="fa-solid fa-list"></i>Tài khoản khách hàng</a></li>
+                        </ul>
                      </li>
                      <li><a href="{{url('/admin/don-hang')}}">
                         <i class="sa-nav__icon fa-solid fa-cart-shopping"></i>

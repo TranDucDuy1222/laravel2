@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GuiEmail;
 use App\Models\ReplyEmail;
+use App\Mail\OtpMail;
 
 class UserController extends Controller
 {
@@ -26,16 +27,65 @@ class UserController extends Controller
     
     public function register_form(CheckRegister $request)
     {
+        $otp = rand(100000, 999999);
+
         $user = users::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'otp' => $otp,
         ]);
+        // Gửi mã OTP qua email
+        Mail::to($request->email)->send(new OtpMail($otp));
+        
+        // auth()->login($user);
 
-        auth()->login($user);
-
-        return redirect()->intended('/')->with('thongbao', 'Đăng ký thành công!');
+        return redirect()->route('otpform')->with([
+            'email' => $request->email,
+            'thongbao' => 'Vui lòng kiểm tra email để nhận mã OTP và xác nhận tài khoản.',
+        ]);
     }
+
+    public function showOtpForm()
+    {
+        return view('otp');
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            // 'otp' => 'required|array|size:6',
+            // 'otp.*' => 'numeric|digits:1',
+            'otp' => 'required|array|min:6|max:6', // Kiểm tra mã OTP hợp lệ
+
+        ]);
+    
+        // Gộp mảng các số thành chuỗi
+        $otp = implode('', $request->otp);
+        
+        // Tìm người dùng theo email
+        $user = users::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->back()->with('thongbao', 'Người dùng không tồn tại!');
+        }
+        // dd('OTP nhập vào: ' . $otp, 'OTP trong CSDL: ' . $user->otp);
+        // if ($user && $request->otp == $user->otp) {
+        //     $user->otp_verified_at = now();
+        //     $user->otp = null; // Xóa mã OTP để bảo mật
+        //     $user->save();
+        if ((string)$otp == (string)$user->otp) {
+            $user->otp_verified_at = now();
+            $user->otp = null;
+            $user->save();
+            
+            auth()->login($user);
+            
+            return redirect()->intended('/')->with('thongbao', 'Đăng ký thành công!');
+        }
+
+        return redirect()->back()->with('thongbao', 'Mã OTP không đúng. Vui lòng thử lại!');
+    }
+
 
     function login(){
         return view('login');
@@ -56,6 +106,11 @@ class UserController extends Controller
                 Auth::guard('web')->logout();
                 return back()->with('error', 'Tài khoản này hiện tạm khóa và không thể đăng nhập.');
             }
+            
+            if ($user->role == 1) {
+                return redirect('admin/');  // Chuyển hướng về trang admin
+            } 
+
             return redirect()->intended('/');
         }
         return back()->with('thongbao', 'Đăng nhập không thành công, vui lòng thử lại.');

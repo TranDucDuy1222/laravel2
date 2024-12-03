@@ -114,7 +114,7 @@ Tài khoản
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" name="submit" class="btn btn-primary action-button float-end" value="save" >Thêm tài khoản</button>
+                                    <button type="submit" name="submit" class="btn btn-primary action-button float-end" value="save" >Cập nhật tài khoản</button>
                                     <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-end me-3" value="Previous" >Quay lại</button>
                                     </fieldset> 
                                 </form>

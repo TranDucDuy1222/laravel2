@@ -21,7 +21,10 @@
       <script src="/cssadmin/admin/js/jquery.magnific-popup.min.js"></script>  
       <script src="/cssadmin/admin/js/smooth-scrollbar.js"></script>
       <script src="/cssadmin/admin/js/lottie.js"></script>
+      <script src="/cssadmin/admin/js/charts.js"></script>
+      <script src="/cssadmin/admin/js/animated.js"></script>
       <script src="/cssadmin/admin/js/chart-custom.js"></script>
+      <script src="/cssadmin/admin/js/custom.js"></script>
    </body>
    </body>
 </html>

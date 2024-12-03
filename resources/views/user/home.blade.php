@@ -366,36 +366,36 @@ Trang Chủ - TrendyU
             <div class="section__content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
+                        <div class="col-lg-4 col-md-4 col-sm-6 mb-3 d-flex align-items-stretch">
                             <div class="promotion-o">
                                 <div class="aspect aspect--bg-grey">
                                     <img src="{{ asset('/uploads/banner/' . $home_page->anh_danh_muc_1) }}"
                                         onerror="this.src='{{ asset('/uploads/banner/dmnike1.jpg') }}'"
-                                        alt="" class="w-100">
+                                        alt="" class="w-100 h-100">
                                 </div>
                                 <div class="promotion-o__content">
                                     <a class="promotion-o__link btn--e-white-brand" href="">{{$home_page->tieu_de_danh_muc_1}}</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
+                        <div class="col-lg-4 col-md-4 col-sm-6 mb-3 d-flex align-items-stretch">
                             <div class="promotion-o">
                                 <div class="aspect aspect--bg-grey ">
                                 <img src="{{ asset('/uploads/banner/' . $home_page->anh_danh_muc_2) }}"
                                         onerror="this.src='{{ asset('/uploads/banner/dmnike2.png') }}'"
-                                        alt="" class="w-100">
+                                        alt="" class="w-100 h-100">
                                 </div>
                                 <div class="promotion-o__content">
                                     <a class="promotion-o__link btn--e-white-brand" href="">{{$home_page->tieu_de_danh_muc_2}}</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
+                        <div class="col-lg-4 col-md-4 col-sm-6 mb-3 d-flex align-items-stretch">
                             <div class="promotion-o">
                                 <div class="aspect aspect--bg-grey">
                                 <img src="{{ asset('/uploads/banner/' . $home_page->anh_danh_muc_3) }}"
                                         onerror="this.src='{{ asset('/uploads/banner/dmnike3.jpeg') }}'"
-                                        alt="" class="w-100">
+                                        alt="" class="w-100 h-100">
                                 </div>
                                 <div class="promotion-o__content">
                                     <a class="promotion-o__link btn--e-white-brand" href="">{{$home_page->tieu_de_danh_muc_3}}</a>

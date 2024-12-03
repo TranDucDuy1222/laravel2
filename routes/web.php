@@ -23,36 +23,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiproductController;
 use App\Http\Controllers\AdminemailController;
 
-Route::get('/erros', function () {
-    return view('Thông báo lỗi !');
-});
-Route::get('/', [HomeController::class , 'index'])->name('home');
-//Route::get('/tim-kiem/{slug}', [ApiproductController::class, 'tim_kiem']);
-Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
-
-Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
-Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
-
-
-// Giỏ hàng
-Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])->name('cart.add');
-Route::get('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
-Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
-Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
-Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('cart.update');
-
-// Thanh toán
-Route::match(['get', 'post'], '/thanh-toan', [BuyController::class, 'pay'])->name('pay');
-Route::post('/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
-Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
-Route::post('/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
-
-// Đặt hàng
-Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
-Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayReturn'])->name('vnpay.return'); // Chuyển thành GET
-Route::post('/vnpay/store-order', [OrderController::class, 'storeOrder'])->name('vnpay.storeOrder');
-
-
 // Đăng nhập
 Route::get('/login', [UserController::class , 'login'])->name('login');
 Route::post('/login', [UserController::class , 'login_form'])->name('login_form');
@@ -61,6 +31,9 @@ Route::get('/logout', [UserController::class,'logout']);
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'register_form'])->name('register_form'); 
 
+Route::get('/verify-otp', [UserController::class, 'showOtpForm'])->name('otpform');
+Route::post('/verify-otp', [UserController::class, 'verifyOtp'])->name('verify.otp');
+
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
 
@@ -68,28 +41,61 @@ Route::get('/forgot-password', [UserController::class, 'forgot_pass'])->name('pa
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('password.email');
 Route::get('/reset-password/{token}', [UserController::class, 'show_reset'])->name('password.reset');
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.update');
-//Quản lý tài khoản
-Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');
-Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->name('user.edit_profile');
-Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
-Route::put('/profile/editdiachi/{id}', [UserController::class,'capnhatdiachi'])->name('dia_chi.update');
-Route::delete('/profile/xoa-dia-chi/{id}', [UserController::class, 'xoa_dc'])->name('xoa-dia-chi');
-Route::post('/profile/dia-chi/{id}', [UserController::class, 'themDiaChi'])->name('diachi.add');
 
-// Quản lý đơn hàng
-//Route::post('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
-Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
-Route::get('/purchase-cancel/{id}', [OrderController::class, 'huyDon'])->name('user.purchase-cancel');
-Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user.purchase-reivew');
+Route::middleware(['khachhang'])->group(function() {
+    Route::get('/erros', function () {
+        return view('Thông báo lỗi !');
+    });
+    Route::get('/', [HomeController::class , 'index'])->name('home');
+    //Route::get('/tim-kiem/{slug}', [ApiproductController::class, 'tim_kiem']);
+    Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
+    
+    Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
+    Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
+    
+    
+    // Giỏ hàng
+    Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])->name('cart.add');
+    Route::get('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
+    Route::post('/gio-hang', [BuyController::class, 'hiengiohang'])->name('cart.gio-hang');
+    Route::get('/xoasptronggio/{idsp}', [BuyController::class, 'xoasptronggio'])->name('cart.remove');
+    Route::post('/gio-hang-cap-nhat/{id}', [BuyController::class, 'update'])->name('cart.update');
+    
+    // Thanh toán
+    Route::match(['get', 'post'], '/thanh-toan', [BuyController::class, 'pay'])->name('pay');
+    Route::post('/apply-voucher', [BuyController::class, 'applyVoucher'])->name('pay.applyVoucher');
+    Route::put('/thanh-toan-update/{id}', [BuyController::class, 'updatePay'])->name('pay.update');
+    Route::post('/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
+    
+    // Đặt hàng
+    Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
+    Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayReturn'])->name('vnpay.return'); // Chuyển thành GET
+    Route::post('/vnpay/store-order', [OrderController::class, 'storeOrder'])->name('vnpay.storeOrder');
+    
+    //Quản lý tài khoản
+    Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');
+    Route::get('/profile/edit/{id}', [UserController::class,'chinhSuaThongTin'])->name('user.edit_profile');
+    Route::put('/profile/edit/{id}', [UserController::class,'chinhSuaMk'])->name('user.update_mk');
+    Route::put('/profile/editdiachi/{id}', [UserController::class,'capnhatdiachi'])->name('dia_chi.update');
+    Route::delete('/profile/xoa-dia-chi/{id}', [UserController::class, 'xoa_dc'])->name('xoa-dia-chi');
+    Route::post('/profile/dia-chi/{id}', [UserController::class, 'themDiaChi'])->name('diachi.add');
+    
+    // Quản lý đơn hàng
+    //Route::post('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
+    Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
+    Route::get('/purchase-cancel/{id}', [OrderController::class, 'huyDon'])->name('user.purchase-cancel');
+    Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user.purchase-reivew');
+    
+    //Liên hệ
+    Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
+    Route::post('gui-lien-he', [UserController::class, 'sendContact']);
+});
 
-//Liên hệ
-Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
-Route::post('gui-lien-he', [UserController::class, 'sendContact']);
 
 
 // URL Admin
 Route::group(['prefix' => 'admin'], function() { 
-    Route::get('/', [AdminHomeController::class,'index'])->middleware(Quantri::class);
+    Route::get('/', [AdminHomeController::class,'index'])->name('admin')->middleware(Quantri::class);
     Route::get('/login_admin', [AdminHomeController::class , 'login_admin_view']);
     Route::post('/login_admin', [AdminHomeController::class , 'login_admin'])->name('login_admin');
 });
@@ -119,6 +125,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     Route::resource('cai-dat', SettingController::class);
 
     Route::resource('tai-khoan', AdminUserController::class);
+    Route::get('tai-khoan-kh', [AdminUserController::class, 'accCustomer']);
     Route::post('/tai-khoan/{id}/hide', [AdminUserController::class, 'hide'])->name('tai-khoan.hide');
     Route::post('tai-khoan/{id}/restore', [AdminUserController::class, 'restore'])->name('tai-khoan.restore');
 

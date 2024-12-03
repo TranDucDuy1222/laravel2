@@ -16,11 +16,7 @@ class AdminUserController extends AdminController
 
         // Chỉ hiển thị khách hàng không bị ẩn
         if (!$request->has('role') && !$request->has('is_hidden')) {
-            $query->where('role', 0)->where('is_hidden', 0);
-        }
-
-        if ($request->filled('role')) {
-            $query->where('role', $request->role);
+            $query->where('role', 1)->where('is_hidden', 0);
         }
 
         if ($request->filled('is_hidden')) {
@@ -29,7 +25,26 @@ class AdminUserController extends AdminController
 
         $users = $query->paginate($perpage);
 
-        return view('admin.account', compact('users'));
+        return view('admin.account_admin', compact('users'));
+
+    }
+
+    public function accCustomer(Request $request)
+    {
+        $query = User::query();
+        $perpage = 12;
+
+        if (!$request->has('role') && !$request->has('is_hidden')) {
+            $query->where('role', 0)->where('is_hidden', 0);
+        }
+
+        if ($request->filled('is_hidden')) {
+            $query->where('is_hidden', $request->is_hidden);
+        }
+
+        $users = $query->paginate($perpage);
+
+        return view('admin.account_customer', compact('users'));
 
     }
 
