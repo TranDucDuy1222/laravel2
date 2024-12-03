@@ -17,53 +17,66 @@ Trang chủ
                         <div class="row">
                             <div class="col-md-3">
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('banner-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="banner-section')">
                                     Biểu ngữ
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('slogan-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="slogan-section">
                                     Khẩu hiệu
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('gioithieu-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="gioithieu-section">
                                     Giới thiệu sản phẩm
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('xuhuong-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="xuhuong-section">
                                     Xu hướng
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('danhmuc-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="danhmuc-section">
                                     Danh mục
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('khuyenmai-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="khuyenmai-section">
                                     Khuyến mãi
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('productnew-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="productnew-section">
                                     Sản phẩm mới
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('bieunguphu-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="bieunguphu-section">
                                     Biểu ngữ phụ
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('commingsoon-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="commingsoon-section">
                                     Sản phẩm sắp về hàng
                                 </button>
                                 <button class="btclick w-100 border border-light-subtle rounded mb-3"
-                                    style="height: 45px; background-color: white;" onclick="scrollToSection('member-section')">
+                                    style="height: 45px; background-color: white;" data-section-id="member-section">
                                     Lợi ích thành viên
                                 </button>
-                                <!-- Button to trigger modal -->
+                                <!-- Xem trước trang chủ -->
                                 <button type="button" id="showModalBtn" class="btclick w-100 border border-warning rounded mt-4"
                                         style="height: 45px; background-color: white;">
                                     <i class="fa-solid fa-hand-point-down"></i>
                                     Xem trước trang chủ
                                 </button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" id="modalBodyContent">
+                                                <!-- Nội dung sẽ được tải vào đây -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-9 overflow-y-scroll" style="height: 700px;" >
                                 <div class="scrollable-content">
                                     <form action="{{route('trang-chu.update', ['trang_chu' => $home_page->id])}}" method="post" enctype="multipart/form-data">
                                         @csrf
@@ -421,49 +434,75 @@ Trang chủ
     </div>
 </div>
 <script>
-    // Gắn sự kiện btclick
-    document.querySelectorAll(".btclick").forEach(function(button) {
-        button.addEventListener("click", function() {
-            // Đặt tất cả các nút về màu trắng
-            document.querySelectorAll(".btclick").forEach(function(btn) {
-                btn.style.backgroundColor = "white";
-                btn.style.color = "black";
-            });
-            // Đổi màu nút được nhấp
-            this.style.backgroundColor = "black";
-            this.style.color = "white";
+// Gắn sự kiện btclick
+document.querySelectorAll(".btclick").forEach(function(button) {
+    button.addEventListener("click", function() {
+        // Đặt tất cả các nút về màu trắng
+        document.querySelectorAll(".btclick").forEach(function(btn) {
+            btn.style.backgroundColor = "white";
+            btn.style.color = "black";
         });
+        // Đổi màu nút được nhấp
+        this.style.backgroundColor = "black";
+        this.style.color = "white";
+        
+        // Cuộn tới section tương ứng
+        console.log(`Button clicked: ${this.getAttribute('data-section-id')}`);
+        scrollToSection(this.getAttribute('data-section-id'));
     });
+});
 
-    function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        const container = section.closest('.scrollable-content');
-        container.scrollTo({
-            top: section.offsetTop,
-            behavior: 'smooth'
-        });
+function scrollToSection(sectionId) {
+    console.log(`Scrolling to section: ${sectionId}`);
+    const section = document.getElementById(sectionId);
+    if (!section) {
+        console.error(`Section with ID ${sectionId} not found.`);
+        return;
     }
+    console.log(`Section found. Offset top: ${section.offsetTop}`);
 
-    // Tải nội dung cho modal khi modal được hiển thị
-    document.getElementById('exampleModal').addEventListener('show.bs.modal', function () {
-        fetch('/')  // Đường dẫn này cần tương ứng với route của bạn
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('modalBodyContent').innerHTML = data;
-            });
+    const container = document.querySelector('.scrollable-content');
+    if (!container) {
+        console.error('Scrollable content container not found.');
+        return;
+    }
+    console.log(`Container found. Container offset top: ${container.offsetTop}`);
+
+    container.scrollTo({
+        top: section.offsetTop - container.offsetTop,
+        behavior: 'smooth'
     });
 
-    // Dọn dẹp nội dung của modal khi nó bị đóng
-    document.getElementById('exampleModal').addEventListener('hidden.bs.modal', function () {
-        document.getElementById('modalBodyContent').innerHTML = '';
-    });
+    // Log thêm
+    console.log(`Scrolling to: ${section.offsetTop - container.offsetTop}`);
+    console.log(`Container height: ${container.clientHeight}`);
+    console.log(`Section height: ${section.clientHeight}`);
+}
 
-    // Đặt lại sự kiện ban đầu cho nút showModalBtn
-    document.getElementById('showModalBtn').addEventListener('click', function() {
-        var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-            keyboard: false
+
+
+document.getElementById('showModalBtn').addEventListener('click', function() {
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+        keyboard: false
+    });
+    myModal.show();
+
+    // Tải nội dung cho modal khi button được nhấn
+    fetch('/')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('modalBodyContent').innerHTML = data;
+        })
+        .catch(error => {
+            document.getElementById('modalBodyContent').innerHTML = 'Có lỗi xảy ra khi tải nội dung.';
+            console.error('Error:', error);
         });
-        myModal.show();
-    });
+});
+
+// Dọn dẹp nội dung của modal khi nó bị đóng
+document.getElementById('exampleModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('modalBodyContent').innerHTML = '';
+});
+
 </script>
 @endsection

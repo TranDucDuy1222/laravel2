@@ -48,7 +48,7 @@ class HomelayoutController extends AdminController
 
         // Dữ liệu trang chủ
         $home_page = DB::table('home_layout')->first();
-        return view('admin/home_landingpage' , compact('home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
+        return view('admin/home_layout' , compact('home_page','sanphamhome', 'sanphamnew', 'sanphamsale', 'sanphamcs' , 'loai_arr', 'sanpham'));
     }
 
     public function update(Request $request, $id){
