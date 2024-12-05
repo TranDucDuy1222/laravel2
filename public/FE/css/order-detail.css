@@ -1,4 +1,32 @@
-#img-cart{
-    width: 80px;
-    height: 70px;
+.img-purchase {
+    position: relative;
+    /* Đảm bảo thẻ div bao quanh ảnh */
+    max-width: 100%;
+    /* Đảm bảo div không vượt quá chiều rộng của phần tử cha */
+    display: flex;
+    /* Sử dụng flexbox để căn giữa hình ảnh */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+}
+
+.img-purchase img {
+    height: 100%;
+    /* Chiều cao 100% của thẻ chứa */
+    width: 100%;
+    /* Giữ tỉ lệ khung hình của ảnh */
+    max-height: 100px;
+    /* Không cho phép ảnh vượt quá chiều cao của thẻ chứa */
+    max-width: 100%;
+    /* Không cho phép ảnh vượt quá chiều rộng của thẻ chứa */
+    object-fit: cover;
+    /* Đảm bảo ảnh bao phủ toàn bộ thẻ chứa */
+}
+
+@media (max-width: 500px) {
+    .img-purchase img {
+        width: 100%;
+        max-height: 70px;
+    }
 }

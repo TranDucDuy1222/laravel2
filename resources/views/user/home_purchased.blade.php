@@ -161,8 +161,8 @@
                                                 @endphp
                                                 @if ($pc->id_dh == $dh->id)
                                                 <div class="row">
-                                                    <div class="col-2 p-1" style="height: 100px; width: 80px;">
-                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="h-100 w-100" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
+                                                    <div class="col-2 p-2 img-purchase">
+                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class=" img-responsive" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
                                                     </div>
                                                     <div class="col-10">
                                                         <div class="row">
@@ -409,8 +409,8 @@
                                                 @endphp
                                                 @if ($pc->id_dh == $dh->id)
                                                 <div class="row">
-                                                    <div class="col-2 p-1" style="height: 100px; width: 80px;">
-                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="h-100 w-100" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
+                                                    <div class="col-2 p-2 img-purchase">
+                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="img-fluid img-responsive" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
                                                     </div>
                                                     <div class="col-10">
                                                         <div class="row">
@@ -631,8 +631,8 @@
                                                 @endphp
                                                 @if ($pc->id_dh == $dh->id)
                                                 <div class="row">
-                                                    <div class="col-2 p-1" style="height: 100px; width: 80px;">
-                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="h-100 w-100" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
+                                                    <div class="col-2 p-2 img-purchase">
+                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="img-fluid img-responsive" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
                                                     </div>
                                                     <div class="col-10">
                                                         <div class="row">
@@ -859,8 +859,8 @@
                                                 @endphp
                                                 @if ($pc->id_dh == $dh->id)
                                                 <div class="row">
-                                                    <div class="col-2 p-1" style="height: 100px; width: 80px;">
-                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="h-100 w-100" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
+                                                    <div class="col-2 p-2 img-purchase">
+                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="img-fluid img-responsive" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
                                                     </div>
                                                     <div class="col-10">
                                                         <div class="row">
@@ -1083,8 +1083,8 @@
                                                 @endphp
                                                 @if ($pc->id_dh == $dh->id)
                                                 <div class="row">
-                                                    <div class="col-2 p-1" style="height: 100px; width: 80px;">
-                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="h-100 w-100" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
+                                                    <div class="col-2 p-2 img-purchase">
+                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="img-fluid img-responsive" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
                                                     </div>
                                                     <div class="col-10">
                                                         <div class="row">
@@ -1307,8 +1307,8 @@
                                                 @endphp
                                                 @if ($pc->id_dh == $dh->id)
                                                 <div class="row">
-                                                    <div class="col-2 p-1" style="height: 100px; width: 80px;">
-                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="h-100 w-100" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
+                                                    <div class="col-2 p-2 img-purchase">
+                                                        <img src="{{ asset('/uploads/product/' . $pc->hinh) }}" class="img-fluid img-responsive" onerror="this.src='/imgnew/{{$pc->hinh}}'" alt="" />
                                                     </div>
                                                     <div class="col-10">
                                                         <div class="row">

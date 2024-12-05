@@ -271,14 +271,6 @@
                                     <span>Tiếp tục mua sắm</span>
                                 </a>
                             </div>
-                            <div class="route-box__g2">
-                                <a class="route-box__link" href=""><i class="fas fa-trash"></i>
-                                    <span>Xóa</span>
-                                </a>
-                                <a class="route-box__link" href=""><i class="fas fa-sync"></i>
-                                    <span>Cập nhật</span>
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
