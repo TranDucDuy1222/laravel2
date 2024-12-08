@@ -64,87 +64,105 @@
                         <br>
                         <div class="table-responsive">
                             <div class="scroll-container">
-                                <table class="table-p">
-                                    <tbody>
-                                        <tr>
-                                            <td style="text-align: center;">
-                                                <span class="table-p__name"><a>Sản phẩm</a></span>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <span class="table-p__name"><a>Giá</a></span>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <span class="table-p__name"><a>Số lượng</a></span>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <span class="table-p__name"><a>Tổng</a></span>
-                                            </td>
-                                        </tr>
+                                <div class="table-p row border-top border-bottom">
+                                    <div class="col-12 d-none d-sm-block bg-light">
+                                        <div class="tr row py-3">
+                                            <div class="col-6">
+                                                <span class="table-p__name text-center"><a>Sản phẩm</a></span>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="table-p__name text-center"><a>Giá</a></span>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="table-p__name text-center"><a>Số lượng</a></span>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="table-p__name text-center"><a>Tổng</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
                                         @foreach($pays as $item)
-                                            <tr>
-                                                <td>
-                                                    <div class="table-p__box">
-                                                        <div class="table-p__img-wrap">
-                                                            <img class="h-100 w-100"
-                                                                src="{{ asset('/uploads/product/' . $item->sanPham->hinh) }}"
-                                                                alt="{{ $item->sanPham->ten_sp }}">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="row py-4 d-flex align-items-stretch">
+                                                    <div class="col-3 custom-img-wrap">
+                                                        <img class=""
+                                                            src="{{ asset('/uploads/product/' . $item->sanPham->hinh) }}"
+                                                            alt="{{ $item->sanPham->ten_sp }}">
+                                                    </div>
+                                                    <div class="table-p__info col-9">
+                                                        <span class="table-p__name">
+                                                            <a
+                                                                href="{{ route('product.detail', $item->sanPham->id) }}">{{ $item->sanPham->ten_sp }}</a>
+                                                        </span>
+                                                        <span class="table-p__category">
+                                                            <a
+                                                                href="">{{ $item->sanPham->danhMuc ? $item->sanPham->danhMuc->ten_dm : 'Không xác định' }}</a>
+                                                        </span>
+                                                        <ul class="table-p__variant-list">
+                                                            <li>
+                                                                <span>Size: {{ $item->size->size_product }}</span>
+                                                            </li>
+                                                            <li>
+                                                                <span>Màu: {{ $item->sanPham->color }}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="col-12 d-block d-sm-none">
+                                                    <div class="tr row py-3">
+                                                        <div class="col-4">
+                                                            <span class="table-p__name text-center"><a>Giá</a></span>
                                                         </div>
-                                                        <div class="table-p__info">
-                                                            <span class="table-p__name">
-                                                                <a
-                                                                    href="{{ route('product.detail', $item->sanPham->id) }}">{{ $item->sanPham->ten_sp }}</a>
-                                                            </span>
-                                                            <span class="table-p__category">
-                                                                <a
-                                                                    href="">{{ $item->sanPham->danhMuc ? $item->sanPham->danhMuc->ten_dm : 'Không xác định' }}</a>
-                                                            </span>
-                                                            <ul class="table-p__variant-list">
-                                                                <li>
-                                                                    <span>Size: {{ $item->size->size_product }}</span>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Màu: {{ $item->sanPham->color }}</span>
-                                                                </li>
-                                                            </ul>
+                                                        <div class="col-4">
+                                                            <span class="table-p__name text-center"><a>Số lượng</a></span>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <span class="table-p__name text-center"><a>Tổng</a></span>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <span class="table-p__price">
-                                                        @if ($item->sanPham->gia_km > 0)
-                                                            {{ number_format($item->sanPham->gia_km, 0, '', '.') }} đ
-                                                        @else
-                                                            {{ number_format($item->sanPham->gia, 0, '', '.') }} đ
-                                                        @endif
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <div class="table-p__input-counter-wrap">
-                                                        <div class="input-counter">
-                                                            <input
-                                                                class="input-counter__text input-counter--text-primary-style"
-                                                                type="number" name="quantity" value="{{ $item->so_luong }}"
-                                                                id="quantity-{{ $item->id }}" readonly>
+                                                </div>
+                                                <div class="row py-4 d-flex align-items-center">
+                                                    <div class="col-4 text-center">
+                                                        <span class="table-p__price">
+                                                            @if ($item->sanPham->gia_km > 0)
+                                                                {{ number_format($item->sanPham->gia_km, 0, '', '.') }} đ
+                                                            @else
+                                                                {{ number_format($item->sanPham->gia, 0, '', '.') }} đ
+                                                            @endif
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="table-p__input-counter-wrap">
+                                                            <div class="input-counter d-flex align-items-center justify-content-center">
+                                                                <input
+                                                                    class="input-counter__text input-counter--text-primary-style"
+                                                                    type="number" name="quantity" value="{{ $item->so_luong }}"
+                                                                    id="quantity-{{ $item->id }}" readonly>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </td>
-
-                                                <td id="total-price-{{ $item->id }}" class="item-total-price">
-                                                    <span class="table-p__price">
-                                                        @if ($item->sanPham->gia_km > 0)
-                                                            {{ number_format($item->sanPham->gia_km * $item->so_luong, 0, '', '.') }}
-                                                            đ
-                                                        @else
-                                                            {{ number_format($item->sanPham->gia * $item->so_luong, 0, '', '.') }}
-                                                            đ
-                                                        @endif
-                                                    </span>
-                                                </td>
-
-                                            </tr>
+                                                    <div id="total-price-{{ $item->id }}" class="item-total-price col-4 text-center">
+                                                        <span class="table-p__price">
+                                                            @if ($item->sanPham->gia_km > 0)
+                                                                {{ number_format($item->sanPham->gia_km * $item->so_luong, 0, '', '.') }}
+                                                                đ
+                                                            @else
+                                                                {{ number_format($item->sanPham->gia * $item->so_luong, 0, '', '.') }}
+                                                                đ
+                                                            @endif
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
                                         @endforeach
-                                    </tbody>
-                                </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

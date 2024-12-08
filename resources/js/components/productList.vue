@@ -215,7 +215,8 @@ export default {
         'Xám': 'border-secondary bg-secondary',
         'Hồng': 'bg-pink',
         'Xanh Lá': 'border-success bg-success',
-        'Nâu':'bg-brown'
+        'Nâu':'bg-brown',
+        'Be' : 'bg-be',
       };
     },
     colorNames() {
@@ -228,7 +229,8 @@ export default {
         'Xám': 'Xám',
         'Hồng': 'Hồng',
         'Xanh Lá': 'Xanh Lá',
-        'Nâu': 'Nâu'
+        'Nâu': 'Nâu',
+        'Be' : 'Be',
       };
     },
     paginatedProducts() {
@@ -337,5 +339,9 @@ export default {
   .bg-pink{
     color: pink;
     background-color: pink;
+  }
+  .bg-be{
+    color: antiquewhite;
+    background-color:  antiquewhite;
   }
 </style>

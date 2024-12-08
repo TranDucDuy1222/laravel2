@@ -421,5 +421,15 @@ class OrderController extends Controller
             return redirect()->back()->with('thongbao', 'Không tìm thấy đơn hàng.');
         }
     }
+    public function xacnhanDonHang($id_dh){
+        $donHang = DonHang::find($id_dh);
+        if($donHang){
+            $donHang->trang_thai = 3;
+            $donHang->save();
+            return redirect()->back()->with('thongbao', 'Đã nhận được đơn hàng.');
+        }else{
+            return redirect()->back()->with('thongbao', 'Không tìm thấy đơn hàng.');
+        }
+    }
 
 }

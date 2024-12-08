@@ -19,11 +19,10 @@ class HomeController extends Controller
         //$first_loai = $loai_arr->first(); // Lấy loại đầu tiên
         $query = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm','mo_ta_ngan' , 'luot_mua')
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
-        // ->where('')
         ->orderBy('san_pham.id', 'desc');
         
         $sanphamhome = (clone $query)
-        ->where('san_pham.trang_thai', '!=', [1, 2])
+        ->whereNotIn('san_pham.trang_thai', [1, 2])
         ->limit(2)
         ->get();
 
@@ -37,7 +36,7 @@ class HomeController extends Controller
         ->get();    
 
         // Sản phẩm sắp về hàng
-        $sanphamcs = (clone $query)->where('san_pham.trang_thai','=',2)->limit(4)->get();
+        $sanphamcs = (clone $query)->where('san_pham.trang_thai','=',2)->limit(3)->get();
 
         // Sản phảm bán chạy
         $sanphamnew = DB::table('san_pham')->select('san_pham.id' , 'ten_sp' , 'gia', 'gia_km' , 'hinh', 'san_pham.trang_thai', 'danh_muc.ten_dm','mo_ta_ngan' , 'luot_mua')

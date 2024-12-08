@@ -29,8 +29,8 @@ Quản lý sản phẩm - TrendyU
                                  <select id="trangthai" name="trangthai" class="form-select" aria-label="Default select example">
                                     <option value="all" {{$trangthai == "all" ? "selected" : ""}}>Tất cả</option>
                                     <option value="0" {{$trangthai == "0" ? "selected" : ""}}>Sản Phẩm Đang Kinh Doanh</option>
-                                    <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Sắp Hết Hàng</option>
-                                    <option value="2" {{$trangthai == "2" ? "selected" : ""}}>Sản Phẩm Ngừng Kinh Doanh</option>
+                                    <option value="1" {{$trangthai == "1" ? "selected" : ""}}>Sản Phẩm Hết Hàng</option>
+                                    <option value="2" {{$trangthai == "2" ? "selected" : ""}}>Sản Phẩm Sắp Về Hàng</option>
                                  </select>
                               </div>
                               <div class="col-auto">
@@ -94,7 +94,7 @@ Quản lý sản phẩm - TrendyU
                                           Xem
                                        </button>
                                        <a class="btn btn-outline-primary me-2" href="{{route('san-pham.edit', $sp->id)}}">Sửa</a>
-                                       @if ($sp -> trang_thai == 2)
+                                       @if ($sp -> trang_thai == 1)
                                        <form class="d-inline" action="{{ route('san-pham.show', $sp->id) }}" method="POST">
                                              @csrf
                                              <button type='submit' onclick="return confirm('Nếu hiện sản phẩm này thì danh mục cũng sẽ được hiện. Bạn có chắc muốn hiện sản phẩm này không ?')" class="btn btn-outline-success">
@@ -171,7 +171,7 @@ Quản lý sản phẩm - TrendyU
                               Sắp hết hàng
                               @endif
                               @if ($sp -> trang_thai == 2)
-                              Ngừng kinh doanh
+                                 Sắp về hàng
                               @endif
                         </label>
                      </div>

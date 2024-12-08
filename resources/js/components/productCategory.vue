@@ -261,10 +261,11 @@ export default {
         'Vàng': 'border-warning bg-warning',
         'Đen': 'bg-dark',
         'Trắng': 'bg-light',
-        'Xám': 'border-secondary bg-secondary',
+        'Xám': 'border-secondary-subtle bg-gradient',
         'Hồng': 'bg-pink',
         'Xanh Lá': 'border-success bg-success',
-        'Nâu': 'bg-brown'
+        'Nâu': 'bg-brown',
+        'Be' : 'bg-be',
       };
     },
     colorNames() {
@@ -277,7 +278,8 @@ export default {
         'Xám': 'Xám',
         'Hồng': 'Hồng',
         'Xanh Lá': 'Xanh Lá',
-        'Nâu': 'Nâu'
+        'Nâu': 'Nâu',
+        'Be' : 'Be',
       };
     },
     paginatedProducts() {
@@ -385,4 +387,9 @@ export default {
   color: pink;
   background-color: pink;
 }
+
+.bg-be{
+    color: antiquewhite;
+    background-color:  antiquewhite;
+  }
 </style>

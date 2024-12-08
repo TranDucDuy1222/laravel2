@@ -710,79 +710,12 @@
                                     <hr class="mt-0">
                                     <div class="row">
                                         <div class="col-5">
-                                            @if ($dh->trang_thai == 0)
-                                                <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
-                                                    <i>Xác Nhận Hủy Đơn</i>
+                                            @if($dh->trang_thai == 2)
+                                                <a href="{{route('user.purchase-confirm', $dh->id)}}">
+                                                    <button data-bs-toggle="modal" data-bs-target="#exampleModal-{{$dh->id}}" class="border-0 btn-link link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="background: none; font-size: 14px;">
+                                                        <i>Đã nhận được hàng</i>
+                                                    </button>
                                                 </a>
-                                            @elseif($dh->trang_thai == 1)
-                                                <a href="{{ route('user.purchase-cancel' , $dh->id) }}" class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px;">
-                                                    <i>Xác Nhận Hủy Đơn</i>
-                                                </a>
-                                            @elseif($dh->trang_thai == 2)
-                                                @if($dh->pttt == 'COD')
-                                                    <p class="text-black"><i>Thanh toán khi nhận hàng</i> <u>{{number_format($dh->tong_dh, 0, '','.');}} đ</u></p>
-                                                @else
-                                                <p class="text-black"><i>Thanh toán khi nhận hàng</i> <u>0đ</u></p>
-                                                @endif
-                                            @elseif($dh->trang_thai == 3)
-                                                <button data-bs-toggle="modal" data-bs-target="#exampleModal-{{$dh->id}}" class="border-0 btn-link link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="background: none; font-size: 14px;">
-                                                    <i>Đánh giá</i>
-                                                </button>
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="exampleModal-{{$dh->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <form action="{{ route('user.purchase-reivew') }}" method="post" enctype="multipart/form-data">
-                                                                @csrf
-                                                                @foreach ($purchased as $pc)
-                                                                    @if ($pc->id_dh == $dh->id)
-                                                                        <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
-                                                                        <input type="hidden" name="id_dh" value="{{$dh->id }}">
-                                                                        <input type="hidden" name="id_sp[{{ $pc->id_sp }}]" value="{{$pc->id_sp}}">
-                                                                        <input type="hidden" name="id_ctdh[{{ $pc->id_sp }}]" value="{{$pc->id_ctdh}}">
-                                                                        <div class="modal-header">
-                                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Đánh giá sản phẩm : {{ $pc->ten_sp }}</h1>
-                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <div class="mb-3"> 
-                                                                                <label for="review-content-{{ $pc->id_sp }}" class="form-label">Nội dung đánh giá</label> 
-                                                                                <textarea class="form-control" name="noi_dung[{{ $pc->id_sp }}]" id="review-content-{{ $pc->id_sp }}" rows="3" placeholder="Nhập nội dung đánh giá của bạn"></textarea> 
-                                                                            </div> 
-                                                                            <div class="mb-3"> 
-                                                                                <label for="review-rating-{{ $pc->id_sp }}" class="form-label">Đánh giá sao</label> 
-                                                                                <div class="rating"> 
-                                                                                    <input type="radio" id="star5-{{ $pc->id_sp }}" name="rating[{{ $pc->id_sp }}]" value="5">
-                                                                                    <label for="star5-{{ $pc->id_sp }}" title="Rất tốt">5 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></label> 
-                                                                                    <input type="radio" id="star4-{{ $pc->id_sp }}" name="rating[{{ $pc->id_sp }}]" value="4">
-                                                                                    <label for="star4-{{ $pc->id_sp }}" title="Tốt">4 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></label> 
-                                                                                    <input type="radio" id="star3-{{ $pc->id_sp }}" name="rating[{{ $pc->id_sp }}]" value="3">
-                                                                                    <label for="star3-{{ $pc->id_sp }}" title="Trung bình">3 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></label> 
-                                                                                    <input type="radio" id="star2-{{ $pc->id_sp }}" name="rating[{{ $pc->id_sp }}]" value="2">
-                                                                                    <label for="star2-{{ $pc->id_sp }}" title="Kém">2 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></label> 
-                                                                                    <input type="radio" id="star1-{{ $pc->id_sp }}" name="rating[{{ $pc->id_sp }}]" value="1">
-                                                                                    <label for="star1-{{ $pc->id_sp }}" title="Rất kém">1 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></label> 
-                                                                                </div> 
-                                                                            </div>
-                                                                            <label for="review-rating-{{ $pc->id_sp }}" class="form-label">Hình ảnh về sản phẩm</label>
-                                                                            <div class="input-group mb-3">
-                                                                                <input type="file" name="hinh_dg[{{ $pc->id_sp }}]" class="form-control" id="inputGroupFile01">
-                                                                            </div>
-                                                                        </div>
-                                                                    @endif
-                                                                @endforeach
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                                                                    <button type="submit" class="btn btn-outline-success">Lưu</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @elseif($dh->trang_thai == 4)
-                                            <p class="text-success"><i>Đã đánh giá</i></p>
-                                            @elseif($dh->trang_thai == 5)
-                                                <button class="border-0 btn-link link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="font-size: 14px; background: none;"><i>Mua lại</i></button>
                                             @endif
                                         </div>
                                         <div class="col-7">
