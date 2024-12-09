@@ -17,18 +17,20 @@ Quản Lý Tài Khoản
                      <div class="table-responsive">
                         <div class="row justify-content-between">
                            <form id="searchForm" action="{{ route('tai-khoan.index') }}" method="GET">
-                                 <div class="row">
-                                    <div class="col-auto">
-                                       <select name="is_hidden" class="form-select">
-                                          <option value="0" {{ request('is_hidden') == '0' ? 'selected' : '' }}>Hiện</option>
-                                          <option value="1" {{ request('is_hidden') == '1' ? 'selected' : '' }}>Đã ẩn</option>
-                                          <option value="">Tất cả trạng thái</option>
-                                       </select>
-                                    </div>
-                                    <div class="col-auto">
-                                       <button type="submit" class="btn btn-secondary">Lọc</button>
-                                    </div>
+                              <div class="row">
+                                 <div class="col-auto">
+                                    <select name="is_hidden" class="form-select" onchange="loctrangthai(this.value)">
+                                       <option value="0" {{ request('is_hidden') == '0' ? 'selected' : '' }}>Hiện</option>
+                                       <option value="1" {{ request('is_hidden') == '1' ? 'selected' : '' }}>Đã ẩn</option>
+                                       <option value="" {{ request('is_hidden') === null ? 'selected' : '' }}>Tất cả trạng thái</option>
+                                    </select>
                                  </div>
+                                 <script>
+                                    function loctrangthai(trang_thai) {
+                                       document.location = `/admin/tai-khoan-kh?is_hidden=${trang_thai}`;
+                                    }
+                                 </script>
+                              </div>   
                            </form>
                         </div>
                         <table id="user-list-table" class="table table-striped table-bordered mt-4" role="grid" aria-describedby="user-list-page-info">

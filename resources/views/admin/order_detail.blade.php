@@ -15,47 +15,50 @@
                   </div>
                </div>
                <div class="iq-card-body">
-                     <div class="table-responsive">
-                        <div class="card-body">
-                           <p><strong>Người Mua:</strong> {{ $donHang->user->name }}</p>
-                           <p><strong>Địa Chỉ:</strong> {{ $donHang->diaChi->ho_ten ?? "NULL"}} | {{ $donHang->diaChi->phone ?? "NULL"}} | {{ $donHang->diaChi->dc_chi_tiet ?? "NULL"}} , {{ $donHang->diaChi->qh ?? "NULL"}} , {{ $donHang->diaChi->thanh_pho ?? "NULL"}}</p>
-                           <p><strong>Thời Điểm Mua:</strong> {{ \Carbon\Carbon::parse($donHang->thoi_diem_mua_hang)->format('d/m/Y H:i') }}</p>
-                           <p><strong>Tổng Tiền:</strong> {{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</p>
-                           <p><strong>Phương Thức Thanh Toán:</strong> {{ $donHang->pttt }}</p>
-                           <p><strong>Trạng Thái:</strong>
-                              @if ($donHang->trang_thai == 0)
-                                 <span class="btn bg-warning">Chờ xử lý</span>
-                              @elseif ($donHang->trang_thai == 1)
-                                 <span class="btn bg-primary">Đã xử lý</span>
-                              @elseif ($donHang->trang_thai == 2)
-                                 <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
-                              @elseif ($donHang->trang_thai == 3)
-                                 <span class="btn bg-success">Giao hàng thành công</span>
-                              @elseif ($donHang->trang_thai == 4)
-                                 <span class="btn bg-danger">Đã hủy</span>
-                              @endif
-                           </p>
-                           <!-- Form cập nhật trạng thái -->
-                           <form action="{{ route('don-hang.update-trang-thai', $donHang->id) }}" method="POST">
-                                 @csrf
-                                 @method('PUT')
-                                 <label for="trang_thai" class="mb-3"><strong>Thay Đổi Trạng Thái:</strong></label>
-                                 <div class="row">
-                                    <div class="col-md-2 mb-3" >
-                                       <select name="trang_thai" id="trang_thai" class="form-control">
-                                          <option value="1" {{ $donHang->trang_thai == '1' ? 'selected' : '' }}>Đã xử lý</option>
-                                          <option value="2" {{ $donHang->trang_thai == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
-                                          <option value="3" {{ $donHang->trang_thai == '3' ? 'selected' : '' }}>Đã giao thành công</option>
-                                          <option value="5" {{ $donHang->trang_thai == '5' ? 'selected' : '' }}>Đã hủy</option>
-                                       </select>
-                                    </div>
-                                    <div class="col-md-2 mb-3" >
-                                       <button type="submit" class="btn btn-outline-primary">Cập Nhật</button>
-                                    </div>
-                                 </div>
-                           </form>
-                        </div>
+                  <div class="table-responsive">
+                     <div class="card-body">
+                        <p><strong>Người Mua:</strong> {{ $donHang->user->name }}</p>
+                        <p><strong>Địa Chỉ:</strong> {{ $donHang->diaChi->ho_ten ?? "NULL"}} | {{ $donHang->diaChi->phone ?? "NULL"}} | {{ $donHang->diaChi->dc_chi_tiet ?? "NULL"}} , {{ $donHang->diaChi->qh ?? "NULL"}} , {{ $donHang->diaChi->thanh_pho ?? "NULL"}}</p>
+                        <p><strong>Thời Điểm Mua:</strong> {{ \Carbon\Carbon::parse($donHang->thoi_diem_mua_hang)->format('d/m/Y H:i') }}</p>
+                        <p><strong>Tổng Tiền:</strong> {{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</p>
+                        <p><strong>Phương Thức Thanh Toán:</strong> {{ $donHang->pttt }}</p>
+                        <p><strong>Trạng Thái:</strong>
+                           @if ($donHang->trang_thai == 0)
+                              <span class="btn bg-warning">Chờ xử lý</span>
+                           @elseif ($donHang->trang_thai == 1)
+                              <span class="btn bg-primary">Đã xử lý</span>
+                           @elseif ($donHang->trang_thai == 2)
+                              <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
+                           @elseif ($donHang->trang_thai == 3)
+                              <span class="btn bg-success">Đã giao thành công</span>
+                           @elseif ($donHang->trang_thai == 4)
+                              <span class="btn bg-dark">Đã đánh giá</span>
+                           @elseif ($donHang->trang_thai == 5)
+                              <span class="btn bg-danger">Đã hủy</span>
+                           @endif
+                        </p>
+                        <!-- Form cập nhật trạng thái -->
+                        <form action="{{ route('don-hang.update-trang-thai', $donHang->id) }}" method="POST">
+                           @csrf
+                           @method('PUT')
+                           <label for="trang_thai" class="mb-3"><strong>Thay Đổi Trạng Thái:</strong></label>
+                           <div class="row">
+                              <div class="col-md-2 mb-3" >
+                                 <select name="trang_thai" id="trang_thai" class="form-control">
+                                    <option value="">Chọn trạng thái</option>
+                                    <option value="1" {{ $donHang->trang_thai == '1' ? 'selected' : '' }}>Đã xử lý</option>
+                                    <option value="2" {{ $donHang->trang_thai == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
+                                    <option value="3" {{ $donHang->trang_thai == '3' ? 'selected' : '' }}>Đã giao thành công</option>
+                                    <option value="5" {{ $donHang->trang_thai == '5' ? 'selected' : '' }}>Đã hủy</option>
+                                 </select>
+                              </div>
+                              <div class="col-md-2 mb-3" >
+                                 <button type="submit" class="btn btn-outline-primary">Cập Nhật</button>
+                              </div>
+                           </div>
+                        </form>
                      </div>
+                  </div>
                </div>
             </div>
          </div>

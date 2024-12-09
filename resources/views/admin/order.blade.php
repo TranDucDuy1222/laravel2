@@ -20,18 +20,18 @@ Quản lý đơn hàng - TrendyU
                            <div class="row">
                               <div class="col-auto">
                                  <select name="trang_thai" class="form-select" onchange="loctrangthai(this.value)">
-                                    <option value="">Tất cả trạng thái</option>
                                     <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Chờ xử lý</option>
                                     <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Đã xử lý</option>
                                     <option value="2" {{ request('trang_thai') == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
                                     <option value="3" {{ request('trang_thai') == '3' ? 'selected' : '' }}>Đã giao thành công</option>
                                     <option value="4" {{ request('trang_thai') == '4' ? 'selected' : '' }}>Đã đánh giá</option>
                                     <option value="5" {{ request('trang_thai') == '5' ? 'selected' : '' }}>Đã hủy</option>
+                                    <option value="" {{ request('trang_thai') === null ? 'selected' : '' }}>Tất cả trạng thái</option>
                                  </select>
                               </div>
                               <script>
                                  function loctrangthai(trang_thai) {
-                                       document.location = `/admin/don-hang?trang_thai=${trang_thai}`;
+                                    document.location = `/admin/don-hang?trang_thai=${trang_thai}`;
                                  }
                               </script>
                            </div>
