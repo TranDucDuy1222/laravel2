@@ -15,9 +15,9 @@ class AdminDonHangController extends AdminController
         $query = DonHang::query();
 
         // Chỉ hiển thị các đơn hàng có trạng thái "Chưa xử lý"
-        if (!$request->has('trang_thai')) {
-            $query->where('trang_thai', 0);
-        } 
+        // if (!$request->has('trang_thai')) {
+        //     $query->where('trang_thai', 0);
+        // } 
         if ($request->filled('trang_thai')) {
             $query->where('trang_thai', $request->trang_thai);
         }
@@ -43,13 +43,13 @@ class AdminDonHangController extends AdminController
         $donHang->trang_thai = $request->trang_thai;
         $donHang->save();
     
-        return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
+        return redirect()->back()->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
     }
 
     public function updateTrangThai(Request $request, $id)
 {
     $request->validate([
-        'trang_thai' => 'required|integer|in:1,2,3', // Cập nhật các trạng thái hợp lệ là 1, 2, 3
+        'trang_thai' => 'required|integer|in:1,2,3,5', // Cập nhật các trạng thái hợp lệ là 1, 2, 3
     ]);
 
     $donHang = DonHang::findOrFail($id);

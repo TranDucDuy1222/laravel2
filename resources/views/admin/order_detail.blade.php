@@ -45,7 +45,8 @@
                                        <select name="trang_thai" id="trang_thai" class="form-control">
                                           <option value="1" {{ $donHang->trang_thai == '1' ? 'selected' : '' }}>Đã xử lý</option>
                                           <option value="2" {{ $donHang->trang_thai == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
-                                          <option value="3" {{ $donHang->trang_thai == '3' ? 'selected' : '' }}>Giao hàng thành công</option>
+                                          <option value="3" {{ $donHang->trang_thai == '3' ? 'selected' : '' }}>Đã giao thành công</option>
+                                          <option value="5" {{ $donHang->trang_thai == '5' ? 'selected' : '' }}>Đã hủy</option>
                                        </select>
                                     </div>
                                     <div class="col-md-2 mb-3" >

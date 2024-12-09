@@ -18,19 +18,22 @@ Quản lý đơn hàng - TrendyU
                      <div class="row justify-content-between">
                         <form id="searchForm" action="{{ route('don-hang.index') }}" method="GET">
                            <div class="row">
-                                 <div class="col-auto">
-                                    <select name="trang_thai" class="form-select">
-                                       <option value="">Tất cả trạng thái</option>
-                                       <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Chờ xử lý</option>
-                                       <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Đã xử lý</option>
-                                       <option value="2" {{ request('trang_thai') == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
-                                       <option value="3" {{ request('trang_thai') == '3' ? 'selected' : '' }}>Giao hàng thành công</option>
-                                       <option value="4" {{ request('trang_thai') == '4' ? 'selected' : '' }}>Đã hủy</option>
-                                    </select>
-                                 </div>
-                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-secondary">Lọc</button>
-                                 </div>
+                              <div class="col-auto">
+                                 <select name="trang_thai" class="form-select" onchange="loctrangthai(this.value)">
+                                    <option value="">Tất cả trạng thái</option>
+                                    <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Chờ xử lý</option>
+                                    <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Đã xử lý</option>
+                                    <option value="2" {{ request('trang_thai') == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
+                                    <option value="3" {{ request('trang_thai') == '3' ? 'selected' : '' }}>Đã giao thành công</option>
+                                    <option value="4" {{ request('trang_thai') == '4' ? 'selected' : '' }}>Đã đánh giá</option>
+                                    <option value="5" {{ request('trang_thai') == '5' ? 'selected' : '' }}>Đã hủy</option>
+                                 </select>
+                              </div>
+                              <script>
+                                 function loctrangthai(trang_thai) {
+                                       document.location = `/admin/don-hang?trang_thai=${trang_thai}`;
+                                 }
+                              </script>
                            </div>
                         </form>
                         </div>
@@ -59,7 +62,7 @@ Quản lý đơn hàng - TrendyU
                                        @if ($donHang->trang_thai == 0)
                                         <span class="btn bg-warning">Chờ xử lý</span>
                                         @elseif ($donHang->trang_thai == 1)
-                                        <span class="btn bg-primary">Đã xác nhận đơn hàng</span>
+                                        <span class="btn bg-primary">Đã xử lý</span>
                                         @elseif ($donHang->trang_thai == 2)
                                         <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
                                         @elseif ($donHang->trang_thai == 3)
