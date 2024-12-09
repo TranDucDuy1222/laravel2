@@ -145,11 +145,10 @@ Thông tin tài khoản
                             </div>
                             <div class="col-md-4">
                                 <div class="d-flex justify-content-end align-items-center">
-                                    <button class="btn btn-link p-0" style="height: 21px" data-bs-toggle="modal"
+                                    <button class="btn btn-link p-0 align-self-center" style="height: 21px;" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal{{ $dc->id }}">
                                         Chỉnh sửa
                                     </button>
-
                                     <!-- form chỉnh sửa địa chỉ -->
                                     <div class="modal fade" id="exampleModal{{ $dc->id }}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -198,15 +197,14 @@ Thông tin tài khoản
                                         </div>
                                     </div>
                                     <span style="font-size: 14px; height: 15px;" class="mx-1"> | </span>
-                                    <form action="{{ route('xoa-dia-chi', $dc->id) }}" method="POST" style="display: inline; height: 21px;">
+                                    <form class="d-flex justify-content-end align-items-center" action="{{ route('xoa-dia-chi', $dc->id) }}" method="POST" style="display: inline; height: 21px; ">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link p-0">
+                                        <button type="submit" class="btn btn-link p-0 align-self-center" style="height: 21px;">
                                             Xóa
                                         </button>
                                     </form>
                                 </div>
-
                                 <div class="d-flex justify-content-end">
                                     <button class="btn btn-outline-dark mt-2" style="font-size: 14px;">Thiết lập mặc
                                         định </button>

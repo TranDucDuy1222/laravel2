@@ -106,13 +106,13 @@ Giỏ Hàng - Trendy U
                                                 <div class="col-10">
                                                     <div class="row">
                                                         <div class="col-lg-5 col-sm-12">
-                                                            <div class="row py-4">
-                                                                <div class="col-5">
-                                                                    <img class="h-100 w-100"
+                                                            <div class="row py-4 d-flex align-items-stretch ">
+                                                                <div class="col-3 custom-img-wrap">
+                                                                    <img class=""
                                                                         src="{{ asset('/uploads/product/' . $item->sanPham->hinh) }}"
                                                                         alt="{{ $item->sanPham->ten_sp }}">
                                                                 </div>
-                                                                <div class="table-p__info col-7">
+                                                                <div class="table-p__info col-9">
                                                                     <span class="table-p__name">
                                                                         <a href="{{ route('product.detail', $item->sanPham->id) }}">{{ $item->sanPham->ten_sp }}</a>
                                                                     </span>

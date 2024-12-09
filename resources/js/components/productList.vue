@@ -90,7 +90,7 @@
         Chưa có sản phẩm trong danh mục này.
       </div>
       <div v-else class="row">
-        <div v-for="product in filteredProductsByColorAndSize" :key="product.id" class="col-lg-3 col-md-4 col-sm-6 col-6 mb-3">
+        <div v-for="product in paginatedProducts" :key="product.id" class="col-lg-3 col-md-4 col-sm-6 col-6 mb-3">
           <div class="product-short">
             <div :class="['product-short__container', { 'out-stock': product.trang_thai === 1 }]">
               <div class="card">
@@ -139,6 +139,20 @@
           </div>
         </div>
       </div>
+      <!-- Pagination -->
+      <nav aria-label="Page navigation example" v-if="shouldShowPagination">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
+          </li>
+          <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: page === currentPage }">
+            <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </template>
@@ -155,6 +169,9 @@ export default {
       selectedColor: '', // Màu sắc được chọn
       selectedSize: '', // Kích thước 
       sortOrder: 'newest', // Mặc định sắp xếp theo mới nhất
+      currentPage: 1, // Trang hiện tại
+      itemsPerPage: 12, // Số lượng sản phẩm mỗi trang
+      totalPages: 0, // Tổng số trang
     };
   },
   computed: { 
@@ -198,7 +215,8 @@ export default {
         'Xám': 'border-secondary bg-secondary',
         'Hồng': 'bg-pink',
         'Xanh Lá': 'border-success bg-success',
-        'Nâu':'bg-brown'
+        'Nâu':'bg-brown',
+        'Be' : 'bg-be',
       };
     },
     colorNames() {
@@ -211,8 +229,19 @@ export default {
         'Xám': 'Xám',
         'Hồng': 'Hồng',
         'Xanh Lá': 'Xanh Lá',
-        'Nâu': 'Nâu'
+        'Nâu': 'Nâu',
+        'Be' : 'Be',
       };
+    },
+    paginatedProducts() {
+      console.log(`Current Page: ${this.currentPage}`);
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      console.log(`Displaying products from ${start} to ${end}`);
+      return this.filteredProductsByColorAndSize.slice(start, end);
+    },
+    shouldShowPagination() { 
+      return this.filteredProductsByColorAndSize.length > this.itemsPerPage; 
     }
   },
   mounted() {
@@ -225,6 +254,7 @@ export default {
         .then(response => {
           this.products = response.data.list_product;
           this.danh_mucs = response.data.danh_mucs;
+          this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
           this.sortProducts(this.sortOrder); 
         })
         .catch(error => {
@@ -253,15 +283,19 @@ export default {
     },
     selectColor(color) {
       this.selectedColor = color;
+      this.currentPage = 1;
     },
     selectSize(size) {
       this.selectedSize = size;
+      this.currentPage = 1;
     },
     removeColorFilter() { 
       this.selectedColor = ''; 
+      this.currentPage = 1;
     }, 
     removeSizeFilter() { 
-      this.selectedSize = ''; 
+      this.selectedSize = '';
+      this.currentPage = 1; 
     },
     formattedPrice(product) {
       const gianew = product.gia_km > 0 ? product.gia_km : product.gia;
@@ -283,6 +317,12 @@ export default {
     navigateToCategory(slug) { 
       window.location.href = `/danh-muc-san-pham/${slug}`;
     },
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        console.log(`Changing to page: ${page}`);
+        this.currentPage = page;
+      }
+    }
   }
 };
 </script>
@@ -299,5 +339,9 @@ export default {
   .bg-pink{
     color: pink;
     background-color: pink;
+  }
+  .bg-be{
+    color: antiquewhite;
+    background-color:  antiquewhite;
   }
 </style>

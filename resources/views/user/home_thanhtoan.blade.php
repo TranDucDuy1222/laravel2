@@ -85,13 +85,13 @@
                                         @foreach($pays as $item)
                                         <div class="row">
                                             <div class="col-lg-6 col-sm-12">
-                                                <div class="row py-4">
-                                                    <div class="col-5">
-                                                        <img class="h-100 w-100"
+                                                <div class="row py-4 d-flex align-items-stretch">
+                                                    <div class="col-3 custom-img-wrap">
+                                                        <img class=""
                                                             src="{{ asset('/uploads/product/' . $item->sanPham->hinh) }}"
                                                             alt="{{ $item->sanPham->ten_sp }}">
                                                     </div>
-                                                    <div class="table-p__info col-7">
+                                                    <div class="table-p__info col-9">
                                                         <span class="table-p__name">
                                                             <a
                                                                 href="{{ route('product.detail', $item->sanPham->id) }}">{{ $item->sanPham->ten_sp }}</a>
@@ -287,14 +287,6 @@
                                 <a class="route-box__link" href="{{url('/loai-san-pham/tat-ca-san-pham')}}">
                                     <i class="fas fa-long-arrow-alt-left"></i>
                                     <span>Tiếp tục mua sắm</span>
-                                </a>
-                            </div>
-                            <div class="route-box__g2">
-                                <a class="route-box__link" href=""><i class="fas fa-trash"></i>
-                                    <span>Xóa</span>
-                                </a>
-                                <a class="route-box__link" href=""><i class="fas fa-sync"></i>
-                                    <span>Cập nhật</span>
                                 </a>
                             </div>
                         </div>

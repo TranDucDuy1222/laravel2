@@ -1,4 +1,12 @@
-#img-cart{
-    width: 80px;
-    height: 80px;
+.custom-img-wrap {
+    display: flex;
+    align-items: center; /* Căn giữa ảnh theo chiều dọc */
+    justify-content: center; /* Căn giữa ảnh theo chiều ngang */
+    height: 100%; /* Đảm bảo chiều cao 100% của thẻ cha */
+    overflow: hidden; /* Ẩn phần ảnh thừa nếu có */
+}
+
+.custom-img-wrap img {
+    height: 100px; /* Chiều cao 100% của thẻ cha */
+    width: 100%; /* Chiều rộng 100% của thẻ cha */
 }

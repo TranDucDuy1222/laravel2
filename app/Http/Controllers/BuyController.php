@@ -62,15 +62,16 @@ class BuyController extends Controller
         return redirect()->route('cart.gio-hang')->with('thongbao', 'Sản phẩm đã được thêm vào giỏ hàng.');
     }
 
-    public function hiengiohang()
+    // Phương thức mới để cập nhật giỏ hàng mà không trả về view
+    public function capnhatGioHangClick()
     {
         $userId = Auth::id();
         $gioHangs = GioHang::with(['sanPham', 'size'])
                         ->where('user_id', $userId)
                         ->get();
-    
+
         $outOfStockItems = []; 
-    
+
         // Kiểm tra số lượng và cập nhật trạng thái sản phẩm 
         foreach ($gioHangs as $gioHang) {
             if ($gioHang->size->so_luong === 0) {
@@ -82,7 +83,7 @@ class BuyController extends Controller
                 $gioHang->so_luong = $gioHang->size->so_luong; 
                 $gioHang->save();
                 $outOfStockItems[] = $gioHang; 
-            }else { 
+            } else { 
                 // Nếu số lượng thuộc size đó đã được cập nhật mới, chuyển status thành 0 
                 if ($gioHang->status == 1 && $gioHang->so_luong <= $gioHang->size->so_luong) { 
                     $gioHang->status = 0; 
@@ -90,20 +91,28 @@ class BuyController extends Controller
                 } 
             }
         }
-    
+
         // Sắp xếp sản phẩm theo trạng thái: status 0 trước, status 1 sau
         $gioHangs = $gioHangs->sortBy('status');
-    
+
         // Hiển thị sản phẩm bằng session 
         session(['carts' => $gioHangs]);
-    
+
         // Nếu có sản phẩm hết hàng hiển thị thông báo
         if (!empty($outOfStockItems)) {
             session()->flash('error', 'Một số sản phẩm trong giỏ hàng không còn đủ số lượng, số lượng đã được cập nhật.');
         }
-    
+    }
+
+    // Phương thức hiển thị giỏ hàng
+    public function hiengiohang()
+    {
+        $this->capnhatGioHang(Auth::id()); // Gọi phương thức cập nhật giỏ hàng
+
+        // Trả về view để hiển thị giỏ hàng
         return view('user.home_giohang');
-    }    
+    }
+  
     
     public function xoasptronggio($idsp)
     {

@@ -121,25 +121,15 @@ Sản phẩm
                                        <div class="form-group">
                                           <label for="" class="form-label fw-semibold">Ảnh</label>
                                           <a href="javascript:void();" class="">
-<<<<<<< HEAD
                                              <input name="hinh" class="file-up form-control mb-3" type="file" accept="image/*">
                                              <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
                                           </a>
-=======
-                                          <input name="hinh" class="file-up form-control mb-3" type="file" accept="image/*">
-                                          <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
-                                          </a>                                       
->>>>>>> da811aaa324a5e7ba12f4f1bd395f92ab6085c2f
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
                                           <label for="" class="form-label fw-semibold">Ngày tạo</label>
-<<<<<<< HEAD
                                           <input name="ngay" type="date" value="{{$sp->ngay}}" class="form-control shadow-none border-primary" required>     
-=======
-                                          <input name="ngay" type="date" value="{{$sp->ngay}}" class="form-control shadow-none border-primary" required> 
->>>>>>> da811aaa324a5e7ba12f4f1bd395f92ab6085c2f
                                        </div>
                                     </div>
                                  </div>
