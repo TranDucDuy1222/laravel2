@@ -307,7 +307,7 @@ function showToastGH(message) {
         let total = 0;
         let count = 0;
         document.querySelectorAll('input[name="selected_products[]"]:checked').forEach(checkbox => {
-            const productRow = checkbox.closest('tr');
+            const productRow = checkbox.closest('.row');
             const priceElement = productRow.querySelector('.item-total-price .table-p__price');
             const price = parseInt(priceElement.textContent.replace(/\D/g, ''));
             total += price;
