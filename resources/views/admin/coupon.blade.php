@@ -25,13 +25,18 @@ Mã giảm giá
                      <div class="row justify-content-between">
                         <form id="searchForm" action="/admin/san-pham" method="GET">
                            <div class="row">
-                                 <div class="col-auto">
-                                    <select name="type" class="form-select">
-                                       <option value="">Tất cả loại mã</option>
-                                       <option value="0" {{ request('type') == '0' ? 'selected' : '' }}>Mã dùng 1 lần</option>
-                                       <option value="1" {{ request('type') == '1' ? 'selected' : '' }}>Mã dùng nhiều lần</option>
-                                    </select>
-                                 </div>
+                              <div class="col-auto">
+                                 <select name="type" class="form-select"  onchange="locloai(this.value)">
+                                    <option value="">Tất cả loại mã</option>
+                                    <option value="0" {{ request('type') == '0' ? 'selected' : '' }}>Mã dùng 1 lần</option>
+                                    <option value="1" {{ request('type') == '1' ? 'selected' : '' }}>Mã dùng nhiều lần</option>
+                                 </select>
+                              </div>
+                              <script>
+                                 function locloai(loai) {
+                                       document.location = `/admin/magiamgia?type=${loai}`;
+                                 }
+                              </script>
                            </div>
                         </form>
                         </div>
