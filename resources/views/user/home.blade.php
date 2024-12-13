@@ -111,7 +111,7 @@ Trang Chủ - TrendyU
                                                                     onerror="this.src='{{ asset('/uploads') }}'"
                                                                     style="max-height: 295px;" alt="" class=" img-fluid">
                                                                 @if ($item->gia_km > 0)
-                                                                    <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                    <img src="{{ asset('/uploads/logo/'. optional($settings)->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                 @endif
                                                             </a>
                                                         @elseif ($item->trang_thai == 3)
@@ -241,7 +241,7 @@ Trang Chủ - TrendyU
                                                                                 onerror="this.src='{{ asset('/uploads') }}'"
                                                                                 style="max-height: 295px;" alt="" class="img-fluid ">
                                                                             @if ($item->gia_km > 0)
-                                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                                <img src="{{ asset('/uploads/logo/'. optional($settings)->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                             @endif
                                                                         </a>
                                                                         <div class="card-body text-center">
@@ -294,7 +294,7 @@ Trang Chủ - TrendyU
                                                                                 onerror="this.src='{{ asset('/uploads') }}'"
                                                                                 style="max-height: 295px;" alt="" class="img-fluid ">
                                                                             @if ($item->gia_km > 0)
-                                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                                <img src="{{ asset('/uploads/logo/'. optional($settings)->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                             @endif
                                                                         </a>
                                                                         <div class="card-body text-center">
@@ -422,7 +422,7 @@ Trang Chủ - TrendyU
                         <div class="col-lg-4 position-relative p-0">
                             <a href="{{ route('loai-san-pham' ,'giam-gia') }}" class="i3-banner rounded-5">
                                 <div class="aspect aspect--bg-grey-fb aspect--square ">
-                                    <img src="{{ asset('/uploads/logo/' . $settings->banner_dung_sale) }}" alt="" class="aspect__img i3-banner__img w-100 h-100">
+                                    <img src="{{ asset('/uploads/logo/' . optional($settings)->banner_dung_sale) }}" alt="" class="aspect__img i3-banner__img w-100 h-100">
                                 </div>
                             </a>
                             <div class="position-absolute bottom-0 start-50 translate-middle">
@@ -448,7 +448,7 @@ Trang Chủ - TrendyU
                                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                     onerror="this.src='{{ asset('/uploads') }}'"
                                                                     style="max-height: 295px;" alt="" class="img-fluid">
-                                                                    <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                    <img src="{{ asset('/uploads/logo/'. optional($settings)->logo_sale ) }}" style="" alt="" class="img-sale">
                                                             </a>
                                                             <div class="card-body text-center">
                                                                 <a href="">
@@ -583,7 +583,7 @@ Trang Chủ - TrendyU
                                                                 onerror="this.src='{{ asset('/uploads') }}'"
                                                                 style="max-height: 295px;" alt="" class="img-fluid">
                                                             @if ($item->gia_km > 0)
-                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                <img src="{{ asset('/uploads/logo/'. optional($settings)->logo_sale ) }}" style="" alt="" class="img-sale">
                                                             @endif
                                                         </a>
                                                         <div class="card-body text-center">
@@ -636,7 +636,7 @@ Trang Chủ - TrendyU
                                                                 onerror="this.src='{{ asset('/uploads') }}'"
                                                                 style="max-height: 295px;" alt="" class="img-fluid">
                                                             @if ($item->gia_km > 0)
-                                                                <img src="{{ asset('/uploads/logo/'. $settings->logo_sale ) }}" style="" alt="" class="img-sale">
+                                                                <img src="{{ asset('/uploads/logo/'. optional($settings)->logo_sale ) }}" style="" alt="" class="img-sale">
                                                             @endif
                                                         </a>
                                                         <div class="card-body text-center">
@@ -737,7 +737,7 @@ Trang Chủ - TrendyU
                             <div class="col-lg-3 position-relative p-0">
                                 <a class="i3-banner rounded-5">
                                     <div class="aspect aspect--bg-grey-fb aspect--square ">
-                                        <img src="{{ asset('/uploads/logo/' . $settings->banner_dung_cms) }}" alt="" class="aspect__img i3-banner__img w-100 h-100">
+                                        <img src="{{ asset('/uploads/logo/' . optional($settings)->banner_dung_cms) }}" alt="" class="aspect__img i3-banner__img w-100 h-100">
                                     </div>
                                 </a>
                             </div>

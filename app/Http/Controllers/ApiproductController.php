@@ -18,17 +18,16 @@ class ApiproductController extends Controller
         // Kiểm tra slug để xác định hành động
         if ($slug == 'tat-ca-san-pham') {
             $title = 'Tất cả sản phẩm';
-        } 
+        }
         // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
         else if ($slug == 'giam-gia') {
             $title = 'Giảm giá';
-        } 
-        else{
-            $category = Loai::where('slug', $slug)->first(); 
-            if ($category) { 
-                $title = $category->ten_loai; 
-            } else { 
-                return back()->with('thongbao', 'Loại sản phẩm không tồn tại.'); 
+        } else {
+            $category = Loai::where('slug', $slug)->first();
+            if ($category) {
+                $title = $category->ten_loai;
+            } else {
+                return back()->with('thongbao', 'Loại sản phẩm không tồn tại.');
             }
         }
 
@@ -43,26 +42,26 @@ class ApiproductController extends Controller
         // Kiểm tra slug để xác định hành động
         if ($slug === 'tat-ca-san-pham') {
             $list_product = SanPham::with('sizes')->get();
-        } 
+        }
         // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
         else if ($slug === 'giam-gia') {
             $list_product = SanPham::with('sizes')->where('gia_km', '>', 0)->get();
         }
         // Lọc sản phẩm theo loại khác dựa trên slug 
-        else { 
-            $loai = Loai::where('slug', $slug)->first(); 
-            if ($loai) { 
+        else {
+            $loai = Loai::where('slug', $slug)->first();
+            if ($loai) {
                 // Lấy các danh mục thuộc loại đó 
-                $danh_muc = DanhMuc::where('id_loai', $loai->id)->get(); 
+                $danh_muc = DanhMuc::where('id_loai', $loai->id)->get();
                 // Lấy các sản phẩm trong các danh mục đó 
-                $danh_muc_ids = $danh_muc->pluck('id'); 
+                $danh_muc_ids = $danh_muc->pluck('id');
                 $list_product = SanPham::with('sizes')
-                ->whereIn('id_dm', $danh_muc_ids)
-                ->get(); 
-                } else { 
-                    return response()->json(['error' => 'Loại sản phẩm không tồn tại.'], 404); 
-                } 
+                    ->whereIn('id_dm', $danh_muc_ids)
+                    ->get();
+            } else {
+                return response()->json(['error' => 'Loại sản phẩm không tồn tại.'], 404);
             }
+        }
 
         $danh_mucs = DanhMuc::all();
 
@@ -84,7 +83,7 @@ class ApiproductController extends Controller
         $title = $danh_muc->ten_dm;
         $list_product = SanPham::with('sizes')->where('id_dm', $danh_muc->id)->get();
 
-        return view('user.category', ['title'=> $title, 'products' => $list_product, 'slug' => $slug]);
+        return view('user.category', ['title' => $title, 'products' => $list_product, 'slug' => $slug]);
     }
 
     public function api_sanpham_danhmuc(Request $request, $slug)
@@ -95,8 +94,8 @@ class ApiproductController extends Controller
             $list_product = SanPham::with('sizes')->where('id_dm', $danh_muc->id)->get();
             $danh_mucs = DanhMuc::all();
         } else {
-            $list_product = collect(); 
-            $danh_mucs = collect(); 
+            $list_product = collect();
+            $danh_mucs = collect();
         }
 
         return response()->json([
@@ -105,14 +104,15 @@ class ApiproductController extends Controller
         ]);
     }
 
+    // Hiển thị gợi ý sản phẩm khi tìm kiếm
     public function api_tim_kiem(Request $request, $slug)
     {
-        $keyword_slug = Str::slug($slug); 
+        $keyword_slug = Str::slug($slug);
         $products = SanPham::with('sizes')
-        ->where('slug', 'LIKE', '%' . $keyword_slug . '%')
-        ->orWhere('ten_sp', 'LIKE', '%' . $slug . '%')
-        ->get(); 
-        return response()->json([ 'products' => $products ]); 
+            ->where('slug', 'LIKE', '%' . $keyword_slug . '%')
+            ->orWhere('ten_sp', 'LIKE', '%' . $slug . '%')
+            ->get();
+        return response()->json(['products' => $products]);
     }
 
 }

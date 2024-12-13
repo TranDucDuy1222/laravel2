@@ -231,6 +231,7 @@ Quản lý sản phẩm - TrendyU
                     <option value="ao">Áo</option>
                     <option value="quan">Quần</option>
                     <option value="phu-kien">Phụ kiện</option>
+                    <option value="one-size">Một size</option>
                 </select>
             </div>
             <div class="modal-footer">

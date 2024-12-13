@@ -1,6 +1,6 @@
 @extends('admin.layoutadmin')
 @section('title')
-Sản phẩm
+Thêm sản phẩm
 @endsection
 @section('content')
 <div id="content-page" class="content-page">
@@ -71,9 +71,6 @@ Sản phẩm
                                              </option>
                                              @endforeach
                                           </select>
-                                          @error('id_dm')
-                                             <span class="text-danger">{{$message}}</span>
-                                          @enderror
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
@@ -83,9 +80,7 @@ Sản phẩm
                                              <option value="0">Sản Phẩm Đang Kinh Doanh</option>
                                              <option value="2">Sản Phẩm Sắp Về Hàng</option>
                                           </select>
-                                          @error('id_dm')
-                                             <span class="text-danger">{{$message}}</span>
-                                          @enderror
+                                          
                                        </div>
                                     </div>
                                  </div>
@@ -94,18 +89,14 @@ Sản phẩm
                                        <div class="form-group">
                                           <label for="form-product/price" class="form-label fw-semibold">Giá khuyến mãi</label>
                                           <input value="{{old('gia_km')}}" type="number" class="form-control" id="form-product/price" name="gia_km" />
-                                          @error('gia_km')
-                                          <span class="text-danger">{{$message}}</span>
-                                          @enderror
+                                          
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
-                                          <label for="form-product/old-price" class="form-label fw-semibold">Giá cũ</label>
+                                          <label for="form-product/old-price" class="form-label fw-semibold">Giá gốc</label>
                                           <input value="{{old('gia')}}" type="number" class="form-control" id="form-product/old-price" name="gia" required />
-                                          @error('gia')
-                                          <span class="text-danger">{{$message}}</span>
-                                          @enderror
+                                          
                                        </div>
                                     </div>
                                  </div>
@@ -167,7 +158,7 @@ Sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -177,7 +168,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -187,7 +178,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -197,7 +188,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -207,7 +198,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -217,7 +208,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -227,7 +218,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -237,37 +228,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6 mb-3">
-                                          <div class="form-group">
-                                             <input class="form-control"  readonly value="42" name="size_product[]" />
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6 mb-3">
-                                          <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6 mb-3">
-                                          <div class="form-group">
-                                             <input class="form-control"  readonly value="43.5" name="size_product[]" />
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6 mb-3">
-                                          <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6 mb-3">
-                                          <div class="form-group">
-                                             <input class="form-control"  readonly value="43" name="size_product[]" />
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6 mb-3">
-                                          <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                     </div>
@@ -282,7 +243,7 @@ Sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -292,7 +253,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -302,7 +263,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -312,7 +273,7 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="  {{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                     </div>
@@ -327,7 +288,7 @@ Sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -339,7 +300,7 @@ Sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -351,12 +312,33 @@ Sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required />
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                          </div>
+                                       </div>
+                                    </div>
+                                 @elseif(session('selected_option') == 'one-size')
+                                    <div class="row">
+                                       <div class="col-md-6 mb-3">
+                                          <div class="form-group">
+                                             <label for="form-product/size" class="form-label fw-semibold">Kích thước</label>
+                                             <input class="form-control"  readonly value="One size" name="size_product[]" />
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6 mb-3">
+                                          <div class="form-group">
+                                             <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
+                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                           </div>
                                        </div>
                                     </div>
                                  @endif
-                                 
+                                 <div id="containerSize" class="row">
+                                 </div>
+                                 @if(session('selected_option') == 'one-size')
+                                    <div class="text-center">Sản phẩm có 1 size</div>
+                                 @else
+                                    <button id="addSizeButton" class="btn btn-outline-dark " type="button">Thêm size mới</button>
+                                 @endif
                               </div>
                               <button type="submit" name="submit" class="btn btn-primary action-button float-end" value="save" >Thêm sản phẩm</button>
                               <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-end me-3" value="Previous" >Quay lại</button>
@@ -379,29 +361,68 @@ Sản phẩm
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
 <script>
    document.addEventListener('DOMContentLoaded', function () {
-         ClassicEditor.create(document.querySelector('#description'), { language: 'vi' })
-            .then(editor => {
-               const form = document.querySelector('form');
-               const errorDiv = document.querySelector('.errors');
-               errorDiv.style.display = 'none'; // Ẩn thông báo lỗi khi tải trang
+      ClassicEditor.create(document.querySelector('#description'), { language: 'vi' })
+         .then(editor => {
+            const form = document.querySelector('form');
+            const errorDiv = document.querySelector('.errors');
+            errorDiv.style.display = 'none'; // Ẩn thông báo lỗi khi tải trang
 
-               form.addEventListener('submit', function (event) {
-                     // Cập nhật nội dung từ CKEditor vào textarea
-                     document.querySelector('#description').value = editor.getData();
+            form.addEventListener('submit', function (event) {
+                  // Cập nhật nội dung từ CKEditor vào textarea
+                  document.querySelector('#description').value = editor.getData();
 
-                     // Kiểm tra nếu mô tả trống
-                     if (!document.querySelector('#description').value.trim()) {
-                        event.preventDefault();
-                        errorDiv.textContent = 'Yêu cầu nhập mô tả';
-                        errorDiv.style.display = 'block';
-                     } else {
-                        errorDiv.style.display = 'none';
-                     }
-               });
-            })
-            .catch(error => {
-               console.error("Không thể tạo editor", error);
+                  // Kiểm tra nếu mô tả trống
+                  if (!document.querySelector('#description').value.trim()) {
+                     event.preventDefault();
+                     errorDiv.textContent = 'Yêu cầu nhập mô tả';
+                     errorDiv.style.display = 'block';
+                  } else {
+                     errorDiv.style.display = 'none';
+                  }
             });
+
+            // Thêm sự kiện click cho nút button
+            const addButton = document.querySelector('#addSizeButton');
+            addButton.addEventListener('click', function () {
+               const container = document.querySelector('#containerSize');
+
+               // Tạo HTML mới
+               const newSizeInput = document.createElement('div');
+               newSizeInput.className = 'col-md-6 mb-3';
+               newSizeInput.innerHTML = `
+                  <div class="form-group">
+                     <input class="form-control" required name="size_product[]" />
+                  </div>
+               `;
+
+               const newQuantityInput = document.createElement('div');
+               newQuantityInput.className = 'col-md-6 mb-3';
+               newQuantityInput.innerHTML = `
+                  <div class="form-group">
+                     <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                  </div>
+               `;
+
+               // Chèn HTML mới vào container
+               container.appendChild(newSizeInput);
+               container.appendChild(newQuantityInput);
+
+               // Kiểm tra điều kiện đường dẫn
+               const currentURL = window.location.href;
+               if (currentURL.includes('selection=giay')) {
+                  newSizeInput.querySelector('input[name="size_product[]"]').addEventListener('input', function (event) {
+                     // Chỉ cho phép nhập số và dấu chấm
+                     this.value = this.value.replace(/[^0-9.]/g, '');
+                  });
+               }
+            });
+         })
+         .catch(error => {
+            console.error("Không thể tạo editor", error);
+         });
    });
 </script>
+
+
+
 @endsection

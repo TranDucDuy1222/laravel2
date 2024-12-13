@@ -86,6 +86,27 @@ class ProductController extends Controller
         return view('user.detail_product', ['ma_giam_gia' => $ma_giam_gia ,'sldg' => $so_luong_danh_gia, 'relatedpro' => $relatedpro, 'detail' => $detail, 'comment' => $comment, 'size' => $size_arr, 'currentCustomerId' => $currentCustomerId, 'cart' => $cart]);
     }
 
+    // Chuyển trang các sản phẩm liên quan khi tìm kiếm
+    public function ket_qua_tim_kiem(Request $request)
+    {
+        $query = $request->input('tim-kiem');
+        $sanphamsQuery = SanPham::with('danhMuc')
+            ->where('ten_sp', 'like', "%{$query}%")
+            ->orWhere('slug', 'like', "%{$query}%");
+    
+        $sanphams = $sanphamsQuery->get();
+        $sanphamsCount = $sanphamsQuery->count();
+        // Dữ liệu cài đặt 
+        $settings = DB::table('settings')->select('logo_sale' , 'logo_cms' , 'banner_dung_sale' , 'banner_dung_cms')->first();
+        
+// Kiểm tra nếu không có bản ghi hoặc bản ghi không phải là đối tượng 
+if (!$settings || !is_object($settings)) { // Tạo một đối tượng tạm thời với các giá trị mặc định 
+    $settings = (object) [ 'logo_sale' => 'default_logo.png', 'logo_cms' => 'default_cms.png', 'banner_dung_sale' => 'default_banner_sale.png', 'banner_dung_cms' => 'default_banner_cms.png', ]; }
+    
+        return view('user.result_search', compact('settings','sanphams', 'sanphamsCount'));
+    }
+    
+
     
 
 }

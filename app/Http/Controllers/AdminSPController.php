@@ -74,11 +74,18 @@ class AdminSPController extends AdminController
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $hasproduct = false;
         // Kiểm tra xem tên sản phẩm đã tồn tại trong cơ sở dữ liệu hay chưa
         $checkProduct = san_pham::where('ten_sp', $request['ten_sp'])->first();
         if ($checkProduct) {
             return redirect()->back()->with('thongbao', 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.');
+        }
+        // Kiểm tra có size trùng không 
+        $size_products = $request->input('size_product' , []);
+        $so_luongs = $request->input('so_luong' , []);
+        if (count($size_products) !== count(array_unique($size_products))) { 
+            return redirect()->back()->with('errors' , 'Kích thước sản phẩm không được trùng lặp.'); 
         }
         if ($request['ten_sp'] && $request['gia'] && $request['id_dm'] && $request->hasFile('hinh') && $request['mo_ta_ct'] && $request['mo_ta_ngan'] && $request['color']) {
             $obj = new san_pham();
@@ -130,15 +137,13 @@ class AdminSPController extends AdminController
             $hasproduct = true;
         } else {
             $hasproduct = false;
-            return redirect()->back()->with('thongbao', 'Thông tin sản phẩm chưa đầy đủ!');
+            return redirect()->back()->with('errors', 'Thông tin sản phẩm chưa đầy đủ!');
         }
-        $size_products = [];
-        if ($hasproduct && is_array($request['size_product']) && is_array($request['so_luong'])) {
-            $size_products = $request->input('size_product');
-            $so_luongs = $request->input('so_luong');
-            $product_id = $obj->id; // lấy id sản phẩm mới tạo
-            //dd($request->all());
 
+        // Tất cả các điều kiện trên đều đúng thì kiểm tra size và số lượng là mảng thì thêm vào bảng sizes
+        if ($hasproduct && is_array($request['size_product']) && is_array($request['so_luong'])) {
+            $product_id = $obj->id; 
+            
             if (is_array($size_products) && is_array($so_luongs)) {
                 foreach ($size_products as $index => $sizes) {
                     $sizeObj = new Size();
@@ -164,7 +169,9 @@ class AdminSPController extends AdminController
             return redirect('/admin/san-pham');
         }
         $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
-        return view('admin/product_edit', compact(['sp', 'loai_arr', 'sizeProduct']));
+        // Kiểm tra nếu sản phẩm có size "One size" 
+        $one_size = Size::where('id_product', $id)->where('size_product', 'One size')->first();
+        return view('admin/product_edit', compact(['one_size','sp', 'loai_arr', 'sizeProduct']));
     }
 
     public function update(Request $request, string $id)
@@ -246,6 +253,26 @@ class AdminSPController extends AdminController
                     }
                     $sizeObj->save();
                 }
+            }
+            // Kiểm tra và thêm new_size_product nếu không trùng lặp 
+            if ($request->has('new_size_product') && $request->has('new_so_luong')) { 
+                $new_size_products = $request->input('new_size_product', []); 
+                $new_so_luongs = $request->input('new_so_luong', []); 
+                foreach ($new_size_products as $index => $new_size_product) { 
+                    $existingNewSize = $currentSizes->firstWhere('size_product', $new_size_product); 
+                    if (!$existingNewSize) { 
+                        // Thêm mới new_size_product với new_so_luong 
+                        $newSizeObj = new Size(); 
+                        $newSizeObj->size_product = (string) $new_size_product; 
+                        $newSizeObj->so_luong = intval($new_so_luongs[$index]); 
+                        $newSizeObj->id_product = $product_id; 
+                        // Gán id sản phẩm mới tạo vào cột id_product 
+                        $newSizeObj->save(); 
+                    } else { 
+                        // Quay lại với thông báo lỗi nếu new_size_product trùng lặp 
+                        return redirect()->back()->with(['errors' => 'Kích thước sản phẩm mới không được trùng lặp.']); 
+                    } 
+                } 
             }
         } else {
             return redirect()->back()->with('thongbao', 'Vui lòng nhập thông tin số lượng đầy đủ.');

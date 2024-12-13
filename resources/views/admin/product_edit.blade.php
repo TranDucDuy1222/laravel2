@@ -1,6 +1,6 @@
 @extends('admin.layoutadmin')
 @section('title')
-Sản phẩm
+Chỉnh sửa sản phẩm
 @endsection
 @section('content')
 <div id="content-page" class="content-page">
@@ -72,9 +72,7 @@ Sản phẩm
                                              </option>
                                              @endforeach
                                           </select>
-                                          @error('id_dm')
-                                          <span class="text-danger">{{$message}}</span>
-                                          @enderror
+                                          
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
@@ -90,9 +88,7 @@ Sản phẩm
                                           </option>
                                           @endforeach -->   
                                           </select>
-                                          @error('id_dm')
-                                          <span class="text-danger">{{$message}}</span>
-                                          @enderror
+                                          
                                        </div>
                                     </div>
                                  </div>
@@ -101,18 +97,14 @@ Sản phẩm
                                        <div class="form-group">
                                           <label for="form-product/price" class="form-label fw-semibold">Giá khuyến mãi</label>
                                           <input value="{{$sp->gia_km}}" type="number" class="form-control" id="form-product/price" name="gia_km" />
-                                          @error('gia_km')
-                                          <span class="text-danger">{{$message}}</span>
-                                          @enderror
+                                          
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
                                           <label for="form-product/old-price" class="form-label fw-semibold">Giá cũ</label>
                                           <input value="{{$sp->gia}}" type="number" class="form-control" id="form-product/old-price" name="gia" required />
-                                          @error('gia')
-                                          <span class="text-danger">{{$message}}</span>
-                                          @enderror
+                                          
                                        </div>
                                     </div>
                                  </div>
@@ -124,12 +116,6 @@ Sản phẩm
                                              <input name="hinh" class="file-up form-control mb-3" type="file" accept="image/*">
                                              <img class="profile-pic img-fluid" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/img/{{$sp->hinh}}'" alt="profile-pic">
                                           </a>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                       <div class="form-group">
-                                          <label for="" class="form-label fw-semibold">Ngày tạo</label>
-                                          <input name="ngay" type="date" value="{{$sp->ngay}}" class="form-control shadow-none border-primary" required>     
                                        </div>
                                     </div>
                                  </div>
@@ -182,12 +168,7 @@ Sản phẩm
                                     </div>
                                  </div>
                                  @foreach ($sizeProduct as $ssl)
-                                    <div class="row">
-                                       @if ($errors->has('so_luong'))
-                                          <div class="alert alert-danger">
-                                                {{ $errors->first('so_luong') }}
-                                          </div>
-                                       @endif
+                                    <div class="row"> 
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                                 <input type="hidden" name="size_product[]" value="{{ $ssl->size_product }}">
@@ -196,11 +177,18 @@ Sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                                <input value="{{ old('so_luong.' . $loop->index, $ssl->so_luong) }}" type="number" class="form-control" name="so_luong[]" required>
+                                                <input value="{{ old('so_luong.' . $loop->index, $ssl->so_luong) }}" type="number" class="form-control" name="so_luong[]" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  required>
                                           </div>
                                        </div>
                                     </div>
                                  @endforeach
+                                 @if($one_size)
+                                    <div class="text-center">Sản phẩm chỉ có 1 size</div>
+                                 @else
+                                    <div id="containerSize" class="row">
+                                    </div>
+                                    <button id="addSizeButton" class="btn btn-outline-dark " type="button">Thêm size mới</button>
+                                 @endif
                               </div>
                               <button type="submit" class="btn btn-primary action-button float-end">Cập nhật sản phẩm</button>
                               <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-end me-3" value="Previous" >Quay lại</button>
@@ -218,34 +206,70 @@ Sản phẩm
    .ck-editor__editable_inline {
          height: 400px;
    }
-   </style>
-   <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-   <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
+</style>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
 <script>
    document.addEventListener('DOMContentLoaded', function () {
-         ClassicEditor.create(document.querySelector('#description'), { language: 'vi' })
-            .then(editor => {
-               const form = document.querySelector('form');
-               const errorDiv = document.querySelector('.errors');
-               errorDiv.style.display = 'none'; // Ẩn thông báo lỗi khi tải trang
+      ClassicEditor.create(document.querySelector('#description'), { language: 'vi' })
+         .then(editor => {
+            const form = document.querySelector('form');
+            const errorDiv = document.querySelector('.errors');
+            errorDiv.style.display = 'none'; // Ẩn thông báo lỗi khi tải trang
 
-               form.addEventListener('submit', function (event) {
-                     // Cập nhật nội dung từ CKEditor vào textarea
-                     document.querySelector('#description').value = editor.getData();
+            form.addEventListener('submit', function (event) {
+                  // Cập nhật nội dung từ CKEditor vào textarea
+                  document.querySelector('#description').value = editor.getData();
 
-                     // Kiểm tra nếu mô tả trống
-                     if (!document.querySelector('#description').value.trim()) {
-                        event.preventDefault();
-                        errorDiv.textContent = 'Yêu cầu nhập mô tả';
-                        errorDiv.style.display = 'block';
-                     } else {
-                        errorDiv.style.display = 'none';
-                     }
-               });
-            })
-            .catch(error => {
-               console.error("Không thể tạo editor", error);
+                  // Kiểm tra nếu mô tả trống
+                  if (!document.querySelector('#description').value.trim()) {
+                     event.preventDefault();
+                     errorDiv.textContent = 'Yêu cầu nhập mô tả';
+                     errorDiv.style.display = 'block';
+                  } else {
+                     errorDiv.style.display = 'none';
+                  }
             });
+
+            // Thêm sự kiện click cho nút button
+            const addButton = document.querySelector('#addSizeButton');
+            addButton.addEventListener('click', function () {
+               const container = document.querySelector('#containerSize');
+
+               // Tạo HTML mới
+               const newSizeInput = document.createElement('div');
+               newSizeInput.className = 'col-md-6 mb-3';
+               newSizeInput.innerHTML = `
+                  <div class="form-group">
+                     <input class="form-control" required name="new_size_product[]" />
+                  </div>
+               `;
+
+               const newQuantityInput = document.createElement('div');
+               newQuantityInput.className = 'col-md-6 mb-3';
+               newQuantityInput.innerHTML = `
+                  <div class="form-group">
+                     <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="new_so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                  </div>
+               `;
+
+               // Chèn HTML mới vào container
+               container.appendChild(newSizeInput);
+               container.appendChild(newQuantityInput);
+
+               // Kiểm tra điều kiện đường dẫn
+               const currentURL = window.location.href;
+               if (currentURL.includes('selection=giay')) {
+                  newSizeInput.querySelector('input[name="new_size_product[]"]').addEventListener('input', function (event) {
+                     // Chỉ cho phép nhập số và dấu chấm
+                     this.value = this.value.replace(/[^0-9.]/g, '');
+                  });
+               }
+            });
+         })
+         .catch(error => {
+            console.error("Không thể tạo editor", error);
+         });
    });
 </script>
 @endsection

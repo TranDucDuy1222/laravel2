@@ -123,16 +123,29 @@
             </div>
          </div>
          <!-- TOP Nav Bar END -->
-         <!-- Page Content  -->
+         <!-- Thông báo thành công...  -->
          @if(session()->has('thongbao'))
-         <div class="toast show align-items-center text-bg-primary border-0 position-fixed end-0 p-3 z-9" style="top: 100px;" role="alert"
-             aria-live="assertive" aria-atomic="true">
-             <div class="d-flex">
-                 <div class="toast-body">
-                     {!! session('thongbao') !!}
-                 </div>
-                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                     aria-label="Close"></button>
-             </div>
-         </div>
+            <div class="toast show align-items-center text-bg-primary border-0 position-fixed end-0 p-3 z-9" style="top: 100px;" role="alert"
+               aria-live="assertive" aria-atomic="true">
+               <div class="d-flex">
+                  <div class="toast-body">
+                        {!! session('thongbao') !!}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+               </div>
+            </div>
+         @endif
+         <!-- Thông báo lỗi -->
+         @if(session()->has('errors'))
+            <div class="toast show align-items-center text-bg-danger border-0 position-fixed end-0 p-3 z-9" style="top: 100px;" role="alert"
+               aria-live="assertive" aria-atomic="true">
+               <div class="d-flex">
+                  <div class="toast-body">
+                        {!! session('errors') !!}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+               </div>
+            </div>
          @endif

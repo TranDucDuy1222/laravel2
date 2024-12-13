@@ -52,7 +52,7 @@ Route::middleware(['khachhang'])->group(function() {
     
     Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
     Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
-    
+    Route::get('/ket-qua', [ProductController::class, 'ket_qua_tim_kiem'])->name('KQ_tim-kiem');
     
     // Giỏ hàng
     Route::post('/themvaogio/{id}/{soluong?}', [BuyController::class,'themvaogio'])->name('cart.add');
