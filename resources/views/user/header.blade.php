@@ -123,23 +123,25 @@
               <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <ul class="navbar-nav ms-auto ah-list--design2 ah-list--link-color-secondary">
-              <li class="nav-item" style="background: none;">
-                <a class="nav-link fz " href="{{ url('loai-san-pham/tat-ca-san-pham') }}">
-                  <p class="hover-title fz">
-                    Cửa Hàng
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item" style="background: none;">
-                <a class="nav-link fz" href="{{ url('loai-san-pham/giam-gia') }}">
-                  <p class="hover-title fz">
-                    Giảm Giá
-                  </p>
-                </a>
-              </li>
-              @yield('category')
-            </ul>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav ms-auto ah-list--design2 ah-list--link-color-secondary">
+                <li class="nav-item" style="background: none;">
+                  <a class="nav-link fz " href="{{ url('loai-san-pham/tat-ca-san-pham') }}">
+                    <p class="hover-title fz">
+                      Cửa Hàng
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item" style="background: none;">
+                  <a class="nav-link fz" href="{{ url('loai-san-pham/giam-gia') }}">
+                    <p class="hover-title fz">
+                      Giảm Giá
+                    </p>
+                  </a>
+                </li>
+                @yield('category')
+              </ul>
+            </div>
           </div>
         </div>
         <a class="main-logo-small" href="/">
@@ -156,56 +158,57 @@
               <h5 class="offcanvas-title" id="offcanvasExampleLabel3"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <ul class="navbar-nav ms-auto me-lg-3">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <i class="fa-solid fa-user"></i>
-                </a>
-                <ul class="dropdown-menu" id="userDropdown">
-                  @if (Auth::check())
-            <li class="dropdown-item">{{Auth::user()->name}}!</li>
-            <hr>
-            <li><a class="dropdown-item" href="{{ route('user.profile', [Auth::user()->id]) }}">Quản Lý Tài
-              Khoản</a></li>
-            <hr>
-            <li><a class="dropdown-item" href="{{ route('user.purchase', [Auth::user()->id]) }}">Đơn Hàng Đã
-              Mua</a></li>
-            <hr>
-            <li><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
-          @else
-        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
-        <li><a class="dropdown-item" href="/register">Đăng Ký</a></li>
-        <li><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
-      @endif
-                </ul>
-
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link fz dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  Hỗ Trợ
-                </a>
-                <ul class="dropdown-menu" id="userDropdown">
-                  <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
-                  <li><a class="dropdown-item" href="/lien-he">Liên Hệ Chúng Tôi</a></li>
-                  <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
-                  <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
-                  <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>
-                </ul>
-              </li>
-              <li class="nav-item position-relative" style="width: 35px;">
-                <form action="{{ url('/gio-hang') }}" method="POST" id="cartForm" class="nav-link btn btn-link">
-                    @csrf
-                    <button type="submit" class="" style="padding: 0; border: none; background: none;">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ session('totalProducts', 0) }}
-                        </span>
-                    </button>
-                </form>
-              </li>
-            </ul>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav ms-auto me-lg-3">
+                <li class="nav-item dropdown">
+                  <a class="nav-link fz dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-user"></i> Tài khoản
+                  </a>
+                  <ul class="dropdown-menu" id="userDropdown">
+                    @if (Auth::check())
+                      <li class="dropdown-item">{{Auth::user()->name}}!</li>
+                      <hr>
+                      <li><a class="dropdown-item" href="{{ route('user.profile', [Auth::user()->id]) }}">Quản Lý Tài
+                        Khoản</a></li>
+                      <hr>
+                      <li><a class="dropdown-item" href="{{ route('user.purchase', [Auth::user()->id]) }}">Đơn Hàng Đã
+                        Mua</a></li>
+                      <hr>
+                      <li><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
+                    @else
+                      <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+                      <li><a class="dropdown-item" href="/register">Đăng Ký</a></li>
+                      <li><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
+                    @endif
+                  </ul>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link fz dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-headset"></i> Hỗ Trợ
+                  </a>
+                  <ul class="dropdown-menu" id="userDropdown">
+                    <li><a class="dropdown-item" href="#">Địa Chỉ Cửa Hàng</a></li>
+                    <li><a class="dropdown-item" href="/lien-he">Liên Hệ Chúng Tôi</a></li>
+                    <li><a class="dropdown-item" href="#">Giới Thiệu</a></li>
+                    <li><a class="dropdown-item" href="#">Gửi Phản Hồi</a></li>
+                    <li><a class="dropdown-item" href="#">Chính Sách Bán Hàng</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item position-relative" style="width: 35px;">
+                  <form action="{{ url('/gio-hang') }}" method="POST" id="cartForm" class="nav-link btn btn-link">
+                      @csrf
+                      <button type="submit" class="" style="padding: 0; border: none; background: none;">
+                          <i class="fa-solid fa-cart-shopping"></i>
+                          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                              {{ session('totalProducts', 0) }}
+                          </span>
+                      </button>
+                  </form>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
