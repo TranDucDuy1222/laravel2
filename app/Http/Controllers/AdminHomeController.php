@@ -24,9 +24,11 @@ class AdminHomeController extends AdminController
         $dsDH = DB::table('don_hang')
             ->join('users', 'users.id', '=', 'don_hang.id_user')
             ->select('users.name', 'don_hang.*')
-            ->orderBy('thoi_diem_mua_hang', 'DESC')
-            ->limit(5)
+            ->orderBy('id', 'DESC')
+            ->limit(10)
             ->get();
+
+        $topSP = SanPham::orderBy('luot_mua', 'desc')->get(); // 10 sản phẩm bán chạy nhất
 
         $dsKH = DB::table('users')
             ->orderBy('id', 'DESC')
@@ -34,7 +36,7 @@ class AdminHomeController extends AdminController
             ->get();
 
         $dsSP = SanPham::with('sizes')  // Tải các size cùng với sản phẩm
-            ->whereHas('sizes', function($query) {  // Chỉ lấy sản phẩm có size có số lượng nhỏ hơn 5
+            ->whereHas('sizes', function($query) {  // Chỉ lấy sản phẩm có size có số lượng nhỏ hơn 10
                 $query->where('so_luong', '<', 10);
             })
             ->get();
@@ -88,19 +90,22 @@ class AdminHomeController extends AdminController
         // Lấy kiểu lọc
         $filterType = $request->input('filter');
         $query = DonHang::query();
+        $customer = DB::table('users');
 
         if ($filterType === 'day' && $request->input('filter_date')) {
             $query->whereDate('thoi_diem_mua_hang', $request->input('filter_date'));
+            $customer->whereDate('created_at', $date);
         } elseif ($filterType === 'month' && $request->input('filter_month')) {
             $month = Carbon::parse($request->input('filter_month'))->month;
             $year = Carbon::parse($request->input('filter_month'))->year;
-            $query->whereMonth('thoi_diem_mua_hang', $month)
-                ->whereYear('thoi_diem_mua_hang', $year);
+            $query->whereMonth('thoi_diem_mua_hang', $month)->whereYear('thoi_diem_mua_hang', $year);
+            $customer->whereMonth('created_at', $month)->whereYear('created_at', $year);
         } elseif ($filterType === 'year' && $request->input('filter_year')) {
             $query->whereYear('thoi_diem_mua_hang', $request->input('filter_year'));
+            $customer->whereYear('created_at', $year);
         }
         // Tính toán thống kê
-        $newCustomers = DB::table('users')->whereDate('created_at', $request->input('filter_date') ?: now())->count();
+        $newCustomers = $customer->count();
         $orderCount = $query->count();
         $totalRevenue = $query->sum('tong_dh');
         $totalProductsSold = DB::table('chi_tiet_don_hang')
@@ -114,7 +119,7 @@ class AdminHomeController extends AdminController
             ->get();
 
 
-        return view('admin.home', compact('data', 'filter', 'year', 'month', 'dsDH', 'dsKH', 'dsSP','dsDG', 'orderCount', 'totalRevenue', 'totalProductsSold', 'newCustomers', 'orderStatusData', ));
+        return view('admin.home', compact('data', 'filter', 'year', 'month', 'dsDH', 'topSP', 'dsKH', 'dsSP','dsDG', 'orderCount', 'totalRevenue', 'totalProductsSold', 'newCustomers', 'orderStatusData', ));
     }
 
     function login_admin_view(){
