@@ -22,6 +22,11 @@ class AdminDonHangController extends AdminController
             $query->where('trang_thai', $request->trang_thai);
         }
 
+        // Tìm kiếm theo ID
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
+        }
+        
         $donHangs = $query->orderBy('id', 'DESC')->paginate($perpage)->withQueryString();
         return view('admin.order', compact('donHangs'));
  
