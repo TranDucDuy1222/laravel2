@@ -85,6 +85,7 @@ Route::middleware(['khachhang'])->group(function() {
     //Route::post('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
     Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
     Route::get('/purchase-cancel/{id}', [OrderController::class, 'huyDon'])->name('user.purchase-cancel');
+    Route::get('/purchase-confirm/{id}', [OrderController::class, 'xacnhanDonHang'])->name('user.purchase-confirm');
     Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user.purchase-reivew');
     
     //Liên hệ
