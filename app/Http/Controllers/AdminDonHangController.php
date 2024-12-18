@@ -14,6 +14,14 @@ class AdminDonHangController extends AdminController
         $perpage = 15;
         $query = DonHang::query();
 
+        if ($request->filled('id')) {
+            $donHang = DonHang::find($request->id);
+            // Lấy trạng thái của đơn hàng
+            if ($donHang) {
+                $request->merge(['trang_thai' => $donHang->trang_thai]);
+            }
+        }
+
         // Chỉ hiển thị các đơn hàng có trạng thái "Chưa xử lý"
         if (!$request->has('trang_thai')) {
             $query->where('trang_thai', 0);
@@ -21,12 +29,13 @@ class AdminDonHangController extends AdminController
         if ($request->filled('trang_thai')) {
             $query->where('trang_thai', $request->trang_thai);
         }
-
-        $donHangs = $query->orderBy('id', 'ASC')->paginate($perpage)->withQueryString();
         // Tìm kiếm theo ID
         if ($request->filled('id')) {
             $query->where('id', $request->id);
         }
+
+        $donHangs = $query->orderBy('id', 'ASC')->paginate($perpage)->withQueryString();
+        
         $allValid = $donHangs->every(function ($donHang) { 
             return $donHang->trang_thai != 0 && $donHang->trang_thai != 3 && $donHang->trang_thai != 4 && $donHang->trang_thai != 5; 
         });
