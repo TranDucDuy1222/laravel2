@@ -184,7 +184,7 @@ Thống Kê
                             <table id="user-list-table" class="table table-striped table-bordered mt-4" role="grid" aria-describedby="user-list-page-info">
                                 <thead class="shadow-sm sticky-top z-1 bg-white text-center">
                                     <tr>
-                                        <th>ID đơn hàng</th>
+                                        <th>ID</th>
                                         <th>Tên khách hàng</th>
                                         <th>Tổng tiền</th>
                                         <th>Trạng thái</th>
@@ -227,6 +227,54 @@ Thống Kê
                 <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                     <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
+                            <h4 class="card-title">Sản phẩm bán chạy</h4>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('admin/san-pham?trangthai=1')}}" class="btn btn-outline-secondary"><i class="fa-regular fa-eye m-0 p-0"></i></a>
+                        </div>
+                    </div>
+                    <div class="iq-card-body">
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table id="low-stock-products-table" class="table table-striped table-bordered mt-4">
+                                <thead class="shadow-sm sticky-top z-1 bg-white text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng bán</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($topSP as $sp)
+                                        @if ($sp->luot_mua > 100) 
+                                        <tr>
+                                            <td>{{ $sp->id }}</td>
+                                            <td class="text-center">
+                                                <img class="rounded img-fluid avatar-70" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/imgnew/{{$sp->hinh}}'" alt="">
+                                            </td>
+                                            <td>{{ $sp->ten_sp }}</td>
+                                            <td>{{ $sp->luot_mua }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <button type="button" class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#modalSP{{$sp->id}}">
+                                                        Xem chi tiết
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                    <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
                             <h4 class="card-title">Khách hàng mới</h4>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -252,6 +300,54 @@ Thống Kê
                                         <td>{{ \Carbon\Carbon::parse($kh->created_at)->format('H:i d/m/Y') }}</td>
                                         <td><span class="tag tag-success">{{$kh->email}}</span></td>
                                     </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                    <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                            <h4 class="card-title">Sản phẩm ít được quan tâm</h4>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('admin/san-pham?trangthai=1')}}" class="btn btn-outline-secondary"><i class="fa-regular fa-eye m-0 p-0"></i></a>
+                        </div>
+                    </div>
+                    <div class="iq-card-body">
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table id="low-stock-products-table" class="table table-striped table-bordered mt-4">
+                                <thead class="shadow-sm sticky-top z-1 bg-white text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng bán</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($topSP as $sp)
+                                        @if ($sp->luot_mua < 20) 
+                                        <tr>
+                                            <td>{{ $sp->id }}</td>
+                                            <td class="text-center">
+                                                <img class="rounded img-fluid avatar-70" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/imgnew/{{$sp->hinh}}'" alt="">
+                                            </td>
+                                            <td>{{ $sp->ten_sp }}</td>
+                                            <td>{{ $sp->luot_mua }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <button type="button" class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#modalSP{{$sp->id}}">
+                                                        Xem chi tiết
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>
@@ -332,10 +428,9 @@ Thống Kê
                                                 <img class="rounded img-fluid avatar-70" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/imgnew/{{$sp->hinh}}'" alt="">
                                             </td>
                                             <td>{{ $sp->ten_sp }}</td>
-                                            
                                             <td>
                                                 <div class="d-flex justify-content-center">
-                                                    <button type="button" class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$sp->id}}">
+                                                    <button type="button" class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#modalSPsaphet{{$sp->id}}">
                                                         Xem chi tiết
                                                     </button>
                                                 </div>
@@ -375,14 +470,99 @@ Thống Kê
     // Khởi tạo hiển thị khi tải trang
     updateFilterFields();
 </script>
+<!-- Modal xem chi tiết sản phẩm bán chạy và ít quan tâm -->
+@foreach($topSP as $sp)
+   <div class="modal fade" id="modalSP{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="modalSPTitle{{$sp->id}}" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="modalSPTitle{{$sp->id}}">Chi tiết sản phẩm</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <div class="accordion-body text-black">
+               <div class="row">
+                  <div class="col-6">
+                        <img class="rounded img-fluid avatar-70" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/imgnew/{{$sp->hinh}}'" alt="">
+                  </div>
+                  <div class="col-6">
+                     <div class="danh-muc">
+                        <label for="" class="fw-semibold">{{$sp -> ten_sp}}</label>
+                     </div>
+                     <div class="danh-muc">
+                        <label for="">Danh mục: {{$sp -> ten_dm}}</label>
+                     </div>
+                     <div class="mau">
+                           <label for="">Màu: {{$sp -> color}}</label>
+                     </div>
+                     <div class="gia">
+                           <label for="">Giá: <span class="text-bg-dark">{{number_format($sp->gia, 0, ',' , '.' )}} đ</span></label>
+                     </div>
+                     <div class="gia-km">
+                           <label for="">Giá khuyến mãi: <span class="text-danger">{{number_format($sp->gia_km, 0, ',' , '.' )}} đ</span></label>
+                     </div>
+                     <div class="trang-thai">
+                        <label for="">Trạng thái:
+                              @if ($sp -> trang_thai == 0)
+                              Còn hàng
+                              @endif
+                              @if ($sp -> trang_thai == 1)
+                              Sắp hết hàng
+                              @endif
+                              @if ($sp -> trang_thai == 2)
+                                 Sắp về hàng
+                              @endif
+                        </label>
+                     </div>
+                  </div>
+                  <div class="col-12 mb-2">
+                     <label for="" class="fw-semibold">Mô tả ngắn:</label>
+                     <div class="motangan">
+                        {{$sp -> mo_ta_ngan}}
+                     </div>
+                  </div>
+                  <div class="col-12 mb-2"> 
+                     <label for="" class="fw-semibold">Kích thước : số lượng</label>
+                     <div class="size_soluong">
+                        @php
+                        $hasSize = false;
+                        @endphp
 
-<!-- Modal xem chi tiết -->
+                        @foreach ($sp->sizes as $size)
+                           @if ($size->id_product == $sp->id)
+                              <button class="btn btn-outline-dark mb-1">{{$size->size_product}} : {{$size->so_luong}}</button>
+                              @php
+                                    $hasSize = true;
+                              @endphp
+                           @endif
+                        @endforeach
+
+                        @if (!$hasSize)
+                        <button class="btn btn-outline-dark mb-1">0 : 0</button>
+                        @endif
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            <a id="continueButton" href="{{route('san-pham.edit', $sp->id)}}">
+               <button type="button" class="btn btn-primary">Chỉnh sửa <i class="fa-solid fa-arrow-right fa-beat"></i></button>
+            </a>
+         </div>
+      </div>
+   </div>
+   </div>
+@endforeach
+
+<!-- Modal xem chi tiết SP sắp hết hàng-->
 @foreach($dsSP as $sp)
-    <div class="modal fade" id="exampleModalCenter{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle{{$sp->id}}" aria-hidden="true">
+    <div class="modal fade" id="modalSPsaphet{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="modalSPsaphetTitle{{$sp->id}}" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle{{$sp->id}}">Chi tiết sản phẩm</h5>
+                    <h5 class="modal-title" id="modalSPsaphetTitle{{$sp->id}}">Chi tiết sản phẩm</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -417,19 +597,19 @@ Thống Kê
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 mb-2">
                                 <label for="" class="fw-semibold">Mô tả ngắn:</label>
                                 <div class="motangan">
                                     {{$sp -> mo_ta_ngan}}
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 mb-2">
                                 <label for="" class="fw-semibold">Kích thước và số lượng sắp hết:</label>
                                 <div class="size_soluong">
-                                    @foreach ($sp->sizes as $size)  <!-- Duyệt qua các size của sản phẩm -->
-                                        @if ($size->so_luong < 10)  <!-- Chỉ hiển thị các size có số lượng nhỏ hơn 5 -->
+                                    @foreach ($sp->sizes as $size)
+                                        @if ($size->so_luong < 10)  <!-- Chỉ hiển thị các size có số lượng nhỏ hơn 10 -->
                                             <button class="btn btn-outline-dark mb-1">
-                                                {{$size->size_product}} : {{$size->so_luong}}
+                                                Size {{$size->size_product}} : @if($size->so_luong >0 )còn {{$size->so_luong}} @else Hết @endif
                                             </button>
                                         @endif
                                     @endforeach

@@ -23,6 +23,10 @@ class AdminDonHangController extends AdminController
         }
 
         $donHangs = $query->orderBy('id', 'ASC')->paginate($perpage)->withQueryString();
+        // Tìm kiếm theo ID
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
+        }
         $allValid = $donHangs->every(function ($donHang) { 
             return $donHang->trang_thai != 0 && $donHang->trang_thai != 3 && $donHang->trang_thai != 4 && $donHang->trang_thai != 5; 
         });
