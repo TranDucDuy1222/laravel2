@@ -203,7 +203,7 @@ Thống Kê
                                                 @if ($dh->trang_thai == 0)
                                                 <span class="btn bg-warning">Chờ xử lý</span>
                                                 @elseif ($dh->trang_thai == 1)
-                                                <span class="btn bg-primary">Đã xác nhận đơn hàng</span>
+                                                <span class="btn bg-primary">Đã xử lý</span>
                                                 @elseif ($dh->trang_thai == 2)
                                                 <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
                                                 @elseif ($dh->trang_thai == 3)
@@ -321,7 +321,6 @@ Thống Kê
                                         <th>ID</th>
                                         <th>Ảnh</th>
                                         <th>Tên sản phẩm</th>
-                                        <th>Tổng số lượng</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -333,15 +332,7 @@ Thống Kê
                                                 <img class="rounded img-fluid avatar-70" src="{{ asset('/uploads/product/' . $sp->hinh) }}" onerror="this.src='/imgnew/{{$sp->hinh}}'" alt="">
                                             </td>
                                             <td>{{ $sp->ten_sp }}</td>
-                                            <td class="text-center">
-                                                <!-- Tính tổng số lượng của tất cả các size của sản phẩm -->
-                                                @php
-                                                    $totalQuantity = DB::table('sizes')
-                                                        ->where('id_product', $sp->id)
-                                                        ->sum('so_luong');
-                                                @endphp
-                                                <span>{{ $totalQuantity }}</span>
-                                            </td>
+                                            
                                             <td>
                                                 <div class="d-flex justify-content-center">
                                                     <button type="button" class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$sp->id}}">
@@ -500,7 +491,7 @@ Thống Kê
             labels: orderStatusData.map(data => {
                 switch(data.trang_thai) {
                     case 0: return 'Chờ xử lý';
-                    case 1: return 'Đã xác nhận đơn hàng';
+                    case 1: return 'Đã xử lý';
                     case 2: return 'Đã giao cho đơn vị vận chuyển';
                     case 3: return 'Đã giao thành công';
                     case 4: return 'Đã đánh giá sản phẩm';

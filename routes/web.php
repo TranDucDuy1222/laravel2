@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\AdminLoaiController;
 use App\Http\Controllers\AdminSPController;
+use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminDanhGiaController;
@@ -85,7 +86,6 @@ Route::middleware(['khachhang'])->group(function() {
     Route::get('/purchase/{id}', [OrderController::class, 'donHangDaMua'])->name('user.purchase');
     Route::get('/purchase-cancel/{id}', [OrderController::class, 'huyDon'])->name('user.purchase-cancel');
     Route::post('/purchase-reivew', [OrderController::class, 'danhGia'])->name('user.purchase-reivew');
-    Route::get('/purchase-confirm/{id}', [OrderController::class, 'xacnhanDonHang'])->name('user.purchase-confirm');
     
     //Liên hệ
     Route::get("/lien-he", [UserController::class, 'lienHe'])->name('user.contact');
@@ -141,6 +141,7 @@ Route::group(['prefix' => 'admin', 'middleware' => [Quantri::class] ], function(
     ]); 
     Route::post('/remove-notification', [AdminController::class, 'xoaThongBao'])->name('xoa');
     Route::put('don-hang/{id}/update-trang-thai', [AdminDonHangController::class, 'updateTrangThai'])->name('don-hang.update-trang-thai');
+    Route::put('/don-hang-update-all', [AdminDonHangController::class, 'updateAll'])->name('don-hang.update-all');
     
     Route::resource('danh-gia', AdminDanhGiaController::class);
     Route::post('/danh-gia/hide/{id}', [AdminDanhGiaController::class,'hide'])->name('danh-gia.hide');

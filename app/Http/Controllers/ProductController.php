@@ -43,6 +43,7 @@ class ProductController extends Controller
                 ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm' ,'mo_ta_ngan' , 'luot_mua' , 'san_pham.trang_thai as trang_thai_san_pham')
                 ->where('danh_muc.id_loai', $query_loai->id_loai)
                 ->where('san_pham.id', '!=', $id)  // không lấy chính sản phẩm hiện tại
+                ->where('san_pham.trang_thai', '!=', 1)
                 ->inRandomOrder()
                 ->limit(4)
                 ->get();

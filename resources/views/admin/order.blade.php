@@ -15,25 +15,38 @@ Quản lý đơn hàng - TrendyU
                </div>
                <div class="iq-card-body">
                   <div class="table-responsive">
-                     <div class="row justify-content-between">
-                        <form id="searchForm" action="{{ route('don-hang.index') }}" method="GET">
-                           <div class="row">
+                     <div class="row d-flex align-items-center">
+                        <div class="col-start">
+                           <form id="searchForm" action="{{ route('don-hang.index') }}" method="GET">
+                              <div class="row">
                                  <div class="col-auto">
-                                    <select name="trang_thai" class="form-select">
-                                       <option value="">Tất cả trạng thái</option>
-                                       <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Chờ xử lý</option>
+                                    <select name="trang_thai" class="form-select" onchange="loctrangthai(this.value)">
+                                       <option value="0" {{ request('trang_thai' ) == '0' ? 'selected' : '' }} >Chờ xử lý</option>
                                        <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Đã xử lý</option>
                                        <option value="2" {{ request('trang_thai') == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
-                                       <option value="3" {{ request('trang_thai') == '3' ? 'selected' : '' }}>Giao hàng thành công</option>
-                                       <option value="4" {{ request('trang_thai') == '4' ? 'selected' : '' }}>Đã hủy</option>
+                                       <option value="3" {{ request('trang_thai') == '3' ? 'selected' : '' }}>Đã giao thành công</option>
+                                       <option value="4" {{ request('trang_thai') == '4' ? 'selected' : '' }}>Đã đánh giá</option>
+                                       <option value="5" {{ request('trang_thai') == '5' ? 'selected' : '' }}>Đã hủy</option>
+                                       <!-- <option value="" {{ request('trang_thai') === null ? 'selected' : '' }}>Tất cả trạng thái</option> -->
                                     </select>
                                  </div>
-                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-secondary">Lọc</button>
-                                 </div>
-                           </div>
-                        </form>
+                              </div>
+                           </form>
                         </div>
+                        <div class="col-end">
+                           
+                           @if ($allValid)
+                              <form action="{{ route('don-hang.update-all') }}" method="POST" id="donHangForm" class="">
+                                 @csrf
+                                 @method('PUT')
+                                 <!-- Input ẩn để lưu các ID đơn hàng đã chọn -->
+                                 <input type="hidden" name="selectedDonHangIds" id="selectedDonHangIds" value="">
+                                 <button type="submit" class="btn btn-outline-primary mt-3">Cập nhật đơn hàng đã chọn</button>
+                              </form>
+                           @endif
+                           <div id="textStatus"></div>
+                        </div>
+                     </div>
                         <table id="user-list-table" class="table table-striped table-bordered mt-4" role="grid" aria-describedby="user-list-page-info">
                            <thead class="text-center">
                                  <tr>
@@ -49,7 +62,14 @@ Quản lý đơn hàng - TrendyU
                         <tbody>
                            @foreach($donHangs as $donHang)
                            <tr>
-                                 <td>{{ $donHang->id }}</td>
+                                 <td>
+                                    <div class="d-flex align-items-center">
+                                       @if ($donHang->trang_thai === 1 || $donHang->trang_thai === 2 )
+                                       <input type="checkbox" class="form-check-input" value="{{ $donHang->id }}" style="width: 20px; height: 20px;" onclick="updateSelectedDonHangIds()">
+                                       @endif
+                                       <span class="ms-2">{{ $donHang->id }}</span>
+                                    </div>
+                                 </td>
                                  <td>{{ $donHang->user->name }}</td>
                                  <td>{{ $donHang->thoi_diem_mua_hang }}</td>
                                  <td>{{ number_format($donHang->tong_dh, 0, ',', '.') }} đ</td>
@@ -59,7 +79,7 @@ Quản lý đơn hàng - TrendyU
                                        @if ($donHang->trang_thai == 0)
                                         <span class="btn bg-warning">Chờ xử lý</span>
                                         @elseif ($donHang->trang_thai == 1)
-                                        <span class="btn bg-primary">Đã xác nhận đơn hàng</span>
+                                        <span class="btn bg-primary">Đã xử lý</span>
                                         @elseif ($donHang->trang_thai == 2)
                                         <span class="btn bg-info">Đã giao cho đơn vị vận chuyển</span>
                                         @elseif ($donHang->trang_thai == 3)
@@ -97,4 +117,40 @@ Quản lý đơn hàng - TrendyU
       </div>
    </div>
 </div>
+<script>
+function updateSelectedDonHangIds() {
+    // Lấy tất cả các checkbox
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    var selectedIds = [];
+
+    // Duyệt qua tất cả các checkbox và thêm ID vào mảng nếu được chọn
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            selectedIds.push(checkbox.value);
+        }
+    });
+
+    // Cập nhật giá trị của input ẩn
+    document.getElementById('selectedDonHangIds').value = selectedIds.join(',');
+}
+
+function loctrangthai(trang_thai) {
+    // Chuyển hướng đến URL mới với giá trị trang_thai
+    document.location = `/admin/don-hang?trang_thai=${trang_thai}`;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Lấy giá trị của tham số 'trang_thai' từ URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const trang_thai = urlParams.get('trang_thai');
+
+    // Kiểm tra giá trị của 'trang_thai' và cập nhật nội dung của thẻ 'textStatus'
+    if (trang_thai == 1) {
+        document.getElementById('textStatus').innerText = 'Cập nhật trạng thái sang: Đã giao cho đơn vị vận chuyển';
+    } else if (trang_thai == 2) {
+        document.getElementById('textStatus').innerText = 'Cập nhật trạng thái sang: Đã giao hàng thành công';
+    }
+});
+</script>
+
 @endsection

@@ -22,9 +22,12 @@ class AdminDonHangController extends AdminController
             $query->where('trang_thai', $request->trang_thai);
         }
 
-        $donHangs = $query->orderBy('id', 'DESC')->paginate($perpage)->withQueryString();
-        return view('admin.order', compact('donHangs'));
- 
+        $donHangs = $query->orderBy('id', 'ASC')->paginate($perpage)->withQueryString();
+        $allValid = $donHangs->every(function ($donHang) { 
+            return $donHang->trang_thai != 0 && $donHang->trang_thai != 3 && $donHang->trang_thai != 4 && $donHang->trang_thai != 5; 
+        });
+
+        return view('admin.order', compact('donHangs' , 'allValid'));
     }
 
     public function show($id)
@@ -36,34 +39,58 @@ class AdminDonHangController extends AdminController
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'trang_thai' => 'required|integer|in:0,1,2',
-        ]);
-        $donHang = DonHang::findOrFail($id);
-        $donHang->trang_thai = $request->trang_thai;
-        $donHang->save();
-    
-        return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
     }
 
     public function updateTrangThai(Request $request, $id)
-{
-    $request->validate([
-        'trang_thai' => 'required|integer|in:1,2,3', // Cập nhật các trạng thái hợp lệ là 1, 2, 3
-    ]);
+    {
+        $request->validate([
+            'trang_thai' => 'required|integer|in:1,2,3,5',
+        ]);
 
-    $donHang = DonHang::findOrFail($id);
+        $donHang = DonHang::findOrFail($id);
 
-    // Kiểm tra trạng thái mới có nhỏ hơn trạng thái hiện tại không
-    if ($request->trang_thai < $donHang->trang_thai) {
-        return redirect()->back()->with('thongbao', 'Hãy kiểm tra lại trạng thái bạn muốn cập nhật!');
+        if ($donHang->trang_thai == 4) {
+            return redirect()->back()->with('thongbao', 'Đơn hàng đã hoàn thành, không thể thay đổi trạng thái!');
+        }
+        
+        // Kiểm tra trạng thái mới có nhỏ hơn trạng thái hiện tại không
+        if ($request->trang_thai < $donHang->trang_thai) {
+            return redirect()->back()->with('thongbao', 'Hãy kiểm tra lại trạng thái bạn muốn cập nhật!');
+        }
+
+        $donHang->trang_thai = $request->trang_thai;
+        $donHang->save();
+
+        return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
     }
 
-    $donHang->trang_thai = $request->trang_thai;
-    $donHang->save();
+    public function updateAll(Request $request)
+    {
+        // Lấy danh sách các id đơn hàng được chọn
+        $donHangIds = explode(',', $request->input('selectedDonHangIds', ''));
+    
+        // Kiểm tra nếu không có id nào được chọn
+        if (empty($donHangIds[0])) {
+            return redirect()->route('don-hang.index')->with('errors', 'Vui lòng chọn ít nhất một đơn hàng.');
+        }
+    
+        // Cập nhật trạng thái cho các đơn hàng được chọn
+        foreach ($donHangIds as $id) {
+            $donHang = DonHang::find($id);
+            if ($donHang) {
+                if ($donHang->trang_thai == 1) {
+                    $donHang->trang_thai = 2;
+                } elseif ($donHang->trang_thai == 2) {
+                    $donHang->trang_thai = 3;
+                }
+                $donHang->save();
+            }
+        }
+        return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái các đơn hàng thành công.');
+    }
+    
+    
 
-    return redirect()->route('don-hang.index')->with('thongbao', 'Cập nhật trạng thái đơn hàng thành công!');
-}
 
 }
 

@@ -14,11 +14,10 @@ class AdminUserController extends AdminController
         $query = User::query();
         $perpage = 12;
 
-        // Chỉ hiển thị khách hàng không bị ẩn
-        if (!$request->has('role') && !$request->has('is_hidden')) {
-            $query->where('role', 1)->where('is_hidden', 0);
+        $query->where('role', 1);
+        if (!$request->has('is_hidden')) {
+            $query->where('is_hidden', 0);
         }
-
         if ($request->filled('is_hidden')) {
             $query->where('is_hidden', $request->is_hidden);
         }
@@ -34,8 +33,9 @@ class AdminUserController extends AdminController
         $query = User::query();
         $perpage = 12;
 
-        if (!$request->has('role') && !$request->has('is_hidden')) {
-            $query->where('role', 0)->where('is_hidden', 0);
+        $query->where('role', 0);
+        if (!$request->has('is_hidden')) {
+            $query->where('is_hidden', 0);
         }
 
         if ($request->filled('is_hidden')) {

@@ -13,8 +13,9 @@ Chi Tiết : {{$detail->ten_sp}}
         <ul class="dropdown-menu" id="userDropdown">
             @foreach ($danh_muc as $dm)
                 @if ($dm->id_loai == $category->id)
-                    <li class="hover-dm"><a class="dropdown-item"
-                            href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a></li>
+                    <li class="hover-dm">
+                        <a class="dropdown-item" href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a>
+                    </li>
                 @endif
             @endforeach
         </ul>
@@ -370,10 +371,9 @@ Chi Tiết : {{$detail->ten_sp}}
                             <div class="product-short">
                                 <div class="product-short__container">
                                     <div class="card">
-                                        @if ($item->trang_thai_san_pham != 2)
-                                            <a href="/detail/{{$item->id}}" id="hover-img-home">
-                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                    onerror="this.src='{{ asset('/uploads') }}'" style="max-height: 295px;"
+                                        @if ($item->trang_thai_san_pham != 2 )
+                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}" class="img-fluid" style="max-height: 295px;"
                                                     alt="" class="w-100">
                                                 @if ($item->gia_km > 0)
                                                     <img src="{{ asset('/uploads/logo/sale.png') }}" style="" alt=""
@@ -381,9 +381,9 @@ Chi Tiết : {{$detail->ten_sp}}
                                                 @endif
                                             </a>
                                         @elseif ($item->trang_thai_san_pham == 2)
-                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
+                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container d-flex justify-content-center align-content-center">
                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                    style="max-height: 295px;" alt="" class="w-100">
+                                                    style="max-height: 295px;" alt="" class="img-fluid">
                                                 <img src="{{ asset('/uploads/logo/') }}"
                                                     onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'"
                                                     class="overlay-image" alt="">

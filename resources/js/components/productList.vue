@@ -94,8 +94,8 @@
           <div class="product-short">
             <div :class="['product-short__container', { 'out-stock': product.trang_thai === 1 }]">
               <div class="card">
-                <a :href="`/detail/${product.id}`" id="hover-img-home" :class="{ 'image-container': product.trang_thai === 2 }">
-                  <img :src="`/uploads/product/${product.hinh}`" @error="handleImageError" style="max-height: 295px;" alt="Hình sản phẩm" class="w-100">
+                <a :href="`/detail/${product.id}`" id="hover-img-home" :class="{ 'image-container': product.trang_thai === 2 }" class="d-flex justify-content-center align-content-center">
+                  <img :src="`/uploads/product/${product.hinh}`" @error="handleImageError" style="max-height: 295px;" alt="Hình sản phẩm" class="img-fluid">
                   <img v-if="product.trang_thai === 2" src="/public/uploads/logo/logocs1.png" @error="handleImageError" class="overlay-image" alt="">
                   <img v-if="product.trang_thai != 2 && product.gia_km >= 1" src="/public/uploads/logo/sale.png"
                     @error="handleImageError" class="img-sale" alt="">
