@@ -242,15 +242,21 @@ Giỏ Hàng - Trendy U
     const stockQuantity = parseInt(stockInput.value);
     let maxAllowedQuantity = stockQuantity; // Mặc định không chia số lượng
 
-    if (stockQuantity > 10) {
-        maxAllowedQuantity = Math.floor(stockQuantity / 2); // Chia số lượng nếu stockQuantity > 10
+    // if (stockQuantity > 10) {
+    //     maxAllowedQuantity = Math.floor(stockQuantity / 2); // Chia số lượng nếu stockQuantity > 10
+    // }
+    if (stockQuantity <= 20) {
+        maxAllowedQuantity = Math.floor(stockQuantity / 2); 
+    } else if (stockQuantity > 20) {
+        maxAllowedQuantity = 10;
     }
+
 
     if (change !== 0) {
         if (currentQuantity + change < 1) {
             currentQuantity = 1;
         } else if (currentQuantity + change > maxAllowedQuantity) {
-            showToastGH('Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
+            showToastGH(`Mỗi đơn hàng chỉ được mua tối đa ${maxAllowedQuantity} sản phẩm cho size này.`);
             currentQuantity = maxAllowedQuantity;
         } else {
             currentQuantity += change;
@@ -261,7 +267,7 @@ Giỏ Hàng - Trendy U
 
     if (currentQuantity > maxAllowedQuantity) {
         quantityInput.value = maxAllowedQuantity;
-        showToastGH('Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
+        showToastGH(`Mỗi đơn hàng chỉ được mua tối đa ${maxAllowedQuantity} sản phẩm cho size này.`);
         return false;
     }
 
