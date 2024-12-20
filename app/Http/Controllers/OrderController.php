@@ -14,11 +14,15 @@ use Illuminate\Support\Facades\Session;
 use DB;
 use Carbon\Carbon;
 use App\Models\DanhGia;
+use Illuminate\Support\Str;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    public function datHang(Request $request) {
+    public function datHang(Request $request)
+    {
         $userId = Auth::id();
         $selectedProductIds = session('selected_products', []);
         $selectedAddressId = $request->input('selected_address');
@@ -26,7 +30,7 @@ class OrderController extends Controller
         $totalPayable = $request->input('total_payables');
         $discountAmount = $request->input('discount_amount');
         session(['selected_address' => $selectedAddressId, 'discount_amount' => $discountAmount, 'total_payables' => $totalPayable, 'selected_products' => $selectedProductIds, 'payment_method' => $paymentMethod]);
-    
+
         if (empty($selectedProductIds)) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại sản phẩm được chọn.');
         } elseif (!$selectedAddressId) {
@@ -36,31 +40,44 @@ class OrderController extends Controller
         } elseif (!$totalPayable) {
             return redirect()->back()->with('error', 'Vui lòng kiểm tra lại tổng tiền.');
         }
-    
+
         // Kiểm tra giá trị của $paymentMethod
         Log::info('Payment method: ' . $paymentMethod);
-    
+
         switch ($paymentMethod) {
             case 'VNPay':
                 $paymentUrl = $this->processVNPAY($totalPayable, $userId);
-                if ($paymentUrl) {
-                    return redirect()->away($paymentUrl);
-                } else {
-                    return redirect()->back()->with('error', 'Thanh toán VNPay không thành công. Vui lòng thử lại.');
-                }
+                break;
             case 'Zalopay':
                 $paymentUrl = $this->processZALOPAY($totalPayable, $userId);
-                if ($paymentUrl) {
-                    return redirect()->away($paymentUrl);
-                } else {
-                    return redirect()->back()->with('error', 'Thanh toán Zalopay đã bị huỷ. Vui lòng thử lại.');
-                }
+                break;
             case 'COD':
             default:
                 return $this->createOrder($request); // Tạo đơn hàng khi phương thức thanh toán là COD hoặc không xác định
         }
+
+        // Kiểm tra nếu $paymentUrl là một mảng
+        if (is_array($paymentUrl)) {
+            Log::error('Lỗi: $paymentUrl là một mảng.');
+            return redirect()->back()->with('error', 'URL không hợp lệ.');
+        }
+
+        // Đảm bảo $paymentUrl là một chuỗi hợp lệ trước khi redirect
+        if ($paymentUrl) {
+            return redirect()->away($paymentUrl);
+        } else {
+            return redirect()->back()->with('error', 'Thanh toán không thành công. Vui lòng thử lại.');
+        }
     }
-    
+
+    private function cleanHeaders(array $headers)
+    {
+        foreach ($headers as $key => $value) {
+            $headers[$key] = trim(preg_replace('/\s+/', ' ', $value));
+        }
+        return $headers;
+    }
+
     private function processZALOPAY($totalPayable, $userId) {
         $config = [
             "app_id" => 2553,
@@ -69,67 +86,195 @@ class OrderController extends Controller
             "endpoint" => "https://sb-openapi.zalopay.vn/v2/create"
         ];
     
-        $embeddata = '{}'; // Merchant's data
-        $transID = rand(0, 1000000); // Random trans id
+        $callbackUrl = route('zalopay.callback', ['id' => $userId]); // Thêm URL callback của bạn tại đây với tham số id
+        $embeddata = json_encode(['redirecturl' => $callbackUrl], JSON_UNESCAPED_SLASHES);
+    
+        Log::info('ZaloPay embed_data (thô): ' . $embeddata);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            Log::error('Lỗi khi mã hóa embed_data: ' . json_last_error_msg());
+            return null;
+        }
+    
+        $transID = rand(0, 1000000);
+        $app_trans_id = date("ymd") . "_" . $transID;
         $order = [
             "app_id" => $config["app_id"],
-            "app_time" => round(microtime(true) * 1000), // miliseconds
-            "app_trans_id" => date("ymd") . "_" . $transID,
-            "app_user" => strval($userId), // Chuyển userId thành chuỗi
+            "app_time" => round(microtime(true) * 1000),
+            "app_trans_id" => $app_trans_id,
+            "app_user" => strval($userId),
+            "item" => '[]',
             "embed_data" => $embeddata,
             "amount" => $totalPayable,
-            "description" => "Thanh toán đơn hàng #$transID",
-            "bank_code" => "zalopayapp"
+            "description" => "Thanh toán đơn hàng #$app_trans_id",
+            "bank_code" => "",
+            "callback_url" => $callbackUrl // Thêm callback_url vào đây
         ];
     
-        // appid|app_trans_id|appuser|amount|apptime|embeddata
-        $data = $order["app_id"] . "|" . $order["app_trans_id"] . "|" . $order["app_user"] . "|" . $order["amount"]
-            . "|" . $order["app_time"] . "|" . $order["embed_data"];
+        $data = $order["app_id"] . "|" . $order["app_trans_id"] . "|" . $order["app_user"] . "|" . $order["amount"] . "|" . $order["app_time"] . "|" . $order["embed_data"] . "|" . $order["item"];
+        Log::info('Dữ liệu trước khi băm: ' . $data);
         $order["mac"] = hash_hmac("sha256", $data, $config["key1"]);
+        Log::info('Dữ liệu yêu cầu ZaloPay: ' . json_encode($order));
     
-        // Ghi nhật ký dữ liệu gửi đi
-        Log::info('ZaloPay request data: ' . json_encode($order));
+        $client = new Client();
+        $cleaned_headers = $this->cleanHeaders(['Content-Type' => 'application/x-www-form-urlencoded']);
     
-        $context = stream_context_create([
-            "http" => [
-                "header" => "Content-type: application/x-www-form-urlencoded\r\n",
-                "method" => "POST",
-                "content" => http_build_query($order)
-            ]
-        ]);
+        try {
+            $response = $client->post($config["endpoint"], [
+                'headers' => $cleaned_headers,
+                'form_params' => $order
+            ]);
     
-        $response = file_get_contents($config["endpoint"], false, $context);
-        $result = json_decode($response, true);
+            $result = json_decode($response->getBody()->getContents(), true);
+            Log::info('Phản hồi từ ZaloPay: ' . json_encode($result));
     
-        // Ghi nhật ký phản hồi từ ZaloPay
-        Log::info('ZaloPay response: ' . json_encode($result));
-    
-        // Kiểm tra nếu $result không null và có chỉ mục 'returncode'
-        if ($result && isset($result['returncode']) && $result['returncode'] == 1) {
-            return $result['orderurl'];
-        }
-    
-        // Ghi nhật ký nếu không có chỉ mục 'returncode' hoặc nó khác 1
-        if ($result && isset($result['returncode'])) {
-            Log::error('ZaloPay returncode error: ' . $result['returncode']);
-        } else {
-            Log::error('ZaloPay response structure error: ' . json_encode($result));
-        }
-    
-        return null;
-    }
-        
-    
-    public function zaloPayCallback(Request $request) {
-        $response = $request->all();
-    
-        if ($response['result'] == 'success') {
-            return $this->createOrder($request);
-        } else {
-            return redirect()->back()->with('error', 'Thanh toán qua Zalopay không thành công.');
+            if ($result && isset($result['return_code']) && $result['return_code'] == 1) {
+                if (isset($result['order_url'])) {
+                    return $result['order_url']; // Trả về chuỗi URL hợp lệ
+                } else {
+                    Log::error('Không tìm thấy order_url trong phản hồi.');
+                    return null;
+                }
+            } else {
+                if ($result && isset($result['return_code'])) {
+                    Log::error('Lỗi return_code từ ZaloPay: ' . $result['return_code'] . ' - ' . $result['return_message']);
+                    Log::error('Lỗi sub_return_code từ ZaloPay: ' . $result['sub_return_code'] . ' - ' . $result['sub_return_message']);
+                    Log::error('Chi tiết phản hồi từ ZaloPay: ' . json_encode($result));
+                    Log::info('App Trans ID: ' . $order['app_trans_id']);
+                    Log::info('App Time: ' . $order['app_time']);
+                } else {
+                    Log::error('Cấu trúc phản hồi từ ZaloPay có lỗi: ' . json_encode($result));
+                }
+                return null;
+            }
+        } catch (RequestException $e) {
+            Log::error('Yêu cầu ZaloPay thất bại: ' . $e->getMessage());
+            return null;
         }
     }    
     
+    public function zalopayCallback(Request $request, $userId) {
+        Log::info('ZaloPay callback received', $request->all());
+    
+        $status = $request->input('status');
+        $amount = $request->input('amount');
+        $apptransid = $request->input('apptransid');
+    
+        if ($status == 1) {
+            // Xử lý đơn hàng thành công
+            Log::info("Payment successful for order: $apptransid");
+    
+            // Lưu thông tin cần thiết vào session
+            session([
+                'payment_method' => 'ZaloPay',
+                'total_payables' => $amount,
+                // Bạn có thể cần thêm thông tin khác vào session ở đây
+            ]);
+    
+            // Chuyển hướng đến hàm createOrder
+            return $this->createOrder($request);
+        } else {
+            // Xử lý đơn hàng thất bại
+            Log::error("Payment failed for order: $apptransid with status: $status");
+            return response()->json(['status' => 'error', 'message' => 'Payment failed']);
+        }
+    }
+    
+    public function createOrder(Request $request)
+    {
+        $userId = Auth::id();
+        $selectedProductIds = session('selected_products', []);
+        $selectedAddressId = session('selected_address');
+        $paymentMethod = session('payment_method', $request->input('payment_method'));
+        $totalPayable = session('total_payables');
+        $discountAmount = session('discount_amount');
+        $orderStatus = ($paymentMethod === 'COD') ? 0 : 1;
+
+        DB::beginTransaction();
+
+        try {
+            // Tạo đơn hàng mới
+            $donHang = new DonHang();
+            $donHang->id_user = $userId;
+            $donHang->thoi_diem_mua_hang = now();
+            $donHang->id_dc = $selectedAddressId;
+            $donHang->tong_dh = $totalPayable;
+            $donHang->pttt = $paymentMethod;
+            $donHang->uu_dai = $discountAmount;
+            $donHang->trang_thai = $orderStatus; // Trạng thái mặc định của đơn hàng
+            $donHang->save();
+
+            // Lưu chi tiết đơn hàng
+            foreach ($selectedProductIds as $productId) {
+                $gioHang = GioHang::with(['sanPham', 'size'])->where('id', $productId)->first();
+                $chiTietDonHang = new ChiTietDonHang();
+                $chiTietDonHang->id_dh = $donHang->id;
+                $chiTietDonHang->id_sp = $gioHang->sanPham->id;
+                $chiTietDonHang->so_luong = $gioHang->so_luong;
+                $chiTietDonHang->id_size = $gioHang->id_size;
+                $chiTietDonHang->gia = $gioHang->sanPham->gia_km > 0 ? $gioHang->sanPham->gia_km : $gioHang->sanPham->gia;
+                $chiTietDonHang->save();
+
+                // Cập nhật số lượng sản phẩm trong bảng sizes
+                $size = Size::find($gioHang->id_size);
+                if ($size) {
+                    $size->so_luong -= $gioHang->so_luong;
+                    $size->save();
+                }
+
+                // Cập nhật lượt mua cho sản phẩm
+                $sanPham = $gioHang->sanPham;
+                if ($sanPham) {
+                    $sanPham->luot_mua += $gioHang->so_luong;
+                    $sanPham->save();
+                }
+
+                // Xóa sản phẩm khỏi giỏ hàng
+                $gioHang->delete();
+            }
+
+            // Xử lý mã giảm giá sau khi đặt hàng thành công
+            $voucherData = session('voucher');
+            if ($voucherData) {
+                $voucher = MaGiamGia::where('code', $voucherData['code'])->first();
+
+                if ($voucher) {
+                    // Giảm số lượng mã giảm giá
+                    if ($voucher->ma_gioi_han > 0) {
+                        $voucher->ma_gioi_han--;
+                    }
+
+                    // Cập nhật danh sách khách hàng đã sử dụng
+                    $usedByUsers = json_decode($voucher->id_kh, true) ?? [];
+                    $usedByUsers[$userId] = ($usedByUsers[$userId] ?? 0) + 1;
+                    $voucher->id_kh = json_encode($usedByUsers);
+
+                    $voucher->save();
+                }
+
+                // Xóa session voucher sau khi đặt hàng thành công
+                session()->forget('voucher');
+            }
+
+            // Xóa các session liên quan sau khi đặt hàng thành công
+            session()->forget('selected_products');
+            session()->forget('selected_address');
+            session()->forget('discount_amount');
+            session()->forget('total_payables');
+            session()->forget('payment_method');
+
+            DB::commit();
+
+            // Chuyển hướng đến trang 'user.purchase'
+            return redirect()->route('user.purchase', ['id' => $userId])->with('thongbao', 'Đặt hàng thành công!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Ghi log lỗi chi tiết
+            Log::error('Lỗi lưu đơn hàng: ' . $e->getMessage());
+            return redirect()->route('cart.gio-hang')->with('error', 'Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.');
+        }
+    }
+
     private function processVNPAY($totalPayable, $userId)
     {
         $code_cart = rand(00, 9999);
@@ -144,7 +289,7 @@ class OrderController extends Controller
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-    
+
         $inputData = array(
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
@@ -159,7 +304,7 @@ class OrderController extends Controller
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
         );
-    
+
         ksort($inputData);
         $query = "";
         $hashdata = "";
@@ -173,122 +318,26 @@ class OrderController extends Controller
             }
             $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
-    
+
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
             $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
-    
+
         return $vnp_Url; // Trả về URL để điều hướng người dùng đến trang thanh toán VNPay
     }
-    
+
     public function vnpayCallback(Request $request, $userId)
     {
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
         $vnp_Amount = $request->input('vnp_Amount');
         $vnp_TxnRef = $request->input('vnp_TxnRef');
-    
+
         if ($vnp_ResponseCode == '00') {
             return $this->createOrder($request);
         } else {
             return redirect()->route('cart.gio-hang')->with('error', 'Thanh toán không thành công. Vui lòng thử lại.');
-        }
-    }
-    
-    
-    public function createOrder(Request $request) {
-        $userId = Auth::id();
-        $selectedProductIds = session('selected_products', []);
-        $selectedAddressId = session('selected_address');
-        $paymentMethod = session('payment_method', $request->input('payment_method'));
-        $totalPayable = session('total_payables');
-        $discountAmount = session('discount_amount');
-        $orderStatus = ($paymentMethod === 'COD') ? 0 : 1;
-    
-        DB::beginTransaction();
-    
-        try {
-            // Tạo đơn hàng mới
-            $donHang = new DonHang();
-            $donHang->id_user = $userId;
-            $donHang->thoi_diem_mua_hang = now();
-            $donHang->id_dc = $selectedAddressId;
-            $donHang->tong_dh = $totalPayable;
-            $donHang->pttt = $paymentMethod;
-            $donHang->uu_dai = $discountAmount;
-            $donHang->trang_thai = $orderStatus; // Trạng thái mặc định của đơn hàng
-            $donHang->save();
-    
-            // Lưu chi tiết đơn hàng
-            foreach ($selectedProductIds as $productId) {
-                $gioHang = GioHang::with(['sanPham', 'size'])->where('id', $productId)->first();
-                $chiTietDonHang = new ChiTietDonHang();
-                $chiTietDonHang->id_dh = $donHang->id;
-                $chiTietDonHang->id_sp = $gioHang->sanPham->id;
-                $chiTietDonHang->so_luong = $gioHang->so_luong;
-                $chiTietDonHang->id_size = $gioHang->id_size;
-                $chiTietDonHang->gia = $gioHang->sanPham->gia_km > 0 ? $gioHang->sanPham->gia_km : $gioHang->sanPham->gia;
-                $chiTietDonHang->save();
-    
-                // Cập nhật số lượng sản phẩm trong bảng sizes
-                $size = Size::find($gioHang->id_size);
-                if ($size) {
-                    $size->so_luong -= $gioHang->so_luong;
-                    $size->save();
-                }
-    
-                // Cập nhật lượt mua cho sản phẩm
-                $sanPham = $gioHang->sanPham;
-                if ($sanPham) {
-                    $sanPham->luot_mua += $gioHang->so_luong;
-                    $sanPham->save();
-                }
-    
-                // Xóa sản phẩm khỏi giỏ hàng
-                $gioHang->delete();
-            }
-    
-            // Xử lý mã giảm giá sau khi đặt hàng thành công
-            $voucherData = session('voucher');
-            if ($voucherData) {
-                $voucher = MaGiamGia::where('code', $voucherData['code'])->first();
-    
-                if ($voucher) {
-                    // Giảm số lượng mã giảm giá
-                    if ($voucher->ma_gioi_han > 0) {
-                        $voucher->ma_gioi_han--;
-                    }
-    
-                    // Cập nhật danh sách khách hàng đã sử dụng
-                    $usedByUsers = json_decode($voucher->id_kh, true) ?? [];
-                    $usedByUsers[$userId] = ($usedByUsers[$userId] ?? 0) + 1;
-                    $voucher->id_kh = json_encode($usedByUsers);
-    
-                    $voucher->save();
-                }
-    
-                // Xóa session voucher sau khi đặt hàng thành công
-                session()->forget('voucher');
-            }
-    
-            // Xóa các session liên quan sau khi đặt hàng thành công
-            session()->forget('selected_products');
-            session()->forget('selected_address');
-            session()->forget('discount_amount');
-            session()->forget('total_payables');
-            session()->forget('payment_method');
-    
-            DB::commit();
-    
-            // Chuyển hướng đến trang 'user.purchase'
-            return redirect()->route('user.purchase', ['id' => $userId])->with('thongbao', 'Đặt hàng thành công!');
-    
-        } catch (\Exception $e) {
-            DB::rollBack();
-            // Ghi log lỗi chi tiết
-            Log::error('Lỗi lưu đơn hàng: ' . $e->getMessage());
-            return redirect()->route('cart.gio-hang')->with('error', 'Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.');
         }
     }
 
@@ -298,9 +347,9 @@ class OrderController extends Controller
 
             // Truy vấn đơn hàng đã mua 
             $orders = DonHang::join('dia_chi', 'dia_chi.id', '=', 'don_hang.id_dc')
-            ->where('don_hang.id_user', $id)
-            ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten');
-            
+                ->where('don_hang.id_user', $id)
+                ->select('don_hang.*', 'dia_chi.id as dia_chi_id', 'dia_chi.dc_chi_tiet', 'dia_chi.phone', 'dia_chi.thanh_pho', 'dia_chi.ho_ten');
+
             // Tách đơn hàng theo từng trạng thái 
             $orders_0 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 0)->orderBy('don_hang.id', 'desc')->get());
             $orders_1 = $this->tinhToanNgayDuKienGiaoHang((clone $orders)->where('don_hang.trang_thai', 1)->orderBy('don_hang.id', 'desc')->get());
@@ -351,8 +400,18 @@ class OrderController extends Controller
                 ->count();
 
             return view('user.home_purchased', compact(
-                'status_6','status_5', 'status_4', 'status_3', 'status_2', 'status_1',
-                'orders_0', 'orders_1', 'orders_2', 'orders_3', 'orders_4', 'orders_5',
+                'status_6',
+                'status_5',
+                'status_4',
+                'status_3',
+                'status_2',
+                'status_1',
+                'orders_0',
+                'orders_1',
+                'orders_2',
+                'orders_3',
+                'orders_4',
+                'orders_5',
                 'purchased',
                 'phivc'
             ));
@@ -421,13 +480,14 @@ class OrderController extends Controller
             return redirect()->back()->with('thongbao', 'Không tìm thấy đơn hàng.');
         }
     }
-    public function xacnhanDonHang($id_dh){
+    public function xacnhanDonHang($id_dh)
+    {
         $donHang = DonHang::find($id_dh);
-        if($donHang){
+        if ($donHang) {
             $donHang->trang_thai = 3;
             $donHang->save();
             return redirect()->back()->with('thongbao', 'Đã nhận được đơn hàng.');
-        }else{
+        } else {
             return redirect()->back()->with('thongbao', 'Không tìm thấy đơn hàng.');
         }
     }

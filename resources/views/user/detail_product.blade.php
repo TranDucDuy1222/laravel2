@@ -126,7 +126,7 @@ Chi Tiết : {{$detail->ten_sp}}
                                         <span class="pd-detail__label mb-2">Size:</span>
                                         <div class="ms-auto pd-detail__inline">
                                             <span class="pd-detail__click-wrap">
-                                                <a href="">Hướng dẫn lựa chọn size</a>
+                                                <a href="{{route('huongdanchonsize')}}">Hướng dẫn lựa chọn size</a>
                                             </span>
                                         </div>
                                     </div>

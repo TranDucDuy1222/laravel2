@@ -50,6 +50,8 @@ Route::middleware(['khachhang'])->group(function() {
     Route::get('/', [HomeController::class , 'index'])->name('home');
     //Route::get('/tim-kiem/{slug}', [ApiproductController::class, 'tim_kiem']);
     Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
+
+    Route::get('/huong_dan_chon_size', [ProductController::class, 'hdchonsize'])->name('huongdanchonsize');
     
     Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
     Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');
@@ -74,7 +76,7 @@ Route::middleware(['khachhang'])->group(function() {
     // Route::post('/vnpay/store-order', [OrderController::class, 'storeOrder'])->name('vnpay.storeOrder');
     Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
     Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayCallback'])->name('vnpay.return'); // Chuyển thành GET
-    Route::get('/zalopay/callback', [OrderController::class, 'zaloPayCallback'])->name('zalopay.callback');
+    Route::get('/zalopay/callback/{id}', [OrderController::class, 'zalopayCallback'])->name('zalopay.callback');
     
     //Quản lý tài khoản
     Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');

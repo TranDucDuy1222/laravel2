@@ -108,7 +108,9 @@ if (!$settings || !is_object($settings)) { // Tạo một đối tượng tạm 
         return view('user.result_search', compact('settings','sanphams', 'sanphamsCount'));
     }
     
-
+    function hdchonsize(){
+        return view('user.chonsize');
+    }
     
 
 }

@@ -88,14 +88,26 @@ Thêm sản phẩm
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
                                           <label for="form-product/price" class="form-label fw-semibold">Giá khuyến mãi</label>
-                                          <input value="{{old('gia_km')}}" type="number" class="form-control" id="form-product/price" name="gia_km" />
+                                          <input value="{{old('gia_km')}}" type="number" class="form-control" id="form-product/price" name="gia_km" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />
                                           
                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                        <div class="form-group">
                                           <label for="form-product/old-price" class="form-label fw-semibold">Giá gốc</label>
-                                          <input value="{{old('gia')}}" type="number" class="form-control" id="form-product/old-price" name="gia" required />
+                                          <input value="{{old('gia')}}" type="number" class="form-control" id="form-product/old-price" name="gia" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />
                                           
                                        </div>
                                     </div>
@@ -158,7 +170,13 @@ Thêm sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -168,7 +186,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -178,7 +202,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -188,7 +218,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -198,7 +234,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -208,7 +250,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -218,7 +266,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -228,7 +282,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                     </div>
@@ -243,7 +303,13 @@ Thêm sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -253,7 +319,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -263,7 +335,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -273,7 +351,13 @@ Thêm sản phẩm
                                        </div>
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                     </div>
@@ -288,7 +372,13 @@ Thêm sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -300,7 +390,13 @@ Thêm sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                        <div class="col-md-6 mb-3">
@@ -312,7 +408,13 @@ Thêm sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                                           </div>
                                        </div>
                                     </div>
@@ -327,7 +429,13 @@ Thêm sản phẩm
                                        <div class="col-md-6 mb-3">
                                           <div class="form-group">
                                              <label for="form-product/quantity" class="form-label fw-semibold">Số lượng</label>
-                                             <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                             <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />                                     
                                           </div>
                                        </div>
                                     </div>
@@ -399,7 +507,13 @@ Thêm sản phẩm
                newQuantityInput.className = 'col-md-6 mb-3';
                newQuantityInput.innerHTML = `
                   <div class="form-group">
-                     <input value="{{old('so_luong[]')}}" type="number" class="form-control" name="so_luong[]" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                     <input value="{{ old('so_luong[]') }}" type="number" class="form-control" name="so_luong[]" required oninput="
+                                                this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
+                                                if (this.value > 500) this.value = 500;  // Giới hạn tối đa 500
+                                                if (this.value.startsWith('0') && this.value.length > 1) {
+                                                   this.value = '0';  // Chỉ cho phép một số 0
+                                                }
+                                                " max="500" />   
                   </div>
                `;
 

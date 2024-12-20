@@ -204,10 +204,15 @@
                                                         <div class="badge text-bg-success">COD</div>
                                                         <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
                                                     </div>
+                                                @elseif($dh->pttt == "ZaloPay")
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_zalopay.png') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán ZaloPay</p>
+                                                    </div>
                                                 @else
                                                     <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
                                                         <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
-                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán VNPay</p>
                                                     </div>
                                                 @endif
                                             </div>
@@ -452,10 +457,15 @@
                                                         <div class="badge text-bg-success">COD</div>
                                                         <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
                                                     </div>
+                                                @elseif($dh->pttt == "ZaloPay")
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_zalopay.png') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán ZaloPay</p>
+                                                    </div>
                                                 @else
                                                     <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
                                                         <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
-                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán VNPay</p>
                                                     </div>
                                                 @endif
                                             </div>
@@ -674,10 +684,15 @@
                                                         <div class="badge text-bg-success">COD</div>
                                                         <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
                                                     </div>
+                                                @elseif($dh->pttt == "ZaloPay")
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_zalopay.png') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán ZaloPay</p>
+                                                    </div>
                                                 @else
                                                     <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
                                                         <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
-                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán VNPay</p>
                                                     </div>
                                                 @endif
                                             </div>
@@ -835,10 +850,15 @@
                                                         <div class="badge text-bg-success">COD</div>
                                                         <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
                                                     </div>
+                                                @elseif($dh->pttt == "ZaloPay")
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_zalopay.png') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán ZaloPay</p>
+                                                    </div>
                                                 @else
                                                     <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
                                                         <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
-                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán VNPay</p>
                                                     </div>
                                                 @endif
                                             </div>
@@ -1059,10 +1079,15 @@
                                                         <div class="badge text-bg-success">COD</div>
                                                         <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
                                                     </div>
+                                                @elseif($dh->pttt == "ZaloPay")
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_zalopay.png') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán ZaloPay</p>
+                                                    </div>
                                                 @else
                                                     <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
                                                         <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
-                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán VNPay</p>
                                                     </div>
                                                 @endif
                                             </div>
@@ -1283,10 +1308,15 @@
                                                         <div class="badge text-bg-success">COD</div>
                                                         <p class="ms-2 mb-0 align-self-center">Thanh toán khi nhận hàng</p>
                                                     </div>
+                                                @elseif($dh->pttt == "ZaloPay")
+                                                    <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
+                                                        <img src="{{ asset('/uploads/logo/icon_zalopay.png') }}" class="icon-vnpay" alt="">
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán ZaloPay</p>
+                                                    </div>
                                                 @else
                                                     <div class="d-flex justify-content-end align-items-center text-sm-end text-start">
                                                         <img src="{{ asset('/uploads/logo/icon_vnpay.webp') }}" class="icon-vnpay" alt="">
-                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán</p>
+                                                        <p class="ms-2 mb-0 align-self-center">Đã thanh toán VNPay</p>
                                                     </div>
                                                 @endif
                                             </div>
