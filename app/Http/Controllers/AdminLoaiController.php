@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\DanhMuc as danh_muc;
+use App\Models\GioHang;
 use App\Models\Loai;
 use App\Models\SanPham as san_pham;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Log;
 Paginator::useBootstrap();
 
 class AdminLoaiController extends AdminController
@@ -139,11 +141,13 @@ class AdminLoaiController extends AdminController
         // Tìm các sản phẩm có id_dm bằng với id truyền vào và cập nhật trạng thái
         $sanPhams = san_pham::where('id_dm', $id)->get();
         foreach ($sanPhams as $sanPham) {
-            $sanPham->trang_thai = 2;
+            $sanPham->an_hien = 1;
             $sanPham->save();
+            GioHang::where('id_sp', $sanPham->id)->update(['an_hien' => 1]);
+
         }
     
-        return redirect()->back()->with('thongbao', 'Trạng thái đã được cập nhật.');
+        return redirect()->back()->with('thongbao', 'Đã ẩn danh mục và sản phẩm thuộc danh mục.');
     }
     
     public function show(Request $request , string $id){
@@ -157,10 +161,12 @@ class AdminLoaiController extends AdminController
                 // Tìm các sản phẩm có id_dm bằng với id truyền vào và cập nhật trạng thái
                 $sanPhams = san_pham::where('id_dm', $id)->get();
                 foreach ($sanPhams as $sanPham) {
-                    $sanPham->trang_thai = 0;
+                    $sanPham->an_hien = 0;
                     $sanPham->save();
+                    // Cập nhật trạng thái an_hien cho các sản phẩm trong giỏ hàng có id_sp đang ẩn
+                    GioHang::where('id_sp', $sanPham->id)->update(['an_hien' => 0]);
                 }
-                return redirect()->back()->with('thongbao', 'Trạng thái đã được cập nhật.');
+                return redirect()->back()->with('thongbao', 'Đã hiển thị danh mục và sản phẩm thuộc danh mục.');
     }
     
 

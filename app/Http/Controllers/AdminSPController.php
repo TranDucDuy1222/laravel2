@@ -8,6 +8,7 @@ use App\Models\SanPham as san_pham;
 use App\Models\DanhMuc as danh_muc;
 use App\Models\Size as size;
 use App\Models\Loai;
+use App\Models\GioHang;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
@@ -68,7 +69,7 @@ class AdminSPController extends AdminController
         $selectedOption = $request->query('selection');
         Log::info('Selected Option:', ['selection' => $selectedOption]);
         $request->session()->put('selected_option', $selectedOption);
-        $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
+        $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->where('trang_thai', '!=', 1)->get();
         return view('admin.product_add', compact('loai_arr', 'selectedOption'));
     }
 
@@ -168,7 +169,7 @@ class AdminSPController extends AdminController
             $request->session()->flash('thongbao', 'Không có sản phẩm này: ' . $id);
             return redirect('/admin/san-pham');
         }
-        $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->get();
+        $loai_arr = DB::table('danh_muc')->orderBy('id', 'asc')->where('trang_thai', '!=', 1)->get();
         // Kiểm tra nếu sản phẩm có size "One size" 
         $one_size = Size::where('id_product', $id)->where('size_product', 'One size')->first();
         return view('admin/product_edit', compact(['one_size','sp', 'loai_arr', 'sizeProduct']));
@@ -283,9 +284,10 @@ class AdminSPController extends AdminController
     public function hide($id)
     {
         $san_pham = san_pham::findOrFail($id);
-        if ($san_pham->trang_thai == 0) {
-            $san_pham->trang_thai = 2;
+        if ($san_pham->an_hien == 0) {
+            $san_pham->an_hien = 1;
             $san_pham->save();
+            GioHang::where('id_sp', $san_pham->id)->update(['an_hien' => 1]);
         }
         return redirect()->route('san-pham.index')->with('thongbao', 'Sản phẩm đã được ẩn thành công.');
     }
@@ -295,9 +297,10 @@ class AdminSPController extends AdminController
         //Tìm đối tượng
         $san_pham = san_pham::findOrFail($id);
         //Kiểm tra
-        if ($san_pham->trang_thai == 2) {
-            $san_pham->trang_thai = 0;
+        if ($san_pham->an_hien == 1) {
+            $san_pham->an_hien = 0;
             $san_pham->save();
+            GioHang::where('id_sp', $san_pham->id)->update(['an_hien' => 0]);
         }
         $danh_muc = danh_muc::where('id', $san_pham->id_dm)->first();
         if ($danh_muc->trang_thai == 1) {

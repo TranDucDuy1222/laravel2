@@ -24,7 +24,7 @@ class ProductController extends Controller
     function detail($id)
     {
         $detail = DB::table('san_pham')
-            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct' ,'luot_mua' , 'trang_thai')
+            ->select('id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'mo_ta_ngan', 'mo_ta_ct' ,'luot_mua' , 'trang_thai','an_hien')
             ->where('id', $id)
             ->first();
 
@@ -43,7 +43,8 @@ class ProductController extends Controller
                 ->select('san_pham.id', 'ten_sp', 'gia', 'gia_km', 'hinh', 'danh_muc.ten_dm' ,'mo_ta_ngan' , 'luot_mua' , 'san_pham.trang_thai as trang_thai_san_pham')
                 ->where('danh_muc.id_loai', $query_loai->id_loai)
                 ->where('san_pham.id', '!=', $id)  // không lấy chính sản phẩm hiện tại
-                ->where('san_pham.trang_thai', '!=', 1)
+                ->whereNotIn('san_pham.trang_thai', [1])
+                ->where('san_pham.an_hien', '!=', 1)
                 ->inRandomOrder()
                 ->limit(4)
                 ->get();

@@ -23,6 +23,7 @@ class HomeController extends Controller
         
         $sanphamhome = (clone $query)
         ->whereNotIn('san_pham.trang_thai', [1, 2])
+        ->where('san_pham.an_hien', '!=', 1)
         ->limit(2)
         ->get();
 
@@ -30,6 +31,7 @@ class HomeController extends Controller
         // Sản phẩm khuyến mãi
         $sanphamsale = (clone $query)
         ->where('san_pham.gia_km','>',0)
+        ->where('san_pham.an_hien', '!=', 1)
         ->whereNotIn('san_pham.trang_thai', [1, 2])
         ->inRandomOrder()
         ->limit(6)
@@ -43,6 +45,7 @@ class HomeController extends Controller
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
         ->where('san_pham.trang_thai', '!=', 2)
         ->where('san_pham.luot_mua', '!=', 0)
+        ->where('san_pham.an_hien', '!=', 1)
         ->orderBy('luot_mua', 'desc')
         ->limit(4)
         ->get();
@@ -52,6 +55,7 @@ class HomeController extends Controller
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
         ->where('san_pham.trang_thai', '!=', 2)
         ->where('san_pham.luot_mua', '!=', 0)
+        ->where('san_pham.an_hien', '!=', 1)
         ->orderBy('luot_mua', 'desc')
         ->limit(6)
         ->get();
@@ -62,6 +66,7 @@ class HomeController extends Controller
         ->join('danh_muc', 'san_pham.id_dm', '=', 'danh_muc.id')
         ->join('loai', 'danh_muc.id_loai', '=', 'loai.id')
         ->whereNotIn('san_pham.trang_thai', [2])
+        ->where('san_pham.an_hien', '!=', 1)
         ->inRandomOrder() // Random sản phẩm
         ->limit(4); // Lấy ra 4 sản phẩm
 

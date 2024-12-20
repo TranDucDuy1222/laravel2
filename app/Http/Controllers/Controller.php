@@ -16,7 +16,7 @@ abstract class Controller
             ->select('id', 'ten_loai', 'slug')
             ->orderBy('id', 'asc');
         $loai = $query->get();
-        $danh_muc = DB::table('danh_muc')->get();
+        $danh_muc = DB::table('danh_muc')->where('trang_thai' ,'!=' ,1)->get();
         View::share('loai', $loai);
         View::share('danh_muc', $danh_muc);
 
@@ -69,8 +69,12 @@ abstract class Controller
             }
         }
 
-        // Sắp xếp sản phẩm theo trạng thái: status 0 trước, status 1 sau
-        $gioHangs = $gioHangs->sortBy('status');
+        // Sắp xếp sản phẩm theo trạng thái: status 0 trước, status 1 sau và ẩn hiện cũng tương tự
+        $gioHangs = $gioHangs->sortBy([
+            'status', 
+            'an_hien'
+        ]);
+        
 
         // Hiển thị sản phẩm bằng session 
         session(['carts' => $gioHangs]);

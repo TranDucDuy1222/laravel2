@@ -41,11 +41,11 @@ class ApiproductController extends Controller
     {
         // Kiểm tra slug để xác định hành động
         if ($slug === 'tat-ca-san-pham') {
-            $list_product = SanPham::with('sizes')->get();
+            $list_product = SanPham::with('sizes')->where('san_pham.an_hien', '!=', 1)->get();
         }
         // Lọc sản phẩm giảm giá nếu slug là 'giam-gia'
         else if ($slug === 'giam-gia') {
-            $list_product = SanPham::with('sizes')->where('gia_km', '>', 0)->get();
+            $list_product = SanPham::with('sizes')->where('gia_km', '>', 0)->where('san_pham.an_hien', '!=', 1)->get();
         }
         // Lọc sản phẩm theo loại khác dựa trên slug 
         else {
@@ -57,6 +57,7 @@ class ApiproductController extends Controller
                 $danh_muc_ids = $danh_muc->pluck('id');
                 $list_product = SanPham::with('sizes')
                     ->whereIn('id_dm', $danh_muc_ids)
+                    ->where('san_pham.an_hien', '!=', 1)
                     ->get();
             } else {
                 return response()->json(['error' => 'Loại sản phẩm không tồn tại.'], 404);
@@ -91,7 +92,7 @@ class ApiproductController extends Controller
         $danh_muc = DanhMuc::where('slug', $slug)->first();
         if ($danh_muc) {
             // Sử dụng with để load mối quan hệ sizes
-            $list_product = SanPham::with('sizes')->where('id_dm', $danh_muc->id)->get();
+            $list_product = SanPham::with('sizes')->where('id_dm', $danh_muc->id)->where('san_pham.an_hien', '!=', 1)->get();
             $danh_mucs = DanhMuc::all();
         } else {
             $list_product = collect();
@@ -109,6 +110,7 @@ class ApiproductController extends Controller
     {
         $keyword_slug = Str::slug($slug);
         $products = SanPham::with('sizes')
+            ->where('san_pham.an_hien', '!=', 1)
             ->where('slug', 'LIKE', '%' . $keyword_slug . '%')
             ->orWhere('ten_sp', 'LIKE', '%' . $slug . '%')
             ->get();

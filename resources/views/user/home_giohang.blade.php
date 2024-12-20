@@ -97,7 +97,7 @@ Giỏ Hàng - Trendy U
                                         @foreach($carts as $index => $item)
                                             <div class="row">
                                                 <div class="col-1 d-flex align-items-center">
-                                                    @if ($item->status === 0)
+                                                    @if ($item->status === 0 && $item->an_hien !== 1)
                                                     <input type="checkbox" name="selected_products[]"
                                                         class="form-check-input large-checkbox" value="{{ $item->id }}"
                                                         onclick="calculateTotal()" checked>

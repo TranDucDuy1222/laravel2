@@ -260,12 +260,19 @@
                                     <div class="card my-2">
                                         <div class="d-flex justify-content-start align-items-center p-xl-2 payment-options" data-payment="VNPay">
                                             <img src="{{ asset('/uploads/logo/logo-vnpay.png') }}" class="img-vnpay" alt="">
-                                            <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử</p>
+                                            <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử VNPay</p>
                                             <input type="radio" id="payment_vnpay" name="payment_option" value="VNPay"
                                                 class="ms-auto">
                                         </div>
                                     </div>
-
+                                    <div class="card my-2">
+                                        <div class="d-flex justify-content-start align-items-center p-xl-2 payment-options" data-payment="Zalopay">
+                                            <img src="{{ asset('/uploads/logo/logo-zalopay.png') }}" class="img-zalopay" alt="">
+                                            <p class="ms-2 align-self-center fs-6">Thanh toán ví điện tử Zalopay</p>
+                                            <input type="radio" id="payment_zalopay" name="payment_option" value="Zalopay"
+                                                class="ms-auto">
+                                        </div>
+                                    </div>
                             <div class="d-flex justify-content-center"> 
                                 @if ($diachis->isEmpty())
                                     <a href="{{ route('user.profile', [Auth::user()->id]) }}" id="add-address-link" 
@@ -274,7 +281,10 @@
                                 @else
                                     <button class="btn btn--e-brand-b-2 w-100" id="place-order-button" type="submit">ĐẶT HÀNG</button> 
                                     <button class="btn btn--e-brand-b-2 w-100" id="pay-vnpay-button"
-                                        style="display: none;" type="submit">THANH TOÁN VÍ ĐIỆN TỬ
+                                        style="display: none;" type="submit">THANH TOÁN VÍ ĐIỆN TỬ VNPAY
+                                    </button>
+                                    <button class="btn btn--e-brand-b-2 w-100" id="pay-zalopay-button"
+                                        style="display: none;" type="submit">THANH TOÁN VÍ ĐIỆN TỬ ZALOPAY
                                     </button>
                                 @endif
                                 
@@ -339,9 +349,15 @@ $(document).ready(function () {
         if (selectedValue === 'COD') {
             $('#place-order-button').show();
             $('#pay-vnpay-button').hide();
+            $('#pay-zalopay-button').hide();
         } else if (selectedValue === 'VNPay') {
             $('#place-order-button').hide();
+            $('#pay-zalopay-button').hide();
             $('#pay-vnpay-button').show();
+        }else if (selectedValue === 'Zalopay') {
+            $('#place-order-button').hide();
+            $('#pay-vnpay-button').hide();
+            $('#pay-zalopay-button').show();
         }
     }
 

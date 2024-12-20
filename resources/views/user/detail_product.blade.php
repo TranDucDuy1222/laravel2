@@ -161,13 +161,13 @@ Chi Tiết : {{$detail->ten_sp}}
                                         <div id="error-message-sl"></div>
                                     </div>
                                 </div>
-                                @if(session('error'))
+                                <!-- @if(session('error'))
                                     <div class="pd-detail__inline">
                                         <span class="pd-detail__click-wrap">
                                             <a class="text-danger">{{ session('error') }}</a>
                                         </span>
                                     </div>
-                                @endif
+                                @endif -->
                                 <hr>
                                 <div class="d-flex justify-content-center align-content-center ">
                                     <div class="my-3">
@@ -177,6 +177,8 @@ Chi Tiết : {{$detail->ten_sp}}
                                             </a>
                                         @elseif ($detail->trang_thai === 1 )
                                             <button class="btn btn-dark " type="button">Sản phẩm ngừng kinh doanh</button>
+                                        @elseif ($detail->an_hien === 1 )
+                                            <button class="btn btn-dark " type="button">Sản phẩm đang bị ẩn</button>
                                         @else
                                             <button class="btn btn--e-brand-b-2" type="submit">Thêm vào giỏ hàng</button>
                                         @endif

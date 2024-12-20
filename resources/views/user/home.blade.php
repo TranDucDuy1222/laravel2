@@ -292,7 +292,7 @@ Trang Chủ - TrendyU
                                                                         <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
                                                                             <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
                                                                                 onerror="this.src='{{ asset('/uploads') }}'"
-                                                                                style="max-height: 295px;" alt="" class="img-fluid ">
+                                                                                style="height: 295px;" alt="" class="img-fluid ">
                                                                             @if ($item->gia_km > 0)
                                                                                 <img src="{{ asset('/uploads/logo/'. optional($settings)->logo_sale ) }}" style="" alt="" class="img-sale">
                                                                             @endif

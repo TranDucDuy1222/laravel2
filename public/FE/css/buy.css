@@ -18,6 +18,11 @@
   width: 55px;
   height: 35px;
 }
+/* logo zalopay */
+.img-zalopay{
+  width: 55px;
+  height: 35px;
+}
 
 @media (max-width: 576px) {
   .ms-xs-2 {

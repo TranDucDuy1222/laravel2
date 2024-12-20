@@ -69,9 +69,12 @@ Route::middleware(['khachhang'])->group(function() {
     Route::post('/remove-voucher', [BuyController::class, 'removeVoucher'])->name('pay.removeVoucher');
     
     // Đặt hàng
+    // Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
+    // Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayReturn'])->name('vnpay.return'); // Chuyển thành GET
+    // Route::post('/vnpay/store-order', [OrderController::class, 'storeOrder'])->name('vnpay.storeOrder');
     Route::post('/dat-hang', [OrderController::class, 'datHang'])->name('dat-hang');
-    Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayReturn'])->name('vnpay.return'); // Chuyển thành GET
-    Route::post('/vnpay/store-order', [OrderController::class, 'storeOrder'])->name('vnpay.storeOrder');
+    Route::get('/vnpay/return/{userId}', [OrderController::class, 'vnpayCallback'])->name('vnpay.return'); // Chuyển thành GET
+    Route::get('/zalopay/callback', [OrderController::class, 'zaloPayCallback'])->name('zalopay.callback');
     
     //Quản lý tài khoản
     Route::get('/profile/{id}', [UserController::class,'quanLyTk'])->name('user.profile');

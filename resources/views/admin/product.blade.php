@@ -94,14 +94,14 @@ Quản lý sản phẩm - TrendyU
                                           Xem
                                        </button>
                                        <a class="btn btn-outline-primary me-2" href="{{route('san-pham.edit', $sp->id)}}">Sửa</a>
-                                       @if ($sp -> trang_thai == 1)
+                                       @if ($sp ->an_hien == 1)
                                        <form class="d-inline" action="{{ route('san-pham.show', $sp->id) }}" method="POST">
                                              @csrf
                                              <button type='submit' onclick="return confirm('Nếu hiện sản phẩm này thì danh mục cũng sẽ được hiện. Bạn có chắc muốn hiện sản phẩm này không ?')" class="btn btn-outline-success">
                                                 Hiện
                                              </button>
                                        </form>
-                                       @elseif ($sp -> trang_thai == 0)
+                                       @elseif ($sp -> an_hien == 0)
                                        <form class="d-inline" action="{{ route('san-pham.hide', $sp->id) }}" method="POST">
                                              @csrf
                                              <button type='submit' onclick="return confirm('Bạn có chắc muốn ẩn sản phẩm này không ?')" class="btn btn-outline-danger">
@@ -175,6 +175,11 @@ Quản lý sản phẩm - TrendyU
                               @endif
                         </label>
                      </div>
+                     @if($sp->an_hien == 1)
+                        <div>
+                           <label for=""><u>Sản phẩm đang bị ẩn</u></label>
+                        </div>
+                     @endif
                   </div>
                   <div class="col-12">
                      <label for="" class="fw-semibold">Mô tả ngắn:</label>
