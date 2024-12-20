@@ -34,30 +34,36 @@ class BuyController extends Controller
         if ($sizeInfo->so_luong <= 0) {
             return redirect()->back()->with('thongbao', 'Size này đã hết hàng.');
         }
-    
+
+        $maxAllowedQuantity = $sizeInfo->so_luong > 20 ? 10 : floor($sizeInfo->so_luong / 2);
+
         $userId = Auth::id();
         $gioHang = GioHang::where('user_id', $userId)
                         ->where('id_sp', $id)
                         ->where('id_size', $sizeInfo->id)
                         ->first();
-    
-        // Kiểm tra số lượng
+
+        $currentCartQuantity = $gioHang ? $gioHang->so_luong : 0;
+
+        if ($currentCartQuantity >= $maxAllowedQuantity) {
+            return redirect()->back()->with('error', "Mỗi đơn hàng chỉ được mua tối đa {$maxAllowedQuantity} sản phẩm cho size này.");
+        }
+
+        if ($currentCartQuantity + $soluong > $maxAllowedQuantity) {
+            $remainingQuantity = $maxAllowedQuantity - $currentCartQuantity;
+            return redirect()->back()->with('error', "Bạn chỉ có thể thêm tối đa {$remainingQuantity} sản phẩm nữa.");
+        }
+
         if ($gioHang) {
-            if ($gioHang->so_luong + $soluong > $sizeInfo->so_luong) {
-                return redirect()->back()->with('error', 'Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
-            }
             $gioHang->so_luong += $soluong;
         } else {
-            if ($soluong > $sizeInfo->so_luong) {
-                return redirect()->back()->with('error', 'Số lượng sản phẩm không được vượt quá số lượng hàng có sẵn.');
-            }
-            
             $gioHang = new GioHang();
             $gioHang->user_id = $userId;
             $gioHang->id_sp = $sanPham->id;
             $gioHang->id_size = $sizeInfo->id;
             $gioHang->so_luong = $soluong;
         }
+
         $gioHang->save();    
         return redirect()->route('cart.gio-hang')->with('thongbao', 'Sản phẩm đã được thêm vào giỏ hàng.');
     }

@@ -13,9 +13,8 @@ Chi Tiết : {{$detail->ten_sp}}
         <ul class="dropdown-menu" id="userDropdown">
             @foreach ($danh_muc as $dm)
                 @if ($dm->id_loai == $category->id)
-                    <li class="hover-dm">
-                        <a class="dropdown-item" href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a>
-                    </li>
+                    <li class="hover-dm"><a class="dropdown-item"
+                            href="{{ route('danh-muc-san-pham', $dm->slug)}}">{{$dm->ten_dm}}</a></li>
                 @endif
             @endforeach
         </ul>
@@ -373,9 +372,10 @@ Chi Tiết : {{$detail->ten_sp}}
                             <div class="product-short">
                                 <div class="product-short__container">
                                     <div class="card">
-                                        @if ($item->trang_thai_san_pham != 2 )
-                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="d-flex justify-content-center align-content-center">
-                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}" class="img-fluid" style="max-height: 295px;"
+                                        @if ($item->trang_thai_san_pham != 2)
+                                            <a href="/detail/{{$item->id}}" id="hover-img-home">
+                                                <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
+                                                    onerror="this.src='{{ asset('/uploads') }}'" style="max-height: 295px;"
                                                     alt="" class="w-100">
                                                 @if ($item->gia_km > 0)
                                                     <img src="{{ asset('/uploads/logo/sale.png') }}" style="" alt=""
@@ -383,9 +383,9 @@ Chi Tiết : {{$detail->ten_sp}}
                                                 @endif
                                             </a>
                                         @elseif ($item->trang_thai_san_pham == 2)
-                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container d-flex justify-content-center align-content-center">
+                                            <a href="/detail/{{$item->id}}" id="hover-img-home" class="image-container">
                                                 <img src="{{ asset('/uploads/product/' . $item->hinh) }}"
-                                                    style="max-height: 295px;" alt="" class="img-fluid">
+                                                    style="max-height: 295px;" alt="" class="w-100">
                                                 <img src="{{ asset('/uploads/logo/') }}"
                                                     onerror="this.src='{{ asset('/uploads/logo/logocs1.png') }}'"
                                                     class="overlay-image" alt="">
@@ -494,16 +494,26 @@ Chi Tiết : {{$detail->ten_sp}}
         const sizeRadios = document.querySelectorAll('input[name="size"]');
         const quantityInput = document.getElementById('quantity');
         const errorMsg = document.getElementById('error-message-sl');
+        const maxQuantityMsg = document.getElementById('max-quantity-message');
 
         sizeRadios.forEach(radio => {
             radio.addEventListener('change', function () {
                 selectedSize = this.value;
-                if (this.getAttribute('data-size') > 10) {
+                if (this.getAttribute('data-size') <= 20) {
                     hangTrongKho = Math.floor(parseFloat(this.getAttribute('data-size')) / 2);
                 } else {
-                    hangTrongKho = this.getAttribute('data-size');
+                    hangTrongKho = 10;
                 }
 
+                // Kiểm tra số lượng hiện tại trong giỏ hàng
+                const currentQuantityInCart = cart[selectedSize] ? cart[selectedSize].quantity : 0;
+
+                if (currentQuantityInCart >= hangTrongKho) {
+                    maxQuantityMsg.style.display = 'block';
+                    maxQuantityMsg.innerText = `Mỗi đơn hàng chỉ được mua tối đa ${hangTrongKho} sản phẩm cho size này.`;
+                } else {
+                    maxQuantityMsg.style.display = 'none';
+                }
 
                 var soluong = parseInt(quantityInput.value);
                 if (soluong > hangTrongKho) {
@@ -530,15 +540,19 @@ Chi Tiết : {{$detail->ten_sp}}
             let quantityToAdd = parseInt(quantityInput.value);
             let currentQuantityInCart = cart[selectedSize] ? cart[selectedSize].quantity : 0;
 
-            if (currentQuantityInCart + quantityToAdd > hangTrongKho) {
+            if (currentQuantityInCart >= hangTrongKho) {
                 event.preventDefault();
-                errorMsg.style.display = 'block';
+                maxQuantityMsg.style.display = 'block';
+                maxQuantityMsg.innerText = `Mỗi đơn hàng chỉ được mua tối đa ${hangTrongKho} sản phẩm cho size này.`;
                 return;
             }
 
-            if (currentQuantityInCart >= hangTrongKho) {
+            if (currentQuantityInCart + quantityToAdd > hangTrongKho) {
                 event.preventDefault();
-                alert('Bạn đã đạt giới hạn số lượng cho size này trong giỏ hàng.');
+                const remainingQuantity = hangTrongKho - currentQuantityInCart;
+                errorMsg.style.display = 'block';
+                errorMsg.innerText = `Bạn chỉ có thể thêm tối đa ${hangTrongKho - currentQuantityInCart} sản phẩm nữa.`;
+                quantityInput.value = remainingQuantity > 0 ? remainingQuantity : 0;
                 return;
             }
             cart[selectedSize] = {
@@ -560,6 +574,8 @@ Chi Tiết : {{$detail->ten_sp}}
             } else if (soluong > hangTrongKho) {
                 this.value = hangTrongKho; // Nếu số lượng vượt quá hàng trong kho, đặt về số lượng tối đa
                 errorMsg.style.display = 'block'; // Hiển thị thông báo
+                errorMsg.innerText = `Số lượng tối đa trong 1 đơn hàng bạn có thể đặt cho sản phẩm này là: ${hangTrongKho}`;
+
             } else {
                 errorMsg.style.display = 'none'; // Ẩn thông báo khi số lượng hợp lệ
             }

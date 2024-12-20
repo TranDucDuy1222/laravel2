@@ -15,13 +15,13 @@ Quản lý đơn hàng - TrendyU
                </div>
                <div class="iq-card-body">
                   <div class="table-responsive">
-                     <div class="row d-flex align-items-center">
-                        <div class="col-start">
+                     <div class="row align-items-center">
+                        <div class="col-auto">
                            <form id="searchForm" action="{{ route('don-hang.index') }}" method="GET">
                               <div class="row">
                                  <div class="col-auto">
                                     <select name="trang_thai" class="form-select" onchange="loctrangthai(this.value)">
-                                       <option value="0" {{ request('trang_thai' ) == '0' ? 'selected' : '' }} >Chờ xử lý</option>
+                                       <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }} >Chờ xử lý</option>
                                        <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Đã xử lý</option>
                                        <option value="2" {{ request('trang_thai') == '2' ? 'selected' : '' }}>Đã giao cho đơn vị vận chuyển</option>
                                        <option value="3" {{ request('trang_thai') == '3' ? 'selected' : '' }}>Đã giao thành công</option>
@@ -29,6 +29,18 @@ Quản lý đơn hàng - TrendyU
                                        <option value="5" {{ request('trang_thai') == '5' ? 'selected' : '' }}>Đã hủy</option>
                                        <!-- <option value="" {{ request('trang_thai') === null ? 'selected' : '' }}>Tất cả trạng thái</option> -->
                                     </select>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                        <div class="col-auto">
+                           <form method="GET" action="{{ route('don-hang.index') }}">
+                              <div class="row">
+                                 <div class="col-auto">
+                                    <input class="form-control" type="text" name="id" placeholder="Tìm kiếm theo ID" value="{{ request('id') }}">
+                                 </div>
+                                 <div class="col-auto">
+                                    <button type="submit" class="btn btn-outline-dark"><i class="fa-solid fa-magnifying-glass"></i></button>
                                  </div>
                               </div>
                            </form>

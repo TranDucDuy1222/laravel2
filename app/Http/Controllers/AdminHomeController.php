@@ -94,7 +94,7 @@ class AdminHomeController extends AdminController
 
         if ($filterType === 'day' && $request->input('filter_date')) {
             $query->whereDate('thoi_diem_mua_hang', $request->input('filter_date'));
-            $customer->whereDate('created_at', $date);
+            $customer->whereDate('created_at', $request->input('filter_date'));
         } elseif ($filterType === 'month' && $request->input('filter_month')) {
             $month = Carbon::parse($request->input('filter_month'))->month;
             $year = Carbon::parse($request->input('filter_month'))->year;
