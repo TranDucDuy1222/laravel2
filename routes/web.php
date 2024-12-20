@@ -50,6 +50,8 @@ Route::middleware(['khachhang'])->group(function() {
     Route::get('/', [HomeController::class , 'index'])->name('home');
     //Route::get('/tim-kiem/{slug}', [ApiproductController::class, 'tim_kiem']);
     Route::get('/detail/{id}', [ProductController::class , 'detail'])->name('product.detail');
+
+    Route::get('/huong_dan_chon_size', [ProductController::class, 'hdchonsize'])->name('huongdanchonsize');
     
     Route::get('/loai-san-pham/{slug}', [ApiproductController::class , 'sanpham_loai'])->name('loai-san-pham');
     Route::get('/danh-muc-san-pham/{slug}', [ApiproductController::class , 'sanpham_danhmuc'])->name('danh-muc-san-pham');

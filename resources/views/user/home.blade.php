@@ -150,14 +150,21 @@ Trang Chủ - TrendyU
                                                                             @endif
                                                                         </div>
                                                                     </div>
+                                                                    @if ($item->gia_km != 0)
+                                                                        <div class="col-5 text-end">
+                                                                            <del class="pd-detail__del">{{number_format($item->gia, 0, '', '.')}} đ</del>
+                                                                        </div>
+                                                                    @endif
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 d-flex">
+                                                                    <div class="col-7 text-start">
+                                                                        {{$item->ten_dm}}
+                                                                    </div>
                                                                     <div class="col-5 text-end">
                                                                         <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
                                                                         <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
                                                                     </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12 text-start">
-                                                                    {{$item->ten_dm}}
                                                                 </div>
                                                                 <div class="col-12 text-truncate">
                                                                     <span class="pd-detail__click-count" style="font-size: 12px;">
@@ -251,7 +258,7 @@ Trang Chủ - TrendyU
                                                                             <div class="row">
                                                                                 <div class="col-12">
                                                                                     <div class="row">
-                                                                                    <div class="col-sm-6 col-12 text-start">
+                                                                                    <div class="col-7 text-start">
                                                                                         <div class="d-flex align-items-center">
                                                                                             <strong id="color-gia">{{ $gia }}đ</strong>
                                                                                             @if ($item->gia_km >= 1) 
@@ -266,14 +273,19 @@ Trang Chủ - TrendyU
                                                                                             @endif
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-sm-6 col-12 text-start text-sm-end">
-                                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                                    <div class="col-5 text-end">
+                                                                                        <del class="pd-detail__del">{{number_format($item->gia, 0, '', '.')}} đ</del>
                                                                                     </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-12 text-start">
-                                                                                    {{$item->ten_dm}}
+                                                                                <div class="col-12 d-flex">
+                                                                                    <div class="col-7 text-start">
+                                                                                        {{$item->ten_dm}}
+                                                                                    </div>
+                                                                                    <div class="col-5 text-end">
+                                                                                        <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                                        <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="col-12 text-truncate">
                                                                                     <span class="pd-detail__click-count" style="font-size: 12px;">
@@ -304,29 +316,34 @@ Trang Chủ - TrendyU
                                                                             <div class="row">
                                                                                 <div class="col-12">
                                                                                     <div class="row">
-                                                                                    <div class="col-sm-6 col-12 text-start">
-                                                                                        <div class="d-flex align-items-center">
-                                                                                            <strong id="color-gia">{{ $gia }}đ</strong>
-                                                                                            @if ($item->gia_km >= 1) 
-                                                                                                @php 
-                                                                                                    $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
-                                                                                                @endphp 
-                                                                                                @if ($discountPercentage > 1) 
-                                                                                                    <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
-                                                                                                    -{{ number_format($discountPercentage, 0) }}% 
-                                                                                                    </div> 
-                                                                                                @endif                                
-                                                                                            @endif
+                                                                                        <div class="col-7 text-start">
+                                                                                            <div class="d-flex align-items-center">
+                                                                                                <strong id="color-gia">{{ $gia }}đ</strong>
+                                                                                                @if ($item->gia_km >= 1) 
+                                                                                                    @php 
+                                                                                                        $discountPercentage = (($item->gia - $item->gia_km) / $item->gia) * 100; 
+                                                                                                    @endphp 
+                                                                                                    @if ($discountPercentage > 1) 
+                                                                                                        <div class="bg-text-success text-danger ms-2" style="font-size: 10px;"> 
+                                                                                                        -{{ number_format($discountPercentage, 0) }}% 
+                                                                                                        </div> 
+                                                                                                    @endif                                
+                                                                                                @endif
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-5 text-end">
+                                                                                            <del class="pd-detail__del">{{number_format($item->gia, 0, '', '.')}} đ</del>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-sm-6 col-12 text-start text-sm-end">
+                                                                                </div>
+                                                                                <div class="col-12 d-flex">
+                                                                                    <div class="col-7 text-start">
+                                                                                        {{$item->ten_dm}}
+                                                                                    </div>
+                                                                                    <div class="col-5 text-end">
                                                                                         <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
                                                                                         <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
                                                                                     </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-12 text-start">
-                                                                                    {{$item->ten_dm}}
                                                                                 </div>
                                                                                 <div class="col-12 text-truncate">
                                                                                     <span class="pd-detail__click-count" style="font-size: 12px;">
@@ -457,7 +474,7 @@ Trang Chủ - TrendyU
                                                                 <div class="row">
                                                                     <div class="col-12">
                                                                         <div class="row">
-                                                                        <div class="col-6 text-start">
+                                                                        <div class="col-7 text-start">
                                                                             <div class="d-flex align-items-center">
                                                                                 <strong id="color-gia">{{ $gia }}đ</strong>
                                                                                 @if ($item->gia_km >= 1) 
@@ -472,14 +489,19 @@ Trang Chủ - TrendyU
                                                                                 @endif
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-6 text-end">
-                                                                            <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
-                                                                            <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                        <div class="col-5 text-end">
+                                                                            <del class="pd-detail__del">{{number_format($item->gia, 0, '', '.')}} đ</del>
                                                                         </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-12 text-start">
-                                                                        {{$item->ten_dm}}
+                                                                    <div class="col-12 d-flex">
+                                                                        <div class="col-7 text-start">
+                                                                            {{$item->ten_dm}}
+                                                                        </div>
+                                                                        <div class="col-5 text-end">
+                                                                            <i class="fa-solid fa-basket-shopping u-s-m-r-6" style="color: #ec3609;"></i>
+                                                                            <span class="pd-detail__click-count">Đã Bán ({{$item->luot_mua ?? 0}})</span>
+                                                                        </div>
                                                                     </div>
                                                                     <div class="col-12 text-truncate">
                                                                         <span class="pd-detail__click-count" style="font-size: 12px;">

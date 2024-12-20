@@ -11,7 +11,7 @@ class LandingPageSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('landing_page')->insert([
+        DB::table('home_layout')->insert([
             'anh_bieu_ngu_1' => 'banner1.png',
             'tieu_de_chinh_1' => 'NIKE AIR MAX DN',
             'mau_tieu_de_chinh_1' => 'white',
