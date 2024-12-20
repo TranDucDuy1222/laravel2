@@ -258,7 +258,7 @@ class UserController extends Controller
     
         if ($request->filled(['mkcu', 'mkmoi'])) {
             if (!Hash::check($request->mkcu, $taiKhoan->password)) {
-                return redirect()->back()->with('thongbao', 'Mật khẩu cũ không đúng, vui lòng nhập lại!');
+                return redirect()->back()->with('error', 'Mật khẩu cũ không đúng, vui lòng nhập lại!');
             }
     
             $taiKhoan->password = Hash::make($request->mkmoi);
@@ -266,7 +266,7 @@ class UserController extends Controller
             return redirect()->route('user.profile', ['id' => $id])->with('thongbao', 'Mật khẩu được cập nhật thành công!');
         }
     
-        return redirect()->back()->with('thongbao', 'Vui lòng nhập đầy đủ thông tin!');
+        return redirect()->back()->with('error', 'Vui lòng nhập đầy đủ thông tin!');
     }
 
     public function forgot_pass()
@@ -276,14 +276,16 @@ class UserController extends Controller
 
     public function sendResetLink(Request $request)
     {
-        $request->validate(['email' => 'required|email|exists:users,email']);
+        // $request->validate(['email' => 'required|email|exists:users,email']);
         $status = Password::sendResetLink(
             $request->only('email')
         );
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', 'Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn.')
-            : back()->withInput($request->only('email'))
-                    ->withErrors(['email' => __('Không tìm thấy email này.')]);
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with('thongbao', 'Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn.');
+        }
+
+        return back()->with('error','Không tìm thấy email này.');
+
     }
 
     public function show_reset(Request $request, $token = null)
@@ -308,9 +310,11 @@ class UserController extends Controller
             }
         );
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('success', __('Mật khẩu đã được đặt lại thành công!'))
-            : back()->withErrors(['email' => [__('Email không hợp lệ.')]]);
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect()->route('login')->with('thongbao', 'Mật khẩu đã được đặt lại thành công!');
+        }
+
+        return back()->withErrors('error', 'Email không hợp lệ.');
     }
 
     public function lienHe(){

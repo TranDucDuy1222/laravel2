@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="pb-5">
-        <div class="section__intro mb-1">
+        <!-- <div class="section__intro mb-1">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="section__intro mb-5">
             <div class="container">
                 <div class="row">
@@ -76,7 +76,7 @@
             <div class="container">
                 <div class="row row--center">
                     <div class="col-lg-6 col-md-8 mb-3">
-                        <div class="l-f-o">
+                        <div class="l-f-o border">
                             <div class="l-f-o__pad-box">
                                 <h1 class="gl-h1">LẤY LẠI MẬT KHẨU</h1>
                                 <span class="gl-text mb-3">Nhập email của bạn và chúng tôi sẽ gửi cho bạn liên kết để đặt lại mật khẩu.</span>
