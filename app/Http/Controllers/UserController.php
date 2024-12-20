@@ -28,20 +28,23 @@ class UserController extends Controller
     public function register_form(CheckRegister $request)
     {
         $otp = rand(100000, 999999);
+        $expiresAt = now()->addMinutes(1);// OTP hết hạn sau 1 phút
 
-        $user = users::create([
+        // Lưu thông tin vào session
+        $user = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'otp' => $otp,
-        ]);
+            'expires_at' => $expiresAt,
+        ];
+        session(['pending_user' => $user]);
         // Gửi mã OTP qua email
         Mail::to($request->email)->send(new OtpMail($otp));
-        
-        // auth()->login($user);
 
         return redirect()->route('otpform')->with([
             'email' => $request->email,
+            'expires_at' => $expiresAt,
             'thongbao' => 'Vui lòng kiểm tra email để nhận mã OTP và xác nhận tài khoản.',
         ]);
     }
@@ -54,38 +57,66 @@ class UserController extends Controller
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            // 'otp' => 'required|array|size:6',
-            // 'otp.*' => 'numeric|digits:1',
-            'otp' => 'required|array|min:6|max:6', // Kiểm tra mã OTP hợp lệ
-
+            'otp' => 'required|array|min:6|max:6',
         ]);
-    
+
         // Gộp mảng các số thành chuỗi
         $otp = implode('', $request->otp);
-        
-        // Tìm người dùng theo email
-        $user = users::where('email', $request->email)->first();
-        if (!$user) {
-            return redirect()->back()->with('thongbao', 'Người dùng không tồn tại!');
+
+        // Lấy thông tin user từ session
+        $pendingUser = session('pending_user');
+        if (!$pendingUser || $pendingUser['email'] !== $request->email) {
+            return redirect()->back()->with('error', 'Người dùng không tồn tại hoặc thông tin không hợp lệ!');
         }
-        // dd('OTP nhập vào: ' . $otp, 'OTP trong CSDL: ' . $user->otp);
-        // if ($user && $request->otp == $user->otp) {
-        //     $user->otp_verified_at = now();
-        //     $user->otp = null; // Xóa mã OTP để bảo mật
-        //     $user->save();
-        if ((string)$otp == (string)$user->otp) {
-            $user->otp_verified_at = now();
-            $user->otp = null;
-            $user->save();
-            
+        
+        // Kiểm tra thời gian OTP hết hạn
+        if (!$pendingUser || now()->greaterThan($pendingUser['expires_at'])) {
+            return redirect()->back()->with('error', 'Mã OTP đã hết hạn!');
+        }
+
+        if ((string)$otp === (string)$pendingUser['otp']) {
+            // Lưu tài khoản vào cơ sở dữ liệu
+            $user = users::create([
+                'name' => $pendingUser['name'],
+                'email' => $pendingUser['email'],
+                'password' => $pendingUser['password'],
+            ]);
+
+            // Xóa OTP khỏi session
+            session()->forget('pending_user');
+
             auth()->login($user);
-            
+
             return redirect()->intended('/')->with('thongbao', 'Đăng ký thành công!');
         }
 
-        return redirect()->back()->with('thongbao', 'Mã OTP không đúng. Vui lòng thử lại!');
+        session()->put('email', $pendingUser['email']);
+        session()->flash('expires_at', $pendingUser['expires_at']);
+
+        return redirect()->back()->with('error', 'Mã OTP không đúng. Vui lòng thử lại!');
     }
 
+    public function resendOtp(Request $request)
+    {
+        $pendingUser = session('pending_user');
+        if (!$pendingUser) {
+            return redirect()->route('register')->with('error', 'Không tìm thấy thông tin đăng ký!');
+        }
+    
+        // Tạo lại mã OTP mới
+        $otp = rand(100000, 999999);
+        $pendingUser['otp'] = $otp;
+        $pendingUser['expires_at'] = now()->addMinutes(2); // Gia hạn thời gian OTP
+    
+        session(['pending_user' => $pendingUser]);
+
+        Mail::to($pendingUser['email'])->send(new OtpMail($otp));
+
+        session()->put('expires_at', $pendingUser['expires_at']);
+    
+        return redirect()->back()->with('thongbao', 'Mã OTP mới đã được gửi. Vui lòng kiểm tra email của bạn.');
+    }
+    
 
     function login(){
         return view('login');
@@ -227,7 +258,7 @@ class UserController extends Controller
     
         if ($request->filled(['mkcu', 'mkmoi'])) {
             if (!Hash::check($request->mkcu, $taiKhoan->password)) {
-                return redirect()->back()->with('thongbao', 'Mật khẩu cũ không đúng, vui lòng nhập lại!');
+                return redirect()->back()->with('error', 'Mật khẩu cũ không đúng, vui lòng nhập lại!');
             }
     
             $taiKhoan->password = Hash::make($request->mkmoi);
@@ -235,7 +266,7 @@ class UserController extends Controller
             return redirect()->route('user.profile', ['id' => $id])->with('thongbao', 'Mật khẩu được cập nhật thành công!');
         }
     
-        return redirect()->back()->with('thongbao', 'Vui lòng nhập đầy đủ thông tin!');
+        return redirect()->back()->with('error', 'Vui lòng nhập đầy đủ thông tin!');
     }
 
     public function forgot_pass()
@@ -245,14 +276,16 @@ class UserController extends Controller
 
     public function sendResetLink(Request $request)
     {
-        $request->validate(['email' => 'required|email|exists:users,email']);
+        // $request->validate(['email' => 'required|email|exists:users,email']);
         $status = Password::sendResetLink(
             $request->only('email')
         );
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', 'Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn.')
-            : back()->withInput($request->only('email'))
-                    ->withErrors(['email' => __('Không tìm thấy email này.')]);
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with('thongbao', 'Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn.');
+        }
+
+        return back()->with('error','Không tìm thấy email này.');
+
     }
 
     public function show_reset(Request $request, $token = null)
@@ -277,9 +310,11 @@ class UserController extends Controller
             }
         );
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('success', __('Mật khẩu đã được đặt lại thành công!'))
-            : back()->withErrors(['email' => [__('Email không hợp lệ.')]]);
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect()->route('login')->with('thongbao', 'Mật khẩu đã được đặt lại thành công!');
+        }
+
+        return back()->withErrors('error', 'Email không hợp lệ.');
     }
 
     public function lienHe(){

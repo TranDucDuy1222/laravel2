@@ -179,7 +179,7 @@
                     @else
                       <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
                       <li><a class="dropdown-item" href="/register">Đăng Ký</a></li>
-                      <li><a class="dropdown-item" href="">Quên Mật Khẩu</a></li>
+                      <li><a class="dropdown-item" href="/forgot-password">Quên Mật Khẩu</a></li>
                     @endif
                   </ul>
                 </li>
