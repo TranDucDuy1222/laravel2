@@ -68,18 +68,57 @@
                                         <input type="text" name="otp[]" maxlength="1" oninput="moveFocus(event, 5)" required>
                                         <input type="text" name="otp[]" maxlength="1" oninput="moveFocus(event, 6)" required>
                                     </div>
-                                    <input type="" name="email" value="{{ session('email') }}">
+                                    <input type="hidden" name="email" value="{{ session('email') }}">
+                                    @if (session('expires_at'))
+                                        <div class="section__text-wrap">
+                                            <p class="gl-link">Mã OTP sẽ hết hạn sau: <span class="text-danger" id="otp-timer"></span>.</p>
+                                        </div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const expiresAt = @json(session('expires_at'));
+
+                                                if (expiresAt) {
+                                                    const expiresAtTime = new Date(expiresAt).getTime();
+
+                                                    // Hàm cập nhật đếm ngược
+                                                    function updateTimer() {
+                                                        const now = new Date().getTime();
+                                                        const distance = expiresAtTime - now;
+
+                                                        if (distance <= 0) {
+                                                            document.getElementById('otp-timer').textContent = "Mã OTP đã hết hạn!";
+                                                            clearInterval(timer);
+                                                        } else {
+                                                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                                            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                                            document.getElementById('otp-timer').textContent = `${minutes} phút ${seconds} giây`;
+                                                        }
+                                                    }
+
+                                                    // Cập nhật đếm ngược mỗi giây
+                                                    const timer = setInterval(updateTimer, 1000);
+                                                    updateTimer();
+                                                } else {
+                                                    document.getElementById('otp-timer').textContent = "Không có thời gian hết hạn!";
+                                                }
+                                            });
+                                        </script>
+                                    @endif
+
                                     <div class="mb-3">
                                         <button type="submit" class="l-f-o__create-link btn btn--e-brand-b-2">Xác nhận</button>
                                     </div>
-                                    <div class="row my-3">
-                                        <div class="col-lg-12">
-                                            <div class="section__text-wrap">
-                                                <p class="gl-link">Quay lại trang <a href="{{ url('register') }}" class="text-danger">Đăng ký</a></p>
-                                            </div>
+                                </form>
+                                <div class="row my-3">
+                                    <div class="col-lg-12">
+                                        <div class="section__text-wrap">
+                                            <form action="{{ route('resendOtp') }}" method="POST">
+                                                @csrf
+                                                <p class="gl-link">Chưa nhận được mã? <button type="submit" class="text-danger btn gl-link p-0">Gửi lại</button></p>
+                                            </form>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

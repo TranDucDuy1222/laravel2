@@ -16,11 +16,6 @@ class KhachHang
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if (Auth::check() && Auth::user()->role == 0) {
-        //     return $next($request);
-        // }
-        // return redirect('admin')->with('thongbao', 'Bạn đã đăng nhập bằng tài khoản admin');
-
         if (auth()->check() && Auth::user()->role == 1) {
             return redirect()->route('admin')->with('thongbao', 'Bạn đã đăng nhập bằng tài khoản admin');
         }

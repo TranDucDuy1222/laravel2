@@ -34,6 +34,7 @@ Route::post('/register', [UserController::class, 'register_form'])->name('regist
 
 Route::get('/verify-otp', [UserController::class, 'showOtpForm'])->name('otpform');
 Route::post('/verify-otp', [UserController::class, 'verifyOtp'])->name('verify.otp');
+Route::post('/resend-otp', [UserController::class, 'resendOtp'])->name('resendOtp');
 
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
